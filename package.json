@@ -39,6 +39,6 @@
   "scripts": {
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "build:lib": "rollup -c && npm pack"
+    "build:lib": "NODE_ENV=publish rollup -c && npm pack"
   }
 }
