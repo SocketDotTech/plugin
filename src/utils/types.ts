@@ -1,7 +1,8 @@
 export interface WidgetProps {
-  width: number;
+  width?: number;
   responsiveWidth?: boolean;
   theme?: ThemeProps;
+  sourceNetworks?: number[];
 }
 
 export interface ThemeProps {

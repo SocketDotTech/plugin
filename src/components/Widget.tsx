@@ -7,6 +7,7 @@ import { SOCKET_API_KEY } from "../consts";
 // redux state
 import { useDispatch } from "react-redux";
 import { setNetworks } from "../state/networksSlice";
+import { setDevProps } from "../state/devPropsSlice";
 
 // components
 // import { Header } from "@/components/Header";
@@ -16,6 +17,7 @@ import { Input } from "./Input";
 
 
 export const Widget = (props: WidgetProps) => {
+  const dispatch = useDispatch();
   const {
     width = 400,
     responsiveWidth = false,
@@ -26,13 +28,9 @@ export const Widget = (props: WidgetProps) => {
 
   const socket = new Socket({ apiKey: SOCKET_API_KEY });
 
-  // console.log('store', store)
-  // const store = createStoreHook(appReducer)
-
-  const dispatch = useDispatch();
-
   async function initialize() {
     const supportedNetworks = await Supported.getAllSupportedRoutes();
+    dispatch(setDevProps(props));
     dispatch(setNetworks(supportedNetworks?.result))
   }
 
@@ -45,11 +43,11 @@ export const Widget = (props: WidgetProps) => {
         style={{
           width: widgetWidth,
           borderRadius: `calc(1rem * ${theme.borderRadius})`,
+          height: '400px'
         }}
         className={`bg-gray-200 p-3 overflow-hidden`}
       >
         <Header title="Bridge">settings</Header>
-
         <Input />
       </div>
   );

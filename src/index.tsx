@@ -6,10 +6,9 @@ import { Widget } from "./components/Widget";
 import { WidgetProps } from "@/utils/types";
 
 export const Bridge = (props: WidgetProps) => {
-  const { width } = props;
   return (
     <Provider store={store}>
-      <Widget width={width} />
+      <Widget />
     </Provider>
   );
 };
