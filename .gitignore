@@ -21,3 +21,6 @@ yarn-error.log*
 # Package files
 *.tgz
 *.zip
+
+# Dev Notes
+*.txt

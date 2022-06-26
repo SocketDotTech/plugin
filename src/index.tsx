@@ -1,11 +1,15 @@
-import { Button } from "./components/Button";
 import "./index.css";
+import { Provider } from "react-redux";
+import store from "./state/store";
+// import { Widget } from "@/components/Widget";
+import { Widget } from "./components/Widget";
+import { WidgetProps } from "@/utils/types";
 
-export const Bridge = () => {
+export const Bridge = (props: WidgetProps) => {
+  const { width } = props;
   return (
-    <div>
-      <h1 className="bg-gray-300 text-red-500">Hello World</h1>
-      <Button>Click me</Button>
-    </div>
+    <Provider store={store}>
+      <Widget width={width} />
+    </Provider>
   );
 };

@@ -1,5 +1,15 @@
 {
- "compilerOptions": {
+  "compilerOptions": {
     "jsx": "react-jsx",
- }   
+    "baseUrl": "./src/",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/consts/*": ["consts/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/utils/*": ["utils/*"],
+      "@/state/*": ["state/*"]
+    }
+  }
 }
+
+// /Users/salilnaik/Documents/projects/socket/widget/src
