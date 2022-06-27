@@ -1,15 +1,23 @@
-import { setSourceChain } from "../state/networksSlice";
-import { Network } from "../utils/types";
+import { ethers } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
-import { ChainDropdown } from "./ChainDropdown";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Currency, Network } from "../utils/types";
+
+// component
+import { TokenInput } from "./TokenInput";
+import { ChainSelect } from "./ChainSelect";
+
+// actions
+import { setSourceToken } from "../state/tokensSlice";
+import { setSourceAmount } from "../state/amountSlice";
+import { setSourceChain } from "../state/networksSlice";
 
 export function Balance() {
   return <span>Bal: 0.124</span>;
 }
 
 export const Input = () => {
+  // For networks
   const allNetworks = useSelector((state: any) => state.networks.allNetworks);
   const devProps = useSelector((state: any) => state.devProps.devProps);
   const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
@@ -18,9 +26,7 @@ export const Input = () => {
   const sourceChainId = useSelector(
     (state: any) => state.networks.sourceChainId
   );
-  const activeNetwork = allNetworks?.filter(
-    (x: Network) => x?.chainId === sourceChainId
-  )[0];
+  const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
 
   const dispatch = useDispatch();
   function updateNetwork(network: Network) {
@@ -41,14 +47,40 @@ export const Input = () => {
     } else setFilteredNetworks(allNetworks);
   }, [allNetworks, devProps]);
 
+  // For Input & tokens
+  const [inputAmount, updateInputAmount] = useState<string>("");
+  const updateToken = (token: Currency) => {
+    dispatch(setSourceToken(token));
+  };
+
+  useEffect(() => {
+    if (inputAmount) {
+      dispatch(
+        setSourceAmount(
+          ethers.utils.parseUnits(inputAmount, sourceToken?.decimals).toString()
+        )
+      );
+    }
+  }, [sourceToken, inputAmount]);
+
   return (
-    <div className="flex items-center">
-      <span>From</span>
-      <ChainDropdown
-        networks={filteredNetworks}
-        activeNetwork={activeNetwork}
-        onChange={updateNetwork}
+    <>
+      <div className="flex items-center">
+        <span>From</span>
+        <ChainSelect
+          networks={filteredNetworks}
+          activeNetworkId={sourceChainId}
+          onChange={updateNetwork}
+        />
+      </div>
+
+      <TokenInput
+        source
+        amount={inputAmount}
+        onChangeInput={updateInputAmount}
+        updateToken={updateToken}
+        activeToken={sourceToken}
       />
-    </div>
+    </>
   );
 };

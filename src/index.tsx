@@ -1,7 +1,6 @@
 import "./index.css";
 import { Provider } from "react-redux";
 import store from "./state/store";
-// import { Widget } from "@/components/Widget";
 import { Widget } from "./components/Widget";
 import { WidgetProps } from "@/utils/types";
 

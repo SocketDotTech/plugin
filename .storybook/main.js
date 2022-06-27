@@ -1,3 +1,5 @@
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+
 module.exports = {
   stories: [
     "../src/**/*.stories.mdx",
@@ -23,4 +25,7 @@ module.exports = {
     },
   ],
   framework: "@storybook/react",
+  resolve: {
+    plugins: [new TsconfigPathsPlugin({})],
+  }
 };

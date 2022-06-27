@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 interface ChainDropdownProps {
   networks: Network[];
-  activeNetwork: Network;
+  activeNetworkId: number;
   onChange: (network: Network) => void;
 }
 
@@ -30,18 +30,18 @@ function Option({
   );
 }
 
-export function ChainDropdown({
+export function ChainSelect({
   networks,
-  activeNetwork,
+  activeNetworkId,
   onChange,
 }: ChainDropdownProps) {
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
   const chainDropdownRef = useClickOutside(() => setOpenDropdown(false));
   const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(null);
-
+  const activeNetwork = networks?.filter((x: Network) => x?.chainId === activeNetworkId)[0];
   useEffect(() => {
-    setFilteredNetworks(networks?.filter((x: Network) => x?.chainId !== activeNetwork?.chainId));
-  }, [networks, activeNetwork]);
+    setFilteredNetworks(networks?.filter((x: Network) => x?.chainId !== activeNetworkId));
+  }, [networks, activeNetworkId, activeNetwork]);
 
   return (
     <div
@@ -52,7 +52,7 @@ export function ChainDropdown({
       <Option network={activeNetwork} />
 
       {openDropdown && (
-        <div className="absolute bg-white p-2 rounded-lg gap-1 flex flex-col w-40 max-h-60 overflow-y-auto overflow-hidden">
+        <div className="z-10 absolute bg-white p-2 rounded-lg gap-1 flex flex-col w-40 max-h-60 overflow-y-auto overflow-hidden">
           {filteredNetworks?.map((network, index) => {
             return !!network ? (
               <Option

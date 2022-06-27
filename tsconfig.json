@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
-    "baseUrl": "./src/",
+    "baseUrl": "src",
     "paths": {
       "@/components/*": ["components/*"],
       "@/consts/*": ["consts/*"],
@@ -11,5 +11,3 @@
     }
   }
 }
-
-// /Users/salilnaik/Documents/projects/socket/widget/src

@@ -3,6 +3,7 @@ export interface WidgetProps {
   responsiveWidth?: boolean;
   theme?: ThemeProps;
   sourceNetworks?: number[];
+  destNetworks?: number[];
 }
 
 export interface ThemeProps {
@@ -32,7 +33,10 @@ export interface Currency {
   address: string;
   decimals: number;
   icon: string;
-  minNativeCurrencyForGas: string;
+  minNativeCurrencyForGas?: string;
   name: string;
   symbol: string;
+  chainId?: number;
+  logoURI?: string;
+  chainAgnosticId?: number | null;
 }
