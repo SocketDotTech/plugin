@@ -35,7 +35,7 @@ export const TokenSelect = (props: Props) => {
             src={activeToken?.logoURI}
             className="h-6 w-6 rounded-full mr-1"
           />
-          <span>{activeToken?.name}</span>
+          <span>{activeToken?.symbol}</span>
         </button>
       ) : (
         <button

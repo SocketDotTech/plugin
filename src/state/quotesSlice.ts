@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  allQuotes: null
+  allQuotes: null,
+  selectedRoute: null,
+  sortPref: 'output',
 };
 
 const quotesSlice = createSlice({
@@ -10,9 +12,15 @@ const quotesSlice = createSlice({
   reducers: {
     setQuotes: (state, action) => {
         state.allQuotes = action.payload
+    },
+    setSelectedRoute: (state, action) => {
+      state.selectedRoute = action.payload
+    },
+    setSortPref: (state, action) => {
+      state.sortPref = action.payload
     }
   },
 });
 
 export default quotesSlice.reducer;
-export const { setQuotes } = quotesSlice.actions;
+export const { setQuotes, setSelectedRoute, setSortPref } = quotesSlice.actions;

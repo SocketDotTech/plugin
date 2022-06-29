@@ -1,3 +1,6 @@
+import { ChainId } from "socket-v2-sdk/lib/src/client/models/ChainId";
+import { UserTxType } from "socket-v2-sdk/lib/src/client/models/UserTxType";
+
 export interface WidgetProps {
   width?: number;
   responsiveWidth?: boolean;
@@ -39,4 +42,41 @@ export interface Currency {
   chainId?: number;
   logoURI?: string;
   chainAgnosticId?: number | null;
+}
+
+export interface TokenWithBalance {
+  chainId?: ChainId;
+  tokenAddress?: string;
+  userAddress?: string;
+  balance?: string;
+  decimals?: number;
+  icon?: string;
+  symbol?: string;
+  name?: string;
+}
+
+export interface Route {
+  routeId: string
+  fromAmount: string;
+  chainGasBalances: any;
+  minimumGasBalances: any;
+  toAmount: string;
+  userBridgeNames: Array<BridgeName>;
+  totalUserTx: number;
+  totalGasFeesInUsd: number; 
+  recipient: string;
+  sender:string;
+  userTxs: Array<UserTx>;
+  serviceTime: number;
+}
+
+export interface UserTx {
+  userTxType: UserTxType;
+}
+
+export interface BridgeName {
+  name: string
+  icon?: string
+  serviceTime: number 
+  displayName: string
 }

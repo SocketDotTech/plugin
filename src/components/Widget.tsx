@@ -11,6 +11,7 @@ import { RouteDetails } from "./RouteDetails";
 
 // hooks
 import { useChains, useTokenList } from "../hooks/apis";
+import { Settings } from "./Settings";
 
 export const Widget = (props: WidgetProps) => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ export const Widget = (props: WidgetProps) => {
   useTokenList();
 
   const {
-    width = 400,
+    width = 380,
     responsiveWidth = false,
     theme = {
       borderRadius: 1,
@@ -36,11 +37,10 @@ export const Widget = (props: WidgetProps) => {
       style={{
         width: widgetWidth,
         borderRadius: `calc(1rem * ${theme.borderRadius})`,
-        height: "400px",
       }}
       className={`bg-gray-200 p-3 overflow-hidden relative`}
     >
-      <Header title="Bridge">settings</Header>
+      <Header title="Bridge"><Settings /></Header>
       <Input />
       <Output />
       <RouteDetails />

@@ -13,7 +13,7 @@ interface TokenInputProps {
 export const TokenInput = (props: TokenInputProps) => {
   const { amount, onChangeInput, updateToken, source = false, activeToken} = props;
   return (
-    <div className="flex">
+    <div className="flex items-center justify-between">
       <input
         className="h-10 px-2 active:outline-none rounded-md"
         value={amount}
