@@ -16,7 +16,7 @@ import { setTokens } from "../state/tokensSlice";
 import { setQuotes, setBestRoute } from "../state/quotesSlice";
 import useSWR from "swr";
 
-const socket = new Socket({
+export const socket = new Socket({
   apiKey: SOCKET_API_KEY,
   defaultQuotePreferences: {
     singleTxOnly: false,
@@ -100,7 +100,6 @@ export const useRoutes = (
   if (data) {
     dispatch(setQuotes(data));
     dispatch(setBestRoute(data?.[0]));
-  data.forEach((x, index) => console.log(index, x?.route?.usedBridgeNames?.[0]));
   } else {
     dispatch(setQuotes(null));
     dispatch(setBestRoute(null));

@@ -8,10 +8,11 @@ import { Header } from "./Header";
 import { Input } from "./Input";
 import { Output } from "./Output";
 import { RouteDetails } from "./RouteDetails";
+import { Settings } from "./Settings";
+import { TxModal } from "./TxsModal";
 
 // hooks
 import { useChains, useTokenList } from "../hooks/apis";
-import { Settings } from "./Settings";
 
 export const Widget = (props: WidgetProps) => {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ export const Widget = (props: WidgetProps) => {
       <Input />
       <Output />
       <RouteDetails />
+      <TxModal />
     </div>
   );
 };

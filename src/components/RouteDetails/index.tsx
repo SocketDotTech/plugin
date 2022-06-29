@@ -1,21 +1,26 @@
 import { useRoutes } from "../../hooks/apis";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "../Button";
-import { useState } from "react";
-import { Modal } from "../Modal";
-import { TokenDetail } from "../TokenDetail";
+import { useEffect, useState } from "react";
 import { setSelectedRoute } from "../../state/selectedRouteSlice";
+
+// components
+import { ReviewModal } from "./ReviewModal";
+import { Button } from "../Button";
+
+// make a common route detail component with completed boolean param.
+// can be used in review and txmodal
 
 export const RouteDetails = () => {
   const dispatch = useDispatch();
-  const sourceChainId = useSelector(
-    (state: any) => state.networks.sourceChainId
-  );
-  const destChainId = useSelector((state: any) => state.networks.destChainId);
+  // const sourceChainId = useSelector(
+  //   (state: any) => state.networks.sourceChainId
+  // );
+  // const destChainId = useSelector((state: any) => state.networks.destChainId);
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
   const destToken = useSelector((state: any) => state.tokens.destToken);
   const sortPref = useSelector((state: any) => state.quotes.sortPref);
   const sourceAmount = useSelector((state: any) => state.amount.sourceAmount);
+  const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
   const { data, isQuotesLoading } = useRoutes(
     sourceToken,
     destToken,
@@ -25,6 +30,10 @@ export const RouteDetails = () => {
   const shouldFetch = sourceAmount && sourceToken && destToken && sortPref;
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    isTxModalOpen && setIsReviewOpen(false);
+  }, [isTxModalOpen])
 
   function review() {
     dispatch(setSelectedRoute(bestRoute));
@@ -54,42 +63,5 @@ export const RouteDetails = () => {
         <ReviewModal closeModal={() => setIsReviewOpen(false)} />
       )}
     </div>
-  );
-};
-
-const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
-  const dispatch = useDispatch();
-  const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
-  const selectedRoute = useSelector((state: any) => state.routes.selectedRoute);
-  function updateSelectedRoute() {
-    dispatch(setSelectedRoute(bestRoute));
-  }
-  return (
-    <Modal title="review" closeModal={closeModal}>
-      <div className="flex flex-col justify-between flex-1">
-        <div className="flex justify-between mt-5 items-center">
-          <TokenDetail
-            token={selectedRoute?.path?.fromToken}
-            amount={selectedRoute?.amount}
-          />
-          <span>arrow</span>
-          <TokenDetail
-            token={selectedRoute?.path?.toToken}
-            amount={selectedRoute?.route?.toAmount}
-          />
-        </div>
-        details will come here
-        {bestRoute === selectedRoute ? (
-          <Button onClick={() => console.log("bridge")}>
-            Bridge
-          </Button>
-        ) : (
-          <div className="flex">
-            <span>Quote updated</span>
-            <Button onClick={updateSelectedRoute}>Accept</Button>
-          </div>
-        )}
-      </div>
-    </Modal>
   );
 };
