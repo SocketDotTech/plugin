@@ -13,7 +13,7 @@ import { SOCKET_API_KEY, time } from "../consts";
 // redux actions
 import { setNetworks } from "../state/networksSlice";
 import { setTokens } from "../state/tokensSlice";
-import { setQuotes, setSelectedRoute } from "../state/quotesSlice";
+import { setQuotes, setBestRoute } from "../state/quotesSlice";
 import useSWR from "swr";
 
 const socket = new Socket({
@@ -99,11 +99,11 @@ export const useRoutes = (
 
   if (data) {
     dispatch(setQuotes(data));
-    dispatch(setSelectedRoute(data?.[0]));
+    dispatch(setBestRoute(data?.[0]));
   data.forEach((x, index) => console.log(index, x?.route?.usedBridgeNames?.[0]));
   } else {
     dispatch(setQuotes(null));
-    dispatch(setSelectedRoute(null));
+    dispatch(setBestRoute(null));
   }
 
   return { data: data, isQuotesLoading: (!data && !error) || isValidating };

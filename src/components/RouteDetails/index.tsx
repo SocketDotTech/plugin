@@ -1,11 +1,13 @@
 import { useRoutes } from "../../hooks/apis";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../Button";
 import { useState } from "react";
 import { Modal } from "../Modal";
 import { TokenDetail } from "../TokenDetail";
+import { setSelectedRoute } from "../../state/selectedRouteSlice";
 
 export const RouteDetails = () => {
+  const dispatch = useDispatch();
   const sourceChainId = useSelector(
     (state: any) => state.networks.sourceChainId
   );
@@ -21,19 +23,20 @@ export const RouteDetails = () => {
     sortPref
   );
   const shouldFetch = sourceAmount && sourceToken && destToken && sortPref;
-  // const quotes = useSelector((state: any) => state.quotes.allQuotes);
-  // const toAmount = quotes?.[0]?.route?.toAmount;
-  // const selectedRoute = quotes?.[0];
-  // const selectedRoute = allQuotes?.[0];
-  const selectedRoute = useSelector((state: any) => state.quotes.selectedRoute);
+  const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
 
+  function review() {
+    dispatch(setSelectedRoute(bestRoute));
+    setIsReviewOpen(true);
+  }
+
   function quotesStatus() {
-    const bridgeName = selectedRoute?.route?.usedBridgeNames?.[0];
+    const bridgeName = bestRoute?.route?.usedBridgeNames?.[0];
     return shouldFetch
       ? isQuotesLoading
-        ? "Fetching quotes..."
-        : selectedRoute
+        ? "Fetching best quote..."
+        : bestRoute
         ? bridgeName
         : "No routes available"
       : "Enter amount";
@@ -43,11 +46,8 @@ export const RouteDetails = () => {
       <div className="px-2 py-2 rounded bg-gray-300 mt-4 mb-3">
         {quotesStatus()}
       </div>
-      <Button
-        onClick={() => setIsReviewOpen(true)}
-        disabled={!selectedRoute || isQuotesLoading}
-      >
-        Review
+      <Button onClick={review} disabled={!bestRoute || isQuotesLoading}>
+        Review Bridge
       </Button>
 
       {isReviewOpen && (
@@ -58,7 +58,12 @@ export const RouteDetails = () => {
 };
 
 const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
-  const selectedRoute = useSelector((state: any) => state.quotes.selectedRoute);
+  const dispatch = useDispatch();
+  const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
+  const selectedRoute = useSelector((state: any) => state.routes.selectedRoute);
+  function updateSelectedRoute() {
+    dispatch(setSelectedRoute(bestRoute));
+  }
   return (
     <Modal title="review" closeModal={closeModal}>
       <div className="flex flex-col justify-between flex-1">
@@ -74,10 +79,16 @@ const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
           />
         </div>
         details will come here
-        <Button onClick={() => console.log("bridge")}>
-          {/* {isLoading ? "Loading" : "Bridge"} */}
-          Bridge
-        </Button>
+        {bestRoute === selectedRoute ? (
+          <Button onClick={() => console.log("bridge")}>
+            Bridge
+          </Button>
+        ) : (
+          <div className="flex">
+            <span>Quote updated</span>
+            <Button onClick={updateSelectedRoute}>Accept</Button>
+          </div>
+        )}
       </div>
     </Modal>
   );

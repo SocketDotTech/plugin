@@ -4,6 +4,7 @@ import devPropsReducer from "./devPropsSlice";
 import tokensReducer from "./tokensSlice";
 import amountReducer from "./amountSlice";
 import quotesReducer from "./quotesSlice";
+import selectedRouteReducer from "./selectedRouteSlice";
 
 const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
     devProps: devPropsReducer,
     tokens: tokensReducer,
     amount: amountReducer,
-    quotes: quotesReducer
+    quotes: quotesReducer,
+    routes: selectedRouteReducer
   },
 });
 
