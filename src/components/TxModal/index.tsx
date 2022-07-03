@@ -38,14 +38,14 @@ export const TxModal = () => {
   const [bridging, setBridging] = useState<boolean>(false);
 
   const [approvalTxData, setApprovalTxData] = useState<any>(null);
-  const [txData, setTxData] = useState<SocketTx | void>(null);
+  const [txData, setTxData] = useState(null);
 
   async function initiateExecution() {
     setInitiating(true);
     const execute = await socket.start(selectedRoute);
-    const next: IteratorResult<SocketTx, void> = await execute.next();
+    const next: IteratorResult<SocketTx> = await execute.next();
 
-    const tx = next.value;
+    const tx: SocketTx = next.value;
     setTxData(tx);
 
     const _approvalTxData = await tx.getApproveTransaction();
@@ -66,10 +66,10 @@ export const TxModal = () => {
         : 0;
     const txHash = activeRoute.transactionData[prevTxIndex];
 
-    const next = await execute.next(txHash);
+    const next: IteratorResult<SocketTx> = await execute.next(txHash);
     setInitiating(false);
 
-    const tx = next.value;
+    const tx: SocketTx = next.value;
     setTxData(tx);
 
     const _approvalTxData = await tx.getApproveTransaction();

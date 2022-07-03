@@ -1,6 +1,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { Bridge } from "../index.tsx";
+// import { Bridge } from "widget";
 import "./style.css";
 
 import {
@@ -12,49 +13,56 @@ import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 
 const stories = storiesOf("Socket Widget", module);
-const avalancheChain: Chain = {
+const avalancheChain = {
   id: 43_114,
-  name: 'Avalanche',
-  network: 'avalanche',
-  iconUrl: 'https://example.com/icon.svg',
-  iconBackground: '#fff',
+  name: "Avalanche",
+  network: "avalanche",
+  iconUrl: "https://example.com/icon.svg",
+  iconBackground: "#fff",
   nativeCurrency: {
     decimals: 18,
-    name: 'Avalanche',
-    symbol: 'AVAX',
+    name: "Avalanche",
+    symbol: "AVAX",
   },
   rpcUrls: {
-    default: 'https://api.avax.network/ext/bc/C/rpc',
+    default: "https://api.avax.network/ext/bc/C/rpc",
   },
   blockExplorers: {
-    default: { name: 'SnowTrace', url: 'https://snowtrace.io' },
-    etherscan: { name: 'SnowTrace', url: 'https://snowtrace.io' },
+    default: { name: "SnowTrace", url: "https://snowtrace.io" },
+    etherscan: { name: "SnowTrace", url: "https://snowtrace.io" },
   },
   testnet: false,
 };
-const bnbChain: Chain = {
+const bnbChain = {
   id: 56,
-  name: 'BSC',
-  network: 'bsc',
-  iconUrl: 'https://movricons.s3.ap-south-1.amazonaws.com/BSC.svg',
-  iconBackground: '#fff',
+  name: "BSC",
+  network: "bsc",
+  iconUrl: "https://movricons.s3.ap-south-1.amazonaws.com/BSC.svg",
+  iconBackground: "#fff",
   nativeCurrency: {
     decimals: 18,
-    name: 'Binance Chain Native Token',
-    symbol: 'BNB',
+    name: "Binance Chain Native Token",
+    symbol: "BNB",
   },
   rpcUrls: {
-    default: 'https://bsc-dataseed1.binance.org',
+    default: "https://bsc-dataseed1.binance.org",
   },
   blockExplorers: {
-    default: { name: 'BSC Scan', url: "https://bscscan.com" },
+    default: { name: "BSC Scan", url: "https://bscscan.com" },
   },
   testnet: false,
 };
 
 stories.add("Bridge", () => {
   const { chains, provider } = configureChains(
-    [chain.mainnet, chain.polygon, chain.arbitrum, chain.optimism, avalancheChain, bnbChain],
+    [
+      chain.mainnet,
+      chain.polygon,
+      chain.arbitrum,
+      chain.optimism,
+      avalancheChain,
+      bnbChain,
+    ],
     [publicProvider()]
   );
 

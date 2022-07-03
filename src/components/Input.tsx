@@ -16,12 +16,13 @@ import { formatCurrencyAmount } from "../utils";
 // hooks
 import { useBalance } from "../hooks/apis";
 import { useAccount } from "wagmi";
+import { TokenBalanceReponseDTO } from "socket-v2-sdk";
 
 export function Balance({
   token,
   isLoading,
 }: {
-  token: TokenWithBalance;
+  token: TokenBalanceReponseDTO["result"];
   isLoading: boolean;
 }) {
   const _formattedBalance = formatCurrencyAmount(

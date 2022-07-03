@@ -14,7 +14,7 @@ export const PendingTransactions = () => {
   const { address } = useAccount();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [activeRoutes, setActiveRoutes] = useState<[]>(null);
+  const [activeRoutes, setActiveRoutes] = useState<ActiveRouteResponse[]>(null);
 
   useEffect(() => {
     isModalOpen && fetchActiveRoutes();

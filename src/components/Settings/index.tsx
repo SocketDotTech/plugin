@@ -7,7 +7,7 @@ export const Settings = () => {
   const dispatch = useDispatch();
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [_sortPref, _setSortPref] = useState<string>("");
-  const handleChange = (id: "time" | "output" | "gas") => {
+  const handleChange = (id: string) => {
     _setSortPref(id);
     dispatch(setSortPref(id));
   };

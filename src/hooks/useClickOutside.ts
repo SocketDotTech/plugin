@@ -1,7 +1,7 @@
 import { useRef, useEffect, ReactNode, ReactElement } from "react";
 
 export default function useClickOutside(handler: any) {
-  const domNode = useRef<HTMLElement>();
+  const domNode = useRef<HTMLDivElement>();
 
   useEffect(() => {
     const mainHandler = (event) => {

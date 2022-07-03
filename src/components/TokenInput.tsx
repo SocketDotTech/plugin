@@ -19,7 +19,7 @@ export const TokenInput = (props: TokenInputProps) => {
         onChange={(e) => onChangeInput(e.target.value)}
         placeholder="0.0"
         type="number"
-        onWheel={(e) => e.target.blur()}
+        onWheel={(e) => (document.activeElement as HTMLElement).blur()}
         inputMode="decimal"
         readOnly={!source}
       />

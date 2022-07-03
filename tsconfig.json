@@ -8,8 +8,6 @@
       "@/hooks/*": ["hooks/*"],
       "@/utils/*": ["utils/*"],
       "@/state/*": ["state/*"]
-    },
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
+    }
   }
 }
