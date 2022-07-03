@@ -15,6 +15,7 @@ import { formatCurrencyAmount } from "../utils";
 
 // hooks
 import { useBalance } from "../hooks/apis";
+import { useAccount } from "wagmi";
 
 export const Output = () => {
   // For networks
@@ -23,13 +24,20 @@ export const Output = () => {
   const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
     allNetworks ? [...allNetworks] : null
   );
+  const { address: userAddress } = useAccount();
   const destChainId = useSelector((state: any) => state.networks.destChainId);
   const sourceChainId = useSelector(
     (state: any) => state.networks.sourceChainId
   );
   const destToken = useSelector((state: any) => state.tokens.destToken);
-  const route = useSelector((state: any) => state.quotes.allQuotes)?.[0];
-  const {data: tokenWithBalance, isBalanceLoading} = useBalance(destToken?.address, destChainId, "0xF75aAa99e6877fA62375C37c343c51606488cd08")
+  const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
+  const route = useSelector((state: any) => state.quotes.bestRoute);
+  const { data: tokenWithBalance, isBalanceLoading } = useBalance(
+    destToken?.address,
+    destChainId,
+    userAddress
+  );
+  const allTokens = useSelector((state: any) => state.tokens.tokens);
 
   const dispatch = useDispatch();
   function updateNetwork(network: Network) {
@@ -80,6 +88,28 @@ export const Output = () => {
       : "";
     updateOutputAmount(_formattedOutputAmount);
   }, [route]);
+
+  // setting initial token
+  // changing the tokens on chain change.
+  useEffect(() => {
+    if (allTokens) {
+      const tokens = allTokens?.to;
+      const usdc = tokens.find((x: Currency) => x.chainAgnosticId === "USDC");
+      if (sourceToken?.chainAgnosticId) {
+        const correspondingToken = tokens.find(
+          (x: Currency) => x?.chainAgnosticId === sourceToken?.chainAgnosticId
+        );
+        if (correspondingToken) {
+          dispatch(setDestToken(correspondingToken));
+        } else if (usdc) {
+          dispatch(setDestToken(usdc));
+        } else {
+          dispatch(setDestToken(tokens[0]));
+        }
+      }
+    }
+  }, [sourceChainId, allTokens, sourceToken]);
+
   const updateToken = (token: Currency) => {
     dispatch(setDestToken(token));
   };

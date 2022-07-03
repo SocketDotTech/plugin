@@ -1,5 +1,4 @@
 import { Currency } from "../utils/types";
-import { useSelector } from "react-redux";
 import { TokenSelect } from "./TokenSelect";
 
 interface TokenInputProps {

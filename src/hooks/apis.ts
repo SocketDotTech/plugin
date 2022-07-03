@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   Balances,
   Route,
@@ -8,13 +8,14 @@ import {
   TokenAsset,
 } from "socket-v2-sdk";
 import { useDispatch, useSelector } from "react-redux";
+import { useAccount } from "wagmi";
+import useSWR from "swr";
+
 import { SOCKET_API_KEY, time } from "../consts";
 
 // redux actions
 import { setNetworks } from "../state/networksSlice";
 import { setTokens } from "../state/tokensSlice";
-import { setQuotes, setBestRoute } from "../state/quotesSlice";
-import useSWR from "swr";
 
 export const socket = new Socket({
   apiKey: SOCKET_API_KEY,
@@ -40,6 +41,7 @@ export const useTokenList = () => {
     (state: any) => state.networks.sourceChainId
   );
   const destChainId = useSelector((state: any) => state.networks.destChainId);
+  const shouldFetch = !!sourceChainId && !!destChainId && sourceChainId !== destChainId;
   useEffect(() => {
     async function fetchTokens() {
       const tokens = await socket.getTokenList({
@@ -49,7 +51,7 @@ export const useTokenList = () => {
       dispatch(setTokens(tokens));
     }
 
-    fetchTokens();
+    shouldFetch && fetchTokens();
   }, [sourceChainId, destChainId]);
 };
 
@@ -59,8 +61,8 @@ export const useRoutes = (
   amount,
   sort: "output" | "gas" | "time"
 ) => {
-  const dispatch = useDispatch();
-  const shouldFetch = !!sourceToken && !!destToken && !!amount;
+  const { address: userAddress } = useAccount();
+  const shouldFetch = !!sourceToken && !!destToken && !!amount && !!userAddress;
 
   async function fetchQuotes(
     sourceToken: TokenAsset,
@@ -81,29 +83,13 @@ export const useRoutes = (
   }
 
   const { data, error, isValidating } = useSWR(
-    shouldFetch
-      ? [
-          sourceToken,
-          destToken,
-          amount,
-          "0xF75aAa99e6877fA62375C37c343c51606488cd08",
-          sort
-        ]
-      : null,
+    shouldFetch ? [sourceToken, destToken, amount, userAddress, sort] : null,
     fetchQuotes,
     {
       refreshInterval: time.QUOTES_REFRESH * 1000, //refresh quotes every 60 seconds
       revalidateOnFocus: false,
     }
   );
-
-  if (data) {
-    dispatch(setQuotes(data));
-    dispatch(setBestRoute(data?.[0]));
-  } else {
-    dispatch(setQuotes(null));
-    dispatch(setBestRoute(null));
-  }
 
   return { data: data, isQuotesLoading: (!data && !error) || isValidating };
 };

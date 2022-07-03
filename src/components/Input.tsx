@@ -9,12 +9,13 @@ import { ChainSelect } from "./ChainSelect";
 
 // actions
 import { setSourceToken } from "../state/tokensSlice";
-import { setSourceAmount } from "../state/amountSlice";
+import { setIsEnoughBalance, setSourceAmount } from "../state/amountSlice";
 import { setSourceChain } from "../state/networksSlice";
 import { formatCurrencyAmount } from "../utils";
 
 // hooks
 import { useBalance } from "../hooks/apis";
+import { useAccount } from "wagmi";
 
 export function Balance({
   token,
@@ -28,7 +29,12 @@ export function Balance({
     token?.decimals,
     2
   );
-  return <span>Bal: {token && _formattedBalance}{isLoading && '...'}</span>;
+  return (
+    <span>
+      Bal: {token && _formattedBalance}
+      {isLoading && "..."}
+    </span>
+  );
 }
 
 export const Input = () => {
@@ -41,13 +47,16 @@ export const Input = () => {
   const sourceChainId = useSelector(
     (state: any) => state.networks.sourceChainId
   );
+  const { address: userAddress } = useAccount();
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
+  const destToken = useSelector((state: any) => state.tokens.destToken);
   const sourceAmount = useSelector((state: any) => state.amount.sourceAmount);
   const { data: tokenWithBalance, isBalanceLoading } = useBalance(
     sourceToken?.address,
     sourceChainId,
-    "0xF75aAa99e6877fA62375C37c343c51606488cd08"
+    userAddress
   );
+  const allTokens = useSelector((state: any) => state.tokens.tokens);
 
   const dispatch = useDispatch();
   function updateNetwork(network: Network) {
@@ -62,13 +71,17 @@ export const Input = () => {
       );
       setFilteredNetworks(filteredNetworks);
       updateNetwork(
-        filteredNetworks.find((x: Network) => x?.chainId === 137) ||
+        filteredNetworks?.find((x: Network) => x?.chainId === 137) ||
           filteredNetworks?.[0]
       );
     } else setFilteredNetworks(allNetworks);
   }, [allNetworks, devProps]);
 
   // For Input & tokens
+  // 1. Enter input (controlled component)
+  // 2. check for decimal validation
+  // 3. When token is changed, truncate the input in the react state.
+  // 4. Update redux state when the user stops entering input data.
   const [inputAmount, updateInputAmount] = useState<string>("");
   useEffect(() => {
     const _formattedInputAmount = !!sourceAmount
@@ -79,20 +92,64 @@ export const Input = () => {
         ).toString()
       : "";
     updateInputAmount(_formattedInputAmount);
-  }, []);
+  }, [sourceChainId, sourceToken]);
+
+  //
+
   const updateToken = (token: Currency) => {
     dispatch(setSourceToken(token));
   };
 
+  const onChangeInput = (amount) => {
+    // decimal validation
+    if (amount?.indexOf(".") > -1) {
+      if (amount.split(".")[1].length <= sourceToken?.decimals) {
+        updateInputAmount(amount);
+      }
+    } else {
+      updateInputAmount(amount);
+    }
+  };
+
+  // dispatch the value to redux state
+  // check for decimal validation on token change. - pending
   useEffect(() => {
     if (inputAmount) {
-      dispatch(
-        setSourceAmount(
-          ethers.utils.parseUnits(inputAmount, sourceToken?.decimals).toString()
-        )
-      );
+      const parsedAmount = ethers.utils
+        .parseUnits(inputAmount, sourceToken?.decimals)
+        .toString();
+      dispatch(setSourceAmount(parsedAmount));
+
+      !!parsedAmount &&
+        tokenWithBalance &&
+        dispatch(
+          setIsEnoughBalance(
+            ethers.BigNumber.from(parsedAmount).lte(
+              ethers.BigNumber.from(tokenWithBalance?.balance)
+            )
+          )
+        );
     }
-  }, [sourceToken, inputAmount]);
+  }, [sourceToken, inputAmount, tokenWithBalance]);
+
+  // setting initial token
+  // changing the tokens on chain change.
+  useEffect(() => {
+    if (allTokens) {
+      const tokens = allTokens?.from;
+      const usdc = tokens.find((x: Currency) => x.chainAgnosticId === "USDC");
+      if (usdc) {
+        dispatch(setSourceToken(usdc));
+      } else {
+        dispatch(setSourceToken(tokens[0]));
+      }
+    }
+  }, [sourceChainId, allTokens]);
+
+  // edit amount on chain/token change
+  // useEffect(() => {
+  //   updateInputAmount(truncateDecimalValue(inputAmount, sourceToken?.decimals));
+  // }, [sourceChainId, sourceToken]);
 
   return (
     <div className="mt-4">
@@ -107,11 +164,10 @@ export const Input = () => {
         </div>
         <Balance token={tokenWithBalance} isLoading={isBalanceLoading} />
       </div>
-
       <TokenInput
         source
         amount={inputAmount}
-        onChangeInput={updateInputAmount}
+        onChangeInput={onChangeInput}
         updateToken={updateToken}
         activeToken={sourceToken}
       />

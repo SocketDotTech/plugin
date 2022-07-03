@@ -22,14 +22,14 @@ const txDetailsSlice = createSlice({
           ...prevTxDetails[action.payload.account],
           [action.payload.routeId]: {
             ...prevTxDetailsRouteId,
-            [action.payload.stepIndex]: action.payload.txHash
+            [action.payload.stepIndex]: action.payload.value
           }                                                                                                                           
         }
       } else {
         prevTxDetails[action.payload.account] = {
           ...prevTxDetails[action.payload.account],
           [action.payload.routeId]: {
-            [action.payload.stepIndex]: action.payload.txHash
+            [action.payload.stepIndex]: action.payload.value
           }
         }
       }

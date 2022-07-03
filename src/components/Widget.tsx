@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { WidgetProps } from "../utils/types";
-import { useDispatch } from "react-redux";
+import { Customize } from "../utils/types";
+import { useDispatch, useSelector } from "react-redux";
 import { setDevProps } from "../state/devPropsSlice";
 
 // components
@@ -9,19 +9,24 @@ import { Input } from "./Input";
 import { Output } from "./Output";
 import { RouteDetails } from "./RouteDetails";
 import { Settings } from "./Settings";
-import { TxModal } from "./TxsModal";
+import { TxModal } from "./TxModal";
 
 // hooks
 import { useChains, useTokenList } from "../hooks/apis";
+import { useNetwork, useAccount } from "wagmi";
+import { PendingTransactions } from "./PendingTransactions/pendingTransactions";
 
-export const Widget = (props: WidgetProps) => {
+export const Widget = ({ customize }: { customize: Customize }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setDevProps(props));
+    dispatch(setDevProps(customize));
   }, []);
+
   useChains();
   useTokenList();
+  const { chain } = useNetwork();
+  const { address } = useAccount();
 
   const {
     width = 380,
@@ -29,9 +34,10 @@ export const Widget = (props: WidgetProps) => {
     theme = {
       borderRadius: 1,
     },
-  } = props;
+  } = customize;
 
   const widgetWidth = responsiveWidth ? "100%" : width > 300 ? width : 300;
+  const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
 
   return (
     <div
@@ -41,11 +47,19 @@ export const Widget = (props: WidgetProps) => {
       }}
       className={`bg-gray-200 p-3 overflow-hidden relative`}
     >
-      <Header title="Bridge"><Settings /></Header>
+      <Header title="Bridge">
+        <div className="flex items-center gap-3">
+          <PendingTransactions />
+          <Settings />
+        </div>
+      </Header>
       <Input />
       <Output />
       <RouteDetails />
-      <TxModal />
+      {isTxModalOpen && <TxModal />}
+      {chain?.name}
+      <br />
+      {address?.slice(0, 6)}...{address?.slice(-4)}
     </div>
   );
 };

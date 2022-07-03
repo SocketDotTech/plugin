@@ -1,7 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { SocketTx } from "socket-v2-sdk";
-import { useState } from "react";
-import { socket } from "../../hooks/apis";
 
 // components
 import { Button } from "../Button";
@@ -10,40 +7,20 @@ import { TokenDetail } from "../TokenDetail";
 
 // actions
 import { setIsTxModalOpen } from "../../state/modals";
-import { setTxDetails } from "../../state/txDetails";
 import { setSelectedRoute } from "../../state/selectedRouteSlice";
+import { TxStepDetails } from "../TxModal/TxStepDetails";
 
 export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
-  const userAddress = process.env.REACT_APP_ADDRESS;
   const dispatch = useDispatch();
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
   const selectedRoute = useSelector((state: any) => state.routes.selectedRoute);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   function updateSelectedRoute() {
     dispatch(setSelectedRoute(bestRoute));
   }
 
-  async function executeRoute() {
-    const execute = await socket.start(selectedRoute);
-
-    try {
-      setIsLoading(true);
-      const next: IteratorResult<SocketTx, void> = await execute.next();
-      dispatch(
-        setTxDetails({
-          account: userAddress,
-          routeId: next.value.activeRouteId,
-          stepIndex: next.value.userTxIndex,
-          txHash: next.value.value,
-        })
-      );
-      dispatch(setIsTxModalOpen(true));
-      setIsLoading(false);
-    } catch (e) {
-      console.log(e);
-      setIsLoading(false);
-    }
+  async function openTxModal() {
+    dispatch(setIsTxModalOpen(true));
   }
 
   return (
@@ -60,11 +37,9 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
             amount={selectedRoute?.route?.toAmount}
           />
         </div>
-        details will come here {isLoading && "loading"}
+        <TxStepDetails activeRoute={selectedRoute?.route} />
         {bestRoute === selectedRoute ? (
-          <Button onClick={executeRoute} disabled={isLoading}>
-            {isLoading ? "loading..." : "Confirm Bridge"}
-          </Button>
+          <Button onClick={openTxModal}>Confirm Bridge</Button>
         ) : (
           <div className="flex">
             <span>Quote updated</span>

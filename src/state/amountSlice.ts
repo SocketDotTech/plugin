@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   sourceAmount: null,
   destAmount: null,
+  isEnoughBalance: true,
 };
 
 const amountSlice = createSlice({
@@ -12,6 +13,9 @@ const amountSlice = createSlice({
     setSourceAmount: (state, action) => {
       state.sourceAmount = action.payload;
     },
+    setIsEnoughBalance: (state, action) => {
+      state.isEnoughBalance = action.payload;
+    },
     setDestAmount: (state, action) => {
       state.destAmount = action.payload;
     },
@@ -19,4 +23,4 @@ const amountSlice = createSlice({
 });
 
 export default amountSlice.reducer;
-export const { setSourceAmount, setDestAmount } = amountSlice.actions;
+export const { setSourceAmount, setDestAmount, setIsEnoughBalance } = amountSlice.actions;
