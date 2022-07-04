@@ -2,24 +2,36 @@ import { ChainId } from "socket-v2-sdk/lib/src/client/models/ChainId";
 import { UserTxType } from "socket-v2-sdk/lib/src/client/models/UserTxType";
 
 export interface WidgetProps {
-  provider?: any;
+  provider: any;
+
+  // Chain Ids array
+  sourceNetworks?: number[];
+  destNetworks?: number[];
+
+  // Token address' array
+  sourceTokens?: string[];
+  destTokens?: string[];
+
+  // Token address
+  // Pass the string 'native' for native token
+  defaultSourceToken?: string;
+  defaultDestToken?: string;
+  
+  locale?: string; 
   customize?: Customize;
 }
 
 export interface Customize {
+  // Width of the widget
   width?: number;
+
+  // To make the widget responsive to the parent element.
   responsiveWidth?: boolean;
-  theme?: ThemeProps;
-  sourceNetworks?: number[];
-  destNetworks?: number[];
+
+  // Border radius [0-1]
+  borderRadius?: number;
 }
 
-export interface ThemeProps {
-  borderRadius: number;
-  success: string;
-  warning: string;
-  error: string;
-}
 
 export interface Network {
   chainId: number;

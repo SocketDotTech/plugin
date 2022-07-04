@@ -1,7 +1,10 @@
 import { useEffect } from "react";
-import { Customize } from "../utils/types";
-import { useDispatch, useSelector } from "react-redux";
-import { setDevProps } from "../state/devPropsSlice";
+import { WidgetProps } from "../utils/types";
+import { useSelector } from "react-redux";
+
+// context
+import { useContext } from "react";
+import { CustomizeContext } from "./CustomizeProvider";
 
 // components
 import { Header } from "./Header";
@@ -16,25 +19,24 @@ import { useChains, useTokenList } from "../hooks/apis";
 import { useNetwork, useAccount } from "wagmi";
 import { PendingTransactions } from "./PendingTransactions/pendingTransactions";
 
-export const Widget = ({ customize }: { customize: Customize }) => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setDevProps(customize));
-  }, []);
+export const Widget = (props: WidgetProps) => {
+  const { customize } = props;
+  const customSettings = useContext(CustomizeContext);
 
   useChains();
   useTokenList();
   const { chain } = useNetwork();
   const { address } = useAccount();
 
-  const {
-    width = 380,
-    responsiveWidth = false,
-    theme = {
-      borderRadius: 1,
-    },
-  } = customize;
+  // run only once
+  useEffect(() => {
+    customSettings.setCustomization({
+      ...customSettings.customization,
+      ...customize
+    });
+  }, []);
+
+  const { responsiveWidth, width, borderRadius } = customSettings.customization;
 
   const widgetWidth = responsiveWidth ? "100%" : width > 300 ? width : 300;
   const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
@@ -43,7 +45,7 @@ export const Widget = ({ customize }: { customize: Customize }) => {
     <div
       style={{
         width: widgetWidth,
-        borderRadius: `calc(1rem * ${theme.borderRadius})`,
+        borderRadius: `calc(1rem * ${borderRadius})`,
       }}
       className={`bg-gray-200 p-3 overflow-hidden relative`}
     >

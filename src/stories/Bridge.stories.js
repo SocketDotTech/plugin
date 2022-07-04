@@ -83,7 +83,7 @@ stories.add("Bridge", () => {
         <div style={{ marginBottom: "30px" }}>
           <ConnectButton />
         </div>
-        <Bridge provider={provider} customize={{ width: 400 }} />
+        <Bridge provider={provider} customize={{borderRadius: 0.5}}/>
       </RainbowKitProvider>
     </WagmiConfig>
   );
