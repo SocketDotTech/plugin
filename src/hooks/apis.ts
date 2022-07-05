@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Balances,
+  ChainId,
   Route,
   Socket,
   SocketQuote,
   Supported,
-  TokenAsset,
+  Token
 } from "socket-v2-sdk";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "wagmi";
@@ -16,6 +17,7 @@ import { SOCKET_API_KEY, time } from "../consts";
 // redux actions
 import { setNetworks } from "../state/networksSlice";
 import { setTokens } from "../state/tokensSlice";
+import { SortOptions } from "socket-v2-sdk/lib/src/client/models/QuoteRequest";
 
 export const socket = new Socket({
   apiKey: SOCKET_API_KEY,
@@ -26,13 +28,17 @@ export const socket = new Socket({
 
 export const useChains = () => {
   const dispatch = useDispatch();
+  const [allChains, setAllChains] = useState(null);
   useEffect(() => {
     async function fetchSupportedNetworks() {
-      const supportedNetworks = await Supported.getAllSupportedRoutes();
+      const supportedNetworks = await Supported.getAllSupportedChains();
+      setAllChains(supportedNetworks);
       dispatch(setNetworks(supportedNetworks?.result));
     }
     fetchSupportedNetworks();
   }, []);
+
+  return allChains;
 };
 
 export const useTokenList = () => {
@@ -48,7 +54,8 @@ export const useTokenList = () => {
         fromChainId: sourceChainId,
         toChainId: destChainId,
       });
-      dispatch(setTokens(tokens));
+      const _tokens = {from: tokens?.from?.tokens, to: tokens?.to?.tokens}
+      dispatch(setTokens(_tokens));
     }
 
     shouldFetch && fetchTokens();
@@ -59,17 +66,17 @@ export const useRoutes = (
   sourceToken,
   destToken,
   amount,
-  sort: "output" | "gas" | "time"
+  sort: SortOptions
 ) => {
   const { address: userAddress } = useAccount();
   const shouldFetch = !!sourceToken && !!destToken && !!amount && !!userAddress;
 
   async function fetchQuotes(
-    sourceToken: TokenAsset,
-    destToken: TokenAsset,
+    sourceToken: Token,
+    destToken: Token,
     amount: string,
     userAddress: string,
-    sort: "output" | "gas" | "time"
+    sort: SortOptions
   ) {
     const quotes = await socket.getAllQuotes(
       {
@@ -77,7 +84,7 @@ export const useRoutes = (
         amount,
         address: userAddress,
       },
-      { sort: sort }
+      {sort}
     );
     return quotes;
   }
@@ -103,7 +110,7 @@ export const useBalance = (
 
   async function fetchBalance(
     tokenAddress: string,
-    chainId: string,
+    chainId: ChainId,
     userAddress: string
   ) {
     const tokenWithBalance = await Balances.getBalance({

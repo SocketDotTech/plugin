@@ -138,7 +138,7 @@ export const Input = () => {
   useEffect(() => {
     if (allTokens) {
       const tokens = allTokens?.from;
-      const usdc = tokens.find((x: Currency) => x.chainAgnosticId === "USDC");
+      const usdc = tokens?.find((x: Currency) => x.chainAgnosticId === "USDC");
       if (usdc) {
         dispatch(setSourceToken(usdc));
       } else {

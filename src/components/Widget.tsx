@@ -13,11 +13,11 @@ import { Output } from "./Output";
 import { RouteDetails } from "./RouteDetails";
 import { Settings } from "./Settings";
 import { TxModal } from "./TxModal";
+import { PendingTransactions } from "./PendingTransactions/pendingTransactions";
 
 // hooks
 import { useChains, useTokenList } from "../hooks/apis";
 import { useNetwork, useAccount } from "wagmi";
-import { PendingTransactions } from "./PendingTransactions/pendingTransactions";
 
 export const Widget = (props: WidgetProps) => {
   const { customize } = props;

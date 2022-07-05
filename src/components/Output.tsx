@@ -94,9 +94,9 @@ export const Output = () => {
   useEffect(() => {
     if (allTokens) {
       const tokens = allTokens?.to;
-      const usdc = tokens.find((x: Currency) => x.chainAgnosticId === "USDC");
+      const usdc = tokens?.find((x: Currency) => x.chainAgnosticId === "USDC");
       if (sourceToken?.chainAgnosticId) {
-        const correspondingToken = tokens.find(
+        const correspondingToken = tokens?.find(
           (x: Currency) => x?.chainAgnosticId === sourceToken?.chainAgnosticId
         );
         if (correspondingToken) {
