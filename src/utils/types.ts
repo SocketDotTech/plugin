@@ -3,10 +3,15 @@ import { UserTxType } from "socket-v2-sdk/lib/src/client/models/UserTxType";
 
 export interface WidgetProps {
   provider: any;
+  API_KEY: string;
 
   // Chain Ids array
   sourceNetworks?: number[];
   destNetworks?: number[];
+
+  // Chain Id
+  defaultSourceNetwork?: number;
+  defaultDestNetwork?: number;
 
   // Token address' array
   sourceTokens?: string[];

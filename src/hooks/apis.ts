@@ -2,29 +2,31 @@ import { useEffect, useState } from "react";
 import {
   Balances,
   ChainId,
-  Route,
   Socket,
-  SocketQuote,
   Supported,
-  Token
+  Token,
 } from "socket-v2-sdk";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "wagmi";
 import useSWR from "swr";
 
-import { SOCKET_API_KEY, time } from "../consts";
+import { time } from "../consts";
 
 // redux actions
 import { setNetworks } from "../state/networksSlice";
 import { setTokens } from "../state/tokensSlice";
 import { SortOptions } from "socket-v2-sdk/lib/src/client/models/QuoteRequest";
 
-export const socket = new Socket({
-  apiKey: SOCKET_API_KEY,
-  defaultQuotePreferences: {
-    singleTxOnly: false,
-  },
-});
+export let socket;
+
+export const initSocket = (apiKey) => {
+  socket = new Socket({
+    apiKey: apiKey,
+    defaultQuotePreferences: {
+      singleTxOnly: false,
+    },
+  });
+};
 
 export const useChains = () => {
   const dispatch = useDispatch();
@@ -47,14 +49,15 @@ export const useTokenList = () => {
     (state: any) => state.networks.sourceChainId
   );
   const destChainId = useSelector((state: any) => state.networks.destChainId);
-  const shouldFetch = !!sourceChainId && !!destChainId && sourceChainId !== destChainId;
+  const shouldFetch =
+    !!sourceChainId && !!destChainId && sourceChainId !== destChainId;
   useEffect(() => {
     async function fetchTokens() {
       const tokens = await socket.getTokenList({
         fromChainId: sourceChainId,
         toChainId: destChainId,
       });
-      const _tokens = {from: tokens?.from?.tokens, to: tokens?.to?.tokens}
+      const _tokens = { from: tokens?.from?.tokens, to: tokens?.to?.tokens };
       dispatch(setTokens(_tokens));
     }
 
@@ -84,7 +87,7 @@ export const useRoutes = (
         amount,
         address: userAddress,
       },
-      {sort}
+      { sort }
     );
     return quotes;
   }

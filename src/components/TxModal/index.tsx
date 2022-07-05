@@ -111,7 +111,7 @@ export const TxModal = () => {
     }
   }
 
-  const prepareNextStep = async (
+  const prepareNextStep = async ( // next tx preparation
     execute: AsyncGenerator<SocketTx, void, string>,
     txHash?: string
   ) => {

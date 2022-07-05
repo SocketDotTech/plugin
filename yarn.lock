@@ -1947,10 +1947,10 @@
     "estree-walker" "^1.0.1"
     "picomatch" "^2.2.2"
 
-"@socket.tech/ll-core@^0.1.3":
-  "integrity" "sha512-/9qzAMbPJJME+Xz6byB4i+8U6mYGpcg2P5+WGI2KqZP5zlwKa0k/eIMuyMiDNS92bjWGOQMBz8KJdK3GChoUJQ=="
-  "resolved" "https://registry.npmjs.org/@socket.tech/ll-core/-/ll-core-0.1.6.tgz"
-  "version" "0.1.6"
+"@socket.tech/ll-core@^0.1.8":
+  "integrity" "sha512-K7jEQPXvmkIh9EF4Y7xPxmHvAR8ITuv32A77pvZeadQ4PP8yrD/Ok7tG+VaG9TQEXgzR0W+cAZU2OmoGxqs+4g=="
+  "resolved" "https://registry.npmjs.org/@socket.tech/ll-core/-/ll-core-0.1.8.tgz"
+  "version" "0.1.8"
 
 "@storybook/addon-actions@^6.5.9", "@storybook/addon-actions@6.5.9":
   "integrity" "sha512-wDYm3M1bN+zcYZV3Q24M03b/P8DDpvj1oSoY6VLlxDAi56h8qZB/voeIS2I6vWXOB79C5tbwljYNQO0GsufS0g=="
@@ -11202,12 +11202,12 @@
     "source-map-resolve" "^0.5.0"
     "use" "^3.1.0"
 
-"socket-v2-sdk@^1.1.0":
-  "integrity" "sha512-r8GQHZQEtWxGls0/Mjr4odOhq+G7bqSQ+/YzUkrT46cWkzIthu+uw/7FQTCGynckxY/uwVHudRRKEsw7gIFE/w=="
-  "resolved" "https://registry.npmjs.org/socket-v2-sdk/-/socket-v2-sdk-1.1.0.tgz"
-  "version" "1.1.0"
+"socket-v2-sdk@1.11.0":
+  "integrity" "sha512-m3lP0GTEaDH9DLOKiUdWLvwwyr9AgPcZXsnWb77sfzLWm3lu9/5I7vgJmqAo7px9MkZh2l09+mFvHZjLKoRBKg=="
+  "resolved" "https://registry.npmjs.org/socket-v2-sdk/-/socket-v2-sdk-1.11.0.tgz"
+  "version" "1.11.0"
   dependencies:
-    "@socket.tech/ll-core" "^0.1.3"
+    "@socket.tech/ll-core" "^0.1.8"
     "axios" "^0.27.2"
     "ethers" "^5.6.5"
     "form-data" "^4.0.0"
@@ -12572,8 +12572,8 @@
   dependencies:
     "string-width" "^4.0.0"
 
-"widget@/Users/salilnaik/Documents/projects/socket/widget/widget-1.0.0.tgz", "widget@file:widget-1.0.0.tgz":
-  "integrity" "sha512-l+LRP2UNabS0BQ5EUJqsnWm4UCKVO8Nd8ur53CLYA5IKfSXGdWQspe1ZzKAgIFRPI3mVHLnV4APiLcxduBI8ng=="
+"widget@file:widget-1.0.0.tgz":
+  "integrity" "sha512-FF34+USQUEZPOceg1ezu9umL3Ern450iHY5zsBwNJiDcwZSnw7LNpYnEyESNZTDxb5Ic5a7aN2JJBsAbP3B0wg=="
   "resolved" "file:widget-1.0.0.tgz"
   "version" "1.0.0"
   dependencies:
@@ -12581,10 +12581,10 @@
     "dotenv" "^16.0.1"
     "ethers" "^5.6.9"
     "react-redux" "^8.0.2"
-    "socket-v2-sdk" "^1.1.0"
+    "socket-v2-sdk" "1.11.0"
     "swr" "^1.3.0"
     "wagmi" "^0.5.5"
-    "widget" "/Users/salilnaik/Documents/projects/socket/widget/widget-1.0.0.tgz"
+    "widget" "file:widget-1.0.0.tgz"
 
 "word-wrap@~1.2.3":
   "integrity" "sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ=="

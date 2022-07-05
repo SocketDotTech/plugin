@@ -1,13 +1,11 @@
-// import "./App.css";
 import { Bridge } from "widget";
 import { ethers } from "ethers";
 
 function App() {
   const provider = ethers.getDefaultProvider();
   return (
-    <div className="h-full bg-black">
-      Salil
-      <Bridge provider={provider} customize={{width: 400}}/>
+    <div style={{width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#121f34'}}>
+      <Bridge provider={provider} API_KEY={process.env.REACT_APP_SOCKET_API_KEY}/>
     </div>
   );
 }

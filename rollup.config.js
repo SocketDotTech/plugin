@@ -36,9 +36,9 @@ export default [
       external(),
       // resolve(),
       terser(),
-      commonjs(),
-      nodePolyfills(),
-      nodeResolve({ preferBuiltins: false }),
+      // commonjs(),
+      // nodePolyfills(),
+      // nodeResolve({ preferBuiltins: false }),
     ],
   },
 ];

@@ -3,6 +3,7 @@ import { storiesOf } from "@storybook/react";
 import { Bridge } from "../index.tsx";
 // import { Bridge } from "widget";
 import "./style.css";
+import { SOCKET_API_KEY } from "../consts";
 
 import {
   ConnectButton,
@@ -83,7 +84,7 @@ stories.add("Bridge", () => {
         <div style={{ marginBottom: "30px" }}>
           <ConnectButton />
         </div>
-        <Bridge provider={provider} customize={{borderRadius: 0.5}}/>
+        <Bridge provider={provider} API_KEY={SOCKET_API_KEY} />
       </RainbowKitProvider>
     </WagmiConfig>
   );
