@@ -30,7 +30,7 @@ export const TxStepDetails = ({ activeRoute }) => {
 
           return (
             <div
-              className="flex flex-col gap-3"
+              className="flex flex-col gap-3 text-sm"
               key={`${activeRoute?.activeRouteId}-fund-movr-swap`}
             >
               {isSwap && (

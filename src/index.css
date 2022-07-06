@@ -12,3 +12,17 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+@layer base {
+  :root {
+    --theme-color: 239, 51, 116;
+    --theme-muted-color: #FF2E86;
+    --primary-color: #FFFFFF;
+    /* --secondary-color: #F6F7F8; */
+    --secondary-color: #f1f5f9;
+    --primary-text-color: #000000;
+    --secondary-text-color: #444444;
+    --outline-color: #D0D0D0;
+    --interactive: #000000;
+  }
+}

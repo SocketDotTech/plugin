@@ -6,7 +6,7 @@ interface headerProp {
 }
 export function Header({ title, children }: headerProp) {
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between text-widget-primary">
       <span className="font-medium">{title}</span>
       {children}
     </div>

@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ActiveRouteResponse, Routes } from "socket-v2-sdk";
 import { useAccount } from "wagmi";
+import { CustomizeContext } from "../CustomizeProvider";
 
 // components
 import { Modal } from "../Modal";
@@ -15,6 +16,8 @@ export const PendingTransactions = () => {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [activeRoutes, setActiveRoutes] = useState<ActiveRouteResponse[]>(null);
+  const customSettings = useContext(CustomizeContext);
+  const { borderRadius } = customSettings.customization;
 
   useEffect(() => {
     isModalOpen && fetchActiveRoutes();
@@ -26,7 +29,6 @@ export const PendingTransactions = () => {
     });
     setActiveRoutes(activeRoutes?.result?.activeRoutes);
   }
-
 
   function openTxModal(route) {
     dispatch(setActiveRoute(route));
@@ -60,10 +62,11 @@ export const PendingTransactions = () => {
 
   return (
     <button
-      className="hover:text-blue-500"
+      className="uppercase text-widget-theme text-sm px-2 py-0.5 bg-widget-theme bg-opacity-10"
       onClick={() => setIsModalOpen(true)}
+      style={{borderRadius: `calc(0.75rem * ${borderRadius})`}}
     >
-      pending txs
+      1 pending
     </button>
   );
 };

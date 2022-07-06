@@ -2,6 +2,7 @@ import { setSortPref } from "../../state/quotesSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "../Modal";
+import { Settings as SettingsIcon } from "react-feather";
 
 export const Settings = () => {
   const dispatch = useDispatch();
@@ -28,11 +29,8 @@ export const Settings = () => {
     );
 
   return (
-    <button
-      className="hover:text-blue-500"
-      onClick={() => setIsSettingsOpen(true)}
-    >
-      settings
+    <button onClick={() => setIsSettingsOpen(true)}>
+      <SettingsIcon className="w-5.5 h-5.5 text-widget-secondary hover:text-widget-primary hover:rotate-45 duration-200 ease-linear" />
     </button>
   );
 };

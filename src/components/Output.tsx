@@ -115,10 +115,10 @@ export const Output = () => {
   };
 
   return (
-    <div className="mt-4">
+    <div className="mt-[30px]">
       <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <span>To</span>
+        <div className="flex items-center gap-x-1.5">
+          <span className="text-widget-secondary text-sm">To</span>
           <ChainSelect
             networks={filteredNetworks}
             activeNetworkId={destChainId}
@@ -129,7 +129,7 @@ export const Output = () => {
       </div>
 
       <TokenInput
-        amount={outputAmount}
+        amount={`${outputAmount ? `~${outputAmount}`: ''}`}
         updateToken={updateToken}
         activeToken={destToken}
       />

@@ -17,6 +17,7 @@ import { formatCurrencyAmount } from "../utils";
 import { useBalance } from "../hooks/apis";
 import { useAccount } from "wagmi";
 import { TokenBalanceReponseDTO } from "socket-v2-sdk";
+import { Spinner } from "./common/Spinner";
 
 export function Balance({
   token,
@@ -31,9 +32,9 @@ export function Balance({
     2
   );
   return (
-    <span>
-      Bal: {token && _formattedBalance}
-      {isLoading && "..."}
+    <span className="text-widget-secondary text-sm text-right flex items-center gap-1 transition-all">
+      <span>Bal: {token && _formattedBalance}</span>
+      {isLoading && <Spinner size={4}/>}
     </span>
   );
 }
@@ -153,10 +154,10 @@ export const Input = () => {
   // }, [sourceChainId, sourceToken]);
 
   return (
-    <div className="mt-4">
+    <div className="mt-5">
       <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <span>From</span>
+        <div className="flex items-center gap-1.5">
+          <span className="text-widget-secondary text-sm">From</span>
           <ChainSelect
             networks={filteredNetworks}
             activeNetworkId={sourceChainId}

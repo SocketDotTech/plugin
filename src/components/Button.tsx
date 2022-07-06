@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
+import { CustomizeContext } from "./CustomizeProvider";
 
 interface ButtonProps {
   onClick: () => void;
@@ -6,6 +7,7 @@ interface ButtonProps {
   primary?: boolean;
   secondary?: boolean;
   disabled?: boolean;
+  classNames?: string;
 }
 export const Button = (props: ButtonProps) => {
   const {
@@ -14,12 +16,18 @@ export const Button = (props: ButtonProps) => {
     disabled = false,
     secondary = false,
     primary = true,
+    classNames,
   } = props;
+
+  const customSettings = useContext(CustomizeContext);
+  const {borderRadius} = customSettings.customization;
+
   return (
     <button
       onClick={onClick}
       disabled={disabled}
-      className="w-full rounded-xl bg-blue-500 hover:bg-blue-600 text-white py-4 disabled:bg-gray-400"
+      className={`h-14 px-3 flex items-center justify-center disabled:opacity-50 transition-all duration-100 ease-linear w-full bg-widget-theme hover:bg-widget-theme-muted text-widget-primary-inverted border-widget-theme disabled:bg-widget-secondary disabled:font-normal disabled:text-widget-secondary border disabled:border-widget-outline ${classNames || ''}`}
+      style={{borderRadius: `calc(0.625rem * ${borderRadius})`}}
     >
       {children}
     </button>

@@ -81,11 +81,11 @@ stories.add("Bridge", () => {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <div style={{height: '100vh', backgroundColor: '#222', padding: '40px'}}>
+        <div style={{height: 'calc(100vh - 40px)', backgroundColor: '#222', padding: '40px'}}>
           <div style={{ marginBottom: "30px" }}>
             <ConnectButton />
           </div>
-          <Bridge provider={provider} API_KEY={SOCKET_API_KEY} />
+          <Bridge provider={provider} API_KEY={SOCKET_API_KEY} customize={{borderRadius: 1}}/>
         </div>
       </RainbowKitProvider>
     </WagmiConfig>

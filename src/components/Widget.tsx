@@ -32,13 +32,13 @@ export const Widget = (props: WidgetProps) => {
   useEffect(() => {
     customSettings.setCustomization({
       ...customSettings.customization,
-      ...customize
+      ...customize,
     });
   }, []);
 
   const { responsiveWidth, width, borderRadius } = customSettings.customization;
 
-  const widgetWidth = responsiveWidth ? "100%" : width > 300 ? width : 300;
+  const widgetWidth = responsiveWidth ? "100%" : width > 360 ? width : 360;
   const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
 
   return (
@@ -47,21 +47,23 @@ export const Widget = (props: WidgetProps) => {
         width: widgetWidth,
         borderRadius: `calc(1rem * ${borderRadius})`,
       }}
-      className={`bg-gray-200 p-3 overflow-hidden relative`}
+      className="bg-widget-primary p-1 overflow-hidden relative"
     >
-      <Header title="Bridge">
-        <div className="flex items-center gap-3">
-          <PendingTransactions />
-          <Settings />
-        </div>
-      </Header>
-      <Input />
-      <Output />
+      <div className="p-3 pt-2.5 pb-3.5">
+        <Header title="Bridge">
+          <div className="flex items-center gap-3">
+            <PendingTransactions />
+            <Settings />
+          </div>
+        </Header>
+        <Input />
+        <Output />
+      </div>
       <RouteDetails />
       {isTxModalOpen && <TxModal />}
-      {chain?.name}
+      {/* {chain?.name}
       <br />
-      {address?.slice(0, 6)}...{address?.slice(-4)}
+      {address?.slice(0, 6)}...{address?.slice(-4)} */}
     </div>
   );
 };

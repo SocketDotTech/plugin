@@ -9,10 +9,12 @@ import { setBestRoute } from "../../state/quotesSlice";
 // components
 import { ReviewModal } from "./ReviewModal";
 import { Button } from "../Button";
+import { Spinner } from "../common/Spinner";
+import { InnerCard } from "../common/InnerCard";
 
 export const RouteDetails = () => {
   const dispatch = useDispatch();
-  
+
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
   const destToken = useSelector((state: any) => state.tokens.destToken);
   const sortPref = useSelector((state: any) => state.quotes.sortPref);
@@ -68,9 +70,9 @@ export const RouteDetails = () => {
   }
 
   return (
-    <div>
-      <div className="px-2 py-2 rounded bg-gray-300 mt-4 mb-3">
-        {quotesStatus()}
+    <InnerCard>
+      <div className="text-widget-secondary mb-3 text-sm flex items-center gap-1">
+        {isQuotesLoading && <Spinner size="4" />} {quotesStatus()}
       </div>
       <Button
         onClick={review}
@@ -78,10 +80,22 @@ export const RouteDetails = () => {
       >
         {getButtonStatus()}
       </Button>
+      <div className="flex items-center justify-between text-widget-secondary mt-2.5 text-xs">
+        <a href="http://socket.tech/" target="_blank" rel="noopener noreferrer">
+          Powered by Socket Technology
+        </a>
+        <a
+          href="https://socketdottech.zendesk.com/hc/en-us"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Support
+        </a>
+      </div>
 
       {isReviewOpen && (
         <ReviewModal closeModal={() => setIsReviewOpen(false)} />
       )}
-    </div>
+    </InnerCard>
   );
 };
