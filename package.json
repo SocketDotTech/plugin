@@ -16,8 +16,7 @@
     "react-redux": "^8.0.2",
     "socket-v2-sdk": "1.11.0",
     "swr": "^1.3.0",
-    "wagmi": "^0.5.5",
-    "widget": "file:widget-1.0.0.tgz"
+    "wagmi": "^0.5.5"
   },
   "peerDependencies": {
     "react": "^18.2.0",

@@ -73,8 +73,17 @@ export const TxModal = () => {
       setBridging(true);
     else setInitiating(true);
 
-    const execute = await socket.continue(activeRoute?.activeRouteId);
-    await prepareNextStep(execute, txHash || lastStep.hash);
+    try {
+      const execute = await socket.continue(activeRoute?.activeRouteId);
+      await prepareNextStep(execute, txHash || lastStep.hash);
+    } catch(e) {
+      const err = e.message;
+      if(err.match('is already complete')){
+        setTxCompleted(true);
+      }
+      setInitiating(false);
+      setBridging(false);
+    }
   }
 
   // use the same tx as init if the 1st tx isn't completed
