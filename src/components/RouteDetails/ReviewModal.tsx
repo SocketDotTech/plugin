@@ -40,49 +40,55 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
 
   return (
     <Modal title="Review Quote" closeModal={closeModal}>
-      <div className="flex flex-col justify-between flex-1">
+      <div className="flex flex-col justify-between flex-1 relative">
         <div>
-        <div className="flex justify-between mt-5 items-center px-3">
-          <TokenDetail
-            token={selectedRoute?.path?.fromToken}
-            amount={selectedRoute?.amount}
-          />
-          <ChevronRight className="w-4 h-4 text-widget-secondary" />
-          <TokenDetail
-            token={selectedRoute?.path?.toToken}
-            amount={selectedRoute?.route?.toAmount}
-            rtl
-          />
+          <div className="flex justify-between mt-5 items-center px-3">
+            <TokenDetail
+              token={selectedRoute?.path?.fromToken}
+              amount={selectedRoute?.amount}
+            />
+            <ChevronRight className="w-4 h-4 text-widget-secondary" />
+            <TokenDetail
+              token={selectedRoute?.path?.toToken}
+              amount={selectedRoute?.route?.toAmount}
+              rtl
+            />
+          </div>
+
+          <div className="p-3 flex flex-col gap-3 mt-5">
+            <RouteDetailRow
+              label="Bridge Name"
+              value={selectedRoute?.route?.usedBridgeNames?.[0]}
+            />
+            <RouteDetailRow
+              label="Total Gas Fee"
+              value={selectedRoute?.route?.totalGasFeesInUsd?.toFixed(3)}
+            />
+          </div>
         </div>
 
-        <div className="p-3 flex flex-col gap-3 mt-5">
-          <RouteDetailRow
-            label="Bridge Name"
-            value={selectedRoute?.route?.usedBridgeNames?.[0]}
-          />
-          <RouteDetailRow
-            label="Total Gas Fee"
-            value={selectedRoute?.route?.totalGasFeesInUsd?.toFixed(3)}
-          />
-        </div>
-        </div>
+        <InnerCard
+          classNames={`absolute w-full flex bottom-0 flex-col justify-between transition-all	 ${
+            showTxDetails ? `h-full max-h-full` : "h-auto max-h-min"
+          }`}
+        >
+          <div className="flex-1 flex flex-col">
+            <button
+              className="flex items-center gap-1.5 text-sm text-widget-secondary mb-3"
+              onClick={() => setShowTxDetails(!showTxDetails)}
+            >
+              <ChevronUp
+                className={`w-4 h-4 text-widget-secondary transition-all ${
+                  showTxDetails ? "rotate-180" : "rotate-0"
+                }`}
+              />{" "}
+              See route details
+            </button>
 
-        <InnerCard>
-          <button
-            className="flex items-center gap-1.5 text-sm text-widget-secondary mb-3"
-            onClick={() => setShowTxDetails(!showTxDetails)}
-          >
-            <ChevronUp
-              className={`w-4 h-4 text-widget-secondary transition-all ${
-                showTxDetails ? "rotate-180" : "rotate-0"
-              }`}
-            />{" "}
-            See route details
-          </button>
-
-          <div className="mb-3">
             {showTxDetails && (
-              <TxStepDetails activeRoute={selectedRoute?.route} />
+              <div className="mb-3 flex-1 overflow-y-auto">
+                <TxStepDetails activeRoute={selectedRoute?.route} />
+              </div>
             )}
           </div>
 
@@ -99,7 +105,7 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
                 Quote updated
               </span>
             )}
-    
+
             <Button
               onClick={quoteUpdated ? updateSelectedRoute : openTxModal}
               classNames={`${quoteUpdated ? "h-12" : ""}`}

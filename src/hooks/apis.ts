@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Balances,
-  ChainId,
-  Socket,
-  Supported,
-  Token,
-} from "socket-v2-sdk";
+import { Balances, ChainId, Socket, Supported, Token } from "socket-v2-sdk";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "wagmi";
 import useSWR from "swr";
@@ -101,7 +95,10 @@ export const useRoutes = (
     }
   );
 
-  return { data: data, isQuotesLoading: (!data && !error) || isValidating };
+  return {
+    data: data,
+    isQuotesLoading: userAddress && ((!data && !error) || isValidating),
+  };
 };
 
 export const useBalance = (
@@ -134,6 +131,6 @@ export const useBalance = (
 
   return {
     data: data?.result,
-    isBalanceLoading: (!error && !data) || isValidating,
+    isBalanceLoading: userAddress && ((!error && !data) || isValidating),
   };
 };

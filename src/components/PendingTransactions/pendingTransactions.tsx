@@ -16,17 +16,20 @@ export const PendingTransactions = () => {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [activeRoutes, setActiveRoutes] = useState<ActiveRouteResponse[]>(null);
+  const [totalRoutes, setTotalRoutes] = useState<number>(0);
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
 
   useEffect(() => {
-    isModalOpen && fetchActiveRoutes();
-  }, [isModalOpen]);
+    address && fetchActiveRoutes();
+  }, [isModalOpen, address]);
 
   async function fetchActiveRoutes() {
     const activeRoutes = await Routes.getActiveRoutesForUser({
       userAddress: address,
     });
+
+    setTotalRoutes(activeRoutes?.result?.pagination?.totalRecords);
     setActiveRoutes(activeRoutes?.result?.activeRoutes);
   }
 
@@ -60,13 +63,15 @@ export const PendingTransactions = () => {
     );
   }
 
-  return (
-    <button
-      className="uppercase text-widget-theme text-sm px-2 py-0.5 bg-widget-theme bg-opacity-10"
-      onClick={() => setIsModalOpen(true)}
-      style={{borderRadius: `calc(0.75rem * ${borderRadius})`}}
-    >
-      1 pending
-    </button>
-  );
+  if (totalRoutes > 0)
+    return (
+      <button
+        className="uppercase text-widget-theme text-sm px-2 py-0.5 bg-widget-theme bg-opacity-10"
+        onClick={() => setIsModalOpen(true)}
+        style={{ borderRadius: `calc(0.75rem * ${borderRadius})` }}
+      >
+        {totalRoutes} pending
+      </button>
+    );
+  else return null;
 };

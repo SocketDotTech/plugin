@@ -72,7 +72,7 @@ export const RouteDetails = () => {
   return (
     <InnerCard>
       <div className="text-widget-secondary mb-3 text-sm flex items-center gap-1">
-        {isQuotesLoading && <Spinner size="4" />} {quotesStatus()}
+        {sourceAmount&& isQuotesLoading && <Spinner size="4" />} {quotesStatus()}
       </div>
       <Button
         onClick={review}
