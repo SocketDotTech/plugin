@@ -26,7 +26,7 @@ export const TxStepDetails = ({
   useEffect(() => {
     setTxData(activeRoute?.transactionData);
   }, [activeRoute]);
-  
+
   return (
     <div className="flex flex-col gap-3 text-sm">
       {activeRoute?.userTxs?.map((tx, txIndex) => {
@@ -166,7 +166,7 @@ const TxStep = ({
       >
         {currentTx ? (
           inProgress ? (
-            <Spinner size="4"/>
+            <Spinner size="4" />
           ) : (
             <ArrowRight className={`w-[18px] h-[18px] text-widget-theme`} />
           )
@@ -185,7 +185,12 @@ const TxStep = ({
       >
         <span className={`${active ? "font-medium" : ""}`}>
           {url ? (
-            <a href={url} className="underline">
+            <a
+              href={url}
+              className="underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {label}
             </a>
           ) : (

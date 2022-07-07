@@ -10,7 +10,7 @@ import { TxStepDetails } from "./TxStepDetails";
 import { TokenDetail } from "../TokenDetail";
 
 // actions
-import { setActiveRoute, setIsTxModalOpen } from "../../state/modals";
+import { setActiveRoute, setError, setIsTxModalOpen } from "../../state/modals";
 import { setTxDetails } from "../../state/txDetails";
 
 // hooks
@@ -64,12 +64,16 @@ export const TxModal = () => {
 
   async function initiateExecution() {
     setInitiating(true);
-    const execute = await socket.start(selectedRoute);
-    await prepareNextStep(execute);
+    try {
+      const execute = await socket.start(selectedRoute);
+      await prepareNextStep(execute);
+    } catch (e) {
+      dispatch(setError(e.message));
+    }
   }
 
   async function initiateContinuation(txType?: string, txHash?: string) {
-    // in normal flow, txType and txHash will be passed. 
+    // in normal flow, txType and txHash will be passed.
     // when continuing from tx history section, prevTxData from the localStorage will be fetched
     const prevTxData = txDetails?.[address]?.[activeRoute?.activeRouteId];
     const keysArr = prevTxData && Object.keys(prevTxData);
@@ -132,21 +136,27 @@ export const TxModal = () => {
     execute: AsyncGenerator<SocketTx, void, string>,
     txHash?: string
   ) => {
-    let next = txHash ? await execute.next(txHash) : await execute.next();
-    setBridging(false);
+    try {
+      const next = txHash ? await execute.next(txHash) : await execute.next();
 
-    if (!next.done && next.value) {
-      const tx = next.value;
-      setUserTx(tx);
-      const _approvalTxData = await tx.getApproveTransaction();
-      setInitiating(false);
-      setApprovalTxData(_approvalTxData);
-      if (_approvalTxData) setIsApprovalRequired(true);
-    }
+      setBridging(false);
+      console.log("next", next);
+      if (!next.done && next.value) {
+        const tx = next.value;
+        setUserTx(tx);
+        const _approvalTxData = await tx.getApproveTransaction();
+        setInitiating(false);
+        setApprovalTxData(_approvalTxData);
+        if (_approvalTxData) setIsApprovalRequired(true);
+      }
 
-    if (next.done) {
-      setInitiating(false);
-      setTxCompleted(true);
+      if (next.done) {
+        setInitiating(false);
+        setTxCompleted(true);
+      }
+    } catch (e) {
+      dispatch(setError(e.message));
+      setBridging(false);
     }
   };
 
@@ -188,7 +198,7 @@ export const TxModal = () => {
             />
           </div>
         </div>
-        
+
         <div className="p-3 shrink-0">
           {!txCompleted && (
             <>

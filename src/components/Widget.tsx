@@ -18,6 +18,7 @@ import { PendingTransactions } from "./PendingTransactions/pendingTransactions";
 // hooks
 import { useChains, useTokenList } from "../hooks/apis";
 import { useNetwork, useAccount } from "wagmi";
+import { ErrorModal } from "./ErrorModal";
 
 export const Widget = (props: WidgetProps) => {
   const { customize } = props;
@@ -61,9 +62,7 @@ export const Widget = (props: WidgetProps) => {
       </div>
       <RouteDetails />
       {isTxModalOpen && <TxModal />}
-      {/* {chain?.name}
-      <br />
-      {address?.slice(0, 6)}...{address?.slice(-4)} */}
+      <ErrorModal />
     </div>
   );
 };

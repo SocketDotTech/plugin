@@ -4,6 +4,7 @@ const initialState = {
   isTxModalOpen: false,
   activeRoute: null,
   execute: null,
+  error: null,
 };
 
 const modalsSlice = createSlice({
@@ -18,9 +19,12 @@ const modalsSlice = createSlice({
     },
     setExecute: (state, action) => {
       state.execute = action.payload
+    },
+    setError: (state, action) => {
+      state.error = action.payload
     }
   },
 });
 
 export default modalsSlice.reducer;
-export const { setIsTxModalOpen, setActiveRoute, setExecute} = modalsSlice.actions;
+export const { setIsTxModalOpen, setActiveRoute, setExecute, setError} = modalsSlice.actions;
