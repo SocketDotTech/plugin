@@ -74,3 +74,32 @@ export const handleNetworkChange = async (provider, chain) => {
     }
   }
 };
+
+export enum ExplorerDataType {
+  TRANSACTION = "transaction",
+  TOKEN = "token",
+  ADDRESS = "address",
+  BLOCK = "block",
+}
+
+export function getExplorerLink(
+  baseUrl: string,
+  data: string,
+  type: ExplorerDataType
+): string {
+  switch (type) {
+    case ExplorerDataType.TRANSACTION: {
+      return `${baseUrl}/tx/${data}`;
+    }
+    case ExplorerDataType.TOKEN: {
+      return `${baseUrl}/token/${data}`;
+    }
+    case ExplorerDataType.BLOCK: {
+      return `${baseUrl}/block/${data}`;
+    }
+    case ExplorerDataType.ADDRESS:
+    default: {
+      return `${baseUrl}/address/${data}`;
+    }
+  }
+}

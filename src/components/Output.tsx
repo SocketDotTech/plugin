@@ -70,6 +70,7 @@ export const Output = () => {
     }
   }, [allNetworks, devProps, sourceChainId]);
 
+  // Changing dest chain if the source and destination chains are the same.
   useEffect(() => {
     if (sourceChainId === destChainId) {
       updateNetwork(filteredNetworks?.[0]);

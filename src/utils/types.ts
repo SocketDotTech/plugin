@@ -35,6 +35,13 @@ export interface Customize {
 
   // Border radius [0-1]
   borderRadius?: number;
+
+  themeColor?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  primaryTextColor?: string;
+  secondaryTextColor?: string;
+  outlineColor?: string;
 }
 
 

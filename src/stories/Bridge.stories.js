@@ -54,6 +54,26 @@ const bnbChain = {
   testnet: false,
 };
 
+const gnosisChain = {
+  id: 100,
+  name: "Gnosis",
+  network: "gnosis",
+  iconUrl: "https://movricons.s3.ap-south-1.amazonaws.com/gnosis.svg",
+  iconBackground: "#fff",
+  nativeCurrency: {
+    decimals: 18,
+    name: "xDai",
+    symbol: "XDAI",
+  },
+  rpcUrls: {
+    default: "https://rpc.xdaichain.com",
+  },
+  blockExplorers: {
+    default: { name: "Blockscout", url: "https://blockscout.com/xdai/mainnet" },
+  },
+  testnet: false,
+};
+
 stories.add("Bridge", () => {
   const { chains, provider } = configureChains(
     [
@@ -63,6 +83,7 @@ stories.add("Bridge", () => {
       chain.optimism,
       avalancheChain,
       bnbChain,
+      gnosisChain
     ],
     [publicProvider()]
   );

@@ -1,23 +1,48 @@
-import { formatCurrencyAmount } from "../../utils/";
+import {
+  ExplorerDataType,
+  formatCurrencyAmount,
+  getExplorerLink,
+} from "../../utils/";
 import useMappedChainData from "../../hooks/useMappedChainData";
 import { ArrowRight, CheckCircle } from "react-feather";
-import { ReactNode } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
+import { CustomizeContext } from "../CustomizeProvider";
+import { Spinner } from "../common/Spinner";
 
 export const TxStepDetails = ({
   activeRoute,
   currentTxIndex,
+  completed,
+  inProgress,
 }: {
   activeRoute: any;
   currentTxIndex?: number;
+  completed?: boolean;
+  inProgress?: boolean;
 }) => {
   const mappedChainData = useMappedChainData();
+  const [txData, setTxData] = useState(null);
+
+  useEffect(() => {
+    setTxData(activeRoute?.transactionData);
+  }, [activeRoute]);
+  
   return (
     <div className="flex flex-col gap-3 text-sm">
       {activeRoute?.userTxs?.map((tx, txIndex) => {
         const txComplete =
-          tx?.userTxStatus === "completed" || txIndex < currentTxIndex;
+          tx?.userTxStatus === "completed" ||
+          txIndex < currentTxIndex ||
+          completed;
         const currentTx = currentTxIndex === tx?.userTxIndex;
-        
+        const url = txData?.[txIndex]?.txHash
+          ? getExplorerLink(
+              mappedChainData?.[tx?.chainId]?.explorers[0],
+              txData?.[txIndex]?.txHash,
+              ExplorerDataType.TRANSACTION
+            )
+          : null;
+
         // function to return token details - amount, chain id, symbol and protocol name.
         const getTxDetail = (stepId: number, toAsset: boolean) => {
           const step = stepId === null ? tx : tx?.steps?.[stepId];
@@ -50,6 +75,8 @@ export const TxStepDetails = ({
                   label="Swap"
                   complete={txComplete}
                   currentTx={currentTx}
+                  url={url}
+                  inProgress={inProgress}
                 >
                   {Number(swapSrc?.amount).toFixed(3)} {swapSrc?.symbol} for{" "}
                   {Number(swapDest?.amount).toFixed(3)} {swapDest?.symbol} via{" "}
@@ -61,6 +88,8 @@ export const TxStepDetails = ({
                 label="Bridge"
                 complete={txComplete}
                 currentTx={currentTx}
+                url={url}
+                inProgress={inProgress}
               >
                 {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol} on{" "}
                 {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
@@ -80,6 +109,8 @@ export const TxStepDetails = ({
               key={`${activeRoute?.activeRouteId}-dex-swap-${txIndex}`}
               complete={txComplete}
               currentTx={currentTx}
+              url={url}
+              inProgress={inProgress}
             >
               {Number(swapSrc?.amount).toFixed(3)} {swapSrc?.symbol} for{" "}
               {Number(swapDest?.amount).toFixed(3)} {swapDest?.symbol} via{" "}
@@ -94,6 +125,8 @@ export const TxStepDetails = ({
               key={`${activeRoute?.activeRouteId}-claim`}
               complete={txComplete}
               currentTx={currentTx}
+              url={url}
+              inProgress={inProgress}
             >
               Claim {tx?.toAsset?.symbol} on{" "}
               {mappedChainData?.[tx?.chainId].name}
@@ -105,28 +138,38 @@ export const TxStepDetails = ({
   );
 };
 
-
 const TxStep = ({
   label,
   children,
   complete = false,
   currentTx = false,
+  url = null,
+  inProgress = false,
 }: {
   label: string;
   children: ReactNode;
   complete?: boolean;
   currentTx?: boolean;
+  url?: string | null;
+  inProgress?: boolean;
 }) => {
   const active = complete || currentTx;
+  const customSettings = useContext(CustomizeContext);
+  const { borderRadius } = customSettings.customization;
   return (
     <div className="flex gap-3.5">
       <div
         className={`h-6 w-6 flex items-center justify-center shrink-0 mt-[3px] ${
           active ? "bg-widget-secondary" : "bg-transparent"
         }`}
+        style={{ borderRadius: `calc(0.25rem * ${borderRadius})` }}
       >
         {currentTx ? (
-          <ArrowRight className={`w-[18px] h-[18px] text-widget-theme`} />
+          inProgress ? (
+            <Spinner size="4"/>
+          ) : (
+            <ArrowRight className={`w-[18px] h-[18px] text-widget-theme`} />
+          )
         ) : (
           <CheckCircle
             className={`w-[18px] h-[18px] ${
@@ -140,7 +183,15 @@ const TxStep = ({
           !active ? "opacity-60" : ""
         }`}
       >
-        <span className={`${active ? "font-medium" : ""}`}>{label}</span>
+        <span className={`${active ? "font-medium" : ""}`}>
+          {url ? (
+            <a href={url} className="underline">
+              {label}
+            </a>
+          ) : (
+            label
+          )}
+        </span>
         <span>{children}</span>
       </div>
     </div>

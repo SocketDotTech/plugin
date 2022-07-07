@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { SocketTx } from "socket-v2-sdk";
+import { ChevronRight } from "react-feather";
 
 // components
 import { Modal } from "../Modal";
 import { Button } from "../Button";
 import { TxStepDetails } from "./TxStepDetails";
+import { TokenDetail } from "../TokenDetail";
 
 // actions
 import { setActiveRoute, setIsTxModalOpen } from "../../state/modals";
@@ -25,6 +27,8 @@ export const TxModal = () => {
     dispatch(setIsTxModalOpen(false));
   }
 
+  // When the tx modal is opened from the tx-history(pending) section, selectedRoute will be set to null & activeRoute will be truthy
+  // If the tx modal is opened in the normal user flow, the selected route will be truthy and activeRoute will be null
   const selectedRoute = useSelector((state: any) => state.routes.selectedRoute);
   const activeRoute = useSelector((state: any) => state.modals.activeRoute);
   const allNetworks = useSelector((state: any) => state.networks.allNetworks);
@@ -65,20 +69,23 @@ export const TxModal = () => {
   }
 
   async function initiateContinuation(txType?: string, txHash?: string) {
+    // in normal flow, txType and txHash will be passed. 
+    // when continuing from tx history section, prevTxData from the localStorage will be fetched
     const prevTxData = txDetails?.[address]?.[activeRoute?.activeRouteId];
     const keysArr = prevTxData && Object.keys(prevTxData);
     const lastStep = prevTxData?.[keysArr?.[keysArr?.length - 1]];
 
-    if ((lastStep?.userTxType || txType) === UserTxType.FUND_MOVR)
-      setBridging(true);
-    else setInitiating(true);
+    if ((lastStep?.userTxType || txType) === UserTxType.FUND_MOVR) {
+      if (!selectedRoute) setInitiating(true);
+      else setBridging(true);
+    } else setInitiating(true);
 
     try {
       const execute = await socket.continue(activeRoute?.activeRouteId);
       await prepareNextStep(execute, txHash || lastStep.hash);
-    } catch(e) {
+    } catch (e) {
       const err = e.message;
-      if(err.match('is already complete')){
+      if (err.match("is already complete")) {
         setTxCompleted(true);
       }
       setInitiating(false);
@@ -120,7 +127,8 @@ export const TxModal = () => {
     }
   }
 
-  const prepareNextStep = async ( // next tx preparation
+  const prepareNextStep = async (
+    // next tx preparation
     execute: AsyncGenerator<SocketTx, void, string>,
     txHash?: string
   ) => {
@@ -155,33 +163,50 @@ export const TxModal = () => {
     <Modal
       title="Bridging transaction"
       closeModal={isApproving ? null : closeTxModal}
+      disableClose={isApproving || txInProgress}
     >
-      <div className="flex flex-col justify-between flex-1">
-        All details here <br />
-        {selectedRoute?.route?.routeId}
-        {activeRoute?.activeRouteId}
-        <TxStepDetails activeRoute={activeRoute || selectedRoute?.route} currentTxIndex={userTx?.userTxIndex}/>
-        {initiating && <span className="text-white">initiating</span>}
-        {txInProgress && <span className="text-white">tx is in progress</span>}
-        {bridging && <span className="text-red-500">Bridging in progress</span>}
-        {txCompleted && <span className="text-red-500">Tx is completed</span>}
-        {!txCompleted && (
-          <>
-            {userTx && activeChain?.id !== userTx?.chainId ? (
-              <Button onClick={changeNetwork}>
-                {initiating
-                  ? "Loading tx data"
-                  : `Switch chain to ${
-                      allNetworks.filter(
-                        (x) => x.chainId === userTx?.chainId
-                      )?.[0]?.name
-                    }`}
-              </Button>
-            ) : (
-              <div className="flex bg-white p-2 rounded gap-2">
+      <div className="flex flex-col flex-1 overflow-hidden justify-between relative">
+        <div className="flex-1 overflow-y-auto">
+          <div className="flex justify-between mt-5 items-center px-3 mb-2.5">
+            <TokenDetail
+              token={selectedRoute?.path?.fromToken || activeRoute?.fromAsset}
+              amount={selectedRoute?.amount || activeRoute?.fromAmount}
+            />
+            <ChevronRight className="w-4 h-4 text-widget-secondary" />
+            <TokenDetail
+              token={selectedRoute?.path?.toToken || activeRoute?.toAsset}
+              amount={selectedRoute?.route?.toAmount || activeRoute?.toAmount}
+              rtl
+            />
+          </div>
+
+          <div className="px-3 py-3">
+            <TxStepDetails
+              activeRoute={activeRoute || selectedRoute?.route}
+              currentTxIndex={userTx?.userTxIndex}
+              inProgress={txInProgress || bridging}
+            />
+          </div>
+        </div>
+        
+        <div className="p-3 shrink-0">
+          {!txCompleted && (
+            <>
+              {userTx && activeChain?.id !== userTx?.chainId ? (
+                <Button onClick={changeNetwork}>
+                  {initiating
+                    ? "Initiating..."
+                    : `Switch chain to ${
+                        allNetworks.filter(
+                          (x) => x.chainId === userTx?.chainId
+                        )?.[0]?.name
+                      }`}
+                </Button>
+              ) : isApprovalRequired ? (
                 <Button
                   onClick={confirmApproval}
                   disabled={!isApprovalRequired || isApproving}
+                  isLoading={isApproving}
                 >
                   {initiating
                     ? "Checking approval"
@@ -191,21 +216,37 @@ export const TxModal = () => {
                     ? "Approve"
                     : "Approved"}
                 </Button>
+              ) : (
                 <Button
                   onClick={doTransaction}
                   disabled={
                     isApprovalRequired || txInProgress || initiating || bridging
                   }
+                  isLoading={txInProgress}
                 >
-                  {txInProgress
+                  {bridging
+                    ? "Bridging in progress"
+                    : initiating
+                    ? "Initiating..."
+                    : txInProgress
                     ? "In progress"
                     : USER_TX_LABELS?.[userTx?.userTxType]}
                 </Button>
-              </div>
-            )}
-          </>
-        )}
+              )}
+            </>
+          )}
+        </div>
+
+        {/* {!bridging && <BridgingLoader />} */}
       </div>
     </Modal>
+  );
+};
+
+const BridgingLoader = () => {
+  return (
+    <div className="absolute bg-widget-primary h-full w-full top-0 left-0 px-3">
+      Bridging in progress
+    </div>
   );
 };

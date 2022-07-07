@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Balances, ChainId, Socket, Supported, Token } from "socket-v2-sdk";
+import {
+  Balances,
+  ChainId,
+  Routes,
+  Socket,
+  Supported,
+  Token,
+} from "socket-v2-sdk";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "wagmi";
 import useSWR from "swr";
@@ -35,6 +42,31 @@ export const useChains = () => {
   }, []);
 
   return allChains;
+};
+
+export const useActiveRoutes = () => {
+  const { address: userAddress } = useAccount();
+
+  async function fetchActiveRoutes(address: string) {
+    const result = await Routes.getActiveRoutesForUser({
+      userAddress: address,
+      routeStatus: 'PENDING'
+    });
+    return result;
+  }
+
+  const { data, error, isValidating } = useSWR(
+    userAddress ? [userAddress]: null,
+    fetchActiveRoutes,
+    {
+      refreshInterval: time.ACTIVE_ROUTES_REFRESH * 1000, //refresh active routes every 30 seconds
+    }
+  );
+
+  return {
+    data: data,
+    isQuotesLoading: userAddress && ((!data && !error) || isValidating),
+  };
 };
 
 export const useTokenList = () => {

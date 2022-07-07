@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { ActiveRouteResponse, Routes } from "socket-v2-sdk";
+import { ActiveRouteResponse } from "socket-v2-sdk";
 import { useAccount } from "wagmi";
 import { CustomizeContext } from "../CustomizeProvider";
 
@@ -9,6 +9,8 @@ import { Modal } from "../Modal";
 
 // actions
 import { setActiveRoute, setIsTxModalOpen } from "../../state/modals";
+
+import { useActiveRoutes } from "../../hooks/apis";
 
 export const PendingTransactions = () => {
   const dispatch = useDispatch();
@@ -20,18 +22,14 @@ export const PendingTransactions = () => {
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
 
+  const { data: activeRoutesData } = useActiveRoutes();
+
   useEffect(() => {
-    address && fetchActiveRoutes();
-  }, [isModalOpen, address]);
-
-  async function fetchActiveRoutes() {
-    const activeRoutes = await Routes.getActiveRoutesForUser({
-      userAddress: address,
-    });
-
-    setTotalRoutes(activeRoutes?.result?.pagination?.totalRecords);
-    setActiveRoutes(activeRoutes?.result?.activeRoutes);
-  }
+    if (activeRoutesData) {
+      setTotalRoutes(activeRoutesData?.result?.pagination?.totalRecords);
+      setActiveRoutes(activeRoutesData?.result?.activeRoutes);
+    }
+  }, [activeRoutesData]);
 
   function openTxModal(route) {
     dispatch(setActiveRoute(route));

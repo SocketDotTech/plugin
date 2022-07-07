@@ -6,8 +6,9 @@ interface ModalProps {
   title: ReactElement | string;
   closeModal: () => void;
   children: ReactNode;
+  disableClose?: boolean;
 }
-export const Modal = ({ title, closeModal, children }: ModalProps) => {
+export const Modal = ({ title, closeModal, children, disableClose = false }: ModalProps) => {
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
   return (
@@ -18,7 +19,7 @@ export const Modal = ({ title, closeModal, children }: ModalProps) => {
       >
         <div className="p-3 pt-2.5 border-b border-widget-secondary">
           <Header title={title}>
-            <button onClick={closeModal}>
+            <button onClick={closeModal} disabled={disableClose} className="disabled:cursor-wait">
               <X className="w-5.5 h-5.5 text-widget-secondary" />
             </button>
           </Header>
