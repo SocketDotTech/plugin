@@ -100,34 +100,39 @@ export const TxModal = () => {
   // use the same tx as init if the 1st tx isn't completed
   async function doTransaction() {
     setTxInProgress(true);
-    const sendTxData = await userTx.getSendTransaction(); // txData => userTx
-    const sendTx = await signer.sendTransaction(sendTxData);
+    try {
+      const sendTxData = await userTx.getSendTransaction(); // txData => userTx
+      const sendTx = await signer.sendTransaction(sendTxData);
 
-    // set data to localStorage
-    dispatch(
-      setTxDetails({
-        account: address,
-        routeId: userTx.activeRouteId,
-        stepIndex: userTx.userTxIndex,
-        value: { hash: sendTx.hash, userTxType: userTx.userTxType },
-      })
-    );
+      // set data to localStorage
+      dispatch(
+        setTxDetails({
+          account: address,
+          routeId: userTx.activeRouteId,
+          stepIndex: userTx.userTxIndex,
+          value: { hash: sendTx.hash, userTxType: userTx.userTxType },
+        })
+      );
 
-    await sendTx.wait();
-    setTxInProgress(false);
+      await sendTx.wait();
+      setTxInProgress(false);
 
-    // if tx is of type fund-movr, set bridging loader to true
-    if (userTx.userTxType === UserTxType.FUND_MOVR) {
-      setBridging(true);
-    }
+      // if tx is of type fund-movr, set bridging loader to true
+      if (userTx.userTxType === UserTxType.FUND_MOVR) {
+        setBridging(true);
+      }
 
-    const currentStatus = await userTx.submit(sendTx.hash);
-
-    if (currentStatus && currentStatus !== "completed") {
-      await initiateContinuation(userTx.userTxType, userTx.hash);
-    } else if (currentStatus === "completed") {
-      setTxCompleted(true);
-      setBridging(false);
+      const currentStatus = await userTx.submit(sendTx.hash);
+      if (currentStatus && currentStatus !== "completed") {
+        await initiateContinuation(userTx.userTxType, userTx.hash);
+      } else if (currentStatus === "completed") {
+        setTxCompleted(true);
+        setBridging(false);
+      }
+    } catch (e) {
+      dispatch(setError(e.message));
+      setBridging(false)
+      setTxInProgress(false);
     }
   }
 
@@ -157,6 +162,7 @@ export const TxModal = () => {
     } catch (e) {
       dispatch(setError(e.message));
       setBridging(false);
+      setInitiating(false);
     }
   };
 
