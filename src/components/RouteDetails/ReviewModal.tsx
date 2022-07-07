@@ -72,7 +72,7 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
             showTxDetails ? `h-full max-h-full` : "h-auto max-h-min"
           }`}
         >
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col overflow-auto">
             <button
               className="flex items-center gap-1.5 text-sm text-widget-secondary mb-3"
               onClick={() => setShowTxDetails(!showTxDetails)}

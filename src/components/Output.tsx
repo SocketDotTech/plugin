@@ -115,7 +115,7 @@ export const Output = () => {
   };
 
   return (
-    <div className="mt-[30px]">
+    <div className="mt-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-x-1.5">
           <span className="text-widget-secondary text-sm">To</span>

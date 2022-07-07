@@ -3072,7 +3072,7 @@
   resolved "https://registry.npmjs.org/@types/use-sync-external-store/-/use-sync-external-store-0.0.3.tgz"
   integrity sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==
 
-"@types/webpack-env@^1.16.0":
+"@types/webpack-env@^1.16.0", "@types/webpack-env@^1.17.0":
   version "1.17.0"
   resolved "https://registry.npmjs.org/@types/webpack-env/-/webpack-env-1.17.0.tgz"
   integrity sha512-eHSaNYEyxRA5IAG0Ym/yCyf86niZUIF/TpWKofQI/CVfh5HsMEUyfE2kwFxha4ow0s5g0LfISQxpDKjbRDrizw==
@@ -4778,6 +4778,13 @@ chownr@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/chownr/-/chownr-2.0.0.tgz"
   integrity sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==
+
+chromatic@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/chromatic/-/chromatic-6.7.0.tgz#1d56c56acea6762d18c6042774fbfb6b434c6d91"
+  integrity sha512-kLpvVBKHp1uh7v14N0gPoejILsepS2OI8a4cJgM4Na0Du5GbZ0Iq7Yq/QknCuNiztlalSpBYHuD9SuVdBxL9vg==
+  dependencies:
+    "@types/webpack-env" "^1.17.0"
 
 chrome-trace-event@^1.0.2:
   version "1.0.3"

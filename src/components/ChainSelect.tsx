@@ -26,7 +26,7 @@ function Option({
 }) {
   return (
     <div
-      className="flex gap-1 items-center cursor-pointer rounded"
+      className={`flex gap-1 items-center cursor-pointer ${selected ? '' : 'p-1.5 hover:bg-widget-primary'}`}
       onClick={onClick}
     >
       <img
@@ -64,13 +64,20 @@ export function ChainSelect({
   return (
     <div
       onClick={() => setOpenDropdown(!openDropdown)}
-      className="relative"
+      className={`relative p-1.5 ${openDropdown ? "bg-widget-secondary" : ""}`}
+      style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
       ref={chainDropdownRef}
     >
       <Option network={activeNetwork} selected borderRadius={borderRadius} />
 
       {openDropdown && (
-        <div className="z-10 absolute bg-white p-2 rounded-lg gap-1 flex flex-col w-40 max-h-60 overflow-y-auto overflow-hidden">
+        <div
+          className="pt-1 z-10 left-0 absolute bg-widget-secondary flex flex-col w-full h-[150px] overflow-y-auto overflow-hidden"
+          style={{
+            borderBottomRightRadius: `calc(0.75rem * ${borderRadius})`,
+            borderBottomLeftRadius: `calc(0.75rem * ${borderRadius})`,
+          }}
+        >
           {filteredNetworks?.map((network, index) => {
             return !!network ? (
               <Option

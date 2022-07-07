@@ -1,11 +1,23 @@
 import { formatCurrencyAmount } from "../../utils/";
 import useMappedChainData from "../../hooks/useMappedChainData";
+import { ArrowRight, CheckCircle } from "react-feather";
+import { ReactNode } from "react";
 
-export const TxStepDetails = ({ activeRoute }) => {
+export const TxStepDetails = ({
+  activeRoute,
+  currentTxIndex,
+}: {
+  activeRoute: any;
+  currentTxIndex?: number;
+}) => {
   const mappedChainData = useMappedChainData();
   return (
     <div className="flex flex-col gap-3 text-sm">
-      {activeRoute?.userTxs?.map((tx) => {
+      {activeRoute?.userTxs?.map((tx, txIndex) => {
+        const txComplete =
+          tx?.userTxStatus === "completed" || txIndex < currentTxIndex;
+        const currentTx = currentTxIndex === tx?.userTxIndex;
+        
         // function to return token details - amount, chain id, symbol and protocol name.
         const getTxDetail = (stepId: number, toAsset: boolean) => {
           const step = stepId === null ? tx : tx?.steps?.[stepId];
@@ -20,7 +32,7 @@ export const TxStepDetails = ({ activeRoute }) => {
             protocolName: step?.protocol?.displayName,
           };
         };
-        
+
         if (tx?.userTxType === "fund-movr") {
           const isSwap = tx?.steps?.length > 1;
           const swapSrc = getTxDetail(0, false);
@@ -34,28 +46,28 @@ export const TxStepDetails = ({ activeRoute }) => {
               key={`${activeRoute?.activeRouteId}-fund-movr-swap`}
             >
               {isSwap && (
-                <div>
-                  <div className="flex items-center gap-2">
-                    <Checkbox completed={tx?.userTxStatus === "completed"} />
-                    Swap Tokens
-                  </div>
+                <TxStep
+                  label="Swap"
+                  complete={txComplete}
+                  currentTx={currentTx}
+                >
                   {Number(swapSrc?.amount).toFixed(3)} {swapSrc?.symbol} for{" "}
                   {Number(swapDest?.amount).toFixed(3)} {swapDest?.symbol} via{" "}
                   {swapDest?.protocolName} on{" "}
                   {mappedChainData?.[swapSrc.chainId]?.name}
-                </div>
+                </TxStep>
               )}
-              <div>
-                <div className="flex items-center gap-2">
-                  <Checkbox completed={tx?.userTxStatus === "completed"} />
-                  Bridge Tokens
-                </div>
+              <TxStep
+                label="Bridge"
+                complete={txComplete}
+                currentTx={currentTx}
+              >
                 {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol} on{" "}
                 {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
                 {Number(bridgeDest?.amount).toFixed(3)} {bridgeDest?.symbol} on{" "}
                 {mappedChainData?.[bridgeDest?.chainId]?.name} via{" "}
                 {bridgeSrc?.protocolName} bridge
-              </div>
+              </TxStep>
             </div>
           );
         } else if (tx?.userTxType === "dex-swap") {
@@ -63,27 +75,29 @@ export const TxStepDetails = ({ activeRoute }) => {
           const swapDest = getTxDetail(null, true);
 
           return (
-            <div key={`${activeRoute?.activeRouteId}-dex-swap`}>
-              <div className="flex items-center gap-2">
-                <Checkbox completed={tx?.userTxStatus === "completed"} />
-                Swap Tokens
-              </div>
+            <TxStep
+              label="Swap"
+              key={`${activeRoute?.activeRouteId}-dex-swap-${txIndex}`}
+              complete={txComplete}
+              currentTx={currentTx}
+            >
               {Number(swapSrc?.amount).toFixed(3)} {swapSrc?.symbol} for{" "}
               {Number(swapDest?.amount).toFixed(3)} {swapDest?.symbol} via{" "}
               {swapDest?.protocolName} on{" "}
               {mappedChainData?.[swapDest?.chainId]?.name}
-            </div>
+            </TxStep>
           );
         } else if (tx?.userTxType === "claim") {
           return (
-            <div key={`${activeRoute?.activeRouteId}-claim`}>
-              <div className="flex items-center gap-2">
-                <Checkbox completed={tx?.userTxStatus === "completed"} />
-                Claim Tokens
-              </div>
-              Claimed {tx?.toAsset?.symbol} on{" "}
+            <TxStep
+              label="Claim"
+              key={`${activeRoute?.activeRouteId}-claim`}
+              complete={txComplete}
+              currentTx={currentTx}
+            >
+              Claim {tx?.toAsset?.symbol} on{" "}
               {mappedChainData?.[tx?.chainId].name}
-            </div>
+            </TxStep>
           );
         }
       })}
@@ -91,14 +105,44 @@ export const TxStepDetails = ({ activeRoute }) => {
   );
 };
 
-const Checkbox = ({ completed }: { completed: boolean }) => {
+
+const TxStep = ({
+  label,
+  children,
+  complete = false,
+  currentTx = false,
+}: {
+  label: string;
+  children: ReactNode;
+  complete?: boolean;
+  currentTx?: boolean;
+}) => {
+  const active = complete || currentTx;
   return (
-    <div
-      className={`w-4 h-4 rounded-full flex justify-center items-center bg-white ${
-        completed ? "text-green-500" : "text-red-500"
-      }`}
-    >
-      {completed ? "Y" : "N"}
+    <div className="flex gap-3.5">
+      <div
+        className={`h-6 w-6 flex items-center justify-center shrink-0 mt-[3px] ${
+          active ? "bg-widget-secondary" : "bg-transparent"
+        }`}
+      >
+        {currentTx ? (
+          <ArrowRight className={`w-[18px] h-[18px] text-widget-theme`} />
+        ) : (
+          <CheckCircle
+            className={`w-[18px] h-[18px] ${
+              complete ? "text-widget-theme" : "text-widget-outline"
+            }`}
+          />
+        )}
+      </div>
+      <div
+        className={`flex flex-col text-xs text-widget-secondary gap-0.5 ${
+          !active ? "opacity-60" : ""
+        }`}
+      >
+        <span className={`${active ? "font-medium" : ""}`}>{label}</span>
+        <span>{children}</span>
+      </div>
     </div>
   );
 };

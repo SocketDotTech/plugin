@@ -9,7 +9,12 @@ module.exports = {
           theme: `rgb(var(--theme-color))`,
           primary: "var(--primary-text-color)",
           'primary-inverted': "var(--primary-color)",
-          secondary: "var(--secondary-text-color)",
+          secondary: ({opacityValue}) => {
+            if(opacityValue !== undefined) {
+              return `rgba(var(--secondary-text-color), ${opacityValue})`;
+            }
+            return `rgba(var(--secondary-text-color))`
+          },
           outline: "var(--outline-color)",
         },
       },
@@ -32,7 +37,12 @@ module.exports = {
           theme: `rgb(var(--theme-color))`,
           // primary: "var(--primary-text-color)",
           secondary: "var(--secondary-color)",
-          'secondary-text': "var(--secondary-text-color)",
+          'secondary-text': ({opacityValue}) => {
+            if(opacityValue !== undefined) {
+              return `rgba(var(--secondary-text-color), ${opacityValue})`;
+            }
+            return `rgba(var(--secondary-text-color))`
+          },
           outline: "var(--outline-color)",
         },
       },

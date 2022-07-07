@@ -154,7 +154,7 @@ export const Input = () => {
   // }, [sourceChainId, sourceToken]);
 
   return (
-    <div className="mt-5">
+    <div className="mt-3.5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <span className="text-widget-secondary text-sm">From</span>

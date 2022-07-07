@@ -160,7 +160,7 @@ export const TxModal = () => {
         All details here <br />
         {selectedRoute?.route?.routeId}
         {activeRoute?.activeRouteId}
-        <TxStepDetails activeRoute={activeRoute || selectedRoute?.route} />
+        <TxStepDetails activeRoute={activeRoute || selectedRoute?.route} currentTxIndex={userTx?.userTxIndex}/>
         {initiating && <span className="text-white">initiating</span>}
         {txInProgress && <span className="text-white">tx is in progress</span>}
         {bridging && <span className="text-red-500">Bridging in progress</span>}
