@@ -11,7 +11,7 @@ import { ChainSelect } from "./ChainSelect";
 import { setSourceToken } from "../state/tokensSlice";
 import { setIsEnoughBalance, setSourceAmount } from "../state/amountSlice";
 import { setSourceChain } from "../state/networksSlice";
-import { formatCurrencyAmount } from "../utils";
+import { formatCurrencyAmount, truncateDecimalValue } from "../utils";
 
 // hooks
 import { useBalance } from "../hooks/apis";
@@ -34,7 +34,7 @@ export function Balance({
   return (
     <span className="text-widget-secondary text-sm text-right flex items-center gap-1 transition-all">
       <span>Bal: {token && _formattedBalance}</span>
-      {isLoading && <Spinner size={4}/>}
+      {isLoading && <Spinner size={4} />}
     </span>
   );
 }
@@ -51,8 +51,6 @@ export const Input = () => {
   );
   const { address: userAddress } = useAccount();
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
-  const destToken = useSelector((state: any) => state.tokens.destToken);
-  const sourceAmount = useSelector((state: any) => state.amount.sourceAmount);
   const { data: tokenWithBalance, isBalanceLoading } = useBalance(
     sourceToken?.address,
     sourceChainId,
@@ -80,23 +78,7 @@ export const Input = () => {
   }, [allNetworks, devProps]);
 
   // For Input & tokens
-  // 1. Enter input (controlled component)
-  // 2. check for decimal validation
-  // 3. When token is changed, truncate the input in the react state.
-  // 4. Update redux state when the user stops entering input data.
   const [inputAmount, updateInputAmount] = useState<string>("");
-  useEffect(() => {
-    const _formattedInputAmount = !!sourceAmount
-      ? formatCurrencyAmount(
-          sourceAmount,
-          sourceToken?.decimals,
-          sourceToken?.decimals
-        ).toString()
-      : "";
-    updateInputAmount(_formattedInputAmount);
-  }, [sourceChainId, sourceToken]);
-
-  //
 
   const updateToken = (token: Currency) => {
     dispatch(setSourceToken(token));
@@ -107,32 +89,29 @@ export const Input = () => {
     if (amount?.indexOf(".") > -1) {
       if (amount.split(".")[1].length <= sourceToken?.decimals) {
         updateInputAmount(amount);
+        dispatchAmount(amount);
       }
     } else {
       updateInputAmount(amount);
+      dispatchAmount(amount);
     }
   };
 
-  // dispatch the value to redux state
-  // check for decimal validation on token change. - pending
-  useEffect(() => {
-    if (inputAmount) {
+  function dispatchAmount(amount) {
+    if (amount) {
       const parsedAmount = ethers.utils
-        .parseUnits(inputAmount, sourceToken?.decimals)
+        .parseUnits(amount, sourceToken?.decimals)
         .toString();
-      dispatch(setSourceAmount(parsedAmount));
-
-      !!parsedAmount &&
-        tokenWithBalance &&
-        dispatch(
-          setIsEnoughBalance(
-            ethers.BigNumber.from(parsedAmount).lte(
-              ethers.BigNumber.from(tokenWithBalance?.balance)
-            )
+      dispatch(
+        setIsEnoughBalance(
+          ethers.BigNumber.from(parsedAmount).lte(
+            ethers.BigNumber.from(tokenWithBalance?.balance)
           )
-        );
+        )
+      );
+      dispatch(setSourceAmount(parsedAmount));
     }
-  }, [sourceToken, inputAmount, tokenWithBalance]);
+  }
 
   // setting initial token
   // changing the tokens on chain change.
@@ -146,12 +125,19 @@ export const Input = () => {
         dispatch(setSourceToken(tokens[0]));
       }
     }
-  }, [sourceChainId, allTokens]);
+  }, [allTokens]);
 
-  // edit amount on chain/token change
-  // useEffect(() => {
-  //   updateInputAmount(truncateDecimalValue(inputAmount, sourceToken?.decimals));
-  // }, [sourceChainId, sourceToken]);
+  // truncate amount on chain/token change
+  useEffect(() => {
+    if (sourceToken && inputAmount) {
+      const truncatedAmount = truncateDecimalValue(
+        inputAmount,
+        sourceToken?.decimals
+      );
+      updateInputAmount(truncatedAmount);
+      dispatchAmount(truncatedAmount);
+    }
+  }, [sourceToken]);
 
   return (
     <div className="mt-3.5">
