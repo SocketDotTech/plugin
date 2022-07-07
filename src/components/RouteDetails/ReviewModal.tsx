@@ -87,7 +87,7 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
 
             {showTxDetails && (
               <div className="mb-3 flex-1 overflow-y-auto">
-                <TxStepDetails activeRoute={selectedRoute?.route} />
+                <TxStepDetails activeRoute={selectedRoute?.route} forReview />
               </div>
             )}
           </div>

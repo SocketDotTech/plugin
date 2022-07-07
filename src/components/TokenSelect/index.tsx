@@ -47,11 +47,12 @@ export const TokenSelect = (props: Props) => {
         </button>
       ) : (
         <button
-          className="flex items-center flex-1 bg-widget-secondary flex-shrink-0 flex-nowrap w-auto overflow-hidden py-1 px-3 gap-1"
+          className="h-8 flex items-center justify-center flex-1 bg-widget-secondary flex-shrink-0 flex-nowrap w-auto overflow-hidden py-1 px-3 gap-1 text-widget-secondary text-sm"
           onClick={() => setOpenTokenList(!openTokenList)}
+          disabled={!activeToken}
           style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
         >
-          Select Token
+          Loading Tokens
         </button>
       )}
 
@@ -67,7 +68,7 @@ export const TokenSelect = (props: Props) => {
                   className="flex hover:bg-widget-secondary items-center p-2 w-full"
                   onClick={() => selectToken(token)}
                   key={token?.address}
-                  style={{borderRadius: `calc(0.5rem * ${borderRadius})`}}
+                  style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
                 >
                   <img src={token?.logoURI} className="w-6 h-6 rounded-full" />
                   <div className="flex flex-col items-start ml-2 text-widget-secondary">

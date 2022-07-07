@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { Currency, Network, TokenWithBalance } from "../utils/types";
+import { Currency, Network } from "../utils/types";
 
 // component
 import { TokenInput } from "./TokenInput";
@@ -61,6 +61,7 @@ export const Input = () => {
   const dispatch = useDispatch();
   function updateNetwork(network: Network) {
     dispatch(setSourceChain(network?.chainId));
+    dispatch(setSourceToken(null));
   }
 
   // To set the networks. Shows all networks if no widget props are passed

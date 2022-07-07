@@ -14,11 +14,13 @@ export const TxStepDetails = ({
   currentTxIndex,
   completed,
   inProgress,
+  forReview,
 }: {
   activeRoute: any;
   currentTxIndex?: number;
   completed?: boolean;
   inProgress?: boolean;
+  forReview?: boolean;
 }) => {
   const mappedChainData = useMappedChainData();
   const [txData, setTxData] = useState(null);
@@ -70,33 +72,48 @@ export const TxStepDetails = ({
               className="flex flex-col gap-3 text-sm"
               key={`${activeRoute?.activeRouteId}-fund-movr-swap`}
             >
-              {isSwap && (
+              {isSwap ? (
                 <TxStep
-                  label="Swap"
+                  label="Swap &amp; Bridge"
                   complete={txComplete}
                   currentTx={currentTx}
                   url={url}
                   inProgress={inProgress}
+                  forReview={forReview}
                 >
-                  {Number(swapSrc?.amount).toFixed(3)} {swapSrc?.symbol} for{" "}
-                  {Number(swapDest?.amount).toFixed(3)} {swapDest?.symbol} via{" "}
-                  {swapDest?.protocolName} on{" "}
-                  {mappedChainData?.[swapSrc.chainId]?.name}
+                  <div className="flex flex-col gap-2">
+                    <span>
+                      {Number(swapSrc?.amount).toFixed(3)} {swapSrc?.symbol} for{" "}
+                      {Number(swapDest?.amount).toFixed(3)} {swapDest?.symbol}{" "}
+                      via {swapDest?.protocolName} on{" "}
+                      {mappedChainData?.[swapSrc.chainId]?.name}
+                    </span>
+                    <span>
+                      {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol}{" "}
+                      on {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
+                      {Number(bridgeDest?.amount).toFixed(3)}{" "}
+                      {bridgeDest?.symbol} on{" "}
+                      {mappedChainData?.[bridgeDest?.chainId]?.name} via{" "}
+                      {bridgeSrc?.protocolName} bridge
+                    </span>
+                  </div>
+                </TxStep>
+              ) : (
+                <TxStep
+                  label="Bridge"
+                  complete={txComplete}
+                  currentTx={currentTx}
+                  url={url}
+                  inProgress={inProgress}
+                  forReview={forReview}
+                >
+                  {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol} on{" "}
+                  {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
+                  {Number(bridgeDest?.amount).toFixed(3)} {bridgeDest?.symbol}{" "}
+                  on {mappedChainData?.[bridgeDest?.chainId]?.name} via{" "}
+                  {bridgeSrc?.protocolName} bridge
                 </TxStep>
               )}
-              <TxStep
-                label="Bridge"
-                complete={txComplete}
-                currentTx={currentTx}
-                url={url}
-                inProgress={inProgress}
-              >
-                {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol} on{" "}
-                {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
-                {Number(bridgeDest?.amount).toFixed(3)} {bridgeDest?.symbol} on{" "}
-                {mappedChainData?.[bridgeDest?.chainId]?.name} via{" "}
-                {bridgeSrc?.protocolName} bridge
-              </TxStep>
             </div>
           );
         } else if (tx?.userTxType === "dex-swap") {
@@ -111,6 +128,7 @@ export const TxStepDetails = ({
               currentTx={currentTx}
               url={url}
               inProgress={inProgress}
+              forReview={forReview}
             >
               {Number(swapSrc?.amount).toFixed(3)} {swapSrc?.symbol} for{" "}
               {Number(swapDest?.amount).toFixed(3)} {swapDest?.symbol} via{" "}
@@ -127,6 +145,7 @@ export const TxStepDetails = ({
               currentTx={currentTx}
               url={url}
               inProgress={inProgress}
+              forReview={forReview}
             >
               Claim {tx?.toAsset?.symbol} on{" "}
               {mappedChainData?.[tx?.chainId].name}
@@ -145,6 +164,7 @@ const TxStep = ({
   currentTx = false,
   url = null,
   inProgress = false,
+  forReview = false,
 }: {
   label: string;
   children: ReactNode;
@@ -152,6 +172,7 @@ const TxStep = ({
   currentTx?: boolean;
   url?: string | null;
   inProgress?: boolean;
+  forReview?: boolean;
 }) => {
   const active = complete || currentTx;
   const customSettings = useContext(CustomizeContext);
@@ -164,7 +185,7 @@ const TxStep = ({
         }`}
         style={{ borderRadius: `calc(0.25rem * ${borderRadius})` }}
       >
-        {currentTx ? (
+        {currentTx || forReview ? (
           inProgress ? (
             <Spinner size="4" />
           ) : (
@@ -180,10 +201,10 @@ const TxStep = ({
       </div>
       <div
         className={`flex flex-col text-xs text-widget-secondary gap-0.5 ${
-          !active ? "opacity-60" : ""
+          !active && !forReview ? "opacity-60" : ""
         }`}
       >
-        <span className={`${active ? "font-medium" : ""}`}>
+        <span className={`${active || forReview ? "font-medium" : ""}`}>
           {url ? (
             <a
               href={url}

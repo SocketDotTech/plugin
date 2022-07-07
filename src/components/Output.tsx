@@ -42,6 +42,7 @@ export const Output = () => {
   const dispatch = useDispatch();
   function updateNetwork(network: Network) {
     dispatch(setDestChain(network?.chainId));
+    dispatch(setDestToken(null));
   }
 
   // To set the networks. Shows all networks if no widget props are passed
