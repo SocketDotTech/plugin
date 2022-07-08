@@ -11,13 +11,16 @@ import { ChainSelect } from "./ChainSelect";
 import { setSourceToken } from "../state/tokensSlice";
 import { setIsEnoughBalance, setSourceAmount } from "../state/amountSlice";
 import { setSourceChain } from "../state/networksSlice";
-import { formatCurrencyAmount, truncateDecimalValue } from "../utils";
+import {
+  formatCurrencyAmount,
+  parseCurrencyAmount,
+  truncateDecimalValue,
+} from "../utils";
 
 // hooks
 import { useBalance } from "../hooks/apis";
 import { useAccount } from "wagmi";
 import { TokenBalanceReponseDTO } from "socket-v2-sdk";
-import { Spinner } from "./common/Spinner";
 
 export function Balance({
   token,
@@ -29,12 +32,11 @@ export function Balance({
   const _formattedBalance = formatCurrencyAmount(
     token?.balance,
     token?.decimals,
-    2
+    5
   );
   return (
     <span className="text-widget-secondary text-sm text-right flex items-center gap-1 transition-all">
       <span>Bal: {token && _formattedBalance}</span>
-      {isLoading && <Spinner size={4} />}
     </span>
   );
 }
@@ -80,6 +82,7 @@ export const Input = () => {
 
   // For Input & tokens
   const [inputAmount, updateInputAmount] = useState<string>("");
+  const [parsedInputAmount, setParsedInputAmount] = useState<string>(""); // to check the min balance requirement
 
   const updateToken = (token: Currency) => {
     dispatch(setSourceToken(token));
@@ -100,19 +103,22 @@ export const Input = () => {
 
   function dispatchAmount(amount) {
     if (amount) {
-      const parsedAmount = ethers.utils
-        .parseUnits(amount, sourceToken?.decimals)
-        .toString();
-      dispatch(
-        setIsEnoughBalance(
-          ethers.BigNumber.from(parsedAmount).lte(
-            ethers.BigNumber.from(tokenWithBalance?.balance)
-          )
-        )
-      );
+      const parsedAmount = parseCurrencyAmount(amount, sourceToken?.decimals);
+      setParsedInputAmount(parsedAmount);
       dispatch(setSourceAmount(parsedAmount));
     }
   }
+
+  // To check the minimum balance requirement
+  useEffect(() => {
+    if (parsedInputAmount && tokenWithBalance) {
+      const isEnoughBalance = ethers.BigNumber.from(parsedInputAmount).lte(
+        ethers.BigNumber.from(tokenWithBalance?.balance)
+      );
+      console.log('is enough bal', isEnoughBalance);
+      dispatch(setIsEnoughBalance(isEnoughBalance));
+    }
+  }, [parsedInputAmount, tokenWithBalance]);
 
   // setting initial token
   // changing the tokens on chain change.

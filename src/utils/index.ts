@@ -25,6 +25,15 @@ export const formatCurrencyAmount = (
   return result;
 };
 
+export const parseCurrencyAmount = (
+  value: string,
+  units: number,
+) => {
+  const result =
+    !!value && !!units ? ethers.utils.parseUnits(value, units).toString() : "";
+  return result;
+};
+
 export const truncateDecimalValue = (
   value: number | string,
   decimals: number
@@ -57,12 +66,10 @@ export async function addNetwork(chain): Promise<null | void> {
 }
 
 export const handleNetworkChange = async (provider, chain) => {
-  console.log("chain", chain);
   const formattedChainId = hexStripZeros(
     ethers.BigNumber.from(chain?.chainId).toHexString()
   );
   try {
-    console.log("in handle network", provider, provider?.request);
     await window.ethereum.request({
       method: "wallet_switchEthereumChain",
       params: [{ chainId: formattedChainId }],
