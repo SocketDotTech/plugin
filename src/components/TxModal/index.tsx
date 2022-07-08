@@ -101,7 +101,7 @@ export const TxModal = () => {
   async function doTransaction() {
     setTxInProgress(true);
     try {
-      const sendTxData = await userTx.getSendTransaction(); // txData => userTx
+      const sendTxData = await userTx.getSendTransaction();
       const sendTx = await signer.sendTransaction(sendTxData);
 
       // set data to localStorage

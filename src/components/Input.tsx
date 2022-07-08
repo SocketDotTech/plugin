@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Currency, Network } from "../utils/types";
+import { NATIVE_TOKEN_ADDRESS } from "../consts";
 
 // component
 import { TokenInput } from "./TokenInput";
@@ -11,6 +12,8 @@ import { ChainSelect } from "./ChainSelect";
 import { setSourceToken } from "../state/tokensSlice";
 import { setIsEnoughBalance, setSourceAmount } from "../state/amountSlice";
 import { setSourceChain } from "../state/networksSlice";
+import { setError } from "../state/modals";
+
 import {
   formatCurrencyAmount,
   parseCurrencyAmount,
@@ -21,13 +24,16 @@ import {
 import { useBalance } from "../hooks/apis";
 import { useAccount } from "wagmi";
 import { TokenBalanceReponseDTO } from "socket-v2-sdk";
+import useMappedChainData from "../hooks/useMappedChainData";
 
 export function Balance({
   token,
   isLoading,
+  onClick,
 }: {
   token: TokenBalanceReponseDTO["result"];
   isLoading: boolean;
+  onClick?: () => void;
 }) {
   const _formattedBalance = formatCurrencyAmount(
     token?.balance,
@@ -35,9 +41,15 @@ export function Balance({
     5
   );
   return (
-    <span className="text-widget-secondary text-sm text-right flex items-center gap-1 transition-all">
+    <button
+      disabled={!onClick}
+      className={`text-widget-secondary text-sm text-right flex items-center gap-1 transition-all ${
+        onClick ? "hover:underline" : ""
+      }`}
+      onClick={onClick}
+    >
       <span>Bal: {token && _formattedBalance}</span>
-    </span>
+    </button>
   );
 }
 
@@ -59,6 +71,7 @@ export const Input = () => {
     userAddress
   );
   const allTokens = useSelector((state: any) => state.tokens.tokens);
+  const mappedChainData = useMappedChainData();
 
   const dispatch = useDispatch();
   function updateNetwork(network: Network) {
@@ -115,7 +128,6 @@ export const Input = () => {
       const isEnoughBalance = ethers.BigNumber.from(parsedInputAmount).lte(
         ethers.BigNumber.from(tokenWithBalance?.balance)
       );
-      console.log('is enough bal', isEnoughBalance);
       dispatch(setIsEnoughBalance(isEnoughBalance));
     }
   }, [parsedInputAmount, tokenWithBalance]);
@@ -146,6 +158,48 @@ export const Input = () => {
     }
   }, [sourceToken]);
 
+  function setMaxBalance(balance) {
+    function formateAndDispatchAmount(_balance) {
+      const _formattedAmount = formatCurrencyAmount(
+        _balance,
+        sourceToken?.decimals,
+        sourceToken?.decimals
+      );
+      updateInputAmount(_formattedAmount);
+      dispatchAmount(_formattedAmount);
+    }
+
+    if (sourceToken.address === NATIVE_TOKEN_ADDRESS) {
+      // subtracting min gas from the total amount
+      const minGas =
+        mappedChainData[sourceChainId].currency.minNativeCurrencyForGas;
+      const minGasBN = ethers.BigNumber.from(minGas);
+      const balanceBN = ethers.BigNumber.from(balance);
+
+      if (minGasBN.lt(balanceBN)) {
+        const maxBalanceMinusGas = balanceBN.sub(minGasBN);
+        formateAndDispatchAmount(maxBalanceMinusGas);
+      } else {
+        dispatch(
+          setError(
+            <span>
+              There is not enough gas. We got you covered, use{" "}
+              <a
+                href="https://www.bungee.exchange/refuel"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-widget-theme text-medium"
+              >
+                Refuel
+              </a>{" "}
+              to get gas now!
+            </span>
+          )
+        );
+      }
+    } else formateAndDispatchAmount(balance);
+  }
+
   return (
     <div className="mt-3.5">
       <div className="flex items-center justify-between">
@@ -157,7 +211,11 @@ export const Input = () => {
             onChange={updateNetwork}
           />
         </div>
-        <Balance token={tokenWithBalance} isLoading={isBalanceLoading} />
+        <Balance
+          token={tokenWithBalance}
+          isLoading={isBalanceLoading}
+          onClick={() => setMaxBalance(tokenWithBalance?.balance)}
+        />
       </div>
       <TokenInput
         source

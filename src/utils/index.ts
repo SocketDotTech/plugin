@@ -18,7 +18,7 @@ export const formatCurrencyAmount = (
   const result = !!value
     ? ethers.utils.formatUnits(value?.toString(), units)
     : "";
-  if (result == "0.0" || !result) return 0;
+  if (result == "0.0" || !result) return '0';
 
   if (!!decimals) return truncateDecimalValue(result, decimals);
 

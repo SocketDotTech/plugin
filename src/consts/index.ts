@@ -7,5 +7,7 @@ export const USER_TX_LABELS = {
   claim: "Claim",
   sign: "Sign",
 };
+export const NATIVE_TOKEN_ADDRESS =
+  "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
 export * from "./time";
