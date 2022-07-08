@@ -50,13 +50,13 @@ export const useActiveRoutes = () => {
   async function fetchActiveRoutes(address: string) {
     const result = await Routes.getActiveRoutesForUser({
       userAddress: address,
-      routeStatus: 'PENDING'
+      routeStatus: "PENDING",
     });
     return result;
   }
 
   const { data, error, isValidating } = useSWR(
-    userAddress ? [userAddress]: null,
+    userAddress ? [userAddress, "active-routes"] : null,
     fetchActiveRoutes,
     {
       refreshInterval: time.ACTIVE_ROUTES_REFRESH * 1000, //refresh active routes every 30 seconds
@@ -119,7 +119,9 @@ export const useRoutes = (
   }
 
   const { data, error, isValidating } = useSWR(
-    shouldFetch ? [sourceToken, destToken, amount, userAddress, sort] : null,
+    shouldFetch
+      ? [sourceToken, destToken, amount, userAddress, sort, "quotes"]
+      : null,
     fetchQuotes,
     {
       refreshInterval: time.QUOTES_REFRESH * 1000, //refresh quotes every 60 seconds
@@ -154,7 +156,7 @@ export const useBalance = (
   }
 
   const { data, error, isValidating } = useSWR(
-    shouldFetch ? [tokenAddress, chainId, userAddress] : null,
+    shouldFetch ? [tokenAddress, chainId, userAddress, "token-balance"] : null,
     fetchBalance,
     {
       refreshInterval: time.BALANCE_REFRESH * 1000, //revalidate after every 60s.
@@ -164,5 +166,29 @@ export const useBalance = (
   return {
     data: data?.result,
     isBalanceLoading: userAddress && ((!error && !data) || isValidating),
+  };
+};
+
+export const useAllTokenBalances = () => {
+  const { address: userAddress } = useAccount();
+
+  async function fetchAllTokenBalances(_userAddress: string) {
+    const balances = await Balances.getBalances({
+      userAddress: _userAddress,
+    });
+    return balances;
+  }
+
+  const { data, error, isValidating } = useSWR(
+    userAddress ? [userAddress, "user-balance"] : null,
+    fetchAllTokenBalances,
+    {
+      refreshInterval: time.USER_BALANCES_REFRESH * 1000,
+    }
+  );
+
+  return {
+    data: data?.result,
+    isLoading: userAddress && ((!error && !data) || isValidating),
   };
 };
