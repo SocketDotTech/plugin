@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Currency, Network } from "../utils/types";
 import { NATIVE_TOKEN_ADDRESS } from "../consts";
 
@@ -23,10 +23,10 @@ import {
 
 // hooks
 import { useBalance } from "../hooks/apis";
-import { useAccount } from "wagmi";
 import { TokenBalanceReponseDTO } from "socket-v2-sdk";
 import useMappedChainData from "../hooks/useMappedChainData";
 import useDebounce from "../hooks/useDebounce";
+import { Web3Context } from "../providers/Web3Provider";
 
 export function Balance({
   token,
@@ -65,7 +65,9 @@ export const Input = () => {
   const sourceChainId = useSelector(
     (state: any) => state.networks.sourceChainId
   );
-  const { address: userAddress } = useAccount();
+  const web3Context = useContext(Web3Context);
+  const { userAddress } = web3Context.web3Provider;
+
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
   const { data: tokenWithBalance, isBalanceLoading } = useBalance(
     sourceToken?.address,

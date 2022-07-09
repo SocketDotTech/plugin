@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SocketTx } from "socket-v2-sdk";
 import { ChevronRight } from "react-feather";
 
@@ -15,11 +15,12 @@ import { setTxDetails } from "../../state/txDetails";
 
 // hooks
 import { socket } from "../../hooks/apis";
-import { useSigner, useNetwork, useProvider, useAccount } from "wagmi";
 import { handleNetworkChange } from "../../utils";
 
 import { USER_TX_LABELS } from "../../consts/";
 import { UserTxType } from "../../utils/UserTxType";
+
+import { Web3Context } from "../../providers/Web3Provider";
 
 export const TxModal = () => {
   const dispatch = useDispatch();
@@ -34,10 +35,8 @@ export const TxModal = () => {
   const allNetworks = useSelector((state: any) => state.networks.allNetworks);
   const txDetails = useSelector((state: any) => state.txDetails.txDetails);
 
-  const { chain: activeChain } = useNetwork();
-  const { data: signer } = useSigner();
-  const { address } = useAccount();
-  const provider = useProvider();
+  const web3Context = useContext(Web3Context);
+  const { userAddress, signer, provider, networkId: activeChain } = web3Context.web3Provider
 
   const [initiating, setInitiating] = useState<boolean>(false);
   const [isApprovalRequired, setIsApprovalRequired] = useState<boolean>(false);
@@ -75,7 +74,7 @@ export const TxModal = () => {
   async function initiateContinuation(txType?: string, txHash?: string) {
     // in normal flow, txType and txHash will be passed.
     // when continuing from tx history section, prevTxData from the localStorage will be fetched
-    const prevTxData = txDetails?.[address]?.[activeRoute?.activeRouteId];
+    const prevTxData = txDetails?.[userAddress]?.[activeRoute?.activeRouteId];
     const keysArr = prevTxData && Object.keys(prevTxData);
     const lastStep = prevTxData?.[keysArr?.[keysArr?.length - 1]];
 
@@ -107,7 +106,7 @@ export const TxModal = () => {
       // set data to localStorage
       dispatch(
         setTxDetails({
-          account: address,
+          account: userAddress,
           routeId: userTx.activeRouteId,
           stepIndex: userTx.userTxIndex,
           value: { hash: sendTx.hash, userTxType: userTx.userTxType },
@@ -145,7 +144,7 @@ export const TxModal = () => {
       const next = txHash ? await execute.next(txHash) : await execute.next();
 
       setBridging(false);
-      console.log("next", next);
+      
       if (!next.done && next.value) {
         const tx = next.value;
         setUserTx(tx);
@@ -208,7 +207,7 @@ export const TxModal = () => {
         <div className="p-3 shrink-0">
           {!txCompleted && (
             <>
-              {userTx && activeChain?.id !== userTx?.chainId ? (
+              {userTx && activeChain !== userTx?.chainId ? (
                 <Button onClick={changeNetwork}>
                   {initiating
                     ? "Initiating..."

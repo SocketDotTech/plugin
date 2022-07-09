@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Balances,
   ChainId,
@@ -8,7 +8,6 @@ import {
   Token,
 } from "socket-v2-sdk";
 import { useDispatch, useSelector } from "react-redux";
-import { useAccount } from "wagmi";
 import useSWR from "swr";
 
 import { time } from "../consts";
@@ -17,6 +16,8 @@ import { time } from "../consts";
 import { setNetworks } from "../state/networksSlice";
 import { setTokens } from "../state/tokensSlice";
 import { SortOptions } from "socket-v2-sdk/lib/src/client/models/QuoteRequest";
+
+import { Web3Context } from "../providers/Web3Provider";
 
 export let socket;
 
@@ -45,7 +46,8 @@ export const useChains = () => {
 };
 
 export const useActiveRoutes = () => {
-  const { address: userAddress } = useAccount();
+  const web3Context = useContext(Web3Context);
+  const { userAddress } = web3Context.web3Provider
 
   async function fetchActiveRoutes(address: string) {
     const result = await Routes.getActiveRoutesForUser({
@@ -95,9 +97,9 @@ export const useRoutes = (
   sourceToken,
   destToken,
   amount,
-  sort: SortOptions
+  sort: SortOptions,
+  userAddress
 ) => {
-  const { address: userAddress } = useAccount();
   const shouldFetch = !!sourceToken && !!destToken && !!amount && !!userAddress;
 
   async function fetchQuotes(
@@ -170,7 +172,8 @@ export const useBalance = (
 };
 
 export const useAllTokenBalances = () => {
-  const { address: userAddress } = useAccount();
+  const web3Context = useContext(Web3Context);
+  const { userAddress } = web3Context.web3Provider
 
   async function fetchAllTokenBalances(_userAddress: string) {
     const balances = await Balances.getBalances({

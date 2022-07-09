@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Currency, Network } from "../utils/types";
 
 // component
@@ -15,7 +15,8 @@ import { formatCurrencyAmount } from "../utils";
 
 // hooks
 import { useBalance } from "../hooks/apis";
-import { useAccount } from "wagmi";
+
+import { Web3Context } from "../providers/Web3Provider";
 
 export const Output = () => {
   // For networks
@@ -24,7 +25,8 @@ export const Output = () => {
   const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
     allNetworks ? [...allNetworks] : null
   );
-  const { address: userAddress } = useAccount();
+  const web3Context = useContext(Web3Context);
+  const { userAddress } = web3Context.web3Provider
   const destChainId = useSelector((state: any) => state.networks.destChainId);
   const sourceChainId = useSelector(
     (state: any) => state.networks.sourceChainId

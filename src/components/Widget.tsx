@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 // context
 import { useContext } from "react";
 import { CustomizeContext } from "../providers/CustomizeProvider";
+import { Web3Context } from "../providers/Web3Provider";
 
 // components
 import { Header } from "./Header";
@@ -22,6 +23,7 @@ import { ErrorModal } from "./ErrorModal";
 export const Widget = (props: WidgetProps) => {
   const { customize } = props;
   const customSettings = useContext(CustomizeContext);
+  const web3Context = useContext(Web3Context);
 
   useChains();
   useTokenList();
@@ -32,6 +34,26 @@ export const Widget = (props: WidgetProps) => {
       ...customSettings.customization,
       ...customize,
     });
+
+    // settings web3Provider data
+    async function fetchData() {
+      try {
+        const signer = await props.provider.getSigner();
+        const address = await signer.getAddress();
+        const chainId = await signer.getChainId();
+
+        web3Context.setweb3Provider({
+          userAddress: address,
+          networkId: chainId,
+          signer,
+          provider: props.provider,
+        });
+      } catch (e) {
+        console.log("Error", e);
+      }
+    }
+
+    fetchData();
   }, []);
 
   const { responsiveWidth, width, borderRadius } = customSettings.customization;

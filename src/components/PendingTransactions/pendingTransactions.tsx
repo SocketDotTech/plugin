@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ActiveRouteResponse } from "socket-v2-sdk";
-import { useAccount } from "wagmi";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 
 // components
@@ -14,7 +13,6 @@ import { useActiveRoutes } from "../../hooks/apis";
 
 export const PendingTransactions = () => {
   const dispatch = useDispatch();
-  const { address } = useAccount();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [activeRoutes, setActiveRoutes] = useState<ActiveRouteResponse[]>(null);

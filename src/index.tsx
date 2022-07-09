@@ -1,13 +1,13 @@
 import "./index.css";
 
 import { Provider as ReduxProvider } from "react-redux";
-import { createClient, WagmiConfig } from "wagmi";
 
 import store from "./state/store";
 import { WidgetProps } from "./utils/types";
 
 import { Widget } from "./components/Widget";
 import { CustomizeProvider } from "./providers/CustomizeProvider";
+import { Web3Provider } from "./providers/Web3Provider";
 import { initSocket } from "./hooks/apis";
 
 export const Bridge = (props: WidgetProps) => {
@@ -21,18 +21,14 @@ export const Bridge = (props: WidgetProps) => {
   } else initSocket(API_KEY); // initialising socket sdk
 
   if (API_KEY && provider) {
-    const wagmiClient = createClient({
-      autoConnect: true,
-      provider,
-    });
     return (
-      <WagmiConfig client={wagmiClient}>
+      <Web3Provider>
         <ReduxProvider store={store}>
           <CustomizeProvider>
             <Widget {...props} />
           </CustomizeProvider>
         </ReduxProvider>
-      </WagmiConfig>
+      </Web3Provider>
     );
   }
 };
