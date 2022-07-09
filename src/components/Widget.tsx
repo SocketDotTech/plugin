@@ -28,7 +28,7 @@ export const Widget = (props: WidgetProps) => {
   useChains();
   useTokenList();
 
-  // run only once
+  // run when the props are changed
   useEffect(() => {
     customSettings.setCustomization({
       ...customSettings.customization,
@@ -54,7 +54,7 @@ export const Widget = (props: WidgetProps) => {
     }
 
     fetchData();
-  }, []);
+  }, [props.provider]);
 
   const { responsiveWidth, width, borderRadius } = customSettings.customization;
 
