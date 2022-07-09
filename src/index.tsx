@@ -20,11 +20,11 @@ export const Bridge = (props: WidgetProps) => {
     return <IntegrationError>Please pass the API key</IntegrationError>;
   } else initSocket(API_KEY); // initialising socket sdk
 
-  if(API_KEY && provider){
+  if (API_KEY && provider) {
     const wagmiClient = createClient({
       autoConnect: true,
-      provider
-    })
+      provider,
+    });
     return (
       <WagmiConfig client={wagmiClient}>
         <ReduxProvider store={store}>

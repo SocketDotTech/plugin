@@ -22,6 +22,9 @@ yarn-error.log*
 *.tgz
 *.zip
 /storybook-static
+build-storybook.log
 
 # Dev Notes
 *.txt
+
+/test

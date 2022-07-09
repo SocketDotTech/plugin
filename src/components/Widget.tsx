@@ -17,7 +17,6 @@ import { PendingTransactions } from "./PendingTransactions/pendingTransactions";
 
 // hooks
 import { useChains, useTokenList } from "../hooks/apis";
-import { useNetwork, useAccount } from "wagmi";
 import { ErrorModal } from "./ErrorModal";
 
 export const Widget = (props: WidgetProps) => {
@@ -26,8 +25,6 @@ export const Widget = (props: WidgetProps) => {
 
   useChains();
   useTokenList();
-  const { chain } = useNetwork();
-  const { address } = useAccount();
 
   // run only once
   useEffect(() => {

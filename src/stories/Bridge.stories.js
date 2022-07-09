@@ -1,7 +1,6 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { Bridge } from "../index.tsx";
-// import { Bridge } from "widget";
 import "./style.css";
 import { SOCKET_API_KEY } from "../consts";
 
@@ -83,7 +82,7 @@ stories.add("Bridge", () => {
       chain.optimism,
       avalancheChain,
       bnbChain,
-      gnosisChain
+      // gnosisChain
     ],
     [publicProvider()]
   );

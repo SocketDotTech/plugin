@@ -65,7 +65,7 @@ export const RouteDetails = () => {
     if (!isEnoughBalance) {
       return "Not enough balance";
     } else {
-      return "Review Bridge";
+      return "Review Quote";
     }
   }
 
