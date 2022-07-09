@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 // context
 import { useContext } from "react";
-import { CustomizeContext } from "./CustomizeProvider";
+import { CustomizeContext } from "../providers/CustomizeProvider";
 
 // components
 import { Header } from "./Header";

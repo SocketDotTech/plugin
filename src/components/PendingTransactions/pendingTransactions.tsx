@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ActiveRouteResponse } from "socket-v2-sdk";
 import { useAccount } from "wagmi";
-import { CustomizeContext } from "../CustomizeProvider";
+import { CustomizeContext } from "../../providers/CustomizeProvider";
 
 // components
 import { Modal } from "../Modal";

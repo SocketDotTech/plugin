@@ -1,5 +1,5 @@
 import { ReactNode, useContext } from "react";
-import { CustomizeContext } from "../CustomizeProvider";
+import { CustomizeContext } from "../../providers/CustomizeProvider";
 
 export const InnerCard = ({
   children,

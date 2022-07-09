@@ -6,7 +6,7 @@ import {
 import useMappedChainData from "../../hooks/useMappedChainData";
 import { ArrowRight, CheckCircle } from "react-feather";
 import { ReactNode, useContext, useEffect, useState } from "react";
-import { CustomizeContext } from "../CustomizeProvider";
+import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Spinner } from "../common/Spinner";
 
 export const TxStepDetails = ({

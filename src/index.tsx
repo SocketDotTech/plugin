@@ -7,7 +7,7 @@ import store from "./state/store";
 import { WidgetProps } from "./utils/types";
 
 import { Widget } from "./components/Widget";
-import { CustomizeProvider } from "./components/CustomizeProvider";
+import { CustomizeProvider } from "./providers/CustomizeProvider";
 import { initSocket } from "./hooks/apis";
 
 export const Bridge = (props: WidgetProps) => {
