@@ -17,6 +17,7 @@ stories.add("Widget", () => {
       window.ethereum,
       "any"
     );
+
     const signer = await provider.getSigner();
     const userAddress = await signer.getAddress();
     const chain = await signer.getChainId();
@@ -26,21 +27,22 @@ stories.add("Widget", () => {
       setUserAddress(userAddress);
       setChain(chain);
     }
-    else {
-      await provider.send("eth_requestAccounts", []);
-      const signer = await provider.getSigner();
-      const userAddress = await signer.getAddress();
-      const chain = await signer.getChainId();
-      setProvider(provider);
-      setUserAddress(userAddress);
-      setChain(chain);
-    }
   }
 
   const connectWallet = async () => {
     try {
       if (window.ethereum) {
-        fetchWalletData();
+        const provider = new ethers.providers.Web3Provider(
+          window.ethereum,
+          "any"
+        );
+        await provider.send("eth_requestAccounts", []);
+        const signer = await provider.getSigner();
+        const userAddress = await signer.getAddress();
+        const chain = await signer.getChainId();
+        setProvider(provider);
+        setUserAddress(userAddress);
+        setChain(chain);
       } else {
         alert("Web3 wallet not detected");
       }
@@ -63,12 +65,6 @@ stories.add("Widget", () => {
       });
     }
   }, [window.ethereum])
-
-
-  useEffect(() => {
-    console.log('Provider in Stories', provider, userAddress)
-  }, [provider])
-
 
   return (
     <div
@@ -97,13 +93,12 @@ stories.add("Widget", () => {
           </button>
         )}
       </div>
-      {
-        provider && (<Bridge
-          provider={provider}
-          API_KEY={SOCKET_API_KEY}
-          customize={{ borderRadius: 1 }}
-        />)
-      }
+
+      <Bridge
+        provider={provider}
+        API_KEY={SOCKET_API_KEY}
+        customize={{ borderRadius: 1 }}
+      />
 
     </div>
   );
