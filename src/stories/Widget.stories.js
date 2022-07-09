@@ -11,20 +11,36 @@ stories.add("Widget", () => {
   const [provider, setProvider] = useState();
   const [userAddress, setUserAddress] = useState();
   const [chain, setChain] = useState();
+
+  const fetchWalletData = async () => {
+    const provider = new ethers.providers.Web3Provider(
+      window.ethereum,
+      "any"
+    );
+    const signer = await provider.getSigner();
+    const userAddress = await signer.getAddress();
+    const chain = await signer.getChainId();
+
+    if (provider) {
+      setProvider(provider);
+      setUserAddress(userAddress);
+      setChain(chain);
+    }
+    else {
+      await provider.send("eth_requestAccounts", []);
+      const signer = await provider.getSigner();
+      const userAddress = await signer.getAddress();
+      const chain = await signer.getChainId();
+      setProvider(provider);
+      setUserAddress(userAddress);
+      setChain(chain);
+    }
+  }
+
   const connectWallet = async () => {
     try {
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(
-          window.ethereum,
-          "any"
-        );
-        await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner();
-        const userAddress = await signer.getAddress();
-        const chain = await signer.getChainId();
-        setProvider(provider);
-        setUserAddress(userAddress);
-        setChain(chain);
+        fetchWalletData();
       } else {
         alert("Web3 wallet not detected");
       }
@@ -33,9 +49,27 @@ stories.add("Widget", () => {
       console.log(e);
     }
   };
+
+  useEffect(() => {
+    if (window.ethereum) {
+      fetchWalletData();
+
+      ethereum.on('chainChanged', () => {
+        fetchWalletData();
+      });
+
+      ethereum.on('accountsChanged', () => {
+        fetchWalletData();
+      });
+    }
+  }, [window.ethereum])
+
+
   useEffect(() => {
     console.log('Provider in Stories', provider, userAddress)
   }, [provider])
+
+
   return (
     <div
       style={{
@@ -63,11 +97,14 @@ stories.add("Widget", () => {
           </button>
         )}
       </div>
-      <Bridge
-        provider={provider}
-        API_KEY={SOCKET_API_KEY}
-        customize={{ borderRadius: 1 }}
-      />
+      {
+        provider && (<Bridge
+          provider={provider}
+          API_KEY={SOCKET_API_KEY}
+          customize={{ borderRadius: 1 }}
+        />)
+      }
+
     </div>
   );
 });
