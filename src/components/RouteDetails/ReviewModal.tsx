@@ -39,7 +39,10 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
   }, [selectedRoute, bestRoute]);
 
   return (
-    <Modal title="Review Quote" closeModal={closeModal}>
+    <Modal
+      title="Review Quote"
+      closeModal={showTxDetails ? null : closeModal}
+    >
       <div className="flex flex-col justify-between flex-1 relative">
         <div>
           <div className="flex justify-between mt-5 items-center px-3">

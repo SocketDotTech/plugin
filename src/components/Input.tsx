@@ -13,6 +13,7 @@ import { setSourceToken } from "../state/tokensSlice";
 import { setIsEnoughBalance, setSourceAmount } from "../state/amountSlice";
 import { setSourceChain } from "../state/networksSlice";
 import { setError } from "../state/modals";
+import { setBestRoute } from "../state/quotesSlice";
 
 import {
   formatCurrencyAmount,
@@ -25,6 +26,7 @@ import { useBalance } from "../hooks/apis";
 import { useAccount } from "wagmi";
 import { TokenBalanceReponseDTO } from "socket-v2-sdk";
 import useMappedChainData from "../hooks/useMappedChainData";
+import useDebounce from "../hooks/useDebounce";
 
 export function Balance({
   token,
@@ -112,13 +114,21 @@ export const Input = () => {
       updateInputAmount(amount);
       dispatchAmount(amount);
     }
+
+    if (!amount || amount == 0) {
+      dispatch(setBestRoute(null));
+    }
   };
+
+  useDebounce(() => dispatch(setSourceAmount(parsedInputAmount)), 500, [
+    parsedInputAmount,
+  ]);
 
   function dispatchAmount(amount) {
     if (amount) {
       const parsedAmount = parseCurrencyAmount(amount, sourceToken?.decimals);
       setParsedInputAmount(parsedAmount);
-      dispatch(setSourceAmount(parsedAmount));
+      // parsedInputAmount is the dependency for useDebounce hook
     }
   }
 

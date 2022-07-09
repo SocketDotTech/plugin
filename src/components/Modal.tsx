@@ -4,7 +4,7 @@ import { CustomizeContext } from "./CustomizeProvider";
 import { Header } from "./Header";
 interface ModalProps {
   title: ReactElement | string;
-  closeModal: () => void;
+  closeModal?: () => void;
   children: ReactNode;
   disableClose?: boolean;
   classNames?: string;
@@ -28,13 +28,15 @@ export const Modal = ({
       >
         <div className="p-3 pt-2.5 border-b border-widget-secondary">
           <Header title={title}>
-            <button
-              onClick={closeModal}
-              disabled={disableClose}
-              className="disabled:opacity-20 disabled:cursor-not-allowed"
-            >
-              <X className="w-5.5 h-5.5 text-widget-secondary" />
-            </button>
+            {closeModal && (
+              <button
+                onClick={closeModal}
+                disabled={disableClose}
+                className="disabled:opacity-20 disabled:cursor-not-allowed"
+              >
+                <X className="w-5.5 h-5.5 text-widget-secondary" />
+              </button>
+            )}
           </Header>
         </div>
         {children}
