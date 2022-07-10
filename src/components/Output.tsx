@@ -26,7 +26,7 @@ export const Output = () => {
     allNetworks ? [...allNetworks] : null
   );
   const web3Context = useContext(Web3Context);
-  const { userAddress } = web3Context.web3Provider
+  const { userAddress } = web3Context.web3Provider;
   const destChainId = useSelector((state: any) => state.networks.destChainId);
   const sourceChainId = useSelector(
     (state: any) => state.networks.sourceChainId
@@ -99,17 +99,20 @@ export const Output = () => {
     if (allTokens) {
       const tokens = allTokens?.to;
       const usdc = tokens?.find((x: Currency) => x.chainAgnosticId === "USDC");
+      
+      let correspondingDestToken;
       if (sourceToken?.chainAgnosticId) {
-        const correspondingToken = tokens?.find(
-          (x: Currency) => x?.chainAgnosticId === sourceToken?.chainAgnosticId
+        correspondingDestToken = tokens?.find(
+          (x: Currency) => x?.chainAgnosticId === sourceToken.chainAgnosticId
         );
-        if (correspondingToken) {
-          dispatch(setDestToken(correspondingToken));
-        } else if (usdc) {
-          dispatch(setDestToken(usdc));
-        } else {
-          dispatch(setDestToken(tokens[0]));
-        }
+      }
+
+      if (correspondingDestToken) {
+        dispatch(setDestToken(correspondingDestToken));
+      } else if (usdc) {
+        dispatch(setDestToken(usdc));
+      } else {
+        dispatch(setDestToken(tokens[0]));
       }
     }
   }, [sourceChainId, allTokens, sourceToken]);
@@ -133,7 +136,7 @@ export const Output = () => {
       </div>
 
       <TokenInput
-        amount={`${outputAmount ? `~${outputAmount}`: ''}`}
+        amount={`${outputAmount ? `~${outputAmount}` : ""}`}
         updateToken={updateToken}
         activeToken={destToken}
       />

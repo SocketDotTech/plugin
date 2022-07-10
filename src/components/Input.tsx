@@ -7,6 +7,7 @@ import { NATIVE_TOKEN_ADDRESS } from "../consts";
 // component
 import { TokenInput } from "./TokenInput";
 import { ChainSelect } from "./ChainSelect";
+import { Spinner } from "./common/Spinner";
 
 // actions
 import { setSourceToken } from "../state/tokensSlice";
@@ -51,6 +52,7 @@ export function Balance({
       onClick={onClick}
     >
       <span>Bal: {token && _formattedBalance}</span>
+      {isLoading && <Spinner size={3} />}
     </button>
   );
 }
@@ -149,11 +151,22 @@ export const Input = () => {
   useEffect(() => {
     if (allTokens) {
       const tokens = allTokens?.from;
-      const usdc = tokens?.find((x: Currency) => x.chainAgnosticId === "USDC");
-      if (usdc) {
-        dispatch(setSourceToken(usdc));
-      } else {
-        dispatch(setSourceToken(tokens[0]));
+      const selectedTokenExists = tokens.find(
+        (x) =>
+          x.address === sourceToken?.address &&
+          x.chainId === sourceToken?.chainId
+      );
+
+      // If selected token exists in the new token list, retain the selected token. Else, run the following code
+      if (!selectedTokenExists) {
+        const usdc = tokens?.find(
+          (x: Currency) => x.chainAgnosticId === "USDC"
+        );
+        if (usdc) {
+          dispatch(setSourceToken(usdc));
+        } else {
+          dispatch(setSourceToken(tokens[0]));
+        }
       }
     }
   }, [allTokens]);
