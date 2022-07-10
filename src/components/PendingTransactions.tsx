@@ -1,17 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ActiveRouteResponse } from "socket-v2-sdk";
-import { CustomizeContext } from "../../providers/CustomizeProvider";
+import { CustomizeContext } from "../providers/CustomizeProvider";
 
 // components
-import { Modal } from "../Modal";
-import { TokenDetail } from "../TokenDetail";
+import { Modal } from "./common/Modal";
+import { TokenDetail } from "./common/TokenDetail";
 import { ChevronRight } from "react-feather";
 
 // actions
-import { setActiveRoute, setIsTxModalOpen } from "../../state/modals";
+import { setActiveRoute, setIsTxModalOpen } from "../state/modals";
 
-import { useActiveRoutes } from "../../hooks/apis";
+import { useActiveRoutes } from "../hooks/apis";
 
 export const PendingTransactions = () => {
   const dispatch = useDispatch();

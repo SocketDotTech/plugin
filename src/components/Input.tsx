@@ -6,7 +6,7 @@ import { NATIVE_TOKEN_ADDRESS } from "../consts";
 
 // component
 import { TokenInput } from "./TokenInput";
-import { ChainSelect } from "./ChainSelect";
+import { ChainSelect } from "./common/ChainSelect";
 import { Spinner } from "./common/Spinner";
 
 // actions

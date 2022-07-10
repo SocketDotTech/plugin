@@ -4,9 +4,9 @@ import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { BRIDGE_NAMES } from "../../consts/";
 
 // components
-import { Button } from "../Button";
-import { Modal } from "../Modal";
-import { TokenDetail } from "../TokenDetail";
+import { Button } from "../common/Button";
+import { Modal } from "../common/Modal";
+import { TokenDetail } from "../common/TokenDetail";
 import { ChevronRight, ChevronUp } from "react-feather";
 import { InnerCard } from "../common/InnerCard";
 

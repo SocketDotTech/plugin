@@ -7,7 +7,7 @@ import { getExplorerLink, ExplorerDataType } from "../../utils/";
 
 // compoennts
 import { Spinner } from "../common/Spinner";
-import { TokenDetail } from "../TokenDetail";
+import { TokenDetail } from "../common/TokenDetail";
 
 export const BridgingLoader = ({ source, dest, explorerParams }) => {
   const mappedChainData = useMappedChainData();

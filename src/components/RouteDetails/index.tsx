@@ -8,7 +8,7 @@ import { setBestRoute } from "../../state/quotesSlice";
 
 // components
 import { ReviewModal } from "./ReviewModal";
-import { Button } from "../Button";
+import { Button } from "../common/Button";
 import { Spinner } from "../common/Spinner";
 import { InnerCard } from "../common/InnerCard";
 

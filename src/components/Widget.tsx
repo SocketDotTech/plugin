@@ -8,17 +8,17 @@ import { CustomizeContext } from "../providers/CustomizeProvider";
 import { Web3Context } from "../providers/Web3Provider";
 
 // components
-import { Header } from "./Header";
+import { Header } from "./common/Header";
 import { Input } from "./Input";
 import { Output } from "./Output";
 import { RouteDetails } from "./RouteDetails";
 import { Settings } from "./Settings";
 import { TxModal } from "./TxModal";
-import { PendingTransactions } from "./PendingTransactions/pendingTransactions";
+import { PendingTransactions } from "./PendingTransactions";
+import { ErrorModal } from "./common/ErrorModal";
 
 // hooks
 import { useChains, useTokenList } from "../hooks/apis";
-import { ErrorModal } from "./ErrorModal";
 
 export const Widget = (props: WidgetProps) => {
   const { customize } = props;

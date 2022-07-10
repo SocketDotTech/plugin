@@ -1,7 +1,7 @@
 import { setSortPref } from "../../state/quotesSlice";
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Modal } from "../Modal";
+import { Modal } from "../common/Modal";
 import { ChevronDown, Settings as SettingsIcon } from "react-feather";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 

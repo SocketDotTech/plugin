@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode, useContext } from "react";
 import { X } from "react-feather";
-import { CustomizeContext } from "../providers/CustomizeProvider";
+import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Header } from "./Header";
 interface ModalProps {
   title: ReactElement | string;

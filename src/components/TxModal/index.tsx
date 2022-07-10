@@ -4,10 +4,10 @@ import { SocketTx } from "socket-v2-sdk";
 import { ChevronRight } from "react-feather";
 
 // components
-import { Modal } from "../Modal";
-import { Button } from "../Button";
+import { Modal } from "../common/Modal";
+import { Button } from "../common/Button";
 import { TxStepDetails } from "./TxStepDetails";
-import { TokenDetail } from "../TokenDetail";
+import { TokenDetail } from "../common/TokenDetail";
 import { BridgingLoader } from "./BridgingLoader";
 
 // actions

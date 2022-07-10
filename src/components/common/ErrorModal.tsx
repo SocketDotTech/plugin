@@ -1,4 +1,4 @@
-import { setError } from "../state/modals";
+import { setError } from "../../state/modals";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "./Modal";
 import { AlertCircle } from "react-feather";
@@ -16,9 +16,14 @@ export const ErrorModal = () => {
         <div className="flex flex-col flex-1 p-3 items-center justify-between">
           <div className="flex flex-col items-center">
             <AlertCircle className="text-red-500 w-10 h-10" />
-            <p className="text-sm text-widget-secondary mt-4 text-center break-all">{error}</p>
+            <p className="text-sm text-widget-secondary mt-4 text-center break-all">
+              {error}
+            </p>
           </div>
-          <Button onClick={close} classNames="bg-red-500 hover:bg-red-600 text-white">
+          <Button
+            onClick={close}
+            classNames="bg-red-500 hover:bg-red-600 text-white"
+          >
             Dismiss
           </Button>
         </div>

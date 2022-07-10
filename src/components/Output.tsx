@@ -5,7 +5,7 @@ import { Currency, Network } from "../utils/types";
 
 // component
 import { TokenInput } from "./TokenInput";
-import { ChainSelect } from "./ChainSelect";
+import { ChainSelect } from "./common/ChainSelect";
 import { Balance } from "./Input";
 
 // actions

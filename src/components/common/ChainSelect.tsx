@@ -1,9 +1,9 @@
-import useClickOutside from "../hooks/useClickOutside";
+import useClickOutside from "../../hooks/useClickOutside";
 import { Network } from "@/utils/types";
 import { ReactNode, useContext, useState } from "react";
 import { useEffect } from "react";
 import { ChevronDown } from "react-feather";
-import { CustomizeContext } from "../providers/CustomizeProvider";
+import { CustomizeContext } from "../../providers/CustomizeProvider";
 
 interface ChainDropdownProps {
   networks: Network[];
