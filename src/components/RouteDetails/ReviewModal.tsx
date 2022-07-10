@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
+import { BRIDGE_NAMES } from "../../consts/";
 
 // components
 import { Button } from "../Button";
@@ -39,10 +40,7 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
   }, [selectedRoute, bestRoute]);
 
   return (
-    <Modal
-      title="Review Quote"
-      closeModal={showTxDetails ? null : closeModal}
-    >
+    <Modal title="Review Quote" closeModal={showTxDetails ? null : closeModal}>
       <div className="flex flex-col justify-between flex-1 relative">
         <div>
           <div className="flex justify-between mt-5 items-center px-3">
@@ -61,7 +59,10 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
           <div className="p-3 flex flex-col gap-3 mt-5">
             <RouteDetailRow
               label="Bridge Name"
-              value={selectedRoute?.route?.usedBridgeNames?.[0]}
+              value={
+                BRIDGE_NAMES[selectedRoute?.route?.usedBridgeNames?.[0]] ||
+                selectedRoute?.route?.usedBridgeNames?.[0]
+              }
             />
             <RouteDetailRow
               label="Total Gas Fee"

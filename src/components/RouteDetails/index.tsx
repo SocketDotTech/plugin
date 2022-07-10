@@ -13,6 +13,7 @@ import { Spinner } from "../common/Spinner";
 import { InnerCard } from "../common/InnerCard";
 
 import { Web3Context } from "../../providers/Web3Provider";
+import { BRIDGE_NAMES } from "../../consts/";
 
 export const RouteDetails = () => {
   const dispatch = useDispatch();
@@ -56,7 +57,8 @@ export const RouteDetails = () => {
   }
 
   function quotesStatus() {
-    const bridgeName = bestRoute?.route?.usedBridgeNames?.[0];
+    const bridgeKey = bestRoute?.route?.usedBridgeNames?.[0];
+    const bridgeName = BRIDGE_NAMES[bridgeKey] || bridgeKey;
     return shouldFetch
       ? isQuotesLoading
         ? "Fetching best quote..."
@@ -77,7 +79,7 @@ export const RouteDetails = () => {
   return (
     <InnerCard>
       <div className="text-widget-secondary mb-3 text-sm flex items-center gap-1">
-        {sourceAmount&& isQuotesLoading && <Spinner size="4" />} {quotesStatus()}
+        {sourceAmount&& isQuotesLoading && <Spinner size={4} />} {quotesStatus()}
       </div>
       <Button
         onClick={review}

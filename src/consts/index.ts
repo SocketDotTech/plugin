@@ -1,5 +1,10 @@
+export * from "./time";
+
 export const SOCKET_API_KEY = process.env.REACT_APP_SOCKET_API_KEY;
 export const SOCKET_API = process.env.REACT_APP_SOCKET_API;
+export const NATIVE_TOKEN_ADDRESS =
+  "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+
 export const USER_TX_LABELS = {
   "fund-movr": "Bridge",
   "dex-swap": "Swap",
@@ -7,7 +12,11 @@ export const USER_TX_LABELS = {
   claim: "Claim",
   sign: "Sign",
 };
-export const NATIVE_TOKEN_ADDRESS =
-  "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
-export * from "./time";
+export const BRIDGE_NAMES = {
+  'polygon-bridge': 'Polygon',
+  'hop': 'Hop',
+  'across': 'Across',
+  'hyphen': 'Hyphen',
+  'refuel-bridge': 'Refuel',
+}
