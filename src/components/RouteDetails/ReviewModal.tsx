@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
-import { CustomizeContext } from "../CustomizeProvider";
+import { CustomizeContext } from "../../providers/CustomizeProvider";
 
 // components
 import { Button } from "../Button";

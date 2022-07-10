@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Balances,
   ChainId,
@@ -8,7 +8,6 @@ import {
   Token,
 } from "socket-v2-sdk";
 import { useDispatch, useSelector } from "react-redux";
-import { useAccount } from "wagmi";
 import useSWR from "swr";
 
 import { time } from "../consts";
@@ -17,6 +16,8 @@ import { time } from "../consts";
 import { setNetworks } from "../state/networksSlice";
 import { setTokens } from "../state/tokensSlice";
 import { SortOptions } from "socket-v2-sdk/lib/src/client/models/QuoteRequest";
+
+import { Web3Context } from "../providers/Web3Provider";
 
 export let socket;
 
@@ -45,7 +46,9 @@ export const useChains = () => {
 };
 
 export const useActiveRoutes = () => {
-  const { address: userAddress } = useAccount();
+  const web3Context = useContext(Web3Context);
+  const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
+  const { userAddress } = web3Context.web3Provider;
 
   async function fetchActiveRoutes(address: string) {
     const result = await Routes.getActiveRoutesForUser({
@@ -55,8 +58,8 @@ export const useActiveRoutes = () => {
     return result;
   }
 
-  const { data, error, isValidating } = useSWR(
-    userAddress ? [userAddress, "active-routes"] : null,
+  const { data, error, isValidating, mutate } = useSWR(
+    userAddress && !isTxModalOpen ? [userAddress, "active-routes"] : null,
     fetchActiveRoutes,
     {
       refreshInterval: time.ACTIVE_ROUTES_REFRESH * 1000, //refresh active routes every 30 seconds
@@ -66,6 +69,7 @@ export const useActiveRoutes = () => {
   return {
     data: data,
     isQuotesLoading: userAddress && ((!data && !error) || isValidating),
+    mutate,
   };
 };
 
@@ -95,10 +99,12 @@ export const useRoutes = (
   sourceToken,
   destToken,
   amount,
-  sort: SortOptions
+  sort: SortOptions,
+  userAddress
 ) => {
-  const { address: userAddress } = useAccount();
-  const shouldFetch = !!sourceToken && !!destToken && !!amount && !!userAddress;
+  const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
+  const shouldFetch =
+    !!sourceToken && !!destToken && !!amount && !!userAddress && !isTxModalOpen;
 
   async function fetchQuotes(
     sourceToken: Token,
@@ -135,12 +141,14 @@ export const useRoutes = (
   };
 };
 
+// Returns balance of the token address provided
 export const useBalance = (
   tokenAddress: string,
   chainId: string,
   userAddress: string
 ) => {
-  const shouldFetch = tokenAddress && chainId && userAddress;
+  const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
+  const shouldFetch = tokenAddress && chainId && userAddress && !isTxModalOpen;
 
   async function fetchBalance(
     tokenAddress: string,
@@ -165,12 +173,13 @@ export const useBalance = (
 
   return {
     data: data?.result,
-    isBalanceLoading: userAddress && ((!error && !data) || isValidating),
+    isBalanceLoading: userAddress && !error && !data,
   };
 };
 
 export const useAllTokenBalances = () => {
-  const { address: userAddress } = useAccount();
+  const web3Context = useContext(Web3Context);
+  const { userAddress } = web3Context.web3Provider;
 
   async function fetchAllTokenBalances(_userAddress: string) {
     const balances = await Balances.getBalances({

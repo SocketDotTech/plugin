@@ -1,6 +1,6 @@
 import { useRoutes } from "../../hooks/apis";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // actions
 import { setSelectedRoute } from "../../state/selectedRouteSlice";
@@ -11,6 +11,8 @@ import { ReviewModal } from "./ReviewModal";
 import { Button } from "../Button";
 import { Spinner } from "../common/Spinner";
 import { InnerCard } from "../common/InnerCard";
+
+import { Web3Context } from "../../providers/Web3Provider";
 
 export const RouteDetails = () => {
   const dispatch = useDispatch();
@@ -23,11 +25,14 @@ export const RouteDetails = () => {
   const isEnoughBalance = useSelector(
     (state: any) => state.amount.isEnoughBalance
   );
+  const web3Context = useContext(Web3Context);
+  const { userAddress } = web3Context.web3Provider
   const { data, isQuotesLoading } = useRoutes(
     sourceToken ?? "",
     destToken,
     sourceAmount,
-    sortPref
+    sortPref,
+    userAddress
   );
   const shouldFetch = sourceAmount && sourceToken && destToken && sortPref;
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);

@@ -4,7 +4,7 @@ import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { ChevronDown } from "react-feather";
 import { useSelector } from "react-redux";
-import { CustomizeContext } from "../CustomizeProvider";
+import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Modal } from "../Modal";
 
 interface Props {

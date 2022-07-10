@@ -13,7 +13,7 @@ export const TokenDetail = (props: TokenAssetProps) => {
   const chain = mappedChaindata?.[token.chainId];
   const formattedAmount = formatCurrencyAmount(amount, token?.decimals, 4);
   return (
-    <div className={`flex items-center gap-2 ${rtl ? 'flex-row-reverse' : 'flex-row'}`}>
+    <div className={`flex items-center gap-2 flex-1 ${rtl ? 'flex-row-reverse' : 'flex-row'}`}>
       <div className="w-6 h-6 relative">
         <img
           src={token?.logoURI}

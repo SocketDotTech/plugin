@@ -1,6 +1,6 @@
 import { ReactNode, useContext } from "react";
 import { Spinner } from "./common/Spinner";
-import { CustomizeContext } from "./CustomizeProvider";
+import { CustomizeContext } from "../providers/CustomizeProvider";
 
 interface ButtonProps {
   onClick: () => void;

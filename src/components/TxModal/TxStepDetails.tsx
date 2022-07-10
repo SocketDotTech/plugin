@@ -6,7 +6,7 @@ import {
 import useMappedChainData from "../../hooks/useMappedChainData";
 import { ArrowRight, CheckCircle } from "react-feather";
 import { ReactNode, useContext, useEffect, useState } from "react";
-import { CustomizeContext } from "../CustomizeProvider";
+import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Spinner } from "../common/Spinner";
 
 export const TxStepDetails = ({
@@ -185,9 +185,9 @@ const TxStep = ({
         }`}
         style={{ borderRadius: `calc(0.25rem * ${borderRadius})` }}
       >
-        {currentTx || forReview ? (
+        {!complete && (currentTx || forReview) ? (
           inProgress ? (
-            <Spinner size="4" />
+            <Spinner size={4} />
           ) : (
             <ArrowRight className={`w-[18px] h-[18px] text-widget-theme`} />
           )

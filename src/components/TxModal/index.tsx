@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SocketTx } from "socket-v2-sdk";
 import { ChevronRight } from "react-feather";
 
@@ -8,18 +8,20 @@ import { Modal } from "../Modal";
 import { Button } from "../Button";
 import { TxStepDetails } from "./TxStepDetails";
 import { TokenDetail } from "../TokenDetail";
+import { BridgingLoader } from "./BridgingLoader";
 
 // actions
 import { setActiveRoute, setError, setIsTxModalOpen } from "../../state/modals";
 import { setTxDetails } from "../../state/txDetails";
 
 // hooks
-import { socket } from "../../hooks/apis";
-import { useSigner, useNetwork, useProvider, useAccount } from "wagmi";
+import { socket, useActiveRoutes } from "../../hooks/apis";
 import { handleNetworkChange } from "../../utils";
 
 import { USER_TX_LABELS } from "../../consts/";
 import { UserTxType } from "../../utils/UserTxType";
+
+import { Web3Context } from "../../providers/Web3Provider";
 
 export const TxModal = () => {
   const dispatch = useDispatch();
@@ -34,10 +36,13 @@ export const TxModal = () => {
   const allNetworks = useSelector((state: any) => state.networks.allNetworks);
   const txDetails = useSelector((state: any) => state.txDetails.txDetails);
 
-  const { chain: activeChain } = useNetwork();
-  const { data: signer } = useSigner();
-  const { address } = useAccount();
-  const provider = useProvider();
+  const web3Context = useContext(Web3Context);
+  const {
+    userAddress,
+    signer,
+    provider,
+    networkId: activeChain,
+  } = web3Context.web3Provider;
 
   const [initiating, setInitiating] = useState<boolean>(false);
   const [isApprovalRequired, setIsApprovalRequired] = useState<boolean>(false);
@@ -48,6 +53,11 @@ export const TxModal = () => {
 
   const [approvalTxData, setApprovalTxData] = useState<any>(null);
   const [userTx, setUserTx] = useState(null);
+  const { mutate: mutateActiveRoutes } = useActiveRoutes();
+  const [explorerParams, setExplorerParams] = useState({
+    txHash: "",
+    chainId: "",
+  });
 
   function changeNetwork() {
     const chain = allNetworks.filter((x) => x.chainId === userTx?.chainId)?.[0];
@@ -72,28 +82,36 @@ export const TxModal = () => {
     }
   }
 
-  async function initiateContinuation(txType?: string, txHash?: string) {
-    // in normal flow, txType and txHash will be passed.
-    // when continuing from tx history section, prevTxData from the localStorage will be fetched
-    const prevTxData = txDetails?.[address]?.[activeRoute?.activeRouteId];
+  async function initiateContinuation(
+    txHash?: string,
+    _activeRouteId?: number
+  ) {
+    setInitiating(true);
+    // in normal flow, txType and activeRouteId  will be passed.
+    // when continuing from tx history section, prevTxData from the localStorage will be fetched;
+    const prevTxData = txDetails?.[userAddress]?.[activeRoute?.activeRouteId];
     const keysArr = prevTxData && Object.keys(prevTxData);
     const lastStep = prevTxData?.[keysArr?.[keysArr?.length - 1]];
 
-    if ((lastStep?.userTxType || txType) === UserTxType.FUND_MOVR) {
-      if (!selectedRoute) setInitiating(true);
-      else setBridging(true);
-    } else setInitiating(true);
-
     try {
-      const execute = await socket.continue(activeRoute?.activeRouteId);
-      await prepareNextStep(execute, txHash || lastStep.hash);
+      const execute = await socket.continue(
+        activeRoute?.activeRouteId || _activeRouteId
+      );
+      await prepareNextStep(
+        execute,
+        txHash || lastStep?.hash,
+        lastStep?.userTxType
+      );
     } catch (e) {
       const err = e.message;
       if (err.match("is already complete")) {
         setTxCompleted(true);
+      } else {
+        dispatch(setError(err));
       }
       setInitiating(false);
       setBridging(false);
+      console.log("Error", e);
     }
   }
 
@@ -107,7 +125,7 @@ export const TxModal = () => {
       // set data to localStorage
       dispatch(
         setTxDetails({
-          account: address,
+          account: userAddress,
           routeId: userTx.activeRouteId,
           stepIndex: userTx.userTxIndex,
           value: { hash: sendTx.hash, userTxType: userTx.userTxType },
@@ -119,36 +137,53 @@ export const TxModal = () => {
 
       // if tx is of type fund-movr, set bridging loader to true
       if (userTx.userTxType === UserTxType.FUND_MOVR) {
+        setExplorerParams({
+          txHash: sendTx.hash,
+          chainId: selectedRoute?.path?.fromToken?.chainId,
+        });
         setBridging(true);
       }
 
       const currentStatus = await userTx.submit(sendTx.hash);
       if (currentStatus && currentStatus !== "completed") {
-        await initiateContinuation(userTx.userTxType, userTx.hash);
+        await initiateContinuation(userTx.hash, userTx.activeRouteId);
       } else if (currentStatus === "completed") {
         setTxCompleted(true);
         setBridging(false);
+        mutateActiveRoutes();
       }
     } catch (e) {
       dispatch(setError(e.message));
-      setBridging(false)
+      setBridging(false);
       setTxInProgress(false);
+      console.log("Error", e);
     }
   }
 
+  // Next transaction preparation
   const prepareNextStep = async (
-    // next tx preparation
     execute: AsyncGenerator<SocketTx, void, string>,
-    txHash?: string
+    txHash?: string,
+    txType?: string
   ) => {
+    // If the tx is of type 'fund-movr', set bridging to true.
+    if (!bridging && txType === UserTxType.FUND_MOVR) {
+      setExplorerParams({
+        txHash: txHash,
+        chainId:
+          selectedRoute?.path?.fromToken?.chainId || activeRoute?.fromChainId,
+      });
+      setBridging(true);
+      setInitiating(false);
+    }
+
     try {
       const next = txHash ? await execute.next(txHash) : await execute.next();
-
       setBridging(false);
-      console.log("next", next);
+
       if (!next.done && next.value) {
         const tx = next.value;
-        setUserTx(tx);
+        setUserTx(tx); // used in doTransaction to get txData
         const _approvalTxData = await tx.getApproveTransaction();
         setInitiating(false);
         setApprovalTxData(_approvalTxData);
@@ -175,6 +210,16 @@ export const TxModal = () => {
     };
   }, []); // the activeRoute is set before the txModal is opened.
 
+  const sourceTokenDetails = {
+    token: selectedRoute?.path?.fromToken || activeRoute?.fromAsset,
+    amount: selectedRoute?.amount || activeRoute?.fromAmount,
+  };
+
+  const destTokenDetails = {
+    token: selectedRoute?.path?.toToken || activeRoute?.toAsset,
+    amount: selectedRoute?.route?.toAmount || activeRoute?.toAmount,
+  };
+
   return (
     <Modal
       title="Bridging transaction"
@@ -185,13 +230,13 @@ export const TxModal = () => {
         <div className="flex-1 overflow-y-auto">
           <div className="flex justify-between mt-5 items-center px-3 mb-2.5">
             <TokenDetail
-              token={selectedRoute?.path?.fromToken || activeRoute?.fromAsset}
-              amount={selectedRoute?.amount || activeRoute?.fromAmount}
+              token={sourceTokenDetails.token}
+              amount={sourceTokenDetails.amount}
             />
             <ChevronRight className="w-4 h-4 text-widget-secondary" />
             <TokenDetail
-              token={selectedRoute?.path?.toToken || activeRoute?.toAsset}
-              amount={selectedRoute?.route?.toAmount || activeRoute?.toAmount}
+              token={destTokenDetails.token}
+              amount={destTokenDetails.amount}
               rtl
             />
           </div>
@@ -199,8 +244,12 @@ export const TxModal = () => {
           <div className="px-3 py-3">
             <TxStepDetails
               activeRoute={activeRoute || selectedRoute?.route}
-              currentTxIndex={userTx?.userTxIndex}
+              // Setting currentTxIndex to 0 when the txModal is opened for the 'first time'.
+              currentTxIndex={
+                userTx?.userTxIndex || activeRoute?.currentUserTxIndex || 0
+              }
               inProgress={txInProgress || bridging}
+              completed={txCompleted}
             />
           </div>
         </div>
@@ -208,8 +257,8 @@ export const TxModal = () => {
         <div className="p-3 shrink-0">
           {!txCompleted && (
             <>
-              {userTx && activeChain?.id !== userTx?.chainId ? (
-                <Button onClick={changeNetwork}>
+              {userTx && activeChain !== userTx?.chainId ? (
+                <Button onClick={changeNetwork} disabled={initiating}>
                   {initiating
                     ? "Initiating..."
                     : `Switch chain to ${
@@ -253,16 +302,14 @@ export const TxModal = () => {
           )}
         </div>
 
-        {/* {!bridging && <BridgingLoader />} */}
+        {bridging && !initiating && (
+          <BridgingLoader
+            source={sourceTokenDetails}
+            dest={destTokenDetails}
+            explorerParams={explorerParams}
+          />
+        )}
       </div>
     </Modal>
-  );
-};
-
-const BridgingLoader = () => {
-  return (
-    <div className="absolute bg-widget-primary h-full w-full top-0 left-0 px-3">
-      Bridging in progress
-    </div>
   );
 };

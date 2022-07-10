@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { storiesOf } from "@storybook/react";
 import { Bridge } from "../index.tsx";
-import "./style.css";
 import { SOCKET_API_KEY } from "../consts";
 import { ethers } from "ethers";
 
@@ -11,6 +10,24 @@ stories.add("Widget", () => {
   const [provider, setProvider] = useState();
   const [userAddress, setUserAddress] = useState();
   const [chain, setChain] = useState();
+
+  const fetchWalletData = async () => {
+    const provider = new ethers.providers.Web3Provider(
+      window.ethereum,
+      "any"
+    );
+
+    const signer = await provider.getSigner();
+    const userAddress = await signer.getAddress();
+    const chain = await signer.getChainId();
+
+    if (provider) {
+      setProvider(provider);
+      setUserAddress(userAddress);
+      setChain(chain);
+    }
+  }
+
   const connectWallet = async () => {
     try {
       if (window.ethereum) {
@@ -19,7 +36,7 @@ stories.add("Widget", () => {
           "any"
         );
         await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner();
+        const signer = await provider.getSigner();
         const userAddress = await signer.getAddress();
         const chain = await signer.getChainId();
         setProvider(provider);
@@ -33,9 +50,21 @@ stories.add("Widget", () => {
       console.log(e);
     }
   };
+
   useEffect(() => {
-    console.log('Provider in Stories', provider, userAddress)
-  }, [provider])
+    if (window.ethereum) {
+      fetchWalletData();
+
+      ethereum.on('chainChanged', () => {
+        fetchWalletData();
+      });
+
+      ethereum.on('accountsChanged', () => {
+        fetchWalletData();
+      });
+    }
+  }, [window.ethereum])
+
   return (
     <div
       style={{
@@ -63,11 +92,13 @@ stories.add("Widget", () => {
           </button>
         )}
       </div>
+
       <Bridge
         provider={provider}
         API_KEY={SOCKET_API_KEY}
         customize={{ borderRadius: 1 }}
       />
+
     </div>
   );
 });
