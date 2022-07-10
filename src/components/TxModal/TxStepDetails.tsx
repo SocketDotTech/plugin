@@ -185,9 +185,9 @@ const TxStep = ({
         }`}
         style={{ borderRadius: `calc(0.25rem * ${borderRadius})` }}
       >
-        {currentTx || forReview ? (
+        {!complete && (currentTx || forReview) ? (
           inProgress ? (
-            <Spinner size="4" />
+            <Spinner size={4} />
           ) : (
             <ArrowRight className={`w-[18px] h-[18px] text-widget-theme`} />
           )

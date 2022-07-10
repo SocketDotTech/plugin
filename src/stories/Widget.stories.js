@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { storiesOf } from "@storybook/react";
 import { Bridge } from "../index.tsx";
-import "./style.css";
 import { SOCKET_API_KEY } from "../consts";
 import { ethers } from "ethers";
 
