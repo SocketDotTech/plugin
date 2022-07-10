@@ -5,6 +5,8 @@ import { CustomizeContext } from "../../providers/CustomizeProvider";
 
 // components
 import { Modal } from "../Modal";
+import { TokenDetail } from "../TokenDetail";
+import { ChevronRight } from "react-feather";
 
 // actions
 import { setActiveRoute, setIsTxModalOpen } from "../../state/modals";
@@ -41,19 +43,32 @@ export const PendingTransactions = () => {
         title="Pending Transactions"
         closeModal={() => setIsModalOpen(false)}
       >
-        All pending txs will be displayed here
-        <div className="flex flex-col justify-start">
+        <div className="flex flex-col justify-start p-1 flex-1 overflow-y-auto">
           {activeRoutes?.map((route: ActiveRouteResponse) => {
             return (
               <button
                 onClick={() => openTxModal(route)}
-                className="hover:bg-gray-200 rounded p-1 w-auto"
                 key={route?.activeRouteId}
+                className="flex justify-between items-center px-2 py-4 w-full hover:bg-widget-secondary"
+                style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
               >
-                {route?.activeRouteId}
+                <TokenDetail
+                  token={route?.fromAsset}
+                  amount={route?.fromAmount}
+                  small
+                />
+                <ChevronRight className="w-4 h-4 text-widget-secondary" />
+                <TokenDetail
+                  token={route?.toAsset}
+                  amount={route?.toAmount}
+                  rtl
+                  small
+                />
               </button>
             );
           })}
+
+          <p className="text-widget-secondary text-xs px-3 py-2">Showing {activeRoutes?.length}/{totalRoutes} active routes</p>
         </div>
       </Modal>
     );

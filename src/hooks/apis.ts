@@ -47,7 +47,7 @@ export const useChains = () => {
 
 export const useActiveRoutes = () => {
   const web3Context = useContext(Web3Context);
-  const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
+  // const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
   const { userAddress } = web3Context.web3Provider;
 
   async function fetchActiveRoutes(address: string) {
@@ -59,7 +59,7 @@ export const useActiveRoutes = () => {
   }
 
   const { data, error, isValidating, mutate } = useSWR(
-    userAddress && !isTxModalOpen ? [userAddress, "active-routes"] : null,
+    userAddress ? [userAddress, "active-routes"] : null,
     fetchActiveRoutes,
     {
       refreshInterval: time.ACTIVE_ROUTES_REFRESH * 1000, //refresh active routes every 30 seconds
