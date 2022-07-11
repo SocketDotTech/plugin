@@ -19,4 +19,9 @@ export const BRIDGE_NAMES = {
   'across': 'Across',
   'hyphen': 'Hyphen',
   'refuel-bridge': 'Refuel',
+  'anyswap-router-v4': 'Multichain',
+  'celer': 'Celer',
+  'optimism-bridge': 'Optimism',
+  'arbitrum-bridge': 'Arbitrum',
+  'connext': 'Connext',
 }
