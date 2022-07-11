@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
-import { BRIDGE_NAMES } from "../../consts/";
+import { BRIDGE_DISPLAY_NAMES } from "../../consts/";
 
 // components
 import { Button } from "../common/Button";
@@ -60,7 +60,7 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
             <RouteDetailRow
               label="Bridge Name"
               value={
-                BRIDGE_NAMES[selectedRoute?.route?.usedBridgeNames?.[0]] ||
+                BRIDGE_DISPLAY_NAMES[selectedRoute?.route?.usedBridgeNames?.[0]] ||
                 selectedRoute?.route?.usedBridgeNames?.[0]
               }
             />

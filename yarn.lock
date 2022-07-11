@@ -1926,6 +1926,11 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
+"@socket.tech/ll-core@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@socket.tech/ll-core/-/ll-core-0.1.10.tgz#34c7d2cf508ab27bee30d1f5a8cad5b80ee35a2d"
+  integrity sha512-TBKpYHBPS4sw7cDBrYrsXfaQENDnXgkOB0xxyAdh80f9JqE8+lyHR4gxuW/DLuDIkkcIKiTcUBNcIYzvuCd7wA==
+
 "@socket.tech/ll-core@^0.1.8":
   version "0.1.8"
   resolved "https://registry.npmjs.org/@socket.tech/ll-core/-/ll-core-0.1.8.tgz"
