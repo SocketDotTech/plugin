@@ -66,6 +66,7 @@ export const Input = () => {
   const customDestNetworks = useSelector(
     (state: any) => state.customSettings.destNetworks
   );
+  const defaultSourceNetwork = useSelector((state:any) => state.customSettings.defaultSourceNetwork)
   const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
     allNetworks ? [...allNetworks] : null
   );
@@ -110,7 +111,7 @@ export const Input = () => {
 
       setFilteredNetworks(filteredNetworks);
       updateNetwork(
-        filteredNetworks?.find((x: Network) => x?.chainId === 137) ||
+        filteredNetworks?.find((x: Network) => x?.chainId === defaultSourceNetwork) ||
           filteredNetworks?.[0]
       );
     } else setFilteredNetworks(allNetworks);
