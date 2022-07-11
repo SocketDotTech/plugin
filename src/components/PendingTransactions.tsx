@@ -13,6 +13,7 @@ import { setActiveRoute, setIsTxModalOpen } from "../state/modals";
 
 import { useActiveRoutes } from "../hooks/apis";
 
+// Pending Transactions are basically routes that have not been completed yet. User can continue from the previous step whenever he opens the modal again.
 export const PendingTransactions = () => {
   const dispatch = useDispatch();
 
@@ -22,6 +23,7 @@ export const PendingTransactions = () => {
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
 
+  // Hook that fetches the routes that are active (routes that have started but have not been completed yet.)
   const { data: activeRoutesData } = useActiveRoutes();
 
   useEffect(() => {

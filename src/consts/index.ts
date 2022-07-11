@@ -1,11 +1,17 @@
 import { constants } from "@socket.tech/ll-core";
 export * from "./time";
 
+// API-KEY needed for calling socket apis.
 export const SOCKET_API_KEY = process.env.REACT_APP_SOCKET_API_KEY;
+
+// SOCKET API URL
 export const SOCKET_API = process.env.REACT_APP_SOCKET_API;
+
+// Socket uses this address for native tokens. For example -> ETH on Ethereum, MATIC on Polygon, etc.
 export const NATIVE_TOKEN_ADDRESS =
   "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
+// Types of Txs possible in a route.
 export enum UserTxType {
   FUND_MOVR = "fund-movr",
   DEX_SWAP = "dex-swap",
@@ -14,6 +20,7 @@ export enum UserTxType {
   SIGN = "sign",
 }
 
+// Labels for the tx types.
 export const USER_TX_LABELS = {
   [UserTxType.APPROVE]: "Approve",
   [UserTxType.FUND_MOVR]: "Bridge",
@@ -22,6 +29,7 @@ export const USER_TX_LABELS = {
   [UserTxType.SIGN]: "Sign",
 };
 
+// Display Names for bridges.
 export const BRIDGE_DISPLAY_NAMES = {
   [constants.bridges.PolygonBridge]: "Polygon",
   [constants.bridges.Hop]: "Hop",
@@ -34,6 +42,7 @@ export const BRIDGE_DISPLAY_NAMES = {
   [constants.bridges.OptimismBridge]: "Optimism",
 };
 
+// Status of the prepare API. 
 export enum PrepareTxStatus {
   COMPLETED = 'completed',
   PENDING = 'pending',

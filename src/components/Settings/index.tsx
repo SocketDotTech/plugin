@@ -6,6 +6,7 @@ import { ChevronDown, Settings as SettingsIcon } from "react-feather";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import useClickOutside from "../../hooks/useClickOutside";
 
+// Component that lets you set the parameters for fetching quotes or building a transaction.
 export const Settings = () => {
   const dispatch = useDispatch();
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
@@ -23,12 +24,14 @@ export const Settings = () => {
     openDropdown(false);
   };
 
+  // Option Labels
   const LABEL_STATE = {
     OUTPUT: "High Return",
     TIME: "Fastest",
     GAS: "Low Gas Fee",
   };
 
+  // Option Values
   const sortOptions = [
     { id: "output", label: LABEL_STATE.OUTPUT },
     { id: "time", label: LABEL_STATE.TIME },

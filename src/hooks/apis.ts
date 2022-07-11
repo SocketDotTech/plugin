@@ -21,6 +21,7 @@ import { Web3Context } from "../providers/Web3Provider";
 
 export let socket;
 
+// Function that lets you set the api key and preferences. 
 export const initSocket = (apiKey) => {
   socket = new Socket({
     apiKey: apiKey,
@@ -30,6 +31,7 @@ export const initSocket = (apiKey) => {
   });
 };
 
+// Function to get the chains supported by socket apis.
 export const useChains = () => {
   const dispatch = useDispatch();
   const [allChains, setAllChains] = useState(null);
@@ -45,6 +47,7 @@ export const useChains = () => {
   return allChains;
 };
 
+// Function to get all the pending routes.
 export const useActiveRoutes = () => {
   const web3Context = useContext(Web3Context);
   // const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
@@ -73,6 +76,7 @@ export const useActiveRoutes = () => {
   };
 };
 
+// Fetches token lists based on source chain and dest chain. 
 export const useTokenList = () => {
   const dispatch = useDispatch();
   const sourceChainId = useSelector(
@@ -95,6 +99,7 @@ export const useTokenList = () => {
   }, [sourceChainId, destChainId]);
 };
 
+// Main hook that takes in params and fetches the quotes. 
 export const useRoutes = (
   sourceToken,
   destToken,
@@ -177,6 +182,7 @@ export const useBalance = (
   };
 };
 
+// Returns all token balances for the user on all chains.
 export const useAllTokenBalances = () => {
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;

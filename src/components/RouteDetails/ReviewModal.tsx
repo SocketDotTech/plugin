@@ -25,6 +25,7 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
 
+  // Sets the selected route if updated. 
   function updateSelectedRoute() {
     dispatch(setSelectedRoute(bestRoute));
   }

@@ -21,13 +21,20 @@ import { ErrorModal } from "./common/ErrorModal";
 import { useChains, useTokenList } from "../hooks/apis";
 import { useCustomSettings } from "../hooks/useCustomSettings";
 
+
+// Main Widget -> Base file. 
 export const Widget = (props: WidgetProps) => {
   const { customize } = props;
   const customSettings = useContext(CustomizeContext);
   const web3Context = useContext(Web3Context);
 
+  // Hook to get all supported chains.
   useChains();
+
+  // Hook to get the token list based on the source chain and dest chain.
   useTokenList();
+
+  // Hook to set default settings in place, default from chain and to chain etc etc.
   useCustomSettings(props);
 
   // run when the props are changed
@@ -58,6 +65,7 @@ export const Widget = (props: WidgetProps) => {
     fetchData();
   }, [props]);
 
+  // Customisation Settings for the widget.
   const { responsiveWidth, width, borderRadius } = customSettings.customization;
 
   const widgetWidth = responsiveWidth ? "100%" : width > 360 ? width : 360;

@@ -21,6 +21,8 @@ export const TokenSelect = (props: Props) => {
   const allTokens = useSelector((state: any) => state.tokens.tokens);
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
+
+  // Hook that gives you all the balances for a user on all chains.
   const { data: tokensWithBalances } = useAllTokenBalances();
 
   useEffect(() => {

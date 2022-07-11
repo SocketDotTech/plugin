@@ -9,6 +9,7 @@ import { getExplorerLink, ExplorerDataType } from "../../utils/";
 import { Spinner } from "../common/Spinner";
 import { TokenDetail } from "../common/TokenDetail";
 
+// Component specially when the transaction that is pending is a bridging transaction.
 export const BridgingLoader = ({ source, dest, explorerParams }) => {
   const mappedChainData = useMappedChainData();
   const [url, setUrl] = useState("");

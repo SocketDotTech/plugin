@@ -9,6 +9,8 @@ import { ReactNode, useContext, useEffect, useState } from "react";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Spinner } from "../common/Spinner";
 
+// Component that shows the steps involved in the route in detail.
+// Each Step is shown individually.
 export const TxStepDetails = ({
   activeRoute,
   currentTxIndex,
@@ -157,6 +159,7 @@ export const TxStepDetails = ({
   );
 };
 
+// Component to show one tx in detail based on its type.
 const TxStep = ({
   label,
   children,
