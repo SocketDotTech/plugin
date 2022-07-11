@@ -29,6 +29,8 @@ export const RouteDetails = () => {
   );
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider
+
+  // Hook to fetch the quotes for given params.
   const { data, isQuotesLoading } = useRoutes(
     sourceToken ?? "",
     destToken,
@@ -36,6 +38,8 @@ export const RouteDetails = () => {
     sortPref,
     userAddress
   );
+
+  // Boolean variable to fill all condition before the api call is made to fetch quotes.
   const shouldFetch = sourceAmount && sourceToken && destToken && sortPref;
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
@@ -57,6 +61,7 @@ export const RouteDetails = () => {
     setIsReviewOpen(true);
   }
 
+  // Function that returns status once the fetching has started to get quotes.
   function quotesStatus() {
     const bridgeKey = bestRoute?.route?.usedBridgeNames?.[0];
     const bridgeName = BRIDGE_DISPLAY_NAMES[bridgeKey] || bridgeKey;
@@ -69,6 +74,7 @@ export const RouteDetails = () => {
       : QuoteStatus.ENTER_AMOUNT;
   }
 
+  // Returns the text shown on the button depending on the status.
   function getButtonStatus() {
     if (!isEnoughBalance) {
       return ButtonTexts.NOT_ENOUGH_BALANCE;

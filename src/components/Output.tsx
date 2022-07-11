@@ -6,7 +6,7 @@ import { Currency, Network } from "../utils/types";
 // component
 import { TokenInput } from "./TokenInput";
 import { ChainSelect } from "./common/ChainSelect";
-import { Balance } from "./Input";
+import { Balance } from "./common/Balance";
 
 // actions
 import { setDestToken } from "../state/tokensSlice";
@@ -18,6 +18,8 @@ import { useBalance } from "../hooks/apis";
 
 import { Web3Context } from "../providers/Web3Provider";
 
+// Component that handles the destination chain parameters. (ToChain, Destination Token)
+// Shows the balance and the amount you receive for the selected route.
 export const Output = () => {
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
@@ -43,6 +45,8 @@ export const Output = () => {
   const [filteredTokens, setFilteredTokens] = useState<Currency[]>(null);
 
   const route = useSelector((state: any) => state.quotes.bestRoute);
+
+  // Hook to get Balance for the selected destination token.
   const { data: tokenWithBalance, isBalanceLoading } = useBalance(
     destToken?.address,
     destChainId,
@@ -154,6 +158,7 @@ export const Output = () => {
     }
   }, [filteredTokens, sourceToken]);
 
+  // Updates the selected destination token if changed.
   const updateToken = (token: Currency) => {
     dispatch(setDestToken(token));
   };

@@ -27,6 +27,9 @@ import {
 
 import { Web3Context } from "../../providers/Web3Provider";
 
+// The main modal that contains all the information related after clicking on review quote.
+// Responsible for the progression of the route. 
+// Functions responsible for sending a transaction and checking the status of the route.
 export const TxModal = () => {
   const dispatch = useDispatch();
   function closeTxModal() {

@@ -8,6 +8,7 @@ import { NATIVE_TOKEN_ADDRESS } from "../consts";
 import { TokenInput } from "./TokenInput";
 import { ChainSelect } from "./common/ChainSelect";
 import { Spinner } from "./common/Spinner";
+import { Balance } from "./common/Balance";
 
 // actions
 import { setSourceToken } from "../state/tokensSlice";
@@ -24,39 +25,13 @@ import {
 
 // hooks
 import { useBalance } from "../hooks/apis";
-import { TokenBalanceReponseDTO } from "socket-v2-sdk";
 import useMappedChainData from "../hooks/useMappedChainData";
 import useDebounce from "../hooks/useDebounce";
 import { Web3Context } from "../providers/Web3Provider";
 
-export function Balance({
-  token,
-  isLoading,
-  onClick,
-}: {
-  token: TokenBalanceReponseDTO["result"];
-  isLoading: boolean;
-  onClick?: () => void;
-}) {
-  const _formattedBalance = formatCurrencyAmount(
-    token?.balance,
-    token?.decimals,
-    5
-  );
-  return (
-    <button
-      disabled={!onClick}
-      className={`text-widget-secondary text-sm text-right flex items-center gap-1 transition-all ${
-        onClick ? "hover:underline" : ""
-      }`}
-      onClick={onClick}
-    >
-      <span>Bal: {token && _formattedBalance}</span>
-      {isLoading && <Spinner size={3} />}
-    </button>
-  );
-}
 
+// Component that handles the source chain parameters. (FromChain, Source Token)
+// Shows the balance for the source chain, and takes the input from the user for amount.
 export const Input = () => {
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
@@ -78,6 +53,8 @@ export const Input = () => {
   );
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
   const [filteredTokens, setFilteredTokens] = useState<Currency[]>(null);
+
+  // Hook to get Balance for the selected destination token.
   const { data: tokenWithBalance, isBalanceLoading } = useBalance(
     sourceToken?.address,
     sourceChainId,
@@ -137,20 +114,22 @@ export const Input = () => {
   const [inputAmount, updateInputAmount] = useState<string>("");
   const [parsedInputAmount, setParsedInputAmount] = useState<string>(""); // to check the min balance requirement
 
+  // Updates the selected source token if changed.
   const updateToken = (token: Currency) => {
     dispatch(setSourceToken(token));
   };
 
+  // Updates the input amount if changed.
   const onChangeInput = (amount) => {
     // decimal validation
     if (amount?.indexOf(".") > -1) {
       if (amount.split(".")[1].length <= sourceToken?.decimals) {
         updateInputAmount(amount);
-        dispatchAmount(amount);
+        parseInputAmount(amount);
       }
     } else {
       updateInputAmount(amount);
-      dispatchAmount(amount);
+      parseInputAmount(amount);
     }
 
     if (!amount || amount == 0) {
@@ -158,11 +137,13 @@ export const Input = () => {
     }
   };
 
+  // Debounce to not call quote api on every input change.
   useDebounce(() => dispatch(setSourceAmount(parsedInputAmount)), 500, [
     parsedInputAmount,
   ]);
 
-  function dispatchAmount(amount) {
+  // Parse the input amount to bignumber.
+  function parseInputAmount(amount) {
     if (amount) {
       const parsedAmount = parseCurrencyAmount(amount, sourceToken?.decimals);
       setParsedInputAmount(parsedAmount);
@@ -230,21 +211,24 @@ export const Input = () => {
         sourceToken?.decimals
       );
       updateInputAmount(truncatedAmount);
-      dispatchAmount(truncatedAmount);
+      parseInputAmount(truncatedAmount);
     }
   }, [sourceToken]);
 
   function setMaxBalance(balance) {
-    function formateAndDispatchAmount(_balance) {
+
+    // Format the amount first and set as Max when max is clicked.
+    function formateAndParseAmount(_balance) {
       const _formattedAmount = formatCurrencyAmount(
         _balance,
         sourceToken?.decimals,
         sourceToken?.decimals
       );
       updateInputAmount(_formattedAmount);
-      dispatchAmount(_formattedAmount);
+      parseInputAmount(_formattedAmount);
     }
 
+    // Condition to leave some native tokens for transaction fee.
     if (sourceToken.address === NATIVE_TOKEN_ADDRESS) {
       // subtracting min gas from the total amount
       const minGas =
@@ -254,7 +238,7 @@ export const Input = () => {
 
       if (minGasBN.lt(balanceBN)) {
         const maxBalanceMinusGas = balanceBN.sub(minGasBN);
-        formateAndDispatchAmount(maxBalanceMinusGas);
+        formateAndParseAmount(maxBalanceMinusGas);
       } else {
         dispatch(
           setError(
@@ -273,7 +257,7 @@ export const Input = () => {
           )
         );
       }
-    } else formateAndDispatchAmount(balance);
+    } else formateAndParseAmount(balance);
   }
 
   return (
