@@ -13,7 +13,7 @@ import { Spinner } from "../common/Spinner";
 import { InnerCard } from "../common/InnerCard";
 
 import { Web3Context } from "../../providers/Web3Provider";
-import { BRIDGE_NAMES } from "../../consts/";
+import { BRIDGE_DISPLAY_NAMES } from "../../consts/";
 
 export const RouteDetails = () => {
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ export const RouteDetails = () => {
 
   function quotesStatus() {
     const bridgeKey = bestRoute?.route?.usedBridgeNames?.[0];
-    const bridgeName = BRIDGE_NAMES[bridgeKey] || bridgeKey;
+    const bridgeName = BRIDGE_DISPLAY_NAMES[bridgeKey] || bridgeKey;
     return shouldFetch
       ? isQuotesLoading
         ? "Fetching best quote..."
