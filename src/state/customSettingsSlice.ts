@@ -5,8 +5,8 @@ const initialState = {
   destNetworks: null,
   defaultSourceNetwork: 137,
   defaultDestNetwork: 1,
-  allSourceTokens: null,
-  allDestTokens: null,
+  sourceTokens: null,
+  destTokens: null,
 };
 
 const customSettingsSlice = createSlice({
@@ -25,12 +25,12 @@ const customSettingsSlice = createSlice({
     setDefaultDestNetwork: (state, action) => {
       state.defaultDestNetwork = action.payload
     },
-    setSourceTokens: (state, action) => {
-      state.allSourceTokens = action.payload
+    setCustomSourceTokens: (state, action) => {
+      state.sourceTokens = action.payload
     }, 
-    setDestTokens: (state, action) => {
-      state.allDestTokens = action.payload
-    }
+    setCustomDestTokens: (state, action) => {
+      state.destTokens = action.payload
+    },
   },
 });
 
@@ -40,6 +40,6 @@ export const {
   setCustomDestNetworks,
   setDefaultSourceNetwork,
   setDefaultDestNetwork,
-  setSourceTokens,
-  setDestTokens
+  setCustomSourceTokens,
+  setCustomDestTokens
 } = customSettingsSlice.actions;

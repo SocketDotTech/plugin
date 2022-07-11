@@ -17,7 +17,7 @@ import { setNetworks } from "../state/networksSlice";
 import { SortOptions } from "socket-v2-sdk/lib/src/client/models/QuoteRequest";
 
 import { Web3Context } from "../providers/Web3Provider";
-import { setDestTokens, setSourceTokens } from "../state/customSettingsSlice";
+import { setAllDestTokens, setAllSourceTokens } from "../state/tokensSlice";
 
 export let socket;
 
@@ -88,8 +88,8 @@ export const useTokenList = () => {
         toChainId: destChainId,
       });
       const _tokens = { from: tokens?.from?.tokens, to: tokens?.to?.tokens };
-      dispatch(setSourceTokens(_tokens?.from));
-      dispatch(setDestTokens(_tokens?.to));
+      dispatch(setAllSourceTokens(_tokens?.from));
+      dispatch(setAllDestTokens(_tokens?.to));
     }
 
     shouldFetch && fetchTokens();

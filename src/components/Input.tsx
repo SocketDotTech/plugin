@@ -58,8 +58,33 @@ export function Balance({
 }
 
 export const Input = () => {
-  // For networks
+  const web3Context = useContext(Web3Context);
+  const { userAddress } = web3Context.web3Provider;
+  const mappedChainData = useMappedChainData();
+  const dispatch = useDispatch();
+
+  // Networks
   const allNetworks = useSelector((state: any) => state.networks.allNetworks);
+  const sourceChainId = useSelector(
+    (state: any) => state.networks.sourceChainId
+  );
+  const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
+    allNetworks ? [...allNetworks] : null
+  );
+
+  // Tokens
+  const allSourceTokens = useSelector(
+    (state: any) => state.tokens.allSourceTokens
+  );
+  const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
+  const [filteredTokens, setFilteredTokens] = useState<Currency[]>(null);
+  const { data: tokenWithBalance, isBalanceLoading } = useBalance(
+    sourceToken?.address,
+    sourceChainId,
+    userAddress
+  );
+
+  // Custom Settings
   const customSourceNetworks = useSelector(
     (state: any) => state.customSettings.sourceNetworks
   );
@@ -69,27 +94,10 @@ export const Input = () => {
   const defaultSourceNetwork = useSelector(
     (state: any) => state.customSettings.defaultSourceNetwork
   );
-  const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
-    allNetworks ? [...allNetworks] : null
-  );
-  const sourceChainId = useSelector(
-    (state: any) => state.networks.sourceChainId
-  );
-  const web3Context = useContext(Web3Context);
-  const { userAddress } = web3Context.web3Provider;
+  const customSourceTokens = useSelector(
+    (state:any) => state.customSettings.sourceTokens
+  )
 
-  const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
-  const { data: tokenWithBalance, isBalanceLoading } = useBalance(
-    sourceToken?.address,
-    sourceChainId,
-    userAddress
-  );
-  const allSourceTokens = useSelector(
-    (state: any) => state.customSettings.allSourceTokens
-  );
-  const mappedChainData = useMappedChainData();
-
-  const dispatch = useDispatch();
   function updateNetwork(network: Network) {
     dispatch(setSourceChain(network?.chainId));
     dispatch(setSourceToken(null));
@@ -169,11 +177,20 @@ export const Input = () => {
     }
   }, [parsedInputAmount, tokenWithBalance]);
 
+  // Filtering out the tokens if props are passed
+  useEffect(() => {
+    if(customSourceTokens?.length>0){
+      const _filteredTokens = allSourceTokens?.filter((token: Currency) => customSourceTokens.includes(token.address));
+      if(_filteredTokens?.length>0) setFilteredTokens(_filteredTokens);
+      else setFilteredTokens(allSourceTokens);
+    } else setFilteredTokens(allSourceTokens);
+  }, [allSourceTokens])
+
   // setting initial token
   // changing the tokens on chain change.
   useEffect(() => {
-    if (allSourceTokens) {
-      const selectedTokenExists = allSourceTokens.find(
+    if (filteredTokens) {
+      const selectedTokenExists = filteredTokens.find(
         (x) =>
           x.address === sourceToken?.address &&
           x.chainId === sourceToken?.chainId
@@ -181,17 +198,17 @@ export const Input = () => {
 
       // If selected token exists in the new token list, retain the selected token. Else, run the following code
       if (!selectedTokenExists) {
-        const usdc = allSourceTokens?.find(
+        const usdc = filteredTokens?.find(
           (x: Currency) => x.chainAgnosticId === "USDC"
         );
         if (usdc) {
           dispatch(setSourceToken(usdc));
         } else {
-          dispatch(setSourceToken(allSourceTokens[0]));
+          dispatch(setSourceToken(filteredTokens[0]));
         }
       }
     }
-  }, [allSourceTokens]);
+  }, [filteredTokens]);
 
   // truncate amount on chain/token change
   useEffect(() => {
@@ -270,7 +287,7 @@ export const Input = () => {
         onChangeInput={onChangeInput}
         updateToken={updateToken}
         activeToken={sourceToken}
-        tokens={allSourceTokens}
+        tokens={filteredTokens}
       />
     </div>
   );

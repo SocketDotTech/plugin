@@ -19,34 +19,44 @@ import { useBalance } from "../hooks/apis";
 import { Web3Context } from "../providers/Web3Provider";
 
 export const Output = () => {
-  // For networks
-  const allNetworks = useSelector((state: any) => state.networks.allNetworks);
-  const customDestNetworks = useSelector(
-    (state: any) => state.customSettings.destNetworks
-  );
-  const defaultDestNetwork = useSelector(
-    (state: any) => state.customSettings.defaultDestNetwork
-  );
-  const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
-    allNetworks ? [...allNetworks] : null
-  );
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
+  const dispatch = useDispatch();
+
+  // Networks
+  const allNetworks = useSelector((state: any) => state.networks.allNetworks);
   const destChainId = useSelector((state: any) => state.networks.destChainId);
   const sourceChainId = useSelector(
     (state: any) => state.networks.sourceChainId
   );
+  const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
+    allNetworks ? [...allNetworks] : null
+  );
+
+  // Tokens
   const destToken = useSelector((state: any) => state.tokens.destToken);
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
+  const allDestTokens = useSelector((state: any) => state.tokens.allDestTokens);
+  const customDestTokens = useSelector(
+    (state: any) => state.customSettings.destTokens
+  );
+  const [filteredTokens, setFilteredTokens] = useState<Currency[]>(null);
+
   const route = useSelector((state: any) => state.quotes.bestRoute);
   const { data: tokenWithBalance, isBalanceLoading } = useBalance(
     destToken?.address,
     destChainId,
     userAddress
   );
-  const allDestTokens = useSelector((state: any) => state.customSettings.allDestTokens);
 
-  const dispatch = useDispatch();
+  // Custom Settings
+  const customDestNetworks = useSelector(
+    (state: any) => state.customSettings.destNetworks
+  );
+  const defaultDestNetwork = useSelector(
+    (state: any) => state.customSettings.defaultDestNetwork
+  );
+
   function updateNetwork(network: Network) {
     dispatch(setDestChain(network?.chainId));
     dispatch(setDestToken(null));
@@ -99,15 +109,28 @@ export const Output = () => {
     updateOutputAmount(_formattedOutputAmount);
   }, [route]);
 
+  // Filtering out the tokens if the props are passed
+  useEffect(() => {
+    if (customDestTokens?.length > 0) {
+      const _filteredTokens = allDestTokens?.filter((token: Currency) =>
+        customDestTokens.includes(token.address)
+      );
+      if (_filteredTokens?.length > 0) setFilteredTokens(_filteredTokens);
+      else setFilteredTokens(_filteredTokens);
+    } else setFilteredTokens(allDestTokens);
+  }, [allDestTokens]);
+
   // setting initial token
   // changing the tokens on chain change.
   useEffect(() => {
-    if (allDestTokens && sourceToken) {
-      const usdc = allDestTokens?.find((x: Currency) => x.chainAgnosticId === "USDC");
+    if (filteredTokens && sourceToken) {
+      const usdc = filteredTokens?.find(
+        (x: Currency) => x.chainAgnosticId === "USDC"
+      );
 
       let correspondingDestToken;
       if (sourceToken?.chainAgnosticId) {
-        correspondingDestToken = allDestTokens?.find(
+        correspondingDestToken = filteredTokens?.find(
           (x: Currency) => x?.chainAgnosticId === sourceToken.chainAgnosticId
         );
       }
@@ -117,10 +140,10 @@ export const Output = () => {
       } else if (usdc) {
         dispatch(setDestToken(usdc));
       } else {
-        dispatch(setDestToken(allDestTokens[0]));
+        dispatch(setDestToken(filteredTokens[0]));
       }
     }
-  }, [sourceChainId, allDestTokens, sourceToken]);
+  }, [sourceChainId, filteredTokens, sourceToken]);
 
   const updateToken = (token: Currency) => {
     dispatch(setDestToken(token));
@@ -144,7 +167,7 @@ export const Output = () => {
         amount={`${outputAmount ? `~${outputAmount}` : ""}`}
         updateToken={updateToken}
         activeToken={destToken}
-        tokens={allDestTokens}
+        tokens={filteredTokens}
       />
     </div>
   );

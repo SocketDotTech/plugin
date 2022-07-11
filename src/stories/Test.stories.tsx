@@ -107,6 +107,7 @@ Default.args = {
   },
   sourceNetworks: [1,10,100, 137],
   destNetworks: [250, 1, 137, 10, 100],
-  defaultSourceNetwork: 100,
-  defaultDestNetwork: 250
+  defaultSourceNetwork: 137,
+  defaultDestNetwork: 10,
+  destTokens: ["0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "0x8700daec35af8ff88c16bdf0418774cb3d7599b4"]
 };
