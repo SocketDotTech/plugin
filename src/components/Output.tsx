@@ -21,25 +21,29 @@ import { Web3Context } from "../providers/Web3Provider";
 // Component that handles the destination chain parameters. (ToChain, Destination Token)
 // Shows the balance and the amount you receive for the selected route.
 export const Output = () => {
-  // For networks
-  const allNetworks = useSelector((state: any) => state.networks.allNetworks);
-  const customDestNetworks = useSelector(
-    (state: any) => state.customSettings.destNetworks
-  );
-  const defaultDestNetwork = useSelector(
-    (state: any) => state.customSettings.defaultDestNetwork
-  );
-  const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
-    allNetworks ? [...allNetworks] : null
-  );
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
+  const dispatch = useDispatch();
+
+  // Networks
+  const allNetworks = useSelector((state: any) => state.networks.allNetworks);
   const destChainId = useSelector((state: any) => state.networks.destChainId);
   const sourceChainId = useSelector(
     (state: any) => state.networks.sourceChainId
   );
+  const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
+    allNetworks ? [...allNetworks] : null
+  );
+
+  // Tokens
   const destToken = useSelector((state: any) => state.tokens.destToken);
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
+  const allDestTokens = useSelector((state: any) => state.tokens.allDestTokens);
+  const customDestTokens = useSelector(
+    (state: any) => state.customSettings.destTokens
+  );
+  const [filteredTokens, setFilteredTokens] = useState<Currency[]>(null);
+
   const route = useSelector((state: any) => state.quotes.bestRoute);
 
   // Hook to get Balance for the selected destination token.
@@ -48,9 +52,15 @@ export const Output = () => {
     destChainId,
     userAddress
   );
-  const allTokens = useSelector((state: any) => state.tokens.tokens);
 
-  const dispatch = useDispatch();
+  // Custom Settings
+  const customDestNetworks = useSelector(
+    (state: any) => state.customSettings.destNetworks
+  );
+  const defaultDestNetwork = useSelector(
+    (state: any) => state.customSettings.defaultDestNetwork
+  );
+
   function updateNetwork(network: Network) {
     dispatch(setDestChain(network?.chainId));
     dispatch(setDestToken(null));
@@ -58,7 +68,7 @@ export const Output = () => {
 
   // To set the networks. Shows all networks if no widget props are passed
   useEffect(() => {
-    if (customDestNetworks) {
+    if (allNetworks && customDestNetworks) {
       const filteredNetworks = allNetworks?.filter((x: Network) =>
         customDestNetworks?.includes(x?.chainId)
       );
@@ -103,16 +113,28 @@ export const Output = () => {
     updateOutputAmount(_formattedOutputAmount);
   }, [route]);
 
+  // Filtering out the tokens if the props are passed
+  useEffect(() => {
+    if (customDestTokens?.length > 0) {
+      const _filteredTokens = allDestTokens?.filter((token: Currency) =>
+        customDestTokens.includes(token.address)
+      );
+      if (_filteredTokens?.length > 0) setFilteredTokens(_filteredTokens);
+      else setFilteredTokens(_filteredTokens);
+    } else setFilteredTokens(allDestTokens);
+  }, [allDestTokens]);
+
   // setting initial token
   // changing the tokens on chain change.
   useEffect(() => {
-    if (allTokens) {
-      const tokens = allTokens?.to;
-      const usdc = tokens?.find((x: Currency) => x.chainAgnosticId === "USDC");
+    if (filteredTokens && sourceToken) {
+      const usdc = filteredTokens?.find(
+        (x: Currency) => x.chainAgnosticId === "USDC"
+      );
 
       let correspondingDestToken;
       if (sourceToken?.chainAgnosticId) {
-        correspondingDestToken = tokens?.find(
+        correspondingDestToken = filteredTokens?.find(
           (x: Currency) => x?.chainAgnosticId === sourceToken.chainAgnosticId
         );
       }
@@ -122,10 +144,10 @@ export const Output = () => {
       } else if (usdc) {
         dispatch(setDestToken(usdc));
       } else {
-        dispatch(setDestToken(tokens[0]));
+        dispatch(setDestToken(filteredTokens[0]));
       }
     }
-  }, [sourceChainId, allTokens, sourceToken]);
+  }, [sourceChainId, filteredTokens, sourceToken]);
 
   // Updates the selected destination token if changed.
   const updateToken = (token: Currency) => {
@@ -150,6 +172,7 @@ export const Output = () => {
         amount={`${outputAmount ? `~${outputAmount}` : ""}`}
         updateToken={updateToken}
         activeToken={destToken}
+        tokens={filteredTokens}
       />
     </div>
   );

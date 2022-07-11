@@ -33,25 +33,26 @@ import { Web3Context } from "../providers/Web3Provider";
 // Component that handles the source chain parameters. (FromChain, Source Token)
 // Shows the balance for the source chain, and takes the input from the user for amount.
 export const Input = () => {
-  // For networks
+  const web3Context = useContext(Web3Context);
+  const { userAddress } = web3Context.web3Provider;
+  const mappedChainData = useMappedChainData();
+  const dispatch = useDispatch();
+
+  // Networks
   const allNetworks = useSelector((state: any) => state.networks.allNetworks);
-  const customSourceNetworks = useSelector(
-    (state: any) => state.customSettings.sourceNetworks
-  );
-  const customDestNetworks = useSelector(
-    (state: any) => state.customSettings.destNetworks
-  );
-  const defaultSourceNetwork = useSelector((state:any) => state.customSettings.defaultSourceNetwork)
-  const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
-    allNetworks ? [...allNetworks] : null
-  );
   const sourceChainId = useSelector(
     (state: any) => state.networks.sourceChainId
   );
-  const web3Context = useContext(Web3Context);
-  const { userAddress } = web3Context.web3Provider;
+  const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
+    allNetworks ? [...allNetworks] : null
+  );
 
+  // Tokens
+  const allSourceTokens = useSelector(
+    (state: any) => state.tokens.allSourceTokens
+  );
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
+  const [filteredTokens, setFilteredTokens] = useState<Currency[]>(null);
 
   // Hook to get Balance for the selected destination token.
   const { data: tokenWithBalance, isBalanceLoading } = useBalance(
@@ -59,10 +60,21 @@ export const Input = () => {
     sourceChainId,
     userAddress
   );
-  const allTokens = useSelector((state: any) => state.tokens.tokens);
-  const mappedChainData = useMappedChainData();
 
-  const dispatch = useDispatch();
+  // Custom Settings
+  const customSourceNetworks = useSelector(
+    (state: any) => state.customSettings.sourceNetworks
+  );
+  const customDestNetworks = useSelector(
+    (state: any) => state.customSettings.destNetworks
+  );
+  const defaultSourceNetwork = useSelector(
+    (state: any) => state.customSettings.defaultSourceNetwork
+  );
+  const customSourceTokens = useSelector(
+    (state:any) => state.customSettings.sourceTokens
+  )
+
   function updateNetwork(network: Network) {
     dispatch(setSourceChain(network?.chainId));
     dispatch(setSourceToken(null));
@@ -70,7 +82,7 @@ export const Input = () => {
 
   // To set the networks. Shows all networks if no widget props are passed
   useEffect(() => {
-    if (customSourceNetworks) {
+    if (allNetworks && customSourceNetworks) {
       let filteredNetworks: Network[];
 
       // If there is just one network on the dest, remove that network from the source
@@ -88,8 +100,9 @@ export const Input = () => {
 
       setFilteredNetworks(filteredNetworks);
       updateNetwork(
-        filteredNetworks?.find((x: Network) => x?.chainId === defaultSourceNetwork) ||
-          filteredNetworks?.[0]
+        filteredNetworks?.find(
+          (x: Network) => x?.chainId === defaultSourceNetwork
+        ) || filteredNetworks?.[0]
       );
     } else setFilteredNetworks(allNetworks);
   }, [allNetworks, customSourceNetworks]);
@@ -145,12 +158,20 @@ export const Input = () => {
     }
   }, [parsedInputAmount, tokenWithBalance]);
 
+  // Filtering out the tokens if props are passed
+  useEffect(() => {
+    if(customSourceTokens?.length>0){
+      const _filteredTokens = allSourceTokens?.filter((token: Currency) => customSourceTokens.includes(token.address));
+      if(_filteredTokens?.length>0) setFilteredTokens(_filteredTokens);
+      else setFilteredTokens(allSourceTokens);
+    } else setFilteredTokens(allSourceTokens);
+  }, [allSourceTokens])
+
   // setting initial token
   // changing the tokens on chain change.
   useEffect(() => {
-    if (allTokens) {
-      const tokens = allTokens?.from;
-      const selectedTokenExists = tokens.find(
+    if (filteredTokens) {
+      const selectedTokenExists = filteredTokens.find(
         (x) =>
           x.address === sourceToken?.address &&
           x.chainId === sourceToken?.chainId
@@ -158,17 +179,17 @@ export const Input = () => {
 
       // If selected token exists in the new token list, retain the selected token. Else, run the following code
       if (!selectedTokenExists) {
-        const usdc = tokens?.find(
+        const usdc = filteredTokens?.find(
           (x: Currency) => x.chainAgnosticId === "USDC"
         );
         if (usdc) {
           dispatch(setSourceToken(usdc));
         } else {
-          dispatch(setSourceToken(tokens[0]));
+          dispatch(setSourceToken(filteredTokens[0]));
         }
       }
     }
-  }, [allTokens]);
+  }, [filteredTokens]);
 
   // truncate amount on chain/token change
   useEffect(() => {
@@ -250,6 +271,7 @@ export const Input = () => {
         onChangeInput={onChangeInput}
         updateToken={updateToken}
         activeToken={sourceToken}
+        tokens={filteredTokens}
       />
     </div>
   );

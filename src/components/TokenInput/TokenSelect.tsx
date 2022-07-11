@@ -3,31 +3,24 @@ import { Currency } from "../../utils/types";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { ChevronDown } from "react-feather";
-import { useSelector } from "react-redux";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Modal } from "../common/Modal";
 
 interface Props {
-  source: boolean;
   activeToken: Currency;
   updateToken: (token: Currency) => void;
+  tokens: Currency[];
 }
 
 export const TokenSelect = (props: Props) => {
-  const { source = false, activeToken, updateToken } = props;
+  const { activeToken, updateToken, tokens } = props;
   const [openTokenList, setOpenTokenList] = useState<boolean>(false);
-  const [tokens, setTokens] = useState<any>(null);
   const [filteredTokens, setFilteredTokens] = useState(null);
-  const allTokens = useSelector((state: any) => state.tokens.tokens);
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
 
   // Hook that gives you all the balances for a user on all chains.
   const { data: tokensWithBalances } = useAllTokenBalances();
-
-  useEffect(() => {
-    setTokens(source ? allTokens?.from : allTokens?.to);
-  }, [allTokens]);
 
   function selectToken(token: Currency) {
     updateToken(token);
@@ -39,7 +32,7 @@ export const TokenSelect = (props: Props) => {
       (x) => x.address === token.address && x.chainId === token.chainId
     );
 
-    if(_token?.[0]){
+    if (_token?.[0]) {
       return _token[0].amount.toFixed(5);
     } else return "";
   }

@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   allNetworks: null,
-  sourceChainId: 137,
-  destChainId: 1,
+  sourceChainId: null,
+  destChainId: null,
 };
 
 const networksSlice = createSlice({

@@ -7,6 +7,7 @@ interface TokenInputProps {
   updateToken: (token: Currency) => void;
   source?: boolean;
   activeToken?: Currency;
+  tokens: Currency[];
 }
 
 export const TokenInput = (props: TokenInputProps) => {
@@ -16,6 +17,7 @@ export const TokenInput = (props: TokenInputProps) => {
     updateToken,
     source = false,
     activeToken,
+    tokens,
   } = props;
   return (
     <div className="flex items-center justify-between mt-2.5 overflow-hidden">
@@ -34,9 +36,9 @@ export const TokenInput = (props: TokenInputProps) => {
         />
       </div>
       <TokenSelect
-        source={source}
         updateToken={updateToken}
         activeToken={activeToken}
+        tokens={tokens}
       />
     </div>
   );
