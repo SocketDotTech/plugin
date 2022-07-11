@@ -105,7 +105,7 @@ Default.args = {
     responsiveWidth: false,
     borderRadius: 1,
   },
-  sourceNetworks: [1,137,100],
+  sourceNetworks: [1,10,100, 137],
   destNetworks: [250, 1, 137, 10, 100],
   defaultSourceNetwork: 100,
   defaultDestNetwork: 250

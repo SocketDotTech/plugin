@@ -19,18 +19,19 @@ export const useCustomSettings = (props: WidgetProps) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setCustomSourceNetworks(sourceNetworks));
+    sourceNetworks && dispatch(setCustomSourceNetworks(sourceNetworks));
   }, [sourceNetworks]);
 
   useEffect(() => {
-    dispatch(setCustomDestNetworks(destNetworks));
+    destNetworks && dispatch(setCustomDestNetworks(destNetworks));
   }, [destNetworks]);
 
   useEffect(() => {
-    dispatch(setDefaultSourceNetwork(defaultSourceNetwork));
+    defaultSourceNetwork &&
+      dispatch(setDefaultSourceNetwork(defaultSourceNetwork));
   }, [defaultSourceNetwork]);
 
   useEffect(() => {
-    dispatch(setDefaultDestNetwork(defaultDestNetwork));
+    defaultDestNetwork && dispatch(setDefaultDestNetwork(defaultDestNetwork));
   }, [defaultDestNetwork]);
 };

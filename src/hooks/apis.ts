@@ -14,10 +14,10 @@ import { time } from "../consts";
 
 // redux actions
 import { setNetworks } from "../state/networksSlice";
-import { setTokens } from "../state/tokensSlice";
 import { SortOptions } from "socket-v2-sdk/lib/src/client/models/QuoteRequest";
 
 import { Web3Context } from "../providers/Web3Provider";
+import { setDestTokens, setSourceTokens } from "../state/customSettingsSlice";
 
 export let socket;
 
@@ -88,7 +88,8 @@ export const useTokenList = () => {
         toChainId: destChainId,
       });
       const _tokens = { from: tokens?.from?.tokens, to: tokens?.to?.tokens };
-      dispatch(setTokens(_tokens));
+      dispatch(setSourceTokens(_tokens?.from));
+      dispatch(setDestTokens(_tokens?.to));
     }
 
     shouldFetch && fetchTokens();

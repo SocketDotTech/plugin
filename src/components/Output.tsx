@@ -44,7 +44,7 @@ export const Output = () => {
     destChainId,
     userAddress
   );
-  const allTokens = useSelector((state: any) => state.tokens.tokens);
+  const allDestTokens = useSelector((state: any) => state.customSettings.allDestTokens);
 
   const dispatch = useDispatch();
   function updateNetwork(network: Network) {
@@ -54,7 +54,7 @@ export const Output = () => {
 
   // To set the networks. Shows all networks if no widget props are passed
   useEffect(() => {
-    if (customDestNetworks) {
+    if (allNetworks && customDestNetworks) {
       const filteredNetworks = allNetworks?.filter((x: Network) =>
         customDestNetworks?.includes(x?.chainId)
       );
@@ -102,13 +102,12 @@ export const Output = () => {
   // setting initial token
   // changing the tokens on chain change.
   useEffect(() => {
-    if (allTokens) {
-      const tokens = allTokens?.to;
-      const usdc = tokens?.find((x: Currency) => x.chainAgnosticId === "USDC");
+    if (allDestTokens && sourceToken) {
+      const usdc = allDestTokens?.find((x: Currency) => x.chainAgnosticId === "USDC");
 
       let correspondingDestToken;
       if (sourceToken?.chainAgnosticId) {
-        correspondingDestToken = tokens?.find(
+        correspondingDestToken = allDestTokens?.find(
           (x: Currency) => x?.chainAgnosticId === sourceToken.chainAgnosticId
         );
       }
@@ -118,10 +117,10 @@ export const Output = () => {
       } else if (usdc) {
         dispatch(setDestToken(usdc));
       } else {
-        dispatch(setDestToken(tokens[0]));
+        dispatch(setDestToken(allDestTokens[0]));
       }
     }
-  }, [sourceChainId, allTokens, sourceToken]);
+  }, [sourceChainId, allDestTokens, sourceToken]);
 
   const updateToken = (token: Currency) => {
     dispatch(setDestToken(token));
@@ -145,6 +144,7 @@ export const Output = () => {
         amount={`${outputAmount ? `~${outputAmount}` : ""}`}
         updateToken={updateToken}
         activeToken={destToken}
+        tokens={allDestTokens}
       />
     </div>
   );
