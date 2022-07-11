@@ -18,7 +18,12 @@ import { setTxDetails } from "../../state/txDetails";
 import { socket, useActiveRoutes } from "../../hooks/apis";
 import { handleNetworkChange } from "../../utils";
 
-import { USER_TX_LABELS, UserTxType, PrepareTxStatus } from "../../consts/";
+import {
+  USER_TX_LABELS,
+  UserTxType,
+  PrepareTxStatus,
+  ButtonTexts,
+} from "../../consts/";
 
 import { Web3Context } from "../../providers/Web3Provider";
 
@@ -58,7 +63,6 @@ export const TxModal = () => {
     chainId: "",
   });
 
-
   // Function to switch the connected network.
   function switchNetwork() {
     const chain = allNetworks.filter((x) => x.chainId === userTx?.chainId)?.[0];
@@ -72,7 +76,7 @@ export const TxModal = () => {
       const approvalTx = await signer.sendTransaction(approvalTxData);
       await approvalTx.wait();
       setIsApproving(false);
-      setIsApprovalRequired(false); // Set to false when approval is done. 
+      setIsApprovalRequired(false); // Set to false when approval is done.
     } catch (e) {
       dispatch(setError(e.message));
     }
@@ -109,7 +113,8 @@ export const TxModal = () => {
       );
     } catch (e) {
       const err = e.message;
-      if (err.match("is already complete")) { // the backend throws an error if we request a tx for a completed route.
+      if (err.match("is already complete")) {
+        // the backend throws an error if we request a tx for a completed route.
         setTxCompleted(true);
       } else {
         dispatch(setError(err));
@@ -137,7 +142,7 @@ export const TxModal = () => {
           value: { hash: sendTx.hash, userTxType: userTx.userTxType },
         })
       );
-      
+
       // Set Tx Progress as false when tx is included in the chain.
       await sendTx.wait();
       setTxInProgress(false);
@@ -169,7 +174,7 @@ export const TxModal = () => {
     }
   }
 
-  // Function that prepares the next transaction in the route. 
+  // Function that prepares the next transaction in the route.
   const prepareNextTransaction = async (
     execute: AsyncGenerator<SocketTx, void, string>,
     txHash?: string,
@@ -273,7 +278,7 @@ export const TxModal = () => {
               {userTx && activeChain !== userTx?.chainId ? (
                 <Button onClick={switchNetwork} disabled={initiating}>
                   {initiating
-                    ? "Initiating..."
+                    ? ButtonTexts.INITIATING
                     : `Switch chain to ${
                         allNetworks.filter(
                           (x) => x.chainId === userTx?.chainId
@@ -287,12 +292,12 @@ export const TxModal = () => {
                   isLoading={isApproving}
                 >
                   {initiating
-                    ? "Checking approval"
+                    ? ButtonTexts.CHECKING_APPROVAL
                     : isApproving
-                    ? "Approving"
+                    ? ButtonTexts.APPROVING
                     : isApprovalRequired
-                    ? "Approve"
-                    : "Approved"}
+                    ? ButtonTexts.APPROVE
+                    : ButtonTexts.APPROVAL_DONE}
                 </Button>
               ) : (
                 <Button
@@ -303,11 +308,11 @@ export const TxModal = () => {
                   isLoading={txInProgress}
                 >
                   {bridging
-                    ? "Bridging in progress"
+                    ? ButtonTexts.BRIDGE_IN_PROGRESS
                     : initiating
-                    ? "Initiating..."
+                    ? ButtonTexts.INITIATING
                     : txInProgress
-                    ? "In progress"
+                    ? ButtonTexts.IN_PROGRESS
                     : USER_TX_LABELS?.[userTx?.userTxType]}
                 </Button>
               )}

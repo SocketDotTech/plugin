@@ -39,3 +39,21 @@ export enum PrepareTxStatus {
   PENDING = 'pending',
   READY = 'ready',
 }
+
+export enum QuoteStatus {
+  FETCHING_QUOTE = 'Fetching best quote...',
+  NO_ROUTES_AVAILABLE = 'No routes available',
+  ENTER_AMOUNT = 'Enter amount',
+}
+
+export enum ButtonTexts {
+  NOT_ENOUGH_BALANCE = 'Not enough balance',
+  REVIEW_QUOTE = 'Review Quote',
+  CHECKING_APPROVAL = 'Checking approval',
+  APPROVING = 'Approving',
+  APPROVE = 'Approve',
+  APPROVAL_DONE = 'Approved',
+  BRIDGE_IN_PROGRESS = 'Bridging in progress',
+  INITIATING = 'Initiating...',
+  IN_PROGRESS = 'In progress',
+}

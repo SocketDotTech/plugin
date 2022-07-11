@@ -13,7 +13,8 @@ import { Spinner } from "../common/Spinner";
 import { InnerCard } from "../common/InnerCard";
 
 import { Web3Context } from "../../providers/Web3Provider";
-import { BRIDGE_DISPLAY_NAMES } from "../../consts/";
+import { BRIDGE_DISPLAY_NAMES, QuoteStatus, ButtonTexts } from "../../consts/";
+import { Quote } from "socket-v2-sdk";
 
 export const RouteDetails = () => {
   const dispatch = useDispatch();
@@ -61,18 +62,18 @@ export const RouteDetails = () => {
     const bridgeName = BRIDGE_DISPLAY_NAMES[bridgeKey] || bridgeKey;
     return shouldFetch
       ? isQuotesLoading
-        ? "Fetching best quote..."
+        ? QuoteStatus.FETCHING_QUOTE
         : bestRoute
         ? bridgeName
-        : "No routes available"
-      : "Enter amount";
+        : QuoteStatus.NO_ROUTES_AVAILABLE
+      : QuoteStatus.ENTER_AMOUNT;
   }
 
   function getButtonStatus() {
     if (!isEnoughBalance) {
-      return "Not enough balance";
+      return ButtonTexts.NOT_ENOUGH_BALANCE;
     } else {
-      return "Review Quote";
+      return ButtonTexts.REVIEW_QUOTE;
     }
   }
 
@@ -89,7 +90,7 @@ export const RouteDetails = () => {
       </Button>
       <div className="flex items-center justify-between text-widget-secondary mt-2.5 text-xs">
         <a href="http://socket.tech/" target="_blank" rel="noopener noreferrer">
-          Powered by Socket Technology
+          Powered by Socket
         </a>
         <a
           href="https://socketdottech.zendesk.com/hc/en-us"
