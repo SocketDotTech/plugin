@@ -18,8 +18,7 @@ import { setTxDetails } from "../../state/txDetails";
 import { socket, useActiveRoutes } from "../../hooks/apis";
 import { handleNetworkChange } from "../../utils";
 
-import { USER_TX_LABELS } from "../../consts/";
-import { UserTxType } from "../../utils/UserTxType";
+import { USER_TX_LABELS, UserTxType, PrepareTxStatus } from "../../consts/";
 
 import { Web3Context } from "../../providers/Web3Provider";
 
@@ -59,37 +58,39 @@ export const TxModal = () => {
     chainId: "",
   });
 
-  function changeNetwork() {
+
+  // Function to switch the connected network.
+  function switchNetwork() {
     const chain = allNetworks.filter((x) => x.chainId === userTx?.chainId)?.[0];
     handleNetworkChange(provider, chain);
   }
 
-  async function confirmApproval() {
+  // Function that submits the approval transaction when approval is needed.
+  async function submitApproval() {
     setIsApproving(true);
     try {
       const approvalTx = await signer.sendTransaction(approvalTxData);
       await approvalTx.wait();
       setIsApproving(false);
-      setIsApprovalRequired(false);
+      setIsApprovalRequired(false); // Set to false when approval is done. 
     } catch (e) {
       dispatch(setError(e.message));
     }
   }
 
-  async function initiateExecution() {
+  // Function that start the selected route.
+  async function startRoute() {
     setInitiating(true);
     try {
       const execute = await socket.start(selectedRoute);
-      await prepareNextStep(execute);
+      await prepareNextTransaction(execute);
     } catch (e) {
       dispatch(setError(e.message));
     }
   }
 
-  async function initiateContinuation(
-    txHash?: string,
-    _activeRouteId?: number
-  ) {
+  // Function that lets the user continue the route from the previous transaction when he reopens the widget.
+  async function continueRoute(txHash?: string, _activeRouteId?: number) {
     setInitiating(true);
     // in normal flow, txType and activeRouteId  will be passed.
     // when continuing from tx history section, prevTxData from the localStorage will be fetched;
@@ -101,14 +102,14 @@ export const TxModal = () => {
       const execute = await socket.continue(
         activeRoute?.activeRouteId || _activeRouteId
       );
-      await prepareNextStep(
+      await prepareNextTransaction(
         execute,
         txHash || lastStep?.hash,
         lastStep?.userTxType
       );
     } catch (e) {
       const err = e.message;
-      if (err.match("is already complete")) {
+      if (err.match("is already complete")) { // the backend throws an error if we request a tx for a completed route.
         setTxCompleted(true);
       } else {
         dispatch(setError(err));
@@ -118,14 +119,16 @@ export const TxModal = () => {
     }
   }
 
-  // use the same tx as init if the 1st tx isn't completed
-  async function doTransaction() {
+  // Function that checks the progress of the route and initiates the next transaction when ready.
+  // Uses the same tx as init if the 1st tx isn't completed
+  async function submitNextTx() {
+    // Set the tx in progress.
     setTxInProgress(true);
     try {
       const sendTxData = await userTx.getSendTransaction();
       const sendTx = await signer.sendTransaction(sendTxData);
 
-      // set data to localStorage
+      // set data to local storage, txHash is in storage if the user leaves in the middle of the transaction.
       dispatch(
         setTxDetails({
           account: userAddress,
@@ -134,7 +137,8 @@ export const TxModal = () => {
           value: { hash: sendTx.hash, userTxType: userTx.userTxType },
         })
       );
-
+      
+      // Set Tx Progress as false when tx is included in the chain.
       await sendTx.wait();
       setTxInProgress(false);
 
@@ -147,10 +151,13 @@ export const TxModal = () => {
         setBridging(true);
       }
 
+      // This checks the status of the transaction. The status can be ready, completed and pending.
       const currentStatus = await userTx.submit(sendTx.hash);
-      if (currentStatus && currentStatus !== "completed") {
-        await initiateContinuation(userTx.hash, userTx.activeRouteId);
-      } else if (currentStatus === "completed") {
+
+      // If current status is completed mark route as completed else continue the route.
+      if (currentStatus && currentStatus !== PrepareTxStatus.COMPLETED) {
+        await continueRoute(userTx.hash, userTx.activeRouteId);
+      } else if (currentStatus === PrepareTxStatus.COMPLETED) {
         setTxCompleted(true);
         setBridging(false);
         mutateActiveRoutes();
@@ -162,8 +169,8 @@ export const TxModal = () => {
     }
   }
 
-  // Next transaction preparation
-  const prepareNextStep = async (
+  // Function that prepares the next transaction in the route. 
+  const prepareNextTransaction = async (
     execute: AsyncGenerator<SocketTx, void, string>,
     txHash?: string,
     txType?: string
@@ -180,9 +187,12 @@ export const TxModal = () => {
     }
 
     try {
+      // If txHash is present, pass the txHash to execute else do not.
       const next = txHash ? await execute.next(txHash) : await execute.next();
       setBridging(false);
 
+      // If next.done is false, then set the userTx to next.value.
+      // If approval is needed, set approval required to true and set approval tx Data.
       if (!next.done && next.value) {
         const tx = next.value;
         setUserTx(tx); // used in doTransaction to get txData
@@ -192,6 +202,7 @@ export const TxModal = () => {
         if (_approvalTxData) setIsApprovalRequired(true);
       }
 
+      // If next.done is true, set tx as completed.
       if (next.done) {
         setInitiating(false);
         setTxCompleted(true);
@@ -204,8 +215,8 @@ export const TxModal = () => {
   };
 
   useEffect(() => {
-    if (!activeRoute) initiateExecution();
-    else initiateContinuation();
+    if (!activeRoute) startRoute();
+    else continueRoute();
 
     return () => {
       dispatch(setActiveRoute(null));
@@ -260,7 +271,7 @@ export const TxModal = () => {
           {!txCompleted && (
             <>
               {userTx && activeChain !== userTx?.chainId ? (
-                <Button onClick={changeNetwork} disabled={initiating}>
+                <Button onClick={switchNetwork} disabled={initiating}>
                   {initiating
                     ? "Initiating..."
                     : `Switch chain to ${
@@ -271,7 +282,7 @@ export const TxModal = () => {
                 </Button>
               ) : isApprovalRequired ? (
                 <Button
-                  onClick={confirmApproval}
+                  onClick={submitApproval}
                   disabled={!isApprovalRequired || isApproving}
                   isLoading={isApproving}
                 >
@@ -285,7 +296,7 @@ export const TxModal = () => {
                 </Button>
               ) : (
                 <Button
-                  onClick={doTransaction}
+                  onClick={submitNextTx}
                   disabled={
                     isApprovalRequired || txInProgress || initiating || bridging
                   }
