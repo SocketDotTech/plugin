@@ -60,7 +60,12 @@ export function Balance({
 export const Input = () => {
   // For networks
   const allNetworks = useSelector((state: any) => state.networks.allNetworks);
-  const devProps = useSelector((state: any) => state.devProps.devProps);
+  const customSourceNetworks = useSelector(
+    (state: any) => state.customSettings.sourceNetworks
+  );
+  const customDestNetworks = useSelector(
+    (state: any) => state.customSettings.destNetworks
+  );
   const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
     allNetworks ? [...allNetworks] : null
   );
@@ -87,17 +92,29 @@ export const Input = () => {
 
   // To set the networks. Shows all networks if no widget props are passed
   useEffect(() => {
-    if (devProps?.sourceNetworks) {
-      const filteredNetworks = allNetworks?.filter((x: Network) =>
-        devProps?.sourceNetworks?.includes(x?.chainId)
-      );
+    if (customSourceNetworks) {
+      let filteredNetworks: Network[];
+
+      // If there is just one network on the dest, remove that network from the source
+      if (customDestNetworks?.length === 1) {
+        filteredNetworks = allNetworks?.filter(
+          (x: Network) =>
+            customSourceNetworks.includes(x?.chainId) &&
+            x.chainId !== customDestNetworks?.[0]
+        );
+      } else {
+        filteredNetworks = allNetworks?.filter((x: Network) =>
+          customSourceNetworks.includes(x?.chainId)
+        );
+      }
+
       setFilteredNetworks(filteredNetworks);
       updateNetwork(
         filteredNetworks?.find((x: Network) => x?.chainId === 137) ||
           filteredNetworks?.[0]
       );
     } else setFilteredNetworks(allNetworks);
-  }, [allNetworks, devProps]);
+  }, [allNetworks, customSourceNetworks]);
 
   // For Input & tokens
   const [inputAmount, updateInputAmount] = useState<string>("");

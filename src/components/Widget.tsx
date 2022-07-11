@@ -19,6 +19,7 @@ import { ErrorModal } from "./common/ErrorModal";
 
 // hooks
 import { useChains, useTokenList } from "../hooks/apis";
+import { useCustomSettings } from "../hooks/useCustomSettings";
 
 export const Widget = (props: WidgetProps) => {
   const { customize } = props;
@@ -27,6 +28,7 @@ export const Widget = (props: WidgetProps) => {
 
   useChains();
   useTokenList();
+  useCustomSettings(props);
 
   // run when the props are changed
   useEffect(() => {
@@ -54,7 +56,7 @@ export const Widget = (props: WidgetProps) => {
     }
 
     fetchData();
-  }, [props.provider]);
+  }, [props]);
 
   const { responsiveWidth, width, borderRadius } = customSettings.customization;
 

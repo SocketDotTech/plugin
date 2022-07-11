@@ -17,16 +17,20 @@ function Option({
   onClick,
   selected = false,
   borderRadius = 1,
+  onlyOneNetwork = false,
 }: {
   network: Network;
   children?: ReactNode;
   onClick?: () => void;
   selected?: boolean;
   borderRadius?: number;
+  onlyOneNetwork?: boolean;
 }) {
   return (
     <div
-      className={`flex gap-1 items-center cursor-pointer ${selected ? '' : 'p-1.5 hover:bg-widget-primary'}`}
+      className={`flex gap-1 items-center cursor-pointer ${
+        selected ? "" : "p-1.5 hover:bg-widget-primary"
+      }`}
       onClick={onClick}
     >
       <img
@@ -35,7 +39,9 @@ function Option({
         style={{ borderRadius: `calc(0.3rem * ${borderRadius})` }}
       />
       <span className="text-sm text-widget-primary">{network?.name}</span>
-      {selected && <ChevronDown className="text-widget-secondary w-4 h-4" />}
+      {selected && !onlyOneNetwork && (
+        <ChevronDown className="text-widget-secondary w-4 h-4" />
+      )}
       {children}
     </div>
   );
@@ -68,11 +74,20 @@ export function ChainSelect({
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
       ref={chainDropdownRef}
     >
-      <Option network={activeNetwork} selected borderRadius={borderRadius} />
+      {activeNetwork ? (
+        <Option
+          network={activeNetwork}
+          selected
+          borderRadius={borderRadius}
+          onlyOneNetwork={networks?.length < 2}
+        />
+      ) : (
+        <span className="text-sm text-widget-primary bg-widget-secondary py-1.5 px-2" style={{ borderRadius: `calc(0.3rem * ${borderRadius})` }}>Loading chains</span>
+      )}
 
       {openDropdown && (
         <div
-          className="pt-1 z-10 left-0 absolute bg-widget-secondary flex flex-col w-full h-[150px] overflow-y-auto overflow-hidden"
+          className="pt-1 z-10 left-0 absolute bg-widget-secondary flex flex-col w-full max-h-[150px] overflow-y-auto overflow-hidden"
           style={{
             borderBottomRightRadius: `calc(0.75rem * ${borderRadius})`,
             borderBottomLeftRadius: `calc(0.75rem * ${borderRadius})`,

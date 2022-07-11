@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Modal } from "../common/Modal";
 import { ChevronDown, Settings as SettingsIcon } from "react-feather";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
+import useClickOutside from "../../hooks/useClickOutside";
 
 export const Settings = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,8 @@ export const Settings = () => {
     setLabel(LABEL_STATE.OUTPUT);
   }, []);
 
+  const dropdownRef = useClickOutside(() => openDropdown(false))
+
   if (isSettingsOpen)
     return (
       <Modal title="Settings" closeModal={() => setIsSettingsOpen(false)}>
@@ -48,6 +51,7 @@ export const Settings = () => {
           <div
             className="relative border border-widget-secondary-text border-opacity-10 flex w-auto"
             style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
+            ref={dropdownRef}
           >
             <Option onClick={() => openDropdown(!dropdown)} active>
               {label}{" "}
@@ -64,7 +68,7 @@ export const Settings = () => {
               >
                 {sortOptions.map((x) => {
                   return (
-                    <Option onClick={() => handleChange(x)}>{x.label}</Option>
+                    <Option onClick={() => handleChange(x)} key={x.id}>{x.label}</Option>
                   );
                 })}
               </div>

@@ -21,7 +21,9 @@ import { Web3Context } from "../providers/Web3Provider";
 export const Output = () => {
   // For networks
   const allNetworks = useSelector((state: any) => state.networks.allNetworks);
-  const devProps = useSelector((state: any) => state.devProps.devProps);
+  const customDestNetworks = useSelector(
+    (state: any) => state.customSettings.destNetworks
+  );
   const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
     allNetworks ? [...allNetworks] : null
   );
@@ -49,13 +51,13 @@ export const Output = () => {
 
   // To set the networks. Shows all networks if no widget props are passed
   useEffect(() => {
-    if (devProps?.destNetworks) {
+    if (customDestNetworks) {
       const filteredNetworks = allNetworks?.filter((x: Network) =>
-        devProps?.destNetworks?.includes(x?.chainId)
+        customDestNetworks?.includes(x?.chainId)
       );
 
       //  filtering out source network from the list
-      const updatedNetworksList = filteredNetworks.filter(
+      const updatedNetworksList = filteredNetworks?.filter(
         (x: Network) => x?.chainId !== sourceChainId
       );
 
@@ -71,7 +73,7 @@ export const Output = () => {
       );
       setFilteredNetworks(updatedNetworksList);
     }
-  }, [allNetworks, devProps, sourceChainId]);
+  }, [allNetworks, sourceChainId, customDestNetworks]);
 
   // Changing dest chain if the source and destination chains are the same.
   useEffect(() => {
@@ -99,7 +101,7 @@ export const Output = () => {
     if (allTokens) {
       const tokens = allTokens?.to;
       const usdc = tokens?.find((x: Currency) => x.chainAgnosticId === "USDC");
-      
+
       let correspondingDestToken;
       if (sourceToken?.chainAgnosticId) {
         correspondingDestToken = tokens?.find(
