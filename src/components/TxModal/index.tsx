@@ -66,10 +66,14 @@ export const TxModal = () => {
 
   async function confirmApproval() {
     setIsApproving(true);
-    const approvalTx = await signer.sendTransaction(approvalTxData);
-    await approvalTx.wait();
-    setIsApproving(false);
-    setIsApprovalRequired(false);
+    try {
+      const approvalTx = await signer.sendTransaction(approvalTxData);
+      await approvalTx.wait();
+      setIsApproving(false);
+      setIsApprovalRequired(false);
+    } catch (e) {
+      dispatch(setError(e.message));
+    }
   }
 
   async function initiateExecution() {
@@ -111,7 +115,6 @@ export const TxModal = () => {
       }
       setInitiating(false);
       setBridging(false);
-      console.log("Error", e);
     }
   }
 
@@ -156,7 +159,6 @@ export const TxModal = () => {
       dispatch(setError(e.message));
       setBridging(false);
       setTxInProgress(false);
-      console.log("Error", e);
     }
   }
 
