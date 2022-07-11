@@ -21,7 +21,7 @@ export const Modal = ({
   return (
     <div className="p-1 w-full h-full absolute top-0 left-0 z-50 bg-black bg-opacity-10">
       <div
-        className={`w-full h-full bg-widget-primary flex flex-col ${
+        className={`w-full h-full bg-widget-primary flex flex-col overflow-hidden ${
           classNames ?? ""
         }`}
         style={{ borderRadius: `calc(0.75rem * ${borderRadius})` }}

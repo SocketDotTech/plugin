@@ -1,6 +1,6 @@
 import { WidgetProps } from "../utils/types";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   setCustomDestNetworks,
   setCustomSourceNetworks,
@@ -8,6 +8,8 @@ import {
   setDefaultSourceNetwork,
   setCustomSourceTokens,
   setCustomDestTokens,
+  setDefaultSourceToken,
+  setDefaultDestToken
 } from "../state/customSettingsSlice";
 
 // To set custom chains, tokens, default values passed as props
@@ -19,6 +21,8 @@ export const useCustomSettings = (props: WidgetProps) => {
     defaultDestNetwork,
     sourceTokens,
     destTokens,
+    defaultSourceToken,
+    defaultDestToken
   } = props;
   const dispatch = useDispatch();
 
@@ -46,4 +50,12 @@ export const useCustomSettings = (props: WidgetProps) => {
   useEffect(() => {
     destTokens && dispatch(setCustomDestTokens(destTokens));
   }, [destTokens]);
+
+  useEffect(() => {
+    defaultSourceToken && dispatch(setDefaultSourceToken(defaultSourceToken));
+  }, [defaultSourceToken])
+
+  useEffect(() => {
+    defaultDestToken && dispatch(setDefaultDestToken(defaultDestToken));
+  }, [defaultDestToken])
 };

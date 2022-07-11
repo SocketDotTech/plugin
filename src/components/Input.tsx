@@ -95,8 +95,11 @@ export const Input = () => {
     (state: any) => state.customSettings.defaultSourceNetwork
   );
   const customSourceTokens = useSelector(
-    (state:any) => state.customSettings.sourceTokens
-  )
+    (state: any) => state.customSettings.sourceTokens
+  );
+  const defaultSourceToken = useSelector(
+    (state: any) => state.customSettings.defaultSourceToken
+  );
 
   function updateNetwork(network: Network) {
     dispatch(setSourceChain(network?.chainId));
@@ -179,12 +182,14 @@ export const Input = () => {
 
   // Filtering out the tokens if props are passed
   useEffect(() => {
-    if(customSourceTokens?.length>0){
-      const _filteredTokens = allSourceTokens?.filter((token: Currency) => customSourceTokens.includes(token.address));
-      if(_filteredTokens?.length>0) setFilteredTokens(_filteredTokens);
+    if (customSourceTokens?.[sourceChainId]?.length > 0) {
+      const _filteredTokens = allSourceTokens?.filter((token: Currency) =>
+        customSourceTokens?.[sourceChainId].includes(token.address)
+      );
+      if (_filteredTokens?.length > 0) setFilteredTokens(_filteredTokens);
       else setFilteredTokens(allSourceTokens);
     } else setFilteredTokens(allSourceTokens);
-  }, [allSourceTokens])
+  }, [allSourceTokens]);
 
   // setting initial token
   // changing the tokens on chain change.
@@ -201,7 +206,14 @@ export const Input = () => {
         const usdc = filteredTokens?.find(
           (x: Currency) => x.chainAgnosticId === "USDC"
         );
-        if (usdc) {
+
+        const defaultToken = filteredTokens.filter(
+          (x) => x.address === defaultSourceToken
+        )?.[0];
+
+        if (defaultToken) {
+          dispatch(setSourceToken(defaultToken));
+        } else if (usdc) {
           dispatch(setSourceToken(usdc));
         } else {
           dispatch(setSourceToken(filteredTokens[0]));

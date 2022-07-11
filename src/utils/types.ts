@@ -14,15 +14,15 @@ export interface WidgetProps {
   defaultDestNetwork?: number;
 
   // Token address' array
-  sourceTokens?: string[];
+  sourceTokens?: { [key: number]: string[] };
   destTokens?: string[];
 
   // Token address
-  // Pass the string 'native' for native token
+  // Pass the string "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" for native token
   defaultSourceToken?: string;
   defaultDestToken?: string;
-  
-  locale?: string; 
+
+  locale?: string;
   customize?: Customize;
 }
 
@@ -43,7 +43,6 @@ export interface Customize {
   secondaryTextColor?: string;
   outlineColor?: string;
 }
-
 
 export interface Network {
   chainId: number;

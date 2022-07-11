@@ -12,7 +12,7 @@ declare global {
 
 export default {
   title: "Bridge",
-  component: Bridge
+  component: Bridge,
 };
 
 const Template = (args: WidgetProps) => {
@@ -105,9 +105,26 @@ Default.args = {
     responsiveWidth: false,
     borderRadius: 1,
   },
-  sourceNetworks: [1,10,100, 137],
+  sourceNetworks: [1, 10, 100, 137],
   destNetworks: [250, 1, 137, 10, 100],
   defaultSourceNetwork: 137,
   defaultDestNetwork: 10,
-  destTokens: ["0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "0x8700daec35af8ff88c16bdf0418774cb3d7599b4"]
+  sourceTokens: {
+    137: [
+      "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+      "0x45c32fa6df82ead1e2ef74d17b76547eddfaff89",
+      "0x50b728d8d964fd00c2d0aad81718b71311fef68a",
+    ],
+  },
+  destTokens: {
+    10: [
+      "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "0x8700daec35af8ff88c16bdf0418774cb3d7599b4", // SNX
+      "0x7f5c764cbc14f9669b88837ca1490cca17c31607",
+      "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58",
+      "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9", // SUSD
+    ],
+  },
+  defaultSourceToken: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+  defaultDestToken: "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9",
 };

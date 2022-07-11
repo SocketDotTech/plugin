@@ -56,6 +56,9 @@ export const Output = () => {
   const defaultDestNetwork = useSelector(
     (state: any) => state.customSettings.defaultDestNetwork
   );
+  const defaultDestToken = useSelector(
+    (state: any) => state.customSettings.defaultDestToken
+  );
 
   function updateNetwork(network: Network) {
     dispatch(setDestChain(network?.chainId));
@@ -111,9 +114,9 @@ export const Output = () => {
 
   // Filtering out the tokens if the props are passed
   useEffect(() => {
-    if (customDestTokens?.length > 0) {
+    if (customDestTokens?.[destChainId]?.length > 0) {
       const _filteredTokens = allDestTokens?.filter((token: Currency) =>
-        customDestTokens.includes(token.address)
+        customDestTokens?.[destChainId].includes(token.address)
       );
       if (_filteredTokens?.length > 0) setFilteredTokens(_filteredTokens);
       else setFilteredTokens(_filteredTokens);
@@ -135,7 +138,13 @@ export const Output = () => {
         );
       }
 
-      if (correspondingDestToken) {
+      const defaultToken = filteredTokens?.filter(
+        (x) => x.address == defaultDestToken
+      )?.[0];
+
+      if (defaultToken) {
+        dispatch(setDestToken(defaultToken));
+      } else if (correspondingDestToken) {
         dispatch(setDestToken(correspondingDestToken));
       } else if (usdc) {
         dispatch(setDestToken(usdc));
@@ -143,7 +152,7 @@ export const Output = () => {
         dispatch(setDestToken(filteredTokens[0]));
       }
     }
-  }, [sourceChainId, filteredTokens, sourceToken]);
+  }, [filteredTokens, sourceToken]);
 
   const updateToken = (token: Currency) => {
     dispatch(setDestToken(token));
