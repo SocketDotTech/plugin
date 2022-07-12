@@ -79,21 +79,21 @@ export const TokenSelect = (props: Props) => {
       {activeToken ? (
         <button
           onClick={() => setOpenTokenList(!openTokenList)}
-          className="flex items-center flex-1 bg-widget-secondary flex-shrink-0 flex-nowrap w-auto overflow-hidden p-1 gap-1"
+          className={`flex items-center flex-1 bg-widget-interactive flex-shrink-0 flex-nowrap w-auto overflow-hidden p-1 gap-1 text-widget-on-interactive`}
           style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
         >
           <img
             src={activeToken?.logoURI}
-            className="h-6 w-6 rounded-full mr-1"
+            className="h-6 w-6 rounded-full mr-1 border"
           />
           <div className="flex items-center gap-0.5">
-            <span className="text-widget-primary">{activeToken?.symbol}</span>
+            <span>{activeToken?.symbol}</span>
             <ChevronDown className="w-4 h-4" />
           </div>
         </button>
       ) : (
         <button
-          className="h-8 flex items-center justify-center flex-1 bg-widget-secondary flex-shrink-0 flex-nowrap w-auto overflow-hidden py-1 px-3 gap-1 text-widget-secondary text-sm"
+          className={`h-8 flex items-center justify-center flex-1 bg-widget-interactive flex-shrink-0 flex-nowrap w-auto overflow-hidden py-1 px-3 gap-1 text-sm text-widget-on-interactive`}
           onClick={() => setOpenTokenList(!openTokenList)}
           disabled={!activeToken}
           style={{ borderRadius: `calc(1rem * ${borderRadius})` }}

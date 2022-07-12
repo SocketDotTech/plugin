@@ -18,17 +18,14 @@ export const formatCurrencyAmount = (
   const result = !!value
     ? ethers.utils.formatUnits(value?.toString(), units)
     : "";
-  if (result == "0.0" || !result) return '0';
+  if (result == "0.0" || !result) return "0";
 
   if (!!decimals) return truncateDecimalValue(result, decimals);
 
   return result;
 };
 
-export const parseCurrencyAmount = (
-  value: string,
-  units: number,
-) => {
+export const parseCurrencyAmount = (value: string, units: number) => {
   const result =
     !!value && !!units ? ethers.utils.parseUnits(value, units).toString() : "";
   return result;
@@ -109,4 +106,13 @@ export function getExplorerLink(
       return `${baseUrl}/address/${data}`;
     }
   }
+}
+
+// Function to convert rgb value to number,number,number form
+export function formatRGB(color: string) {
+  const formattedColor = color
+    .split(",")
+    .map((x) => x.replace(/[^0-9.]/g, ""))
+    .join(",");
+  return formattedColor;
 }

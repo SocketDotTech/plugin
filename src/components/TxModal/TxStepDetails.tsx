@@ -192,12 +192,12 @@ const TxStep = ({
           inProgress ? (
             <Spinner size={4} />
           ) : (
-            <ArrowRight className={`w-[18px] h-[18px] text-widget-theme`} />
+            <ArrowRight className={`w-[18px] h-[18px] text-widget-accent`} />
           )
         ) : (
           <CheckCircle
             className={`w-[18px] h-[18px] ${
-              complete ? "text-widget-theme" : "text-widget-outline"
+              complete ? "text-widget-accent" : "text-widget-outline"
             }`}
           />
         )}

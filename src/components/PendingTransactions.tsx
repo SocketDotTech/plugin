@@ -79,7 +79,7 @@ export const PendingTransactions = () => {
   if (totalRoutes > 0)
     return (
       <button
-        className="uppercase text-widget-theme text-sm px-2 py-0.5 bg-widget-theme bg-opacity-10"
+        className="uppercase text-sm px-2 py-0.5 bg-widget-accent shadow-inner bg-opacity-90 text-widget-onAccent"
         onClick={() => setIsModalOpen(true)}
         style={{ borderRadius: `calc(0.75rem * ${borderRadius})` }}
       >

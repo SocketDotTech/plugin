@@ -9,8 +9,9 @@ import {
   setCustomSourceTokens,
   setCustomDestTokens,
   setDefaultSourceToken,
-  setDefaultDestToken
+  setDefaultDestToken,
 } from "../state/customSettingsSlice";
+import { formatRGB } from "../utils";
 
 // To set custom chains, tokens, default values passed as props
 export const useCustomSettings = (props: WidgetProps) => {
@@ -22,7 +23,8 @@ export const useCustomSettings = (props: WidgetProps) => {
     sourceTokens,
     destTokens,
     defaultSourceToken,
-    defaultDestToken
+    defaultDestToken,
+    customize,
   } = props;
   const dispatch = useDispatch();
 
@@ -53,9 +55,54 @@ export const useCustomSettings = (props: WidgetProps) => {
 
   useEffect(() => {
     defaultSourceToken && dispatch(setDefaultSourceToken(defaultSourceToken));
-  }, [defaultSourceToken])
+  }, [defaultSourceToken]);
 
   useEffect(() => {
     defaultDestToken && dispatch(setDefaultDestToken(defaultDestToken));
-  }, [defaultDestToken])
+  }, [defaultDestToken]);
+
+  // Theme
+  useEffect(() => {
+    console.log("customize", customize);
+    customize?.accent &&
+      document.documentElement.style.setProperty(
+        "--socket-widget-accent-color",
+        formatRGB(customize.accent)
+      );
+    customize?.onAccent &&
+      document.documentElement.style.setProperty(
+        "--socket-widget-on-accent-color",
+        formatRGB(customize.onAccent)
+      );
+    customize?.primary &&
+      document.documentElement.style.setProperty(
+        "--socket-widget-primary-color",
+        formatRGB(customize.primary)
+      );
+    customize?.secondary &&
+      document.documentElement.style.setProperty(
+        "--socket-widget-secondary-color",
+        formatRGB(customize.secondary)
+      );
+    customize?.text &&
+      document.documentElement.style.setProperty(
+        "--socket-widget-primary-text-color",
+        formatRGB(customize.text)
+      );
+    customize?.secondaryText &&
+      document.documentElement.style.setProperty(
+        "--socket-widget-secondary-text-color",
+        formatRGB(customize.secondaryText)
+      );
+    customize?.interactive &&
+      document.documentElement.style.setProperty(
+        "--socket-widget-interactive",
+        formatRGB(customize.interactive)
+      );
+    customize?.onInteractive &&
+      document.documentElement.style.setProperty(
+        "--socket-widget-on-interactive",
+        formatRGB(customize.onInteractive)
+      );
+  }, [customize]);
 };

@@ -16,11 +16,11 @@ export const TokenDetail = (props: TokenAssetProps) => {
   const formattedAmount = formatCurrencyAmount(amount, token?.decimals, 4);
   return (
     <div
-      className={`flex items-center gap-2 flex-1 ${
+      className={`flex items-center gap-2 flex-1 max-w-[140px] overflow-hidden ${
         rtl ? "flex-row-reverse" : "flex-row"
       }`}
     >
-      <div className={`relative ${small ? "w-5 h-5" : "h-6 w-6"}`}>
+      <div className={`relative flex-shrink-0 ${small ? "w-5 h-5" : "h-6 w-6"}`}>
         <img
           src={token?.logoURI}
           className="w-full h-full rounded-full absolute top-0 left-0"
@@ -31,9 +31,9 @@ export const TokenDetail = (props: TokenAssetProps) => {
         />
       </div>
 
-      <div className={`flex flex-col ${rtl ? "items-end" : "items-start"}`}>
+      <div className={`flex flex-col flex-auto overflow-hidden ${rtl ? "items-end" : "items-start"}`}>
         <span
-          className={`text-widget-secondary font-medium ${
+          className={`text-widget-secondary w-full font-medium overflow-hidden whitespace-nowrap text-ellipsis ${rtl ? "text-right" : "text-left"} ${
             small ? "text-xs" : "text-sm"
           }`}
         >

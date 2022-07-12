@@ -1,4 +1,13 @@
 /** @type {import('tailwindcss').Config} */
+
+function withOpacity(variableName) {
+  return ({ opacityValue }) => {
+    if (opacityValue !== undefined)
+      return `rgba(var(${variableName}), ${opacityValue})`;
+    else return `rgb(var(${variableName}))`;
+  };
+}
+
 module.exports = {
   enabled: process.env.NODE_ENV === "publish",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -6,44 +15,31 @@ module.exports = {
     extend: {
       textColor: {
         widget: {
-          theme: `rgb(var(--theme-color))`,
-          primary: "var(--primary-text-color)",
-          'primary-inverted': "var(--primary-color)",
-          secondary: ({opacityValue}) => {
-            if(opacityValue !== undefined) {
-              return `rgba(var(--secondary-text-color), ${opacityValue})`;
-            }
-            return `rgba(var(--secondary-text-color))`
-          },
-          outline: "var(--outline-color)",
+          accent: withOpacity("--socket-widget-accent-color"),
+          onAccent: withOpacity("--socket-widget-on-accent-color"),
+          primary: withOpacity("--socket-widget-primary-text-color"),
+          'primary-main': withOpacity("--socket-widget-primary-color"),
+          secondary: withOpacity("--socket-widget-secondary-text-color"),
+          outline: withOpacity("--socket-widget-outline-color"),
+          'on-interactive': withOpacity("--socket-widget-on-interactive")
         },
       },
       backgroundColor: {
         widget: {
-          theme: ({ opacityValue }) => {
-            if (opacityValue !== undefined) {
-              return `rgba(var(--theme-color), ${opacityValue})`;
-            }
-            return `rgb(var(--theme-color))`;
-          },
-          'theme-muted': 'var(--theme-muted-color)',
-          primary: "var(--primary-color)",
-          secondary: "var(--secondary-color)",
-          outline: "var(--outline-color)",
+          accent: withOpacity("--socket-widget-accent-color"),
+          primary: withOpacity("--socket-widget-primary-color"),
+          secondary: withOpacity("--socket-widget-secondary-color"),
+          outline: withOpacity("--socket-widget-outline-color"),
+          interactive: withOpacity('--socket-widget-interactive')
         },
       },
       borderColor: {
         widget: {
-          theme: `rgb(var(--theme-color))`,
-          // primary: "var(--primary-text-color)",
-          secondary: "var(--secondary-color)",
-          'secondary-text': ({opacityValue}) => {
-            if(opacityValue !== undefined) {
-              return `rgba(var(--secondary-text-color), ${opacityValue})`;
-            }
-            return `rgba(var(--secondary-text-color))`
-          },
-          outline: "var(--outline-color)",
+          accent: withOpacity("--socket-widget-accent-color"),
+          primary: withOpacity("--socket-widget-primary-color"),
+          secondary: withOpacity("--socket-widget-secondary-color"),
+          "secondary-text": withOpacity("--socket-widget-secondary-text-color"),
+          outline: withOpacity("--socket-widget-outline-color"),
         },
       },
       width: {

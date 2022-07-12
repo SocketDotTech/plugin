@@ -36,12 +36,29 @@ export interface Customize {
   // Border radius [0-1]
   borderRadius?: number;
 
-  themeColor?: string;
-  primaryColor?: string;
-  secondaryColor?: string;
-  primaryTextColor?: string;
-  secondaryTextColor?: string;
-  outlineColor?: string;
+  // All colors should stricktly be in RGB format
+  // Theme color
+  accent?: string; 
+  onAccent?: string;
+
+  // Primary color - Used for background. Container, modal and almost everywhere. 
+  primary?: string;
+
+  // Secondary color - Used for foreground. Hover effects, cards, etc.
+  secondary?: string;
+
+  // Primary text color - For headings and texts with emphasis.
+  text?: string;
+
+  // Secondary text color 
+  secondaryText?: string;
+
+  // Interactive colors - for dropdowns
+  interactive?: string;
+  onInteractive?: string;
+
+  // Outline color - used for lines, borders and icons
+  outline?: string;
 }
 
 export interface Network {

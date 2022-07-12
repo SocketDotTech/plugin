@@ -72,8 +72,8 @@ const Template = (args: WidgetProps) => {
   }, [window.ethereum]);
 
   return (
-    <div className="bg-gray-900 p-10" style={{ height: "calc(100vh - 40px)" }}>
-      <p style={{ color: "white" }}>
+    <div className="bg-gray-400 p-10" style={{ height: "calc(100vh - 40px)"}}>
+      <p style={{ color: "black" }}>
         User Address : {userAddress}
         <br />
         ChainId: {chain}
@@ -104,6 +104,14 @@ Default.args = {
     width: 360,
     responsiveWidth: false,
     borderRadius: 1,
+    secondary: 'rgb(68,69,79)',
+    primary: 'rgb(31,34,44)',
+    accent: 'rgb(131,249,151)',
+    onAccent: 'rgb(0,0,0)',
+    interactive: 'rgb(0,0,0)',
+    onInteractive: 'rgb(240,240,240)',
+    text: 'rgb(255,255,255)',
+    secondaryText: 'rgb(200,200,200)',
   },
   sourceNetworks: [1, 10, 100, 137],
   destNetworks: [250, 1, 137, 10, 100],
@@ -125,6 +133,8 @@ Default.args = {
       "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9", // SUSD
     ],
   },
-  defaultSourceToken: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+  // defaultSourceToken: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+  defaultSourceToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+
   defaultDestToken: "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9",
 };

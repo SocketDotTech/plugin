@@ -12,10 +12,9 @@ export const InnerCard = ({
   const { borderRadius } = customSettings.customization;
   return (
     <div
-      className={`bg-widget-secondary p-3 ${classNames || ""}`}
+      className={`bg-widget-secondary p-3 mt-3 ${classNames || ""}`}
       style={{
-        borderBottomRightRadius: `calc(0.75rem * ${borderRadius})`,
-        borderBottomLeftRadius: `calc(0.75rem * ${borderRadius})`,
+        borderRadius: `calc(0.75rem * ${borderRadius})`
       }}
     >
       {children}
