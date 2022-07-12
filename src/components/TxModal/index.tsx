@@ -28,7 +28,7 @@ import {
 import { Web3Context } from "../../providers/Web3Provider";
 
 // The main modal that contains all the information related after clicking on review quote.
-// Responsible for the progression of the route. 
+// Responsible for the progression of the route.
 // Functions responsible for sending a transaction and checking the status of the route.
 export const TxModal = () => {
   const dispatch = useDispatch();
@@ -70,6 +70,42 @@ export const TxModal = () => {
   function switchNetwork() {
     const chain = allNetworks.filter((x) => x.chainId === userTx?.chainId)?.[0];
     handleNetworkChange(provider, chain);
+  }
+
+  function saveTxDetails(
+    account: string,
+    routeId: number,
+    stepIndex: number,
+    value: { hash: string; userTxType: string }
+  ): void {
+    const prevTxDetails = JSON.parse(localStorage.getItem("txData")) ?? {};
+      const prevTxDetailsAccount = prevTxDetails[account];
+
+      // // create account key if doesn't exist
+      if (!prevTxDetailsAccount) prevTxDetails[account] = {};
+      const prevTxDetailsRouteId =
+        prevTxDetails[account][routeId];
+
+      // // create route Id key if it doesn't exist
+      if (prevTxDetailsRouteId) {
+        prevTxDetails[account] = {
+          ...prevTxDetails[account],
+          [routeId]: {
+            ...prevTxDetailsRouteId,
+            [stepIndex]: value,
+          },
+        };
+      } else {
+        prevTxDetails[account] = {
+          ...prevTxDetails[account],
+          [routeId]: {
+            [stepIndex]: value,
+          },
+        };
+      }
+
+      localStorage.setItem("txData", JSON.stringify(prevTxDetails));
+      return prevTxDetails;
   }
 
   // Function that submits the approval transaction when approval is needed.
@@ -137,12 +173,11 @@ export const TxModal = () => {
       const sendTx = await signer.sendTransaction(sendTxData);
 
       // set data to local storage, txHash is in storage if the user leaves in the middle of the transaction.
+      const value = { hash: sendTx.hash, userTxType: userTx.userTxType };
+      const prevTxDetails = saveTxDetails(userAddress, userTx.activeRouteId, userTx.userTxIndex, value);
       dispatch(
         setTxDetails({
-          account: userAddress,
-          routeId: userTx.activeRouteId,
-          stepIndex: userTx.userTxIndex,
-          value: { hash: sendTx.hash, userTxType: userTx.userTxType },
+          prevTxDetails
         })
       );
 

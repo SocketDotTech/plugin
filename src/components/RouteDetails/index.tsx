@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 // actions
 import { setSelectedRoute } from "../../state/selectedRouteSlice";
 import { setBestRoute } from "../../state/quotesSlice";
+import { setTxDetails } from "../../state/txDetails";
 
 // components
 import { ReviewModal } from "./ReviewModal";
@@ -13,8 +14,7 @@ import { Spinner } from "../common/Spinner";
 import { InnerCard } from "../common/InnerCard";
 
 import { Web3Context } from "../../providers/Web3Provider";
-import { BRIDGE_DISPLAY_NAMES, QuoteStatus, ButtonTexts } from "../../consts/";
-import { Quote } from "socket-v2-sdk";
+import { BRIDGE_DISPLAY_NAMES, QuoteStatus, ButtonTexts } from "../../consts";
 
 export const RouteDetails = () => {
   const dispatch = useDispatch();
@@ -43,6 +43,16 @@ export const RouteDetails = () => {
   const shouldFetch = sourceAmount && sourceToken && destToken && sortPref;
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
+  
+  // SetTxDetails from local storage to state
+  useEffect(() => {
+    if (localStorage) {
+      const prevTxDetails = JSON.parse(localStorage.getItem("txData")) ?? {};
+      dispatch(setTxDetails({
+        prevTxDetails,
+      }));
+    }
+  }, []);
 
   useEffect(() => {
     isTxModalOpen && setIsReviewOpen(false);
