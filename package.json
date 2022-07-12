@@ -1,6 +1,6 @@
 {
   "name": "widget",
-  "version": "1.0.2",
+  "version": "0.0.8",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "license": "MIT",

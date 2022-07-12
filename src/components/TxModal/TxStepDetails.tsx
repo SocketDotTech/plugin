@@ -203,7 +203,7 @@ const TxStep = ({
         )}
       </div>
       <div
-        className={`flex flex-col text-xs text-widget-secondary gap-0.5 ${
+        className={`flex flex-col text-xs text-left text-widget-secondary gap-0.5 ${
           !active && !forReview ? "opacity-60" : ""
         }`}
       >

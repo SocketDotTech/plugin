@@ -113,10 +113,10 @@ Default.args = {
     text: 'rgb(255,255,255)',
     secondaryText: 'rgb(200,200,200)',
   },
-  sourceNetworks: [1, 10, 100, 137],
-  destNetworks: [250, 1, 137, 10, 100],
-  defaultSourceNetwork: 137,
-  defaultDestNetwork: 10,
+  sourceNetworks: [1, 10, 100],
+  destNetworks: [250, 10, 100, 137],
+  defaultSourceNetwork: 100,
+  defaultDestNetwork: 137,
   sourceTokens: {
     137: [
       "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
@@ -133,8 +133,7 @@ Default.args = {
       "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9", // SUSD
     ],
   },
-  // defaultSourceToken: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-  defaultSourceToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-
+  defaultSourceToken: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+  // defaultSourceToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
   defaultDestToken: "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9",
 };
