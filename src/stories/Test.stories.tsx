@@ -113,8 +113,8 @@ Default.args = {
     text: 'rgb(255,255,255)',
     secondaryText: 'rgb(200,200,200)',
   },
-  sourceNetworks: [1, 10, 100],
-  destNetworks: [250, 10, 100, 137],
+  sourceNetworks: [1, 10, 137, 100],
+  destNetworks: [10, 1, 100, 137],
   defaultSourceNetwork: 100,
   defaultDestNetwork: 137,
   sourceTokens: {

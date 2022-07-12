@@ -81,10 +81,10 @@ export const Output = () => {
       // If custom destination networks are passed, filter those out from all tokens
       if (customDestNetworks) {
         _customNetworks = allNetworks?.filter((x: Network) =>
-          customDestNetworks?.includes(x?.chainId)
+          customDestNetworks?.includes(x?.chainId) && sourceChainId !== x?.chainId // also removing the source chain from the dest token list
         );
       } else {
-        _customNetworks = allNetworks;
+        _customNetworks = allNetworks?.filter((x: Network) => sourceChainId !== x?.chainId); // removing the source chain
       }
 
       // If custom source networks are passed & the length is 1, remove it from the destination network list

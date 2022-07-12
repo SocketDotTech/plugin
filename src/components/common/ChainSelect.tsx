@@ -69,8 +69,8 @@ export function ChainSelect({
 
   return (
     <div
-      onClick={() => setOpenDropdown(!openDropdown)}
-      className={`relative p-1.5 ${openDropdown ? "bg-widget-secondary" : ""}`}
+      onClick={filteredNetworks?.length > 1 ? () => setOpenDropdown(!openDropdown): null}
+      className={`relative p-1.5 ${openDropdown ? "bg-widget-interactive h-auto" : ""}`}
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
       ref={chainDropdownRef}
     >
@@ -87,7 +87,7 @@ export function ChainSelect({
 
       {openDropdown && (
         <div
-          className="pt-1 z-10 left-0 absolute bg-widget-secondary flex flex-col w-full max-h-[150px] overflow-y-auto overflow-hidden"
+          className="pt-1 z-10 left-0 absolute bg-widget-interactive flex flex-col w-full max-h-[150px] overflow-y-auto overflow-hidden"
           style={{
             borderBottomRightRadius: `calc(0.75rem * ${borderRadius})`,
             borderBottomLeftRadius: `calc(0.75rem * ${borderRadius})`,

@@ -1,6 +1,6 @@
 {
-  "name": "widget",
-  "version": "0.0.8",
+  "name": "@socket.tech/widget",
+  "version": "0.0.1",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "license": "MIT",

@@ -110,7 +110,7 @@ export const useRoutes = (
 ) => {
   const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
   const shouldFetch =
-    !!sourceToken && !!destToken && !!amount && !!userAddress && !isTxModalOpen;
+    !!sourceToken && !!destToken && !!amount && amount !== '0' && !!userAddress && !isTxModalOpen;
 
   async function fetchQuotes(
     sourceToken: Token,
