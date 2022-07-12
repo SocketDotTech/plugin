@@ -29,7 +29,6 @@ import useMappedChainData from "../hooks/useMappedChainData";
 import useDebounce from "../hooks/useDebounce";
 import { Web3Context } from "../providers/Web3Provider";
 
-
 // Component that handles the source chain parameters. (FromChain, Source Token)
 // Shows the balance for the source chain, and takes the input from the user for amount.
 export const Input = () => {
@@ -85,29 +84,33 @@ export const Input = () => {
 
   // To set the networks. Shows all networks if no widget props are passed
   useEffect(() => {
-    if (allNetworks && customSourceNetworks) {
-      let filteredNetworks: Network[];
+    if (allNetworks) {
+      let _customNetworks: Network[];
+      let _filteredNetworks: Network[];
 
-      // If there is just one network on the dest, remove that network from the source
-      if (customDestNetworks?.length === 1) {
-        filteredNetworks = allNetworks?.filter(
-          (x: Network) =>
-            customSourceNetworks.includes(x?.chainId) &&
-            x.chainId !== customDestNetworks?.[0]
-        );
+      // If custom source networks are passed, filter those out from all tokens
+      if(customSourceNetworks){
+        _customNetworks = allNetworks?.filter(
+          (x: Network) => customSourceNetworks?.includes(x?.chainId)
+        )
       } else {
-        filteredNetworks = allNetworks?.filter((x: Network) =>
-          customSourceNetworks.includes(x?.chainId)
-        );
+        _customNetworks = allNetworks;
       }
 
-      setFilteredNetworks(filteredNetworks);
+      // If custom destination networks are passed & the length is 1, remove it from the source network list
+      if(customDestNetworks?.length === 1){
+        _filteredNetworks =  _customNetworks?.filter((x: Network) => x.chainId !== customDestNetworks?.[0])
+      } else {
+        _filteredNetworks = _customNetworks
+      }
+
+      setFilteredNetworks(_filteredNetworks);
+
+      // If default source network is passed, set that n/w, else set the first n/w from the list
       updateNetwork(
-        filteredNetworks?.find(
-          (x: Network) => x?.chainId === defaultSourceNetwork
-        ) || filteredNetworks?.[0]
+        _filteredNetworks?.find((x: Network) => x?.chainId === defaultSourceNetwork) || _filteredNetworks?.[0]
       );
-    } else setFilteredNetworks(allNetworks);
+    }
   }, [allNetworks, customSourceNetworks]);
 
   // For Input & tokens
@@ -216,7 +219,6 @@ export const Input = () => {
   }, [sourceToken]);
 
   function setMaxBalance(balance) {
-
     // Format the amount first and set as Max when max is clicked.
     function formateAndParseAmount(_balance) {
       const _formattedAmount = formatCurrencyAmount(

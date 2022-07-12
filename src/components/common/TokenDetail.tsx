@@ -12,7 +12,7 @@ interface TokenAssetProps {
 export const TokenDetail = (props: TokenAssetProps) => {
   const { token, rtl = false, amount, small = false } = props;
   const mappedChaindata = useMappedChainData();
-  const chain = mappedChaindata?.[token.chainId];
+  const chain = mappedChaindata?.[token?.chainId];
   const formattedAmount = formatCurrencyAmount(amount, token?.decimals, 4);
   return (
     <div

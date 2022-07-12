@@ -57,6 +57,9 @@ export const Output = () => {
   const customDestNetworks = useSelector(
     (state: any) => state.customSettings.destNetworks
   );
+  const customSourceNetworks = useSelector(
+    (state: any) => state.customSettings.sourceNetworks
+  );
   const defaultDestNetwork = useSelector(
     (state: any) => state.customSettings.defaultDestNetwork
   );
@@ -71,28 +74,36 @@ export const Output = () => {
 
   // To set the networks. Shows all networks if no widget props are passed
   useEffect(() => {
-    if (allNetworks && customDestNetworks) {
-      const filteredNetworks = allNetworks?.filter((x: Network) =>
-        customDestNetworks?.includes(x?.chainId)
-      );
+    if (allNetworks) {
+      let _customNetworks: Network[];
+      let _filteredNetworks: Network[];
 
-      //  filtering out source network from the list
-      const updatedNetworksList = filteredNetworks?.filter(
-        (x: Network) => x?.chainId !== sourceChainId
-      );
+      // If custom destination networks are passed, filter those out from all tokens
+      if (customDestNetworks) {
+        _customNetworks = allNetworks?.filter((x: Network) =>
+          customDestNetworks?.includes(x?.chainId)
+        );
+      } else {
+        _customNetworks = allNetworks;
+      }
 
-      setFilteredNetworks(updatedNetworksList);
+      // If custom source networks are passed & the length is 1, remove it from the destination network list
+      if (customSourceNetworks?.length === 1) {
+        _filteredNetworks = _customNetworks?.filter(
+          (x: Network) => x.chainId !== customSourceNetworks?.[0]
+        );
+      } else {
+        _filteredNetworks = _customNetworks;
+      }
+
+      setFilteredNetworks(_filteredNetworks);
+
+      // If default dest network is passed, set that n/w, else set the first n/w from the list
       updateNetwork(
-        filteredNetworks?.find(
+        _filteredNetworks?.find(
           (x: Network) => x?.chainId === defaultDestNetwork
-        ) || filteredNetworks?.[0]
+        ) || _filteredNetworks?.[0]
       );
-    } else {
-      // filtering out the source network from the list
-      const updatedNetworksList = allNetworks?.filter(
-        (x: Network) => x?.chainId !== sourceChainId
-      );
-      setFilteredNetworks(updatedNetworksList);
     }
   }, [allNetworks, sourceChainId, customDestNetworks]);
 
