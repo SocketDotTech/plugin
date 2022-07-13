@@ -77,7 +77,7 @@ export const TokenSelect = (props: Props) => {
 
   return (
     <div>
-      {activeToken ? (
+      {activeToken && (
         <button
           onClick={() => setOpenTokenList(!openTokenList)}
           className={`flex items-center flex-1 bg-widget-interactive flex-shrink-0 flex-nowrap w-auto overflow-hidden p-1 gap-1 text-widget-on-interactive`}
@@ -92,8 +92,6 @@ export const TokenSelect = (props: Props) => {
             <ChevronDown className="w-4 h-4" />
           </div>
         </button>
-      ) : (
-        <TokenChipPlaceholder>Loading tokens</TokenChipPlaceholder>
       )}
 
       {openTokenList && (

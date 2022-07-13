@@ -38,13 +38,6 @@ export const Widget = (props: WidgetProps) => {
   // Hook to set default settings in place, default from chain and to chain etc etc.
   useCustomSettings(props);
 
-  // Hook to get the token list based on the source chain and dest chain.
-  // Passing custom token list as argument
-  const _tokenList = useTokenList(props.tokenList);
-  useEffect(() => {
-    dispatch(setTokenList(_tokenList));
-  }, [_tokenList]);
-
   // run when the props are changed
   useEffect(() => {
     customSettings.setCustomization({
