@@ -213,7 +213,7 @@ export const Input = ({
         );
 
         const defaultToken = filteredTokens.filter(
-          (x) => x.address === defaultSourceToken
+          (x) => x.address.toLowerCase() === defaultSourceToken?.toLowerCase()
         )?.[0];
 
         if (defaultToken) {

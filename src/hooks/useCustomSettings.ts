@@ -41,7 +41,6 @@ export const useCustomSettings = (props: WidgetProps) => {
     defaultDestNetwork && dispatch(setDefaultDestNetwork(defaultDestNetwork));
   }, [defaultDestNetwork]);
 
-
   useEffect(() => {
     defaultSourceToken && dispatch(setDefaultSourceToken(defaultSourceToken));
   }, [defaultSourceToken]);

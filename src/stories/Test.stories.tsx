@@ -72,7 +72,7 @@ const Template = (args: WidgetProps) => {
   }, [window.ethereum]);
 
   return (
-    <div className="bg-gray-400 p-10" style={{ height: "calc(100vh - 40px)"}}>
+    <div className="bg-gray-400 p-10" style={{ height: "calc(100vh - 40px)" }}>
       <p style={{ color: "black" }}>
         User Address : {userAddress}
         <br />
@@ -97,43 +97,59 @@ const Template = (args: WidgetProps) => {
   );
 };
 
+const Customize = {
+  width: 360,
+  responsiveWidth: false,
+  borderRadius: 1,
+  secondary: "rgb(68,69,79)",
+  primary: "rgb(31,34,44)",
+  accent: "rgb(131,249,151)",
+  onAccent: "rgb(0,0,0)",
+  interactive: "rgb(0,0,0)",
+  onInteractive: "rgb(240,240,240)",
+  text: "rgb(255,255,255)",
+  secondaryText: "rgb(200,200,200)",
+};
+
+const UNISWAP_DEFAULT_LIST = "https://gateway.ipfs.io/ipns/tokens.uniswap.org";
+const MY_LIST = [
+    {
+      "name": "Dai Stablecoin",
+      "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      "symbol": "DAI",
+      "decimals": 18,
+      "chainId": 1,
+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png"
+    },
+      {
+      "name": "Tether USD",
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      "symbol": "USDT",
+      "decimals": 6,
+      "chainId": 1,
+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
+    },
+    {
+      "name": "USD Coin",
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 1,
+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+    },
+];
+
 export const Default = Template.bind({});
 Default.args = {
   API_KEY: SOCKET_API_KEY,
-  customize: {
-    width: 360,
-    responsiveWidth: false,
-    borderRadius: 1,
-    secondary: 'rgb(68,69,79)',
-    primary: 'rgb(31,34,44)',
-    accent: 'rgb(131,249,151)',
-    onAccent: 'rgb(0,0,0)',
-    interactive: 'rgb(0,0,0)',
-    onInteractive: 'rgb(240,240,240)',
-    text: 'rgb(255,255,255)',
-    secondaryText: 'rgb(200,200,200)',
-  },
-  sourceNetworks: [1, 10, 137, 100],
-  destNetworks: [10, 1, 100, 137],
-  defaultSourceNetwork: 100,
-  defaultDestNetwork: 137,
-  sourceTokens: {
-    137: [
-      "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-      "0x45c32fa6df82ead1e2ef74d17b76547eddfaff89",
-      "0x50b728d8d964fd00c2d0aad81718b71311fef68a",
-    ],
-  },
-  destTokens: {
-    10: [
-      "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      "0x8700daec35af8ff88c16bdf0418774cb3d7599b4", // SNX
-      "0x7f5c764cbc14f9669b88837ca1490cca17c31607",
-      "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58",
-      "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9", // SUSD
-    ],
-  },
-  defaultSourceToken: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+  customize: Customize,
+  // tokenList: UNISWAP_DEFAULT_LIST,
+  sourceNetworks: [1,10],
+  destNetworks: [1,10],
+  defaultSourceNetwork: 10,
+  defaultDestNetwork: 1,
+  defaultSourceToken: "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9",
+  // defaultDestToken: "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9",
   // defaultSourceToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-  defaultDestToken: "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9",
+  // defaultDestToken: "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9",
 };

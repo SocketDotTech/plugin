@@ -177,7 +177,7 @@ export const Output = ({
       }
 
       const defaultToken = filteredTokens?.filter(
-        (x) => x.address == defaultDestToken
+        (x) => x.address.toLowerCase() == defaultDestToken?.toLowerCase()
       )?.[0];
 
       if (defaultToken) {
