@@ -1,5 +1,5 @@
 import useClickOutside from "../../hooks/useClickOutside";
-import { Network } from "@/utils/types";
+import { Network } from "types";
 import { ReactNode, useContext, useState } from "react";
 import { useEffect } from "react";
 import { ChevronDown } from "react-feather";

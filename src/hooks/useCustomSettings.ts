@@ -1,4 +1,4 @@
-import { WidgetProps } from "../utils/types";
+import { WidgetProps } from "../types";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {

@@ -22,7 +22,6 @@ input[type="number"] {
     --socket-widget-primary-text-color: 0, 0, 0;
     --socket-widget-secondary-text-color: 68, 68, 68;
     --socket-widget-outline-color: 208, 208, 208;
-    /* --socket-widget-interactive: 200, 205, 210; */
     --socket-widget-interactive: 241, 245, 249;
     --socket-widget-on-interactive: 10,10,10;
   }

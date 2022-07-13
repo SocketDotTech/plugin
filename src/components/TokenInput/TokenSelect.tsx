@@ -1,5 +1,5 @@
 import { useAllTokenBalances } from "../../hooks/apis";
-import { Currency } from "../../utils/types";
+import { Currency } from "../../types";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { ChevronDown } from "react-feather";

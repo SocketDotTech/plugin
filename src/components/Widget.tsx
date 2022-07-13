@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { WidgetProps } from "../utils/types";
+import { WidgetProps } from "../types";
 import { useSelector } from "react-redux";
 
 // context

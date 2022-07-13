@@ -1,4 +1,4 @@
-import { Customize } from "../utils/types";
+import { Customize } from "../types";
 
 export const defaultCustomisation: Customize = {
   width: 360,

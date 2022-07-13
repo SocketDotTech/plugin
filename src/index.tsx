@@ -3,7 +3,7 @@ import "./index.css";
 import { Provider as ReduxProvider } from "react-redux";
 
 import store from "./state/store";
-import { WidgetProps } from "./utils/types";
+import { WidgetProps } from "./types";
 
 import { Widget } from "./components/Widget";
 import { CustomizeProvider } from "./providers/CustomizeProvider";

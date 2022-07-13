@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
-import { Currency, Network } from "../utils/types";
+import { Currency, Network } from "../types";
 import { NATIVE_TOKEN_ADDRESS } from "../consts";
 
 // component

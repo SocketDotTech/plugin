@@ -2,7 +2,7 @@ import { Bridge } from "../index";
 import { useEffect, useState } from "react";
 import { SOCKET_API_KEY } from "../consts";
 import { ethers } from "ethers";
-import { WidgetProps } from "../utils/types";
+import { WidgetProps } from "../types";
 
 declare global {
   interface Window {

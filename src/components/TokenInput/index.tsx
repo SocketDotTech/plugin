@@ -1,4 +1,4 @@
-import { Currency } from "../../utils/types";
+import { Currency } from "../../types";
 import { TokenSelect } from "./TokenSelect";
 
 interface TokenInputProps {
