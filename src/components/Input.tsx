@@ -94,7 +94,7 @@ export const Input = ({
 
   function updateNetwork(network: Network) {
     dispatch(setSourceChain(network?.chainId));
-    sourceToken && dispatch(setSourceToken(null)); // Resetting the token when network is changed
+    sourceToken && sourceToken?.chainId !== network?.chainId && dispatch(setSourceToken(null)); // Resetting the token when network is changed
   }
 
   // To set the networks. Shows all networks if no widget props are passed
