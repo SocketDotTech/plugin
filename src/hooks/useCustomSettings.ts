@@ -1,4 +1,4 @@
-import { WidgetProps } from "../utils/types";
+import { WidgetProps } from "../types";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -6,8 +6,6 @@ import {
   setCustomSourceNetworks,
   setDefaultDestNetwork,
   setDefaultSourceNetwork,
-  setCustomSourceTokens,
-  setCustomDestTokens,
   setDefaultSourceToken,
   setDefaultDestToken,
 } from "../state/customSettingsSlice";
@@ -20,8 +18,6 @@ export const useCustomSettings = (props: WidgetProps) => {
     destNetworks,
     defaultSourceNetwork,
     defaultDestNetwork,
-    sourceTokens,
-    destTokens,
     defaultSourceToken,
     defaultDestToken,
     customize,
@@ -46,14 +42,6 @@ export const useCustomSettings = (props: WidgetProps) => {
   }, [defaultDestNetwork]);
 
   useEffect(() => {
-    sourceTokens && dispatch(setCustomSourceTokens(sourceTokens));
-  }, [sourceTokens]);
-
-  useEffect(() => {
-    destTokens && dispatch(setCustomDestTokens(destTokens));
-  }, [destTokens]);
-
-  useEffect(() => {
     defaultSourceToken && dispatch(setDefaultSourceToken(defaultSourceToken));
   }, [defaultSourceToken]);
 
@@ -63,7 +51,6 @@ export const useCustomSettings = (props: WidgetProps) => {
 
   // Theme
   useEffect(() => {
-    console.log("customize", customize);
     customize?.accent &&
       document.documentElement.style.setProperty(
         "--socket-widget-accent-color",

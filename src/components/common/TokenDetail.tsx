@@ -1,7 +1,7 @@
 import { Token } from "socket-v2-sdk";
 import useMappedChainData from "../../hooks/useMappedChainData";
 import { formatCurrencyAmount } from "../../utils";
-import { Currency } from "../../utils/types";
+import { Currency } from "../../types";
 
 interface TokenAssetProps {
   token: Currency | Token;

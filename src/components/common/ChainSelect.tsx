@@ -1,5 +1,5 @@
 import useClickOutside from "../../hooks/useClickOutside";
-import { Network } from "@/utils/types";
+import { Network } from "types";
 import { ReactNode, useContext, useState } from "react";
 import { useEffect } from "react";
 import { ChevronDown } from "react-feather";
@@ -69,8 +69,14 @@ export function ChainSelect({
 
   return (
     <div
-      onClick={filteredNetworks?.length > 1 ? () => setOpenDropdown(!openDropdown): null}
-      className={`relative p-1.5 ${openDropdown ? "bg-widget-interactive h-auto" : ""}`}
+      onClick={
+        filteredNetworks?.length === 0
+          ? null
+          : () => setOpenDropdown(!openDropdown)
+      }
+      className={`relative p-1.5 ${
+        openDropdown ? "bg-widget-interactive h-auto" : ""
+      }`}
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
       ref={chainDropdownRef}
     >
@@ -82,7 +88,12 @@ export function ChainSelect({
           onlyOneNetwork={networks?.length < 2}
         />
       ) : (
-        <span className="text-sm text-widget-primary bg-widget-secondary py-1.5 px-2" style={{ borderRadius: `calc(0.3rem * ${borderRadius})` }}>Loading chains</span>
+        <span
+          className="text-sm text-widget-primary bg-widget-secondary py-1.5 px-2"
+          style={{ borderRadius: `calc(0.3rem * ${borderRadius})` }}
+        >
+          Loading chains
+        </span>
       )}
 
       {openDropdown && (

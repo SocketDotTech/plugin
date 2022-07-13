@@ -1,5 +1,6 @@
-import { Currency } from "../../utils/types";
+import { Currency } from "../../types";
 import { TokenSelect } from "./TokenSelect";
+import { TokenChipPlaceholder } from "../common/TokenChipPlaceholder";
 
 interface TokenInputProps {
   amount: string;
@@ -8,6 +9,7 @@ interface TokenInputProps {
   source?: boolean;
   activeToken?: Currency;
   tokens: Currency[];
+  noTokens: boolean;
 }
 
 export const TokenInput = (props: TokenInputProps) => {
@@ -18,6 +20,7 @@ export const TokenInput = (props: TokenInputProps) => {
     source = false,
     activeToken,
     tokens,
+    noTokens = false,
   } = props;
   return (
     <div className="flex items-center justify-between mt-2.5 overflow-hidden">
@@ -33,11 +36,15 @@ export const TokenInput = (props: TokenInputProps) => {
           readOnly={!source}
         />
       </div>
-      <TokenSelect
-        updateToken={updateToken}
-        activeToken={activeToken}
-        tokens={tokens}
-      />
+      {noTokens ? (
+        <TokenChipPlaceholder>No Tokens</TokenChipPlaceholder>
+      ) : (
+        <TokenSelect
+          updateToken={updateToken}
+          activeToken={activeToken}
+          tokens={tokens}
+        />
+      )}
     </div>
   );
 };

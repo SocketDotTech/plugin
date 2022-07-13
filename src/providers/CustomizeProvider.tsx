@@ -1,6 +1,6 @@
 import { defaultCustomisation } from "../consts/customisation";
 import { createContext, useState } from "react";
-import { Customize } from "../utils/types";
+import { Customize } from "../types";
 
 type ContextProviderProps = {
   children: React.ReactNode;

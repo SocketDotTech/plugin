@@ -21,6 +21,7 @@ yarn-error.log*
 # Package files
 *.tgz
 *.zip
+/storybook-static
 build-storybook.log
 
 # Dev Notes

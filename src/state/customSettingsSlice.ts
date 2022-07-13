@@ -53,3 +53,6 @@ export const {
   setDefaultSourceToken,
   setDefaultDestToken
 } = customSettingsSlice.actions;
+
+
+// Note - Custom token list is not set here. Check out hooks/useTokenLists.ts

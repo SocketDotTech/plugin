@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import { hexStripZeros } from "ethers/lib/utils";
+import { Currency } from "types";
 import { SOCKET_API_KEY } from "../consts";
 
 export const fetcher = async (url: string) =>
@@ -115,4 +116,9 @@ export function formatRGB(color: string) {
     .map((x) => x.replace(/[^0-9.]/g, ""))
     .join(",");
   return formattedColor;
+}
+
+// Filters the tokens of a particular chain from the standard token list
+export function filterTokensByChain(tokens: Currency[], chainId: number) {
+  return tokens.filter((x: Currency) => x.chainId === chainId);
 }

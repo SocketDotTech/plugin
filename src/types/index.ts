@@ -13,9 +13,10 @@ export interface WidgetProps {
   defaultSourceNetwork?: number;
   defaultDestNetwork?: number;
 
-  // Token address' array
-  sourceTokens?: { [key: number]: string[] };
-  destTokens?: string[];
+  // Token list
+  // You can pass the url to the token list or pass the list as JSON, as long as it matches the schema
+  // Token list schema - https://uniswap.org/tokenlist.schema.json
+  tokenList?: string | Currency[];
 
   // Token address
   // Pass the string "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" for native token
