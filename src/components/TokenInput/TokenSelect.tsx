@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ChevronDown } from "react-feather";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Modal } from "../common/Modal";
+import { TokenChipPlaceholder } from "../common/TokenChipPlaceholder";
 
 interface Props {
   activeToken: Currency;
@@ -92,14 +93,7 @@ export const TokenSelect = (props: Props) => {
           </div>
         </button>
       ) : (
-        <button
-          className={`h-8 flex items-center justify-center flex-1 bg-widget-interactive flex-shrink-0 flex-nowrap w-auto overflow-hidden py-1 px-3 gap-1 text-sm text-widget-on-interactive`}
-          onClick={() => setOpenTokenList(!openTokenList)}
-          disabled={!activeToken}
-          style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
-        >
-          Loading Tokens
-        </button>
+        <TokenChipPlaceholder>Loading tokens</TokenChipPlaceholder>
       )}
 
       {openTokenList && (

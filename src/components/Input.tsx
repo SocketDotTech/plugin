@@ -7,7 +7,6 @@ import { NATIVE_TOKEN_ADDRESS } from "../consts";
 // component
 import { TokenInput } from "./TokenInput";
 import { ChainSelect } from "./common/ChainSelect";
-import { Spinner } from "./common/Spinner";
 import { Balance } from "./common/Balance";
 
 // actions
@@ -18,6 +17,7 @@ import { setError } from "../state/modals";
 import { setBestRoute } from "../state/quotesSlice";
 
 import {
+  filterTokensByChain,
   formatCurrencyAmount,
   parseCurrencyAmount,
   truncateDecimalValue,
@@ -28,10 +28,15 @@ import { useBalance } from "../hooks/apis";
 import useMappedChainData from "../hooks/useMappedChainData";
 import useDebounce from "../hooks/useDebounce";
 import { Web3Context } from "../providers/Web3Provider";
+import { useTokenList } from "../hooks/useTokenList";
 
 // Component that handles the source chain parameters. (FromChain, Source Token)
 // Shows the balance for the source chain, and takes the input from the user for amount.
-export const Input = () => {
+export const Input = ({
+  customTokenList,
+}: {
+  customTokenList: string | Currency[];
+}) => {
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
   const mappedChainData = useMappedChainData();
@@ -47,11 +52,21 @@ export const Input = () => {
   );
 
   // Tokens
-  const allSourceTokens = useSelector(
-    (state: any) => state.tokens.allSourceTokens
-  );
+  const tokenList = useTokenList(customTokenList);
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
+  const [allSourceTokens, setAllSourceTokens] = useState(null);
   const [filteredTokens, setFilteredTokens] = useState<Currency[]>(null);
+  const [noTokens, setNoTokens] = useState<boolean>(false);
+
+  // Filtering out tokens by chain
+  useEffect(() => {
+    if (tokenList?.length > 0) {
+      const tokensByChain = filterTokensByChain(tokenList, sourceChainId);
+      // Setting noTokens to true when there are no chain-specific tokens in the token list.
+      setNoTokens(tokensByChain?.length === 0); 
+      setAllSourceTokens(tokensByChain);
+    }
+  }, [tokenList, sourceChainId]);
 
   // Hook to get Balance for the selected destination token.
   const { data: tokenWithBalance, isBalanceLoading } = useBalance(
@@ -79,7 +94,7 @@ export const Input = () => {
 
   function updateNetwork(network: Network) {
     dispatch(setSourceChain(network?.chainId));
-    dispatch(setSourceToken(null));
+    sourceToken && dispatch(setSourceToken(null)); // Resetting the token when network is changed
   }
 
   // To set the networks. Shows all networks if no widget props are passed
@@ -89,26 +104,30 @@ export const Input = () => {
       let _filteredNetworks: Network[];
 
       // If custom source networks are passed, filter those out from all tokens
-      if(customSourceNetworks){
-        _customNetworks = allNetworks?.filter(
-          (x: Network) => customSourceNetworks?.includes(x?.chainId)
-        )
+      if (customSourceNetworks) {
+        _customNetworks = allNetworks?.filter((x: Network) =>
+          customSourceNetworks?.includes(x?.chainId)
+        );
       } else {
         _customNetworks = allNetworks;
       }
 
       // If custom destination networks are passed & the length is 1, remove it from the source network list
-      if(customDestNetworks?.length === 1){
-        _filteredNetworks =  _customNetworks?.filter((x: Network) => x.chainId !== customDestNetworks?.[0])
+      if (customDestNetworks?.length === 1) {
+        _filteredNetworks = _customNetworks?.filter(
+          (x: Network) => x.chainId !== customDestNetworks?.[0]
+        );
       } else {
-        _filteredNetworks = _customNetworks
+        _filteredNetworks = _customNetworks;
       }
 
       setFilteredNetworks(_filteredNetworks);
 
       // If default source network is passed, set that n/w, else set the first n/w from the list
       updateNetwork(
-        _filteredNetworks?.find((x: Network) => x?.chainId === defaultSourceNetwork) || _filteredNetworks?.[0]
+        _filteredNetworks?.find(
+          (x: Network) => x?.chainId === defaultSourceNetwork
+        ) || _filteredNetworks?.[0]
       );
     }
   }, [allNetworks, customSourceNetworks]);
@@ -178,7 +197,7 @@ export const Input = () => {
   // setting initial token
   // changing the tokens on chain change.
   useEffect(() => {
-    if (filteredTokens) {
+    if (filteredTokens?.length > 0) {
       const selectedTokenExists = filteredTokens.find(
         (x) =>
           x.address === sourceToken?.address &&
@@ -188,7 +207,9 @@ export const Input = () => {
       // If selected token exists in the new token list, retain the selected token. Else, run the following code
       if (!selectedTokenExists) {
         const usdc = filteredTokens?.find(
-          (x: Currency) => x.chainAgnosticId === "USDC"
+          (x: Currency) =>
+            x.chainAgnosticId === "USDC" || x.symbol.toLowerCase() === "usdc" 
+            // Chain agnostic id is used to map similar tokens across chains.
         );
 
         const defaultToken = filteredTokens.filter(
@@ -273,11 +294,13 @@ export const Input = () => {
             onChange={updateNetwork}
           />
         </div>
-        <Balance
-          token={tokenWithBalance}
-          isLoading={isBalanceLoading}
-          onClick={() => setMaxBalance(tokenWithBalance?.balance)}
-        />
+        {!noTokens && (
+          <Balance
+            token={tokenWithBalance}
+            isLoading={isBalanceLoading}
+            onClick={() => setMaxBalance(tokenWithBalance?.balance)}
+          />
+        )}
       </div>
       <TokenInput
         source
@@ -286,6 +309,7 @@ export const Input = () => {
         updateToken={updateToken}
         activeToken={sourceToken}
         tokens={filteredTokens}
+        noTokens={noTokens}
       />
     </div>
   );

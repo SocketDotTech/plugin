@@ -17,7 +17,6 @@ import { setNetworks } from "../state/networksSlice";
 import { SortOptions } from "socket-v2-sdk/lib/src/client/models/QuoteRequest";
 
 import { Web3Context } from "../providers/Web3Provider";
-import { setAllDestTokens, setAllSourceTokens } from "../state/tokensSlice";
 
 export let socket;
 
@@ -74,30 +73,6 @@ export const useActiveRoutes = () => {
     isQuotesLoading: userAddress && ((!data && !error) || isValidating),
     mutate,
   };
-};
-
-// Fetches token lists based on source chain and dest chain. 
-export const useTokenList = () => {
-  const dispatch = useDispatch();
-  const sourceChainId = useSelector(
-    (state: any) => state.networks.sourceChainId
-  );
-  const destChainId = useSelector((state: any) => state.networks.destChainId);
-  const shouldFetch =
-    !!sourceChainId && !!destChainId && sourceChainId !== destChainId;
-  useEffect(() => {
-    async function fetchTokens() {
-      const tokens = await socket.getTokenList({
-        fromChainId: sourceChainId,
-        toChainId: destChainId,
-      });
-      const _tokens = { from: tokens?.from?.tokens, to: tokens?.to?.tokens };
-      dispatch(setAllSourceTokens(_tokens?.from));
-      dispatch(setAllDestTokens(_tokens?.to));
-    }
-
-    shouldFetch && fetchTokens();
-  }, [sourceChainId, destChainId]);
 };
 
 // Main hook that takes in params and fetches the quotes. 

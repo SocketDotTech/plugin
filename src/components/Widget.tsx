@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { WidgetProps } from "../types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // context
 import { useContext } from "react";
@@ -18,12 +18,16 @@ import { PendingTransactions } from "./PendingTransactions";
 import { ErrorModal } from "./common/ErrorModal";
 
 // hooks
-import { useChains, useTokenList } from "../hooks/apis";
+import { useChains } from "../hooks/apis";
+import { useTokenList } from "../hooks/useTokenList";
 import { useCustomSettings } from "../hooks/useCustomSettings";
 
+// actions
+import { setTokenList } from "../state/tokensSlice";
 
-// Main Widget -> Base file. 
+// Main Widget -> Base file.
 export const Widget = (props: WidgetProps) => {
+  const dispatch = useDispatch();
   const { customize } = props;
   const customSettings = useContext(CustomizeContext);
   const web3Context = useContext(Web3Context);
@@ -31,11 +35,15 @@ export const Widget = (props: WidgetProps) => {
   // Hook to get all supported chains.
   useChains();
 
-  // Hook to get the token list based on the source chain and dest chain.
-  useTokenList();
-
   // Hook to set default settings in place, default from chain and to chain etc etc.
   useCustomSettings(props);
+
+  // Hook to get the token list based on the source chain and dest chain.
+  // Passing custom token list as argument
+  const _tokenList = useTokenList(props.tokenList);
+  useEffect(() => {
+    dispatch(setTokenList(_tokenList));
+  }, [_tokenList]);
 
   // run when the props are changed
   useEffect(() => {
@@ -86,8 +94,8 @@ export const Widget = (props: WidgetProps) => {
             <Settings />
           </div>
         </Header>
-        <Input />
-        <Output />
+        <Input customTokenList={props.tokenList} />
+        <Output customTokenList={props.tokenList} />
       </div>
       <RouteDetails />
       {isTxModalOpen && <TxModal />}
