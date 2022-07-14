@@ -15,6 +15,7 @@ import { filterTokensByChain, formatCurrencyAmount } from "../utils";
 // hooks
 import { useBalance } from "../hooks/apis";
 import { useTokenList } from "../hooks/useTokenList";
+import useDebounce from "../hooks/useDebounce";
 
 import { Web3Context } from "../providers/Web3Provider";
 
@@ -35,23 +36,14 @@ export const Output = ({
   const sourceChainId = useSelector(
     (state: any) => state.networks.sourceChainId
   );
-  const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
-    allNetworks ? [...allNetworks] : null
-  );
   const [noTokens, setNoTokens] = useState<boolean>(false);
 
   // Tokens
-  // const tokenList = useSelector((state: any) => state.tokens.tokenList);
   const tokenList = useTokenList(customTokenList);
   const destToken = useSelector((state: any) => state.tokens.destToken);
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
   const [allDestTokens, setAllDestTokens] = useState(null);
-  const customDestTokens = useSelector(
-    (state: any) => state.customSettings.destTokens
-  );
-  const [filteredTokens, setFilteredTokens] = useState<Currency[]>(null);
 
-  // function
   useEffect(() => {
     if (tokenList?.length > 0) {
       const tokensByChain = filterTokensByChain(tokenList, destChainId);
@@ -79,62 +71,63 @@ export const Output = ({
   const defaultDestNetwork = useSelector(
     (state: any) => state.customSettings.defaultDestNetwork
   );
-  const defaultDestToken = useSelector(
+  const defaultDestTokenAddress = useSelector(
     (state: any) => state.customSettings.defaultDestToken
   );
 
+  // Hack to check if it's the first render
+  const [firstRender, setFirstRender] = useState<boolean>(false);
+  useEffect(() => {
+    setFirstRender(true);
+    setFirstRenderNetwork(true);
+  }, []);
+
   function updateNetwork(network: Network) {
     dispatch(setDestChain(network?.chainId));
-    destToken && destToken?.chainId !== network?.chainId && dispatch(setDestToken(null)); // Resetting the token when network is changed
+    destToken &&
+      destToken?.chainId !== network?.chainId &&
+      dispatch(setDestToken(null)); // Resetting the token when network is changed
   }
 
-  // To set the networks. Shows all networks if no widget props are passed
+  const [supportedNetworks, setSupportedNetworks] = useState<Network[]>();
+  const [supportedNetworksSubset, setSupportedNetworksSubset] =
+    useState<Network[]>();
+
   useEffect(() => {
-    if (allNetworks) {
-      let _customNetworks: Network[];
-      let _filteredNetworks: Network[];
-
-      // If custom destination networks are passed, filter those out from all tokens
-      if (customDestNetworks) {
-        _customNetworks = allNetworks?.filter(
-          (x: Network) =>
-            customDestNetworks?.includes(x?.chainId) &&
-            sourceChainId !== x?.chainId // also removing the source chain from the dest token list
+    // Supported networks = all networks || custom networks
+    if (allNetworks?.length) {
+      let _supportedNetworks: Network[];
+      if (customDestNetworks?.length) {
+        _supportedNetworks = allNetworks.filter((x: Network) =>
+          customDestNetworks?.includes(x?.chainId)
         );
       } else {
-        _customNetworks = allNetworks?.filter(
-          (x: Network) => sourceChainId !== x?.chainId
-        ); // removing the source chain
+        _supportedNetworks = allNetworks;
       }
+      setSupportedNetworks(_supportedNetworks);
+    }
+  }, [allNetworks]);
 
-      // If custom source networks are passed & the length is 1, remove it from the destination network list
-      if (customSourceNetworks?.length === 1) {
-        _filteredNetworks = _customNetworks?.filter(
-          (x: Network) => x.chainId !== customSourceNetworks?.[0]
-        );
-      } else {
-        _filteredNetworks = _customNetworks;
-      }
-
-      setFilteredNetworks(_filteredNetworks);
-
-      // If default dest network is passed, set that n/w, else set the first n/w from the list
-      updateNetwork(
-        _filteredNetworks?.find(
-          (x: Network) => x?.chainId === defaultDestNetwork
-        ) || _filteredNetworks?.[0]
+  const [firstNetworkRender, setFirstRenderNetwork] = useState<boolean>(false);
+  useEffect(() => {
+    if (supportedNetworks?.length) {
+      const networksSubset = supportedNetworks.filter(
+        (x: Network) => x.chainId !== sourceChainId
       );
-    }
-  }, [allNetworks, sourceChainId, customDestNetworks]);
+      setSupportedNetworksSubset(networksSubset);
 
-  // Changing dest chain if the source and destination chains are the same.
-  useEffect(() => {
-    if (filteredNetworks) {
-      if (sourceChainId === destChainId) {
-        updateNetwork(filteredNetworks?.[0]);
+      if (firstNetworkRender) {
+        updateNetwork(
+          networksSubset?.find(
+            (x: Network) => x?.chainId === defaultDestNetwork
+          ) ?? networksSubset?.[0]
+        );
+        setFirstRenderNetwork(false);
+      } else if (sourceChainId === destChainId) {
+        updateNetwork(networksSubset?.[0]);
       }
     }
-  }, [filteredNetworks]);
+  }, [supportedNetworks, sourceChainId]);
 
   // For Input & tokens
   const [outputAmount, updateOutputAmount] = useState<string>("");
@@ -149,53 +142,55 @@ export const Output = ({
     updateOutputAmount(_formattedOutputAmount);
   }, [route]);
 
-  // Filtering out the tokens if the props are passed
-  useEffect(() => {
-    if (customDestTokens?.[destChainId]?.length > 0) {
-      const _filteredTokens = allDestTokens?.filter((token: Currency) =>
-        customDestTokens?.[destChainId].includes(token.address)
-      );
-      if (_filteredTokens?.length > 0) setFilteredTokens(_filteredTokens);
-      else setFilteredTokens(_filteredTokens);
-    } else setFilteredTokens(allDestTokens);
-  }, [allDestTokens]);
-
-  // setting initial token
-  // changing the tokens on chain change.
-  useEffect(() => {
-    if (filteredTokens?.length > 0) {
-      const usdc = filteredTokens?.find(
+  // To set the tokens on load & when the source token changes
+  function fallbackToUSDC() {
+    return (
+      allDestTokens.filter(
         (x: Currency) =>
-          x.chainAgnosticId === "USDC" || x.symbol.toLowerCase() === "usdc"
-      );
+          (x?.chainAgnosticId?.toLowerCase() || x.symbol.toLowerCase()) ===
+          "usdc"
+      )?.[0] ?? allDestTokens[0]
+    );
+  }
 
-      let correspondingDestToken;
-      if (sourceToken?.chainAgnosticId) {
-        correspondingDestToken = filteredTokens?.find(
-          (x: Currency) => x?.chainAgnosticId === sourceToken.chainAgnosticId
-        );
-      }
+  useEffect(() => {
+    if (allDestTokens?.length && sourceToken) {
+      let _token: Currency;
 
-      const defaultToken = filteredTokens?.filter(
-        (x) => x.address.toLowerCase() == defaultDestToken?.toLowerCase()
-      )?.[0];
-
-      if (defaultToken) {
-        dispatch(setDestToken(defaultToken));
-      } else if (correspondingDestToken) {
-        dispatch(setDestToken(correspondingDestToken));
-      } else if (usdc) {
-        dispatch(setDestToken(usdc));
+      // On first render - Cannot use useEffect with empty dependency array because tokens need to be set when tokenList is returned, hence this hack
+      if (firstRender) {
+        // Check if default token address is passed
+        if (defaultDestTokenAddress) {
+          _token =
+            allDestTokens.filter(
+              (x: Currency) =>
+                x.address.toLowerCase() ===
+                defaultDestTokenAddress.toLowerCase()
+            )?.[0] ?? fallbackToUSDC();
+        } else {
+          // If not, set it to usdc if available, or set the first token from the list
+          _token = fallbackToUSDC();
+        }
       } else {
-        dispatch(setDestToken(filteredTokens[0]));
+        // Check if corresponding token is available - This will work only for Socket's token list
+        if (sourceToken.chainAgnosticId) {
+          _token = allDestTokens.filter(
+            (x: Currency) =>
+              x?.chainAgnosticId?.toLowerCase() ===
+              sourceToken.chainAgnosticId.toLowerCase()
+          )?.[0];
+        } else {
+          _token = fallbackToUSDC();
+        }
       }
-    }
-  }, [filteredTokens, sourceToken]);
 
-  // Updates the selected destination token if changed.
-  const updateToken = (token: Currency) => {
-    dispatch(setDestToken(token));
-  };
+      setFirstRender(false);
+      if (_token) _setDestToken(_token);
+    }
+  }, [allDestTokens, sourceToken]);
+
+  const [_destToken, _setDestToken] = useState<Currency>();
+  useDebounce(() => dispatch(setDestToken(_destToken)), 300, [_destToken]);
 
   return (
     <div className="mt-6">
@@ -203,7 +198,7 @@ export const Output = ({
         <div className="flex items-center gap-x-1.5">
           <span className="text-widget-secondary text-sm">To</span>
           <ChainSelect
-            networks={filteredNetworks}
+            networks={supportedNetworksSubset}
             activeNetworkId={destChainId}
             onChange={updateNetwork}
           />
@@ -215,9 +210,9 @@ export const Output = ({
 
       <TokenInput
         amount={`${outputAmount ? `~${outputAmount}` : ""}`}
-        updateToken={updateToken}
+        updateToken={_setDestToken}
         activeToken={destToken}
-        tokens={filteredTokens}
+        tokens={allDestTokens}
         noTokens={noTokens}
       />
     </div>

@@ -1,5 +1,5 @@
 // Fetches token lists based on source chain and dest chain.
-import { Currency } from "types";
+import { Currency } from "../types";
 import { socket } from "./apis";
 import useSWR from "swr";
 import { useSelector } from "react-redux";
