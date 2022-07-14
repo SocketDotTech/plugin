@@ -5,7 +5,6 @@ import { useState } from "react";
 import { ChevronDown } from "react-feather";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Modal } from "../common/Modal";
-import { TokenChipPlaceholder } from "../common/TokenChipPlaceholder";
 
 interface Props {
   activeToken: Currency;
@@ -30,9 +29,8 @@ export const TokenSelect = (props: Props) => {
 
   function showBalance(token: Currency) {
     const _token = tokensWithBalances?.filter(
-      (x) => x.address === token.address && x.chainId === token.chainId
+      (x) => x.address.toLowerCase() === token.address.toLowerCase() && x.chainId === token.chainId
     );
-
     if (_token?.[0]) {
       return _token[0].amount.toFixed(5);
     } else return "";
@@ -41,7 +39,7 @@ export const TokenSelect = (props: Props) => {
   // compare tokens with tokensWithBalances and return the tokens with balance
   function getTokenWithBalance(token: Currency) {
     const filteredTokens = tokensWithBalances?.filter(
-      (x) => x.address === token.address && x.chainId === token.chainId
+      (x) => x.address.toLowerCase() === token.address.toLowerCase() && x.chainId === token.chainId
     );
     return filteredTokens?.length > 0;
   }

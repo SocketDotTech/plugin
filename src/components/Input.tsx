@@ -105,7 +105,11 @@ export const Input = ({
       } else {
         _supportedNetworks = allNetworks;
       }
-      setSupportedNetworks(_supportedNetworks);
+
+      // If there is only 1 chain on the destination, and if it exists in the source, remove it from the networks
+      if(customDestNetworks?.length === 1){
+        setSupportedNetworks(_supportedNetworks?.filter((x: Network) => x.chainId !== customDestNetworks?.[0]));
+      } else setSupportedNetworks(_supportedNetworks);
 
       updateNetwork(
         _supportedNetworks?.find(
