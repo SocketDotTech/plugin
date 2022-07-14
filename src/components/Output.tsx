@@ -36,9 +36,6 @@ export const Output = ({
   const sourceChainId = useSelector(
     (state: any) => state.networks.sourceChainId
   );
-  const [filteredNetworks, setFilteredNetworks] = useState<Network[]>(
-    allNetworks ? [...allNetworks] : null
-  );
   const [noTokens, setNoTokens] = useState<boolean>(false);
 
   // Tokens
@@ -53,7 +50,7 @@ export const Output = ({
       setNoTokens(tokensByChain?.length === 0);
       setAllDestTokens(tokensByChain);
     }
-  }, [tokenList]);
+  }, [tokenList, destChainId]);
 
   const route = useSelector((state: any) => state.quotes.bestRoute);
 
@@ -82,6 +79,7 @@ export const Output = ({
   const [firstRender, setFirstRender] = useState<boolean>(false);
   useEffect(() => {
     setFirstRender(true);
+    setFirstRenderNetwork(true);
   }, []);
 
   function updateNetwork(network: Network) {
@@ -91,53 +89,45 @@ export const Output = ({
       dispatch(setDestToken(null)); // Resetting the token when network is changed
   }
 
-  // To set the networks. Shows all networks if no widget props are passed
+  const [supportedNetworks, setSupportedNetworks] = useState<Network[]>();
+  const [supportedNetworksSubset, setSupportedNetworksSubset] =
+    useState<Network[]>();
+
   useEffect(() => {
-    if (allNetworks) {
-      let _customNetworks: Network[];
-      let _filteredNetworks: Network[];
-
-      // If custom destination networks are passed, filter those out from all tokens
-      if (customDestNetworks) {
-        _customNetworks = allNetworks?.filter(
-          (x: Network) =>
-            customDestNetworks?.includes(x?.chainId) &&
-            sourceChainId !== x?.chainId // also removing the source chain from the dest token list
+    // Supported networks = all networks || custom networks
+    if (allNetworks?.length) {
+      let _supportedNetworks: Network[];
+      if (customDestNetworks?.length) {
+        _supportedNetworks = allNetworks.filter((x: Network) =>
+          customDestNetworks?.includes(x?.chainId)
         );
       } else {
-        _customNetworks = allNetworks?.filter(
-          (x: Network) => sourceChainId !== x?.chainId
-        ); // removing the source chain
+        _supportedNetworks = allNetworks;
       }
+      setSupportedNetworks(_supportedNetworks);
+    }
+  }, [allNetworks]);
 
-      // If custom source networks are passed & the length is 1, remove it from the destination network list
-      if (customSourceNetworks?.length === 1) {
-        _filteredNetworks = _customNetworks?.filter(
-          (x: Network) => x.chainId !== customSourceNetworks?.[0]
-        );
-      } else {
-        _filteredNetworks = _customNetworks;
-      }
-
-      setFilteredNetworks(_filteredNetworks);
-
-      // If default dest network is passed, set that n/w, else set the first n/w from the list
-      updateNetwork(
-        _filteredNetworks?.find(
-          (x: Network) => x?.chainId === defaultDestNetwork
-        ) || _filteredNetworks?.[0]
+  const [firstNetworkRender, setFirstRenderNetwork] = useState<boolean>(false);
+  useEffect(() => {
+    if (supportedNetworks?.length) {
+      const networksSubset = supportedNetworks.filter(
+        (x: Network) => x.chainId !== sourceChainId
       );
-    }
-  }, [allNetworks, customDestNetworks]);
+      setSupportedNetworksSubset(networksSubset);
 
-  // Changing dest chain if the source and destination chains are the same.
-  useEffect(() => {
-    if (filteredNetworks) {
-      if (sourceChainId === destChainId) {
-        updateNetwork(filteredNetworks?.[0]);
+      if (firstNetworkRender) {
+        updateNetwork(
+          networksSubset?.find(
+            (x: Network) => x?.chainId === defaultDestNetwork
+          ) ?? networksSubset?.[0]
+        );
+        setFirstRenderNetwork(false);
+      } else if (sourceChainId === destChainId) {
+        updateNetwork(networksSubset?.[0]);
       }
     }
-  }, [filteredNetworks]);
+  }, [supportedNetworks, sourceChainId]);
 
   // For Input & tokens
   const [outputAmount, updateOutputAmount] = useState<string>("");
@@ -153,25 +143,33 @@ export const Output = ({
   }, [route]);
 
   // To set the tokens on load & when the source token changes
+  function fallbackToUSDC() {
+    return (
+      allDestTokens.filter(
+        (x: Currency) =>
+          (x?.chainAgnosticId?.toLowerCase() || x.symbol.toLowerCase()) ===
+          "usdc"
+      )?.[0] ?? allDestTokens[0]
+    );
+  }
+
   useEffect(() => {
-    if (allDestTokens?.length > 0 && sourceToken) {
+    if (allDestTokens?.length && sourceToken) {
       let _token: Currency;
 
       // On first render - Cannot use useEffect with empty dependency array because tokens need to be set when tokenList is returned, hence this hack
       if (firstRender) {
         // Check if default token address is passed
         if (defaultDestTokenAddress) {
-          _token = allDestTokens.filter(
-            (x: Currency) => x.address === defaultDestTokenAddress
-          )?.[0];
-        } else {
-          // If not, set it to usdc if available, or set the first token from the list
           _token =
             allDestTokens.filter(
               (x: Currency) =>
-                (x?.chainAgnosticId?.toLowerCase() ||
-                  x.symbol.toLowerCase()) === "usdc"
-            )?.[0] ?? allDestTokens[0];
+                x.address.toLowerCase() ===
+                defaultDestTokenAddress.toLowerCase()
+            )?.[0] ?? fallbackToUSDC();
+        } else {
+          // If not, set it to usdc if available, or set the first token from the list
+          _token = fallbackToUSDC();
         }
       } else {
         // Check if corresponding token is available - This will work only for Socket's token list
@@ -181,6 +179,8 @@ export const Output = ({
               x?.chainAgnosticId?.toLowerCase() ===
               sourceToken.chainAgnosticId.toLowerCase()
           )?.[0];
+        } else {
+          _token = fallbackToUSDC();
         }
       }
 
@@ -198,7 +198,7 @@ export const Output = ({
         <div className="flex items-center gap-x-1.5">
           <span className="text-widget-secondary text-sm">To</span>
           <ChainSelect
-            networks={filteredNetworks}
+            networks={supportedNetworksSubset}
             activeNetworkId={destChainId}
             onChange={updateNetwork}
           />
