@@ -15,6 +15,7 @@ import { filterTokensByChain, formatCurrencyAmount } from "../utils";
 // hooks
 import { useBalance } from "../hooks/apis";
 import { useTokenList } from "../hooks/useTokenList";
+import useDebounce from "../hooks/useDebounce";
 
 import { Web3Context } from "../providers/Web3Provider";
 
@@ -41,24 +42,18 @@ export const Output = ({
   const [noTokens, setNoTokens] = useState<boolean>(false);
 
   // Tokens
-  // const tokenList = useSelector((state: any) => state.tokens.tokenList);
   const tokenList = useTokenList(customTokenList);
   const destToken = useSelector((state: any) => state.tokens.destToken);
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
   const [allDestTokens, setAllDestTokens] = useState(null);
-  const customDestTokens = useSelector(
-    (state: any) => state.customSettings.destTokens
-  );
-  const [filteredTokens, setFilteredTokens] = useState<Currency[]>(null);
 
-  // function
   useEffect(() => {
     if (tokenList?.length > 0) {
       const tokensByChain = filterTokensByChain(tokenList, destChainId);
       setNoTokens(tokensByChain?.length === 0);
       setAllDestTokens(tokensByChain);
     }
-  }, [tokenList, destChainId]);
+  }, [tokenList]);
 
   const route = useSelector((state: any) => state.quotes.bestRoute);
 
@@ -79,13 +74,21 @@ export const Output = ({
   const defaultDestNetwork = useSelector(
     (state: any) => state.customSettings.defaultDestNetwork
   );
-  const defaultDestToken = useSelector(
+  const defaultDestTokenAddress = useSelector(
     (state: any) => state.customSettings.defaultDestToken
   );
 
+  // Hack to check if it's the first render
+  const [firstRender, setFirstRender] = useState<boolean>(false);
+  useEffect(() => {
+    setFirstRender(true);
+  }, []);
+
   function updateNetwork(network: Network) {
     dispatch(setDestChain(network?.chainId));
-    destToken && destToken?.chainId !== network?.chainId && dispatch(setDestToken(null)); // Resetting the token when network is changed
+    destToken &&
+      destToken?.chainId !== network?.chainId &&
+      dispatch(setDestToken(null)); // Resetting the token when network is changed
   }
 
   // To set the networks. Shows all networks if no widget props are passed
@@ -125,7 +128,7 @@ export const Output = ({
         ) || _filteredNetworks?.[0]
       );
     }
-  }, [allNetworks, sourceChainId, customDestNetworks]);
+  }, [allNetworks, customDestNetworks]);
 
   // Changing dest chain if the source and destination chains are the same.
   useEffect(() => {
@@ -149,53 +152,45 @@ export const Output = ({
     updateOutputAmount(_formattedOutputAmount);
   }, [route]);
 
-  // Filtering out the tokens if the props are passed
+  // To set the tokens on load & when the source token changes
   useEffect(() => {
-    if (customDestTokens?.[destChainId]?.length > 0) {
-      const _filteredTokens = allDestTokens?.filter((token: Currency) =>
-        customDestTokens?.[destChainId].includes(token.address)
-      );
-      if (_filteredTokens?.length > 0) setFilteredTokens(_filteredTokens);
-      else setFilteredTokens(_filteredTokens);
-    } else setFilteredTokens(allDestTokens);
-  }, [allDestTokens]);
+    if (allDestTokens?.length > 0 && sourceToken) {
+      let _token: Currency;
 
-  // setting initial token
-  // changing the tokens on chain change.
-  useEffect(() => {
-    if (filteredTokens?.length > 0) {
-      const usdc = filteredTokens?.find(
-        (x: Currency) =>
-          x.chainAgnosticId === "USDC" || x.symbol.toLowerCase() === "usdc"
-      );
-
-      let correspondingDestToken;
-      if (sourceToken?.chainAgnosticId) {
-        correspondingDestToken = filteredTokens?.find(
-          (x: Currency) => x?.chainAgnosticId === sourceToken.chainAgnosticId
-        );
-      }
-
-      const defaultToken = filteredTokens?.filter(
-        (x) => x.address.toLowerCase() == defaultDestToken?.toLowerCase()
-      )?.[0];
-
-      if (defaultToken) {
-        dispatch(setDestToken(defaultToken));
-      } else if (correspondingDestToken) {
-        dispatch(setDestToken(correspondingDestToken));
-      } else if (usdc) {
-        dispatch(setDestToken(usdc));
+      // On first render - Cannot use useEffect with empty dependency array because tokens need to be set when tokenList is returned, hence this hack
+      if (firstRender) {
+        // Check if default token address is passed
+        if (defaultDestTokenAddress) {
+          _token = allDestTokens.filter(
+            (x: Currency) => x.address === defaultDestTokenAddress
+          )?.[0];
+        } else {
+          // If not, set it to usdc if available, or set the first token from the list
+          _token =
+            allDestTokens.filter(
+              (x: Currency) =>
+                (x?.chainAgnosticId?.toLowerCase() ||
+                  x.symbol.toLowerCase()) === "usdc"
+            )?.[0] ?? allDestTokens[0];
+        }
       } else {
-        dispatch(setDestToken(filteredTokens[0]));
+        // Check if corresponding token is available - This will work only for Socket's token list
+        if (sourceToken.chainAgnosticId) {
+          _token = allDestTokens.filter(
+            (x: Currency) =>
+              x?.chainAgnosticId?.toLowerCase() ===
+              sourceToken.chainAgnosticId.toLowerCase()
+          )?.[0];
+        }
       }
-    }
-  }, [filteredTokens, sourceToken]);
 
-  // Updates the selected destination token if changed.
-  const updateToken = (token: Currency) => {
-    dispatch(setDestToken(token));
-  };
+      setFirstRender(false);
+      if (_token) _setDestToken(_token);
+    }
+  }, [allDestTokens, sourceToken]);
+
+  const [_destToken, _setDestToken] = useState<Currency>();
+  useDebounce(() => dispatch(setDestToken(_destToken)), 300, [_destToken]);
 
   return (
     <div className="mt-6">
@@ -215,9 +210,9 @@ export const Output = ({
 
       <TokenInput
         amount={`${outputAmount ? `~${outputAmount}` : ""}`}
-        updateToken={updateToken}
+        updateToken={_setDestToken}
         activeToken={destToken}
-        tokens={filteredTokens}
+        tokens={allDestTokens}
         noTokens={noTokens}
       />
     </div>
