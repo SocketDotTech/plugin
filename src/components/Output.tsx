@@ -84,9 +84,12 @@ export const Output = ({
 
   function updateNetwork(network: Network) {
     dispatch(setDestChain(network?.chainId));
+    if(
     destToken &&
-      destToken?.chainId !== network?.chainId &&
-      dispatch(setDestToken(null)); // Resetting the token when network is changed
+      destToken?.chainId !== network?.chainId){
+        dispatch(setDestToken(null)); // Resetting the token when network is changed
+        _setDestToken(null);
+      }
   }
 
   const [supportedNetworks, setSupportedNetworks] = useState<Network[]>();
