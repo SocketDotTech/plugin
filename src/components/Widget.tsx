@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { WidgetProps } from "../types";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 // context
 import { useContext } from "react";
@@ -19,15 +19,11 @@ import { ErrorModal } from "./common/ErrorModal";
 
 // hooks
 import { useChains } from "../hooks/apis";
-import { useTokenList } from "../hooks/useTokenList";
 import { useCustomSettings } from "../hooks/useCustomSettings";
-
-// actions
-import { setTokenList } from "../state/tokensSlice";
+import { CreditCard } from "react-feather";
 
 // Main Widget -> Base file.
 export const Widget = (props: WidgetProps) => {
-  const dispatch = useDispatch();
   const { customize } = props;
   const customSettings = useContext(CustomizeContext);
   const web3Context = useContext(Web3Context);
@@ -83,8 +79,17 @@ export const Widget = (props: WidgetProps) => {
       <div className="p-3 pt-2.5 pb-3.5">
         <Header title="Bridge">
           <div className="flex items-center gap-3">
-            <PendingTransactions />
-            <Settings />
+            {!props?.provider ? (
+              <span className="text-sm text-widget-secondary flex items-center">
+                <CreditCard className="mr-2 w-5 h-5 text-widget-primary" />{" "}
+                Please connect your wallet
+              </span>
+            ) : (
+              <>
+                <PendingTransactions />
+                <Settings />
+              </>
+            )}
           </div>
         </Header>
         <Input customTokenList={props.tokenList} />

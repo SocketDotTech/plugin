@@ -1,9 +1,10 @@
 {
   "name": "@socket.tech/widget",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
+  "repository": "https://github.com/SocketDotTech/widget",
   "license": "MIT",
   "scripts": {
     "storybook": "start-storybook -p 6006",

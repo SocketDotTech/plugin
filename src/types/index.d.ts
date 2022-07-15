@@ -2,8 +2,8 @@ import { ChainId } from "socket-v2-sdk/lib/src/client/models/ChainId";
 import { UserTxType } from "socket-v2-sdk/lib/src/client/models/UserTxType";
 
 export interface WidgetProps {
-  provider: any;
   API_KEY: string;
+  provider?: any;
 
   // Chain Ids array
   sourceNetworks?: number[];
@@ -126,3 +126,5 @@ export interface BridgeName {
   serviceTime: number;
   displayName: string;
 }
+
+export declare function Bridge(props: WidgetProps): JSX.Element;
