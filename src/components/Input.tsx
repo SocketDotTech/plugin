@@ -64,7 +64,7 @@ export const Input = ({
     }
   }, [tokenList, sourceChainId]);
 
-  // Hook to get Balance for the selected destination token.
+  // Hook to get Balance for the selected source token.
   const { data: tokenWithBalance, isBalanceLoading } = useBalance(
     sourceToken?.address,
     sourceChainId,
@@ -107,8 +107,12 @@ export const Input = ({
       }
 
       // If there is only 1 chain on the destination, and if it exists in the source, remove it from the networks
-      if(customDestNetworks?.length === 1){
-        setSupportedNetworks(_supportedNetworks?.filter((x: Network) => x.chainId !== customDestNetworks?.[0]));
+      if (customDestNetworks?.length === 1) {
+        setSupportedNetworks(
+          _supportedNetworks?.filter(
+            (x: Network) => x.chainId !== customDestNetworks?.[0]
+          )
+        );
       } else setSupportedNetworks(_supportedNetworks);
 
       updateNetwork(
@@ -180,15 +184,25 @@ export const Input = ({
     if (allSourceTokens?.length > 0) {
       let _token: Currency;
 
-      if (defaultSourceTokenAddress) {
-        _token =
-          allSourceTokens.filter(
-            (x: Currency) =>
-              x.address.toLowerCase() ===
-              defaultSourceTokenAddress.toLowerCase()
-          )?.[0] ?? fallbackToUSDC();
-      } else {
-        _token = fallbackToUSDC();
+      // Check if the source token exists in the new list. If yes, do not update the source token
+      const sourceTokenExists =
+        sourceToken &&
+        allSourceTokens.find(
+          (x: Currency) =>
+            x.address.toLowerCase() === sourceToken?.address?.toLowerCase()
+        );
+
+      if (!sourceTokenExists) {
+        if (defaultSourceTokenAddress) {
+          _token =
+            allSourceTokens.filter(
+              (x: Currency) =>
+                x.address.toLowerCase() ===
+                defaultSourceTokenAddress.toLowerCase()
+            )?.[0] ?? fallbackToUSDC();
+        } else {
+          _token = fallbackToUSDC();
+        }
       }
 
       if (_token) _setSourceToken(_token);

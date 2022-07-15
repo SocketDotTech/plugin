@@ -84,12 +84,10 @@ export const Output = ({
 
   function updateNetwork(network: Network) {
     dispatch(setDestChain(network?.chainId));
-    if(
-    destToken &&
-      destToken?.chainId !== network?.chainId){
-        dispatch(setDestToken(null)); // Resetting the token when network is changed
-        _setDestToken(null);
-      }
+    if (destToken && destToken?.chainId !== network?.chainId) {
+      dispatch(setDestToken(null)); // Resetting the token when network is changed
+      _setDestToken(null);
+    }
   }
 
   const [supportedNetworks, setSupportedNetworks] = useState<Network[]>();
@@ -175,15 +173,25 @@ export const Output = ({
           _token = fallbackToUSDC();
         }
       } else {
-        // Check if corresponding token is available - This will work only for Socket's token list
-        if (sourceToken.chainAgnosticId) {
-          _token = allDestTokens.filter(
+        // Check if the current dest token exists in the new token list. If yes, retain the same token. Else, change it.
+        const destTokenExists =
+          destToken &&
+          allDestTokens.find(
             (x: Currency) =>
-              x?.chainAgnosticId?.toLowerCase() ===
-              sourceToken.chainAgnosticId.toLowerCase()
-          )?.[0];
-        } else {
-          _token = fallbackToUSDC();
+              x.address.toLowerCase() === destToken?.address?.toLowerCase()
+          );
+
+        if (!destTokenExists) {
+          // Check if corresponding token is available - This will work only for Socket's token list
+          if (sourceToken.chainAgnosticId) {
+            _token = allDestTokens.filter(
+              (x: Currency) =>
+                x?.chainAgnosticId?.toLowerCase() ===
+                sourceToken.chainAgnosticId.toLowerCase()
+            )?.[0];
+          } else {
+            _token = fallbackToUSDC();
+          }
         }
       }
 
