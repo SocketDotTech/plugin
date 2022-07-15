@@ -59,7 +59,7 @@ export const Widget = (props: WidgetProps) => {
       }
     }
 
-    fetchData();
+    props?.provider && fetchData();
   }, [props]);
 
   // Customisation Settings for the widget.
