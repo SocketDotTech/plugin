@@ -1,6 +1,6 @@
 {
   "name": "@socket.tech/widget",
-  "version": "0.0.4",
+  "version": "0.0.5-next.0",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -61,6 +61,5 @@
     "tslib": "^2.4.0",
     "typescript": "^4.7.4"
   },
-  "readme": "ERROR: No README data found!",
-  "_id": "widget@1.0.0"
+  "readme": "ERROR: No README data found!"
 }
