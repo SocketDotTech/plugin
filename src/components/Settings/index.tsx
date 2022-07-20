@@ -5,6 +5,7 @@ import { Modal } from "../common/Modal";
 import { ChevronDown, Settings as SettingsIcon } from "react-feather";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import useClickOutside from "../../hooks/useClickOutside";
+import { useTransition } from "@react-spring/web";
 
 // Component that lets you set the parameters for fetching quotes or building a transaction.
 export const Settings = () => {
@@ -16,6 +17,14 @@ export const Settings = () => {
 
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
+
+  const transitions = useTransition(isSettingsOpen, {
+    from: { y: "100%" },
+    enter: { y: "0" },
+    leave: { y: "100%" },
+    config: { duration: 200 },
+    onReset: () => setIsSettingsOpen(false),
+  });
 
   const handleChange = (item) => {
     _setSortPref(item.id);
@@ -42,49 +51,58 @@ export const Settings = () => {
     setLabel(LABEL_STATE.OUTPUT);
   }, []);
 
-  const dropdownRef = useClickOutside(() => openDropdown(false))
-
-  if (isSettingsOpen)
-    return (
-      <Modal title="Settings" closeModal={() => setIsSettingsOpen(false)}>
-        <div className="px-3 flex items-center mt-2 gap-2">
-          <p className="text-sm text-widget-secondary font-medium my-2 gap-8">
-            Sort
-          </p>
-          <div
-            className="relative border border-widget-secondary-text border-opacity-10 flex w-auto"
-            style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
-            ref={dropdownRef}
-          >
-            <Option onClick={() => openDropdown(!dropdown)} active>
-              {label}{" "}
-              <ChevronDown
-                className={`w-4 h-4 text-widget-secondary transition-all ${
-                  dropdown ? "rotate-180" : ""
-                }`}
-              />
-            </Option>
-            {dropdown && (
-              <div
-                className="absolute top-10 left-0 w-full border border-widget-secondary-text border-opacity-10 overflow-hidden"
-                style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
-              >
-                {sortOptions.map((x) => {
-                  return (
-                    <Option onClick={() => handleChange(x)} key={x.id}>{x.label}</Option>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-      </Modal>
-    );
+  const dropdownRef = useClickOutside(() => openDropdown(false));
 
   return (
-    <button onClick={() => setIsSettingsOpen(true)}>
-      <SettingsIcon className="w-5.5 h-5.5 text-widget-secondary hover:text-widget-primary hover:rotate-45 duration-200 ease-linear" />
-    </button>
+    <>
+      {transitions(
+        (style, item) =>
+          item && (
+            <Modal
+              title="Settings"
+              closeModal={() => setIsSettingsOpen(false)}
+              style={style}
+            >
+              <div className="px-3 flex items-center mt-2 gap-2">
+                <p className="text-sm text-widget-secondary font-medium my-2 gap-8">
+                  Sort
+                </p>
+                <div
+                  className="relative border border-widget-secondary-text border-opacity-10 flex w-auto"
+                  style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
+                  ref={dropdownRef}
+                >
+                  <Option onClick={() => openDropdown(!dropdown)} active>
+                    {label}{" "}
+                    <ChevronDown
+                      className={`w-4 h-4 text-widget-secondary transition-all ${
+                        dropdown ? "rotate-180" : ""
+                      }`}
+                    />
+                  </Option>
+                  {dropdown && (
+                    <div
+                      className="absolute top-10 left-0 w-full border border-widget-secondary-text border-opacity-10 overflow-hidden"
+                      style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
+                    >
+                      {sortOptions.map((x) => {
+                        return (
+                          <Option onClick={() => handleChange(x)} key={x.id}>
+                            {x.label}
+                          </Option>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Modal>
+          )
+      )}
+      <button onClick={() => setIsSettingsOpen(true)}>
+        <SettingsIcon className="w-5.5 h-5.5 text-widget-secondary hover:text-widget-primary hover:rotate-45 duration-200 ease-linear" />
+      </button>
+    </>
   );
 };
 

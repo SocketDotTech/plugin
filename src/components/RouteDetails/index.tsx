@@ -15,6 +15,7 @@ import { InnerCard } from "../common/InnerCard";
 
 import { Web3Context } from "../../providers/Web3Provider";
 import { BRIDGE_DISPLAY_NAMES, QuoteStatus, ButtonTexts } from "../../consts";
+import { useTransition } from "@react-spring/web";
 
 export const RouteDetails = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ export const RouteDetails = () => {
     (state: any) => state.amount.isEnoughBalance
   );
   const web3Context = useContext(Web3Context);
-  const { userAddress } = web3Context.web3Provider
+  const { userAddress } = web3Context.web3Provider;
 
   // Hook to fetch the quotes for given params.
   const { data, isQuotesLoading } = useRoutes(
@@ -43,14 +44,16 @@ export const RouteDetails = () => {
   const shouldFetch = sourceAmount && sourceToken && destToken && sortPref;
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
-  
+
   // SetTxDetails from local storage to state
   useEffect(() => {
     if (localStorage) {
       const prevTxDetails = JSON.parse(localStorage.getItem("txData")) ?? {};
-      dispatch(setTxDetails({
-        prevTxDetails,
-      }));
+      dispatch(
+        setTxDetails({
+          prevTxDetails,
+        })
+      );
     }
   }, []);
 
@@ -93,10 +96,21 @@ export const RouteDetails = () => {
     }
   }
 
+  const transitions = useTransition(isReviewOpen, {
+    from: { y: "100%" },
+    enter: { y: "0" },
+    leave: { y: "100%" },
+    config: { duration: 150 },
+    onReset: () => setIsReviewOpen(false),
+  });
+
   return (
     <InnerCard>
       <div className="text-widget-secondary mb-3 text-sm flex items-center gap-1">
-        {sourceAmount && sourceAmount !== '0' && isQuotesLoading && <Spinner size={4} />} {quotesStatus()}
+        {sourceAmount && sourceAmount !== "0" && isQuotesLoading && (
+          <Spinner size={4} />
+        )}{" "}
+        {quotesStatus()}
       </div>
       <Button
         onClick={review}
@@ -117,8 +131,14 @@ export const RouteDetails = () => {
         </a>
       </div>
 
-      {isReviewOpen && (
-        <ReviewModal closeModal={() => setIsReviewOpen(false)} />
+      {transitions(
+        (style, item) =>
+          item && (
+            <ReviewModal
+              closeModal={() => setIsReviewOpen(false)}
+              style={style}
+            />
+          )
       )}
     </InnerCard>
   );

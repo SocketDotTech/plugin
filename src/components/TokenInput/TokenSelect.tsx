@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ChevronDown } from "react-feather";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Modal } from "../common/Modal";
+import { useTransition } from "@react-spring/web";
 
 interface Props {
   activeToken: Currency;
@@ -19,6 +20,14 @@ export const TokenSelect = (props: Props) => {
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
 
+  const transitions = useTransition(openTokenList, {
+    from: { y: "100%" },
+    enter: { y: "0" },
+    leave: { y: "100%" },
+    config: { duration: 200 },
+    onReset: () => setOpenTokenList(false),
+  });
+
   // Hook that gives you all the balances for a user on all chains.
   const { data: tokensWithBalances } = useAllTokenBalances();
 
@@ -29,7 +38,9 @@ export const TokenSelect = (props: Props) => {
 
   function showBalance(token: Currency) {
     const _token = tokensWithBalances?.filter(
-      (x) => x.address.toLowerCase() === token.address.toLowerCase() && x.chainId === token.chainId
+      (x) =>
+        x.address.toLowerCase() === token.address.toLowerCase() &&
+        x.chainId === token.chainId
     );
     if (_token?.[0]) {
       return _token[0].amount.toFixed(5);
@@ -39,7 +50,9 @@ export const TokenSelect = (props: Props) => {
   // compare tokens with tokensWithBalances and return the tokens with balance
   function getTokenWithBalance(token: Currency) {
     const filteredTokens = tokensWithBalances?.filter(
-      (x) => x.address.toLowerCase() === token.address.toLowerCase() && x.chainId === token.chainId
+      (x) =>
+        x.address.toLowerCase() === token.address.toLowerCase() &&
+        x.chainId === token.chainId
     );
     return filteredTokens?.length > 0;
   }
@@ -92,38 +105,42 @@ export const TokenSelect = (props: Props) => {
         </button>
       )}
 
-      {openTokenList && (
-        <Modal
-          title="Token selector"
-          closeModal={() => setOpenTokenList(false)}
-        >
-          <div className="h-full overflow-y-auto p-1.5">
-            {filteredTokens?.map((token: Currency) => {
-              return (
-                <button
-                  className="flex hover:bg-widget-secondary items-center p-2 w-full justify-between"
-                  onClick={() => selectToken(token)}
-                  key={token?.address}
-                  style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
-                >
-                  <div className="flex items-center">
-                    <img
-                      src={token?.logoURI}
-                      className="w-6 h-6 rounded-full"
-                    />
-                    <div className="flex flex-col items-start ml-2 text-widget-secondary">
-                      <span className="text-sm">{token?.symbol}</span>
-                      <span className="text-xs -mt-0.5">{token?.name}</span>
-                    </div>
-                  </div>
-                  <span className="text-widget-secondary text-xs text-right font-medium">
-                    {showBalance(token)}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </Modal>
+      {transitions(
+        (style, item) =>
+          item && (
+            <Modal
+              title="Token selector"
+              closeModal={() => setOpenTokenList(false)}
+              style={style}
+            >
+              <div className="h-full overflow-y-auto p-1.5">
+                {filteredTokens?.map((token: Currency) => {
+                  return (
+                    <button
+                      className="flex hover:bg-widget-secondary items-center p-2 w-full justify-between"
+                      onClick={() => selectToken(token)}
+                      key={token?.address}
+                      style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
+                    >
+                      <div className="flex items-center">
+                        <img
+                          src={token?.logoURI}
+                          className="w-6 h-6 rounded-full"
+                        />
+                        <div className="flex flex-col items-start ml-2 text-widget-secondary">
+                          <span className="text-sm">{token?.symbol}</span>
+                          <span className="text-xs -mt-0.5">{token?.name}</span>
+                        </div>
+                      </div>
+                      <span className="text-widget-secondary text-xs text-right font-medium">
+                        {showBalance(token)}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </Modal>
+          )
       )}
     </div>
   );
