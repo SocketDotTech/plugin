@@ -13,14 +13,11 @@ import { initSocket } from "./hooks/apis";
 export const Bridge = (props: WidgetProps) => {
   const { provider, API_KEY } = props;
 
-  if (!provider) {
-    return <IntegrationError>Please pass the provider</IntegrationError>;
-  }
   if (!API_KEY) {
     return <IntegrationError>Please pass the API key</IntegrationError>;
   } else initSocket(API_KEY); // initialising socket sdk
 
-  if (API_KEY && provider) {
+  if (API_KEY) {
     return (
       <Web3Provider>
         <ReduxProvider store={store}>

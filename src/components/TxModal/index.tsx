@@ -26,11 +26,12 @@ import {
 } from "../../consts/";
 
 import { Web3Context } from "../../providers/Web3Provider";
+import { SuccessToast } from "./SuccessToast";
 
 // The main modal that contains all the information related after clicking on review quote.
 // Responsible for the progression of the route.
 // Functions responsible for sending a transaction and checking the status of the route.
-export const TxModal = () => {
+export const TxModal = ({style}) => {
   const dispatch = useDispatch();
   function closeTxModal() {
     dispatch(setIsTxModalOpen(false));
@@ -79,33 +80,32 @@ export const TxModal = () => {
     value: { hash: string; userTxType: string }
   ): void {
     const prevTxDetails = JSON.parse(localStorage.getItem("txData")) ?? {};
-      const prevTxDetailsAccount = prevTxDetails[account];
+    const prevTxDetailsAccount = prevTxDetails[account];
 
-      // // create account key if doesn't exist
-      if (!prevTxDetailsAccount) prevTxDetails[account] = {};
-      const prevTxDetailsRouteId =
-        prevTxDetails[account][routeId];
+    // create account key if doesn't exist
+    if (!prevTxDetailsAccount) prevTxDetails[account] = {};
+    const prevTxDetailsRouteId = prevTxDetails[account][routeId];
 
-      // // create route Id key if it doesn't exist
-      if (prevTxDetailsRouteId) {
-        prevTxDetails[account] = {
-          ...prevTxDetails[account],
-          [routeId]: {
-            ...prevTxDetailsRouteId,
-            [stepIndex]: value,
-          },
-        };
-      } else {
-        prevTxDetails[account] = {
-          ...prevTxDetails[account],
-          [routeId]: {
-            [stepIndex]: value,
-          },
-        };
-      }
+    // create route Id key if it doesn't exist
+    if (prevTxDetailsRouteId) {
+      prevTxDetails[account] = {
+        ...prevTxDetails[account],
+        [routeId]: {
+          ...prevTxDetailsRouteId,
+          [stepIndex]: value,
+        },
+      };
+    } else {
+      prevTxDetails[account] = {
+        ...prevTxDetails[account],
+        [routeId]: {
+          [stepIndex]: value,
+        },
+      };
+    }
 
-      localStorage.setItem("txData", JSON.stringify(prevTxDetails));
-      return prevTxDetails;
+    localStorage.setItem("txData", JSON.stringify(prevTxDetails));
+    return prevTxDetails;
   }
 
   // Function that submits the approval transaction when approval is needed.
@@ -174,10 +174,22 @@ export const TxModal = () => {
 
       // set data to local storage, txHash is in storage if the user leaves in the middle of the transaction.
       const value = { hash: sendTx.hash, userTxType: userTx.userTxType };
-      const prevTxDetails = saveTxDetails(userAddress, userTx.activeRouteId, userTx.userTxIndex, value);
+      const prevTxDetails = saveTxDetails(
+        userAddress,
+        userTx.activeRouteId,
+        userTx.userTxIndex,
+        value
+      );
+
+      const _updatedCurrentRoute = {
+        ...currentRoute,
+        txData: prevTxDetails[userAddress][userTx.activeRouteId]
+      }
+
+      setCurrentRoute(_updatedCurrentRoute);
       dispatch(
         setTxDetails({
-          prevTxDetails
+          prevTxDetails,
         })
       );
 
@@ -223,7 +235,7 @@ export const TxModal = () => {
       setExplorerParams({
         txHash: txHash,
         chainId:
-          selectedRoute?.path?.fromToken?.chainId || activeRoute?.fromChainId,
+          activeRoute?.fromChainId || selectedRoute?.path?.fromToken?.chainId,
       });
       setBridging(true);
       setInitiating(false);
@@ -238,7 +250,7 @@ export const TxModal = () => {
       // If approval is needed, set approval required to true and set approval tx Data.
       if (!next.done && next.value) {
         const tx = next.value;
-        setUserTx(tx); // used in doTransaction to get txData
+        setUserTx(tx); // used in submitNextTransaction to get txData
         const _approvalTxData = await tx.getApproveTransaction();
         setInitiating(false);
         setApprovalTxData(_approvalTxData);
@@ -251,55 +263,70 @@ export const TxModal = () => {
         setTxCompleted(true);
       }
     } catch (e) {
-      dispatch(setError(e.message));
+      if (e) dispatch(setError(e.message));
       setBridging(false);
       setInitiating(false);
     }
   };
 
+  // Current route is either activeRoute or selectedRoute
+  const [currentRoute, setCurrentRoute] = useState(null);
+
   useEffect(() => {
     if (!activeRoute) startRoute();
     else continueRoute();
+
+    // Always check for active route before checking for selected route
+    const _sourceTokenDetails = {
+      token: activeRoute?.fromAsset || selectedRoute?.path?.fromToken,
+      amount: activeRoute?.fromAmount || selectedRoute?.amount,
+    };
+
+    const _destTokenDetails = {
+      token: activeRoute?.toAsset || selectedRoute?.path?.toToken,
+      amount: activeRoute?.toAmount || selectedRoute?.route?.toAmount,
+    };
+
+    const _currentRoute = {
+      route: activeRoute || selectedRoute?.route,
+      sourceTokenDetails: _sourceTokenDetails,
+      destTokenDetails: _destTokenDetails,
+      txData: activeRoute?.transactionData
+    }
+
+    setCurrentRoute(_currentRoute);
 
     return () => {
       dispatch(setActiveRoute(null));
     };
   }, []); // the activeRoute is set before the txModal is opened.
 
-  const sourceTokenDetails = {
-    token: selectedRoute?.path?.fromToken || activeRoute?.fromAsset,
-    amount: selectedRoute?.amount || activeRoute?.fromAmount,
-  };
-
-  const destTokenDetails = {
-    token: selectedRoute?.path?.toToken || activeRoute?.toAsset,
-    amount: selectedRoute?.route?.toAmount || activeRoute?.toAmount,
-  };
-
   return (
     <Modal
       title="Bridging transaction"
       closeModal={isApproving ? null : closeTxModal}
       disableClose={isApproving || txInProgress}
+      style={style}
     >
       <div className="flex flex-col flex-1 overflow-hidden justify-between relative">
         <div className="flex-1 overflow-y-auto">
           <div className="flex justify-between mt-5 items-center px-3 mb-2.5">
             <TokenDetail
-              token={sourceTokenDetails.token}
-              amount={sourceTokenDetails.amount}
+              token={currentRoute?.sourceTokenDetails?.token}
+              amount={currentRoute?.sourceTokenDetails?.amount}
             />
             <ChevronRight className="w-4 h-4 text-widget-secondary" />
             <TokenDetail
-              token={destTokenDetails.token}
-              amount={destTokenDetails.amount}
+              token={currentRoute?.destTokenDetails?.token}
+              amount={currentRoute?.destTokenDetails?.amount}
               rtl
             />
           </div>
 
           <div className="px-3 py-3">
             <TxStepDetails
-              activeRoute={activeRoute || selectedRoute?.route}
+              activeRoute={currentRoute?.route}
+              txData={currentRoute?.txData}
               // Setting currentTxIndex to 0 when the txModal is opened for the 'first time'.
               currentTxIndex={
                 userTx?.userTxIndex || activeRoute?.currentUserTxIndex || 0
@@ -360,11 +387,13 @@ export const TxModal = () => {
 
         {bridging && !initiating && (
           <BridgingLoader
-            source={sourceTokenDetails}
-            dest={destTokenDetails}
+            source={currentRoute?.sourceTokenDetails}
+            dest={currentRoute?.destTokenDetails}
             explorerParams={explorerParams}
           />
         )}
+
+        {txCompleted && <SuccessToast />}
       </div>
     </Modal>
   );

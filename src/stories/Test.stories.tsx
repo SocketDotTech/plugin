@@ -98,9 +98,6 @@ const Template = (args: WidgetProps) => {
 };
 
 const Customize = {
-  width: 360,
-  responsiveWidth: false,
-  borderRadius: 1,
   secondary: "rgb(68,69,79)",
   primary: "rgb(31,34,44)",
   accent: "rgb(131,249,151)",
@@ -121,10 +118,10 @@ Default.args = {
   // tokenList: UNISWAP_DEFAULT_LIST,
   // destNetworks: [137],
   // sourceNetworks: [1, 137, 100],
-  defaultSourceNetwork: 10,
+  // defaultSourceNetwork: 10,
   // defaultDestNetwork: 10,
-  defaultSourceToken: "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9", // susd
-  defaultDestToken: "0xdac17f958d2ee523a2206206994597c13d831EC7",
+  // defaultSourceToken: "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9", // susd
+  // defaultDestToken: "0xdac17f958d2ee523a2206206994597c13d831EC7",
   // defaultDestToken: "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9",
   // defaultSourceToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
   // defaultDestToken: "0xbe662058e00849C3Eef2AC9664f37fEfdF2cdbFE",

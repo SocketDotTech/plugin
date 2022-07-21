@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { WidgetProps } from "../types";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 // context
 import { useContext } from "react";
@@ -19,15 +19,12 @@ import { ErrorModal } from "./common/ErrorModal";
 
 // hooks
 import { useChains } from "../hooks/apis";
-import { useTokenList } from "../hooks/useTokenList";
 import { useCustomSettings } from "../hooks/useCustomSettings";
-
-// actions
-import { setTokenList } from "../state/tokensSlice";
+import { CreditCard } from "react-feather";
+import { useTransition } from "@react-spring/web";
 
 // Main Widget -> Base file.
 export const Widget = (props: WidgetProps) => {
-  const dispatch = useDispatch();
   const { customize } = props;
   const customSettings = useContext(CustomizeContext);
   const web3Context = useContext(Web3Context);
@@ -40,9 +37,17 @@ export const Widget = (props: WidgetProps) => {
 
   // run when the props are changed
   useEffect(() => {
+    // If border radius passed is greater than 1.2, set it to 1.2. Default value is 1
+    const _borderRadius = customize?.borderRadius
+      ? customize?.borderRadius > 1.2
+        ? 1.2
+        : customize?.borderRadius
+      : 1;
+
     customSettings.setCustomization({
       ...customSettings.customization,
       ...customize,
+      borderRadius: _borderRadius,
     });
 
     // settings web3Provider data
@@ -63,7 +68,7 @@ export const Widget = (props: WidgetProps) => {
       }
     }
 
-    fetchData();
+    props?.provider && fetchData();
   }, [props]);
 
   // Customisation Settings for the widget.
@@ -71,6 +76,14 @@ export const Widget = (props: WidgetProps) => {
 
   const widgetWidth = responsiveWidth ? "100%" : width > 360 ? width : 360;
   const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
+
+  const transitions = useTransition(isTxModalOpen, {
+    from: { y: "100%" },
+    enter: { y: "0" },
+    leave: { y: "100%" },
+    delay: 300,
+    config: { duration: 300 },
+  });
 
   return (
     <div
@@ -83,15 +96,24 @@ export const Widget = (props: WidgetProps) => {
       <div className="p-3 pt-2.5 pb-3.5">
         <Header title="Bridge">
           <div className="flex items-center gap-3">
-            <PendingTransactions />
-            <Settings />
+            {!props?.provider ? (
+              <span className="text-sm text-widget-secondary flex items-center">
+                <CreditCard className="mr-2 w-5 h-5 text-widget-primary" />{" "}
+                Please connect your wallet
+              </span>
+            ) : (
+              <>
+                <PendingTransactions />
+                <Settings />
+              </>
+            )}
           </div>
         </Header>
         <Input customTokenList={props.tokenList} />
         <Output customTokenList={props.tokenList} />
       </div>
       <RouteDetails />
-      {isTxModalOpen && <TxModal />}
+      {transitions((style, item) => item && <TxModal style={style} />)}
       <ErrorModal />
     </div>
   );

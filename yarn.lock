@@ -1757,6 +1757,52 @@
     qrcode "1.5.0"
     react-remove-scroll "2.5.4"
 
+"@react-spring/animated@~9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@react-spring/animated/-/animated-9.5.0.tgz#bedc9301ec81a29331327aa25e37125a94080f48"
+  integrity sha512-FgotFIRQsgxFTgNZhsqi19GUO8isFAeUF/Ica6TeBkR87LQelHGWOg+wW5S3kaX9pzUgC4LOfzj0fRoMFaQKmA==
+  dependencies:
+    "@react-spring/shared" "~9.5.0"
+    "@react-spring/types" "~9.5.0"
+
+"@react-spring/core@~9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@react-spring/core/-/core-9.5.0.tgz#0f3ba069237ce08752e319aac71c621adc37500b"
+  integrity sha512-/5uopqj3NztZ8g2tD7jhtpSlUFSCr+WbLs0sb6ylwjuOJB050LCpYTJ8iurPf/wuhkYd7Q2xLK0Kr5PO0v53eQ==
+  dependencies:
+    "@react-spring/animated" "~9.5.0"
+    "@react-spring/rafz" "~9.5.0"
+    "@react-spring/shared" "~9.5.0"
+    "@react-spring/types" "~9.5.0"
+
+"@react-spring/rafz@~9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@react-spring/rafz/-/rafz-9.5.0.tgz#25ee5ad7dbac2b7486b3a0dd23aa0a6880793d9f"
+  integrity sha512-jvelJ/YNeVTkPIRnVu6mD/lopZqixiAY5omCgQM8kT1kAnRPeyuGfHAb73HTnqOzcIL8vOluNfTfUM/xcPm3RQ==
+
+"@react-spring/shared@~9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@react-spring/shared/-/shared-9.5.0.tgz#d80df5a6496fe4d414e608a7bcef448598e4ffee"
+  integrity sha512-XuRFgWiiV6LRd3JMQAVhsMnDIBF+M1Z3MeNI6Y+5oIf6mINQHLNPWjYt/lcLZ4cuKYi+OOce4G9zJx003b9w4g==
+  dependencies:
+    "@react-spring/rafz" "~9.5.0"
+    "@react-spring/types" "~9.5.0"
+
+"@react-spring/types@~9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.5.0.tgz#5ef3af4edc4a5d667f202b9581ac0dfc20889cfb"
+  integrity sha512-qrLwe77qa1LdS/tjCZKljzoXDSg9WPAgrfAkl8x1w8y9E8jHnCr2Z8UkM/sXvFlCZvMfsGes4XnE4oUNdjNuNQ==
+
+"@react-spring/web@^9.5.0":
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/@react-spring/web/-/web-9.5.0.tgz#a47dbf9bf2942a29c22339711eb580c61631d3b3"
+  integrity sha512-fq33Og23zCLxH7HELdOyAk0pWtwbSsk8MzPenN2JZMYI1dElB208r4CedM78TPY99YWIY2XRJ45VxbikxVeWLQ==
+  dependencies:
+    "@react-spring/animated" "~9.5.0"
+    "@react-spring/core" "~9.5.0"
+    "@react-spring/shared" "~9.5.0"
+    "@react-spring/types" "~9.5.0"
+
 "@reduxjs/toolkit@^1.8.2":
   version "1.8.2"
   resolved "https://registry.npmjs.org/@reduxjs/toolkit/-/toolkit-1.8.2.tgz"
@@ -7493,6 +7539,13 @@ magic-string@^0.25.7:
   dependencies:
     sourcemap-codec "^1.4.8"
 
+magic-string@^0.26.1:
+  version "0.26.2"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.26.2.tgz#5331700e4158cd6befda738bb6b0c7b93c0d4432"
+  integrity sha512-NzzlXpclt5zAbmo6h6jNc8zl2gNRGHvmsZW4IvZhTC4W7k4OlLP+S5YLussa/r3ixNT66KOQfNORlXHSOy/X4A==
+  dependencies:
+    sourcemap-codec "^1.4.8"
+
 make-dir@^2.0.0, make-dir@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/make-dir/-/make-dir-2.1.0.tgz"
@@ -9704,6 +9757,15 @@ rollup-plugin-babel@^4.4.0:
   dependencies:
     "@babel/helper-module-imports" "^7.0.0"
     rollup-pluginutils "^2.8.1"
+
+rollup-plugin-dts@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-dts/-/rollup-plugin-dts-4.2.2.tgz#82876b8784213af29b02cf260b45e404ff835ce1"
+  integrity sha512-A3g6Rogyko/PXeKoUlkjxkP++8UDVpgA7C+Tdl77Xj4fgEaIjPSnxRmR53EzvoYy97VMVwLAOcWJudaVAuxneQ==
+  dependencies:
+    magic-string "^0.26.1"
+  optionalDependencies:
+    "@babel/code-frame" "^7.16.7"
 
 rollup-plugin-peer-deps-external@^2.2.4:
   version "2.2.4"

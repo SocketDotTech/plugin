@@ -15,7 +15,13 @@ import { setIsTxModalOpen } from "../../state/modals";
 import { setSelectedRoute } from "../../state/selectedRouteSlice";
 import { TxStepDetails } from "../TxModal/TxStepDetails";
 
-export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
+export const ReviewModal = ({
+  closeModal,
+  style,
+}: {
+  closeModal: () => void;
+  style?: any;
+}) => {
   const dispatch = useDispatch();
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
   const selectedRoute = useSelector((state: any) => state.routes.selectedRoute);
@@ -25,7 +31,7 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
 
-  // Sets the selected route if updated. 
+  // Sets the selected route if updated.
   function updateSelectedRoute() {
     dispatch(setSelectedRoute(bestRoute));
   }
@@ -41,7 +47,11 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
   }, [selectedRoute, bestRoute]);
 
   return (
-    <Modal title="Review Quote" closeModal={showTxDetails ? null : closeModal}>
+    <Modal
+      title="Review Quote"
+      closeModal={showTxDetails ? null : closeModal}
+      style={style}
+    >
       <div className="flex flex-col justify-between flex-1 relative">
         <div>
           <div className="flex justify-between mt-5 items-center px-3">
@@ -61,8 +71,9 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
             <RouteDetailRow
               label="Bridge Name"
               value={
-                BRIDGE_DISPLAY_NAMES[selectedRoute?.route?.usedBridgeNames?.[0]] ||
-                selectedRoute?.route?.usedBridgeNames?.[0]
+                BRIDGE_DISPLAY_NAMES[
+                  selectedRoute?.route?.usedBridgeNames?.[0]
+                ] || selectedRoute?.route?.usedBridgeNames?.[0]
               }
             />
             <RouteDetailRow
@@ -106,7 +117,7 @@ export const ReviewModal = ({ closeModal }: { closeModal: () => void }) => {
             style={{ borderRadius: `calc(0.875rem * ${borderRadius})` }}
           >
             {quoteUpdated && (
-              <span className="whitespace-nowrap w-full text-widget-secondary text-sm">
+              <span className="whitespace-nowrap w-full text-widget-secondary text-sm text-left">
                 Quote updated
               </span>
             )}
