@@ -39,6 +39,8 @@ export const Widget = (props: WidgetProps) => {
     customSettings.setCustomization({
       ...customSettings.customization,
       ...customize,
+      borderRadius:
+        customize?.borderRadius > 1.2 ? 1.2 : customize?.borderRadius,
     });
 
     // settings web3Provider data

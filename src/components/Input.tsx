@@ -253,7 +253,7 @@ export const Input = ({
         dispatch(
           setError(
             <span>
-              There is not enough gas. We got you covered, use{" "}
+              You are low on gas. We got you covered, use{" "}
               <a
                 href="https://www.bungee.exchange/refuel"
                 target="_blank"
