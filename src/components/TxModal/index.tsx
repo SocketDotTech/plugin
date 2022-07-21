@@ -180,6 +180,13 @@ export const TxModal = () => {
         userTx.userTxIndex,
         value
       );
+
+      const _updatedCurrentRoute = {
+        ...currentRoute,
+        txData: prevTxDetails[userAddress][userTx.activeRouteId]
+      }
+
+      setCurrentRoute(_updatedCurrentRoute);
       dispatch(
         setTxDetails({
           prevTxDetails,
@@ -262,15 +269,14 @@ export const TxModal = () => {
     }
   };
 
-  // Always check for active route before checking for selected route
-  const [sourceTokenDetails, setSourceTokenDetails] = useState(null);
-  const [destTokenDetails, setDestTokenDetails] = useState(null);
-  const [currentRouteDetails, setCurrentRouteDetails] = useState(null);
+  // Current route is either activeRoute or selectedRoute
+  const [currentRoute, setCurrentRoute] = useState(null);
 
   useEffect(() => {
     if (!activeRoute) startRoute();
     else continueRoute();
 
+    // Always check for active route before checking for selected route
     const _sourceTokenDetails = {
       token: activeRoute?.fromAsset || selectedRoute?.path?.fromToken,
       amount: activeRoute?.fromAmount || selectedRoute?.amount,
@@ -281,11 +287,14 @@ export const TxModal = () => {
       amount: activeRoute?.toAmount || selectedRoute?.route?.toAmount,
     };
 
-    const _currentRoute = activeRoute || selectedRoute?.route;
+    const _currentRoute = {
+      route: activeRoute || selectedRoute?.route,
+      sourceTokenDetails: _sourceTokenDetails,
+      destTokenDetails: _destTokenDetails,
+      txData: activeRoute?.transactionData
+    }
 
-    setSourceTokenDetails(_sourceTokenDetails);
-    setDestTokenDetails(_destTokenDetails);
-    setCurrentRouteDetails(_currentRoute);
+    setCurrentRoute(_currentRoute);
 
     return () => {
       dispatch(setActiveRoute(null));
@@ -302,20 +311,21 @@ export const TxModal = () => {
         <div className="flex-1 overflow-y-auto">
           <div className="flex justify-between mt-5 items-center px-3 mb-2.5">
             <TokenDetail
-              token={sourceTokenDetails?.token}
-              amount={sourceTokenDetails?.amount}
+              token={currentRoute?.sourceTokenDetails?.token}
+              amount={currentRoute?.sourceTokenDetails?.amount}
             />
             <ChevronRight className="w-4 h-4 text-widget-secondary" />
             <TokenDetail
-              token={destTokenDetails?.token}
-              amount={destTokenDetails?.amount}
+              token={currentRoute?.destTokenDetails?.token}
+              amount={currentRoute?.destTokenDetails?.amount}
               rtl
             />
           </div>
 
           <div className="px-3 py-3">
             <TxStepDetails
-              activeRoute={currentRouteDetails}
+              activeRoute={currentRoute?.route}
+              txData={currentRoute?.txData}
               // Setting currentTxIndex to 0 when the txModal is opened for the 'first time'.
               currentTxIndex={
                 userTx?.userTxIndex || activeRoute?.currentUserTxIndex || 0
@@ -376,8 +386,8 @@ export const TxModal = () => {
 
         {bridging && !initiating && (
           <BridgingLoader
-            source={sourceTokenDetails}
-            dest={destTokenDetails}
+            source={currentRoute?.sourceTokenDetails}
+            dest={currentRoute?.destTokenDetails}
             explorerParams={explorerParams}
           />
         )}

@@ -4,8 +4,8 @@ import {
   getExplorerLink,
 } from "../../utils/";
 import useMappedChainData from "../../hooks/useMappedChainData";
-import { ArrowRight, CheckCircle } from "react-feather";
-import { ReactNode, useContext, useEffect, useState } from "react";
+import { ArrowRight, CheckCircle, ExternalLink } from "react-feather";
+import { ReactNode, useContext } from "react";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Spinner } from "../common/Spinner";
 
@@ -17,19 +17,16 @@ export const TxStepDetails = ({
   completed,
   inProgress,
   forReview,
+  txData,
 }: {
   activeRoute: any;
   currentTxIndex?: number;
   completed?: boolean;
   inProgress?: boolean;
   forReview?: boolean;
+  txData?: any;
 }) => {
   const mappedChainData = useMappedChainData();
-  const [txData, setTxData] = useState(null);
-
-  useEffect(() => {
-    setTxData(activeRoute?.transactionData);
-  }, [activeRoute]);
 
   return (
     <div className="flex flex-col gap-3 text-sm">
@@ -39,10 +36,11 @@ export const TxStepDetails = ({
           txIndex < currentTxIndex ||
           completed;
         const currentTx = currentTxIndex === tx?.userTxIndex;
-        const url = txData?.[txIndex]?.txHash
+        const _txHash = txData?.[txIndex]?.txHash || txData?.[txIndex]?.hash;
+        const url = _txHash
           ? getExplorerLink(
               mappedChainData?.[tx?.chainId]?.explorers[0],
-              txData?.[txIndex]?.txHash,
+              _txHash,
               ExplorerDataType.TRANSACTION
             )
           : null;
@@ -184,20 +182,20 @@ const TxStep = ({
     <div className="flex gap-3.5">
       <div
         className={`h-6 w-6 flex items-center justify-center shrink-0 mt-[3px] ${
-          active ? "bg-widget-secondary" : "bg-transparent"
+          complete ? "bg-widget-secondary" : "bg-transparent"
         }`}
         style={{ borderRadius: `calc(0.25rem * ${borderRadius})` }}
       >
-        {!complete && (currentTx || forReview) ? (
-          inProgress ? (
-            <Spinner size={4} />
-          ) : (
-            <ArrowRight className={`w-[18px] h-[18px] text-widget-accent`} />
-          )
+        {inProgress && currentTx ? (
+          <Spinner size={4} />
+        ) : complete ? (
+          <CheckCircle className="w-[18px] h-[18px] text-widget-accent" />
         ) : (
-          <CheckCircle
+          <ArrowRight
             className={`w-[18px] h-[18px] ${
-              complete ? "text-widget-accent" : "text-widget-outline"
+              currentTx || forReview
+                ? "text-widget-accent"
+                : "text-widget-secondary opacity-60"
             }`}
           />
         )}
@@ -211,11 +209,11 @@ const TxStep = ({
           {url ? (
             <a
               href={url}
-              className="underline"
+              className="underline flex items-center gap-1"
               target="_blank"
               rel="noopener noreferrer"
             >
-              {label}
+              {label} <ExternalLink className="w-3 h-3 opacity-50"/>
             </a>
           ) : (
             label
