@@ -117,7 +117,7 @@ export const ReviewModal = ({
             style={{ borderRadius: `calc(0.875rem * ${borderRadius})` }}
           >
             {quoteUpdated && (
-              <span className="whitespace-nowrap w-full text-widget-secondary text-sm">
+              <span className="whitespace-nowrap w-full text-widget-secondary text-sm text-left">
                 Quote updated
               </span>
             )}

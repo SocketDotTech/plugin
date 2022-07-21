@@ -94,7 +94,7 @@ export const PendingTransactions = () => {
                     );
                   })}
 
-                  <p className="text-widget-secondary text-xs px-3 py-2">
+                  <p className="text-widget-secondary text-xs px-3 py-2 text-left">
                     Showing {activeRoutes?.length}/{totalRoutes} active routes
                   </p>
                 </div>
