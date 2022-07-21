@@ -36,4 +36,4 @@ yarn add @socket.tech/widget
 
 ### Example App
 
-- React app <Link>
+Work In Progress 🛠
