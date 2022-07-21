@@ -21,6 +21,7 @@ import { ErrorModal } from "./common/ErrorModal";
 import { useChains } from "../hooks/apis";
 import { useCustomSettings } from "../hooks/useCustomSettings";
 import { CreditCard } from "react-feather";
+import { useTransition } from "@react-spring/web";
 
 // Main Widget -> Base file.
 export const Widget = (props: WidgetProps) => {
@@ -36,11 +37,17 @@ export const Widget = (props: WidgetProps) => {
 
   // run when the props are changed
   useEffect(() => {
+    // If border radius passed is greater than 1.2, set it to 1.2. Default value is 1
+    const _borderRadius = customize?.borderRadius
+      ? customize?.borderRadius > 1.2
+        ? 1.2
+        : customize?.borderRadius
+      : 1;
+
     customSettings.setCustomization({
       ...customSettings.customization,
       ...customize,
-      borderRadius:
-        customize?.borderRadius > 1.2 ? 1.2 : customize?.borderRadius,
+      borderRadius: _borderRadius,
     });
 
     // settings web3Provider data
@@ -70,6 +77,14 @@ export const Widget = (props: WidgetProps) => {
   const widgetWidth = responsiveWidth ? "100%" : width > 360 ? width : 360;
   const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
 
+  const transitions = useTransition(isTxModalOpen, {
+    from: { y: "100%" },
+    enter: { y: "0" },
+    leave: { y: "100%" },
+    delay: 300,
+    config: { duration: 300 },
+  });
+
   return (
     <div
       style={{
@@ -98,7 +113,7 @@ export const Widget = (props: WidgetProps) => {
         <Output customTokenList={props.tokenList} />
       </div>
       <RouteDetails />
-      {isTxModalOpen && <TxModal />}
+      {transitions((style, item) => item && <TxModal style={style} />)}
       <ErrorModal />
     </div>
   );

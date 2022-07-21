@@ -98,9 +98,6 @@ const Template = (args: WidgetProps) => {
 };
 
 const Customize = {
-  width: 360,
-  responsiveWidth: false,
-  borderRadius: 1,
   secondary: "rgb(68,69,79)",
   primary: "rgb(31,34,44)",
   accent: "rgb(131,249,151)",

@@ -100,7 +100,7 @@ export const RouteDetails = () => {
     from: { y: "100%" },
     enter: { y: "0" },
     leave: { y: "100%" },
-    config: { duration: 150 },
+    config: { duration: 200 },
     onReset: () => setIsReviewOpen(false),
   });
 

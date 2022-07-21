@@ -31,7 +31,7 @@ import { SuccessToast } from "./SuccessToast";
 // The main modal that contains all the information related after clicking on review quote.
 // Responsible for the progression of the route.
 // Functions responsible for sending a transaction and checking the status of the route.
-export const TxModal = () => {
+export const TxModal = ({style}) => {
   const dispatch = useDispatch();
   function closeTxModal() {
     dispatch(setIsTxModalOpen(false));
@@ -306,6 +306,7 @@ export const TxModal = () => {
       title="Bridging transaction"
       closeModal={isApproving ? null : closeTxModal}
       disableClose={isApproving || txInProgress}
+      style={style}
     >
       <div className="flex flex-col flex-1 overflow-hidden justify-between relative">
         <div className="flex-1 overflow-y-auto">
