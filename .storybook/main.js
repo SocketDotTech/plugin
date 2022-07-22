@@ -1,5 +1,5 @@
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
-
+const path = require('path');
 module.exports = {
   stories: [
     "../src/**/*.stories.mdx",
@@ -24,6 +24,22 @@ module.exports = {
       },
     },
   ],
+  webpackFinal: async (config) => {
+    config.module.rules.push({
+      test: /\,css&/,
+      use: [
+        {
+          loader: "postcss-loader",
+          options: {
+            ident: "postcss",
+            plugins: [require("tailwindcss"), require("autoprefixer")],
+          },
+        },
+      ],
+      include: path.resolve(__dirname, "../"),
+    });
+    return config;
+  },
   framework: "@storybook/react",
   resolve: {
     plugins: [new TsconfigPathsPlugin({})],

@@ -15,14 +15,14 @@ input[type="number"] {
 
 @layer base {
   :root {
-    --socket-widget-accent-color: 239, 51, 116;
-    --socket-widget-on-accent-color: 255, 255, 255;
-    --socket-widget-primary-color: 255, 255, 255;
-    --socket-widget-secondary-color: 241, 245, 249;
-    --socket-widget-primary-text-color: 0, 0, 0;
-    --socket-widget-secondary-text-color: 68, 68, 68;
-    --socket-widget-outline-color: 208, 208, 208;
-    --socket-widget-interactive: 241, 245, 249;
-    --socket-widget-on-interactive: 10,10,10;
+    --socket-widget-accent-color: rgb(239, 51, 116);
+    --socket-widget-on-accent-color: rgb(255, 255, 255);
+    --socket-widget-primary-color: rgb(255, 255, 255);
+    --socket-widget-secondary-color: rgb(241, 245, 249);
+    --socket-widget-primary-text-color: rgb(0, 0, 0);
+    --socket-widget-secondary-text-color: rgb(68, 68, 68);
+    --socket-widget-outline-color: rgb(208, 208, 208);
+    --socket-widget-interactive: rgb(241, 245, 249);
+    --socket-widget-on-interactive: rgb(10,10,10);
   }
 }
