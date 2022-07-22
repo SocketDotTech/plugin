@@ -39,10 +39,10 @@ export interface Customize {
 
   // All colors should stricktly be in RGB format
   // Theme color
-  accent?: string; 
+  accent?: string;
   onAccent?: string;
 
-  // Primary color - Used for background. Container, modal and almost everywhere. 
+  // Primary color - Used for background. Container, modal and almost everywhere.
   primary?: string;
 
   // Secondary color - Used for foreground. Hover effects, cards, etc.
@@ -51,7 +51,7 @@ export interface Customize {
   // Primary text color - For headings and texts with emphasis.
   text?: string;
 
-  // Secondary text color 
+  // Secondary text color
   secondaryText?: string;
 
   // Interactive colors - for dropdowns
@@ -125,6 +125,12 @@ export interface BridgeName {
   icon?: string;
   serviceTime: number;
   displayName: string;
+}
+
+export interface TxDetails {
+  txHash: string;
+  userTxType: string;
+  timeStamp: number;
 }
 
 export declare function Bridge(props: WidgetProps): JSX.Element;

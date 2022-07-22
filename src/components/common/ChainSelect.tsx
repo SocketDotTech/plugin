@@ -28,17 +28,19 @@ function Option({
 }) {
   return (
     <div
-      className={`flex gap-1 items-center cursor-pointer ${
+      className={`flex w-28 gap-1 items-center cursor-pointer ${
         selected ? "" : "p-1.5 hover:bg-widget-primary"
       }`}
       onClick={onClick}
     >
-      <img
-        src={network?.icon}
-        className="h-6 w-6"
-        style={{ borderRadius: `calc(0.3rem * ${borderRadius})` }}
-      />
-      <span className="text-sm text-widget-primary">{network?.name}</span>
+      <div className="flex items-center gap-1">
+        <img
+          src={network?.icon}
+          className="h-6 w-6"
+          style={{ borderRadius: `calc(0.3rem * ${borderRadius})` }}
+        />
+        <span className="text-sm text-widget-primary">{network?.name}</span>
+      </div>
       {selected && !onlyOneNetwork && (
         <ChevronDown className="text-widget-secondary w-4 h-4" />
       )}
