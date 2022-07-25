@@ -25,7 +25,7 @@ The widget requires `provider` from user’s connected wallet & Socket’s `API_
 
 The full documentation for the widget can be found [here](https://www.notion.so/Socket-Widget-Docs-b905871870e343c6833169ebbd356790)
 
-### Installation
+## Installation
 
 The widget can be installed via NPM or Yarn.
 
@@ -43,12 +43,34 @@ yarn add @socket.tech/widget
 
 **Note :** The widget requires `react` (>=17.0.1) and `react-dom` (>=17.0.1) as peerDepencies.
 
-### Documentation
+## Initialization 
+
+Copy the snippet below to get started! Pass the `API_KEY` from a .env file and `Provider` from user’s connected wallet.
+
+```tsx
+import { Bridge } from "@socket.tech/widget";
+import { Provider } from "./providerComponent"
+
+function SocketBridge() {
+    return (    
+       <Bridge
+		provider={Provider}
+		API_KEY={process.env.SOCKET_API_KEY} 
+		/>
+    )
+}
+
+export default SocketBridge;
+```
+
+That’s it! You’ve successfully plugged your DApp into Socket! 🔌  For further customising the widget, check the widget [docs](https://www.notion.so/Socket-Widget-Docs-b905871870e343c6833169ebbd356790).
+
+## Documentation
 
 - [Initialisation](https://www.notion.so/Socket-Widget-Docs-b905871870e343c6833169ebbd356790)
 - [Customisation](https://www.notion.so/Socket-Widget-Docs-b905871870e343c6833169ebbd356790)
 - [API reference](https://www.notion.so/Socket-Widget-Docs-b905871870e343c6833169ebbd356790)
 
-### Example App
+## Example App
 
 Work In Progress 🛠
