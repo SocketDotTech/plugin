@@ -19,7 +19,7 @@
 
 Socket’s Widget is a React component that can be easily imported in any React (JS/TS) project. The widget supports most features from [Bungee.exchange](https://bungee.exchange/). It brings the seamless bridging UX from Bungee to any DApp!
 
-![Socket_Widget](https://user-images.githubusercontent.com/46216791/180241686-a8a97bf3-d104-4ff5-8d4b-ad870c22b6fc.png)
+![Socket Widget Examples](https://user-images.githubusercontent.com/20141508/180801529-49be06cd-1850-484b-979b-f694aeaa9285.png)
 
 The widget requires `provider` from user’s connected wallet & Socket’s `API_KEY` as props to initialise. [Optional props](https://www.notion.so/Socket-Widget-Docs-b905871870e343c6833169ebbd356790) can be passed to customize the widget’s color scheme, pre-select the chains/tokens & also customize token lists.
 
