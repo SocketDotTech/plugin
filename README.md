@@ -54,9 +54,9 @@ import { Provider } from "./providerComponent"
 function SocketBridge() {
     return (    
        <Bridge
-		provider={Provider}
-		API_KEY={process.env.SOCKET_API_KEY} 
-		/>
+	provider={Provider}
+	API_KEY={process.env.SOCKET_API_KEY} 
+	/>
     )
 }
 
