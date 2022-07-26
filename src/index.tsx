@@ -11,7 +11,7 @@ import { Web3Provider } from "./providers/Web3Provider";
 import { initSocket } from "./hooks/apis";
 
 export const Bridge = (props: WidgetProps) => {
-  const { provider, API_KEY } = props;
+  const { API_KEY } = props;
 
   if (!API_KEY) {
     return <IntegrationError>Please pass the API key</IntegrationError>;

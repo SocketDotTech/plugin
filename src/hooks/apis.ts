@@ -81,7 +81,8 @@ export const useRoutes = (
   destToken,
   amount,
   sort: SortOptions,
-  userAddress
+  userAddress,
+  refuelEnabled
 ) => {
   const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
   const shouldFetch =
@@ -100,7 +101,7 @@ export const useRoutes = (
         amount,
         address: userAddress,
       },
-      { sort }
+      { sort },
     );
     return quotes;
   }

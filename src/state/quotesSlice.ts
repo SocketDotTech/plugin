@@ -4,6 +4,7 @@ const initialState = {
   allQuotes: null,
   bestRoute: null,
   sortPref: 'output',
+  refuelEnabled: false,
 };
 
 const quotesSlice = createSlice({
@@ -18,9 +19,12 @@ const quotesSlice = createSlice({
     },
     setSortPref: (state, action) => {
       state.sortPref = action.payload
+    },
+    enableRefuel: (state, action) => {
+      state.refuelEnabled = action.payload
     }
   },
 });
 
 export default quotesSlice.reducer;
-export const { setQuotes, setBestRoute, setSortPref } = quotesSlice.actions;
+export const { setQuotes, setBestRoute, setSortPref, enableRefuel } = quotesSlice.actions;
