@@ -31,7 +31,7 @@ import { SuccessToast } from "./SuccessToast";
 // The main modal that contains all the information related after clicking on review quote.
 // Responsible for the progression of the route.
 // Functions responsible for sending a transaction and checking the status of the route.
-export const TxModal = ({style}) => {
+export const TxModal = ({ style }) => {
   const dispatch = useDispatch();
   function closeTxModal() {
     dispatch(setIsTxModalOpen(false));
@@ -173,7 +173,11 @@ export const TxModal = ({style}) => {
       const sendTx = await signer.sendTransaction(sendTxData);
 
       // set data to local storage, txHash is in storage if the user leaves in the middle of the transaction.
-      const value = { hash: sendTx.hash, userTxType: userTx.userTxType };
+      const value = {
+        hash: sendTx.hash,
+        userTxType: userTx.userTxType,
+        timeStamp: new Date().getTime(),
+      };
       const prevTxDetails = saveTxDetails(
         userAddress,
         userTx.activeRouteId,
@@ -181,10 +185,11 @@ export const TxModal = ({style}) => {
         value
       );
 
+      // Adds the new txHash to the currentRoute state.
       const _updatedCurrentRoute = {
         ...currentRoute,
-        txData: prevTxDetails[userAddress][userTx.activeRouteId]
-      }
+        txData: prevTxDetails[userAddress][userTx.activeRouteId],
+      };
 
       setCurrentRoute(_updatedCurrentRoute);
       dispatch(
@@ -291,8 +296,8 @@ export const TxModal = ({style}) => {
       route: activeRoute || selectedRoute?.route,
       sourceTokenDetails: _sourceTokenDetails,
       destTokenDetails: _destTokenDetails,
-      txData: activeRoute?.transactionData
-    }
+      txData: activeRoute?.transactionData,
+    };
 
     setCurrentRoute(_currentRoute);
 
@@ -387,9 +392,9 @@ export const TxModal = ({style}) => {
 
         {bridging && !initiating && (
           <BridgingLoader
-            source={currentRoute?.sourceTokenDetails}
-            dest={currentRoute?.destTokenDetails}
+            currentRoute={currentRoute}
             explorerParams={explorerParams}
+            txDetails={txDetails?.[userAddress]?.[activeRoute?.activeRouteId]}
           />
         )}
 

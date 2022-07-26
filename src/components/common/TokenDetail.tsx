@@ -33,7 +33,7 @@ export const TokenDetail = (props: TokenAssetProps) => {
 
       <div className={`flex flex-col flex-auto overflow-hidden ${rtl ? "items-end" : "items-start"}`}>
         <span
-          className={`text-widget-secondary w-full font-medium overflow-hidden whitespace-nowrap text-ellipsis ${rtl ? "text-right" : "text-left"} ${
+          className={`text-widget-primary w-full font-medium overflow-hidden whitespace-nowrap text-ellipsis ${rtl ? "text-right" : "text-left"} ${
             small ? "text-xs" : "text-sm"
           }`}
         >
