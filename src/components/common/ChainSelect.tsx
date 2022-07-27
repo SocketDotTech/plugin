@@ -29,7 +29,7 @@ function Option({
   return (
     <div
       className={`flex w-28 gap-1 items-center cursor-pointer ${
-        selected ? "" : "p-1.5 hover:bg-widget-primary"
+        selected ? "" : "p-1.5 hover:bg-widget-secondary hover:bg-opacity-80" 
       }`}
       onClick={onClick}
     >
