@@ -49,7 +49,7 @@ export const ReviewModal = ({
   return (
     <Modal
       title="Review Quote"
-      closeModal={showTxDetails ? null : closeModal}
+      closeModal={showTxDetails ? () => setShowTxDetails(!showTxDetails) : closeModal}
       style={style}
     >
       <div className="flex flex-col justify-between flex-1 relative">

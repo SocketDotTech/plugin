@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { WidgetProps } from "../types";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 // context
 import { useContext } from "react";
@@ -23,7 +23,7 @@ import { useCustomSettings } from "../hooks/useCustomSettings";
 import { CreditCard } from "react-feather";
 import { useTransition } from "@react-spring/web";
 
-import { enableRefuel } from "../state/quotesSlice";
+import { Refuel } from "./Refuel";
 
 // Main Widget -> Base file.
 export const Widget = (props: WidgetProps) => {
@@ -87,11 +87,6 @@ export const Widget = (props: WidgetProps) => {
     config: { duration: 300 },
   });
 
-  const dispatch = useDispatch();
-  function handleRefuelChange(e: any) {
-    dispatch(enableRefuel(e.target.checked));
-  }
-
   return (
     <div
       style={{
@@ -118,14 +113,7 @@ export const Widget = (props: WidgetProps) => {
         </Header>
         <Input customTokenList={props.tokenList} />
         <Output customTokenList={props.tokenList} />
-        <label htmlFor="refuel-checkbox" className="text-widget-primary">
-          Enable Refuel
-        </label>
-        <input
-          type="checkbox"
-          id="refuel-checkbox"
-          onChange={(e: any) => handleRefuelChange(e)}
-        />
+        <Refuel />
       </div>
       <RouteDetails />
       {transitions((style, item) => item && <TxModal style={style} />)}

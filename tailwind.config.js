@@ -27,6 +27,7 @@ module.exports = {
       backgroundColor: {
         widget: {
           accent: withOpacity("--socket-widget-accent-color"),
+          onAccent: withOpacity("--socket-widget-on-accent-color"),
           primary: withOpacity("--socket-widget-primary-color"),
           secondary: withOpacity("--socket-widget-secondary-color"),
           outline: withOpacity("--socket-widget-outline-color"),
