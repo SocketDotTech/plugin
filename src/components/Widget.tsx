@@ -38,7 +38,7 @@ export const Widget = (props: WidgetProps) => {
   // run when the props are changed
   useEffect(() => {
     // If border radius passed is greater than 1.2, set it to 1.2. Default value is 1
-    const _borderRadius = customize?.borderRadius
+    const _borderRadius = customize?.borderRadius !== undefined
       ? customize?.borderRadius > 1.2
         ? 1.2
         : customize?.borderRadius
