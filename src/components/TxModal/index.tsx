@@ -297,6 +297,7 @@ export const TxModal = ({ style }) => {
       sourceTokenDetails: _sourceTokenDetails,
       destTokenDetails: _destTokenDetails,
       txData: activeRoute?.transactionData,
+      refuel: activeRoute?.refuel || selectedRoute?.refuel,
     };
 
     setCurrentRoute(_currentRoute);
@@ -331,6 +332,7 @@ export const TxModal = ({ style }) => {
           <div className="px-3 py-3">
             <TxStepDetails
               activeRoute={currentRoute?.route}
+              refuel={currentRoute?.refuel}
               txData={currentRoute?.txData}
               // Setting currentTxIndex to 0 when the txModal is opened for the 'first time'.
               currentTxIndex={

@@ -20,7 +20,7 @@ import { Web3Context } from "../providers/Web3Provider";
 
 export let socket;
 
-// Function that lets you set the api key and preferences. 
+// Function that lets you set the api key and preferences.
 export const initSocket = (apiKey) => {
   socket = new Socket({
     apiKey: apiKey,
@@ -75,7 +75,7 @@ export const useActiveRoutes = () => {
   };
 };
 
-// Main hook that takes in params and fetches the quotes. 
+// Main hook that takes in params and fetches the quotes.
 export const useRoutes = (
   sourceToken,
   destToken,
@@ -86,14 +86,20 @@ export const useRoutes = (
 ) => {
   const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
   const shouldFetch =
-    !!sourceToken && !!destToken && !!amount && amount !== '0' && !!userAddress && !isTxModalOpen;
+    !!sourceToken &&
+    !!destToken &&
+    !!amount &&
+    amount !== "0" &&
+    !!userAddress &&
+    !isTxModalOpen;
 
   async function fetchQuotes(
     sourceToken: Token,
     destToken: Token,
     amount: string,
     userAddress: string,
-    sort: SortOptions
+    sort: SortOptions,
+    bridgeWithGas
   ) {
     const quotes = await socket.getAllQuotes(
       {
@@ -101,14 +107,14 @@ export const useRoutes = (
         amount,
         address: userAddress,
       },
-      { sort },
+      { sort, bridgeWithGas: bridgeWithGas }
     );
     return quotes;
   }
 
   const { data, error, isValidating } = useSWR(
     shouldFetch
-      ? [sourceToken, destToken, amount, userAddress, sort, "quotes"]
+      ? [sourceToken, destToken, amount, userAddress, sort, refuelEnabled, "quotes"]
       : null,
     fetchQuotes,
     {

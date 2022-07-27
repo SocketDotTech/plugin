@@ -18,6 +18,7 @@ export const TxStepDetails = ({
   inProgress,
   forReview,
   txData,
+  refuel,
 }: {
   activeRoute: any;
   currentTxIndex?: number;
@@ -25,6 +26,7 @@ export const TxStepDetails = ({
   inProgress?: boolean;
   forReview?: boolean;
   txData?: any;
+  refuel?: any;
 }) => {
   const mappedChainData = useMappedChainData();
 
@@ -45,7 +47,8 @@ export const TxStepDetails = ({
             )
           : null;
 
-        // function to return token details - amount, chain id, symbol and protocol name.
+        // function to return token details -
+        // @returns - amount, chain id, symbol and protocol name.
         const getTxDetail = (stepId: number, toAsset: boolean) => {
           const step = stepId === null ? tx : tx?.steps?.[stepId];
 
@@ -66,6 +69,23 @@ export const TxStepDetails = ({
           const swapDest = getTxDetail(0, true);
           const bridgeSrc = getTxDetail(isSwap ? 1 : 0, false);
           const bridgeDest = getTxDetail(isSwap ? 1 : 0, true);
+
+          const refuelSrc = {
+            amount: formatCurrencyAmount(
+              refuel?.fromAmount,
+              refuel?.fromAsset?.decimals
+            ),
+            chainId: refuel?.fromChainId,
+            symbol: refuel?.fromAsset?.symbol,
+          };
+          const refuelDest = {
+            amount: formatCurrencyAmount(
+              refuel?.toAmount,
+              refuel?.toAsset?.decimals
+            ),
+            chainId: refuel?.toChainId,
+            symbol: refuel?.toAsset?.symbol,
+          };
 
           return (
             <div
@@ -96,6 +116,19 @@ export const TxStepDetails = ({
                       {mappedChainData?.[bridgeDest?.chainId]?.name} via{" "}
                       {bridgeSrc?.protocolName} bridge
                     </span>
+                    {/* Refuel statement */}
+                    {refuel && (
+                      <span>
+                        <span className="text-widget-accent">For Gas : </span> 
+                        {Number(refuelSrc?.amount).toFixed(3)}{" "}
+                        {refuelSrc?.symbol} on{" "}
+                        {mappedChainData?.[refuelSrc?.chainId]?.name} to{" "}
+                        {Number(refuelDest?.amount).toFixed(3)}{" "}
+                        {refuelDest?.symbol} on{" "}
+                        {mappedChainData?.[refuelDest?.chainId]?.name} via{" "}
+                        Refuel
+                      </span>
+                    )}
                   </div>
                 </TxStep>
               ) : (
@@ -107,11 +140,29 @@ export const TxStepDetails = ({
                   inProgress={inProgress}
                   forReview={forReview}
                 >
-                  {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol} on{" "}
-                  {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
-                  {Number(bridgeDest?.amount).toFixed(3)} {bridgeDest?.symbol}{" "}
-                  on {mappedChainData?.[bridgeDest?.chainId]?.name} via{" "}
-                  {bridgeSrc?.protocolName} bridge
+                  <div className="flex flex-col gap-2">
+                    <span>
+                      {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol}{" "}
+                      on {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
+                      {Number(bridgeDest?.amount).toFixed(3)}{" "}
+                      {bridgeDest?.symbol} on{" "}
+                      {mappedChainData?.[bridgeDest?.chainId]?.name} via{" "}
+                      {bridgeSrc?.protocolName} bridge
+                    </span>
+                    {/* Refuel statement */}
+                    {refuel && (
+                      <span>
+                        For gas:
+                        {Number(refuelSrc?.amount).toFixed(3)}{" "}
+                        {refuelSrc?.symbol} on{" "}
+                        {mappedChainData?.[refuelSrc?.chainId]?.name} to{" "}
+                        {Number(refuelDest?.amount).toFixed(3)}{" "}
+                        {refuelDest?.symbol} on{" "}
+                        {mappedChainData?.[refuelDest?.chainId]?.name} via{" "}
+                        Refuel
+                      </span>
+                    )}
+                  </div>
                 </TxStep>
               )}
             </div>
@@ -213,7 +264,7 @@ const TxStep = ({
               target="_blank"
               rel="noopener noreferrer"
             >
-              {label} <ExternalLink className="w-3 h-3 opacity-50"/>
+              {label} <ExternalLink className="w-3 h-3 opacity-50" />
             </a>
           ) : (
             label
