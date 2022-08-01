@@ -11,6 +11,7 @@ import { TxDetails } from "../../types";
 // components
 import { Spinner } from "../common/Spinner";
 import { TokenDetail } from "../common/TokenDetail";
+import { TokenDetailsRow } from "../common/TokenDetailsRow";
 
 // This component is displayed when transaction of type 'fund-movr' (bridging tx) is in progress
 export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
@@ -46,12 +47,12 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
 
     // Getting txDetails as an array
     const txDetailValues: TxDetails[] = txDetails && Object.values(txDetails);
-    
+
     // Getting the timestamp of the bridging transaction
     const bridgingTimeStamp: number = txDetailValues?.filter(
-        (x: TxDetails): boolean => x.userTxType === UserTxType.FUND_MOVR
-      )?.[0]?.timeStamp;
-    
+      (x: TxDetails): boolean => x.userTxType === UserTxType.FUND_MOVR
+    )?.[0]?.timeStamp;
+
     const currentTime = new Date().getTime();
 
     if (bridgingTimeStamp && currentTime) {
@@ -68,8 +69,29 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
     }
   }, [currentRoute, txDetails]);
 
+  const refuelSourceToken = {
+    amount: currentRoute?.refuel?.fromAmount,
+    asset: currentRoute?.refuel?.fromAsset,
+  };
+  const refuelDestToken = {
+    amount: currentRoute?.refuel?.toAmount,
+    asset: currentRoute?.refuel?.toAsset,
+  };
+
   return (
     <div className="absolute bg-widget-primary h-full w-full top-0 left-0 flex flex-col">
+      <TokenDetailsRow
+        srcDetails={{
+          token: currentRoute?.sourceTokenDetails?.token,
+          amount: currentRoute?.sourceTokenDetails?.amount,
+        }}
+        destDetails={{
+          token: currentRoute?.destTokenDetails?.token,
+          amount: currentRoute?.destTokenDetails?.amount,
+        }}
+        srcRefuel={refuelSourceToken}
+        destRefuel={refuelDestToken}
+      />
       <div className="flex justify-between mt-5 items-center px-3 mb-2.5 w-full">
         <TokenDetail
           token={currentRoute?.sourceTokenDetails?.token}

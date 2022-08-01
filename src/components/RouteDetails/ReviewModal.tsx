@@ -6,14 +6,14 @@ import { BRIDGE_DISPLAY_NAMES } from "../../consts/";
 // components
 import { Button } from "../common/Button";
 import { Modal } from "../common/Modal";
-import { TokenDetail } from "../common/TokenDetail";
-import { ArrowDown, ChevronUp } from "react-feather";
+import { ChevronUp } from "react-feather";
 import { InnerCard } from "../common/InnerCard";
 
 // actions
 import { setIsTxModalOpen } from "../../state/modals";
 import { setSelectedRoute } from "../../state/selectedRouteSlice";
 import { TxStepDetails } from "../TxModal/TxStepDetails";
+import { TokenDetailsRow } from "../common/TokenDetailsRow";
 
 export const ReviewModal = ({
   closeModal,
@@ -55,7 +55,6 @@ export const ReviewModal = ({
     amount: selectedRoute?.refuel?.toAmount,
     asset: selectedRoute?.refuel?.toAsset
   }
-  const refuelEnabled = refuelDestToken?.amount;
 
   return (
     <Modal
@@ -64,23 +63,15 @@ export const ReviewModal = ({
       style={style}
     >
       <div className="flex flex-col justify-between flex-1 relative">
-        <div>
-          <div className={`flex justify-between mt-5 px-3 ${refuelEnabled ? 'flex-col gap-3': 'flex-row items-center'}`}>
-            <TokenDetail
-              token={selectedRoute?.path?.fromToken}
-              amount={selectedRoute?.amount}
-              refuel={refuelSourceToken}
-            />
-            <ArrowDown className={`w-4 h-4 text-widget-secondary ${refuelEnabled ? '' : '-rotate-90'}`} />
-            <TokenDetail
-              token={selectedRoute?.path?.toToken}
-              amount={selectedRoute?.route?.toAmount}
-              refuel={refuelDestToken}
-              rtl={!refuelEnabled}
-            />
-          </div>
+        <div className="w-full">
+          <TokenDetailsRow 
+            srcDetails={{token: selectedRoute?.path?.fromToken, amount: selectedRoute?.amount}}
+            destDetails={{token: selectedRoute?.path?.toToken, amount: selectedRoute?.route?.toAmount}}
+            srcRefuel={refuelSourceToken}
+            destRefuel={refuelDestToken}
+          />
 
-          <div className="p-3 flex flex-col gap-3 mt-5">
+          <div className="p-3 flex flex-col gap-3 mt-1">
             <RouteDetailRow
               label="Bridge Name"
               value={

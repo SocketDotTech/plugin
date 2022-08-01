@@ -7,7 +7,7 @@ import { useContext } from "react";
 
 interface TokenAssetProps {
   token: Currency | Token;
-  refuel?: { amount: number; asset: Currency | Token };
+  refuel?: { amount: string; asset: Currency | Token };
   rtl?: boolean;
   amount: string;
   small?: boolean;
@@ -29,7 +29,7 @@ export const TokenDetail = (props: TokenAssetProps) => {
 
   return (
     <div
-      className={`flex flex-col flex-1 ${refuelEnabled ? 'bg-widget-secondary p-3': 'max-w-full'} ${rtl ? "items-end" : "flex-row"}`}
+      className={`flex flex-col flex-1 max-w-full ${rtl ? "items-end" : "flex-row"}`}
       style={{ borderRadius: `calc(0.7rem * ${borderRadius})` }}
     >
       <div
@@ -45,7 +45,7 @@ export const TokenDetail = (props: TokenAssetProps) => {
           {!!refuel?.amount && (
             <img
               src={refuel?.asset?.logoURI}
-              className="w-6.5 h-6.5 rounded-full -ml-2 border-2 border-widget-secondary"
+              className="w-6 h-6 rounded-full -ml-2 border-2 border-widget-accent object-cover bg-widget-accent"
             />
           )}
         </div>
@@ -56,15 +56,15 @@ export const TokenDetail = (props: TokenAssetProps) => {
           }`}
         >
           <span
-            className={`text-widget-primary w-full font-medium overflow-hidden whitespace-nowrap text-ellipsis flex items-center gap-1 ${
-              rtl ? "text-right" : "text-left"
+            className={`text-widget-primary w-full font-medium overflow-hidden whitespace-nowrap text-ellipsis flex flex-col gap-1 ${
+              rtl ? "text-right items-end" : "text-left items-start"
             } ${small ? "text-xs" : "text-sm"}`}
           >
             <span>
               {formattedAmount} {token?.symbol}
             </span>
             {refuelEnabled && (
-              <span className="text-xs font-normal text-widget-accent">
+              <span className={`text-[10px] -mt-1 font-normal text-widget-accent ${rtl ? "text-right" : "text-left"}`}>
                 (+ {formattedRefuelAmount} {refuel?.asset?.symbol})
               </span>
             )}

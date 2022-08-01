@@ -27,6 +27,7 @@ import {
 
 import { Web3Context } from "../../providers/Web3Provider";
 import { SuccessToast } from "./SuccessToast";
+import { TokenDetailsRow } from "../common/TokenDetailsRow";
 
 // The main modal that contains all the information related after clicking on review quote.
 // Responsible for the progression of the route.
@@ -308,14 +309,13 @@ export const TxModal = ({ style }) => {
   }, []); // the activeRoute is set before the txModal is opened.
 
   const refuelSourceToken = {
-    amount: activeRoute?.refuel?.fromAmount || selectedRoute?.refuel?.fromAmount,
-    asset: activeRoute?.refuel?.fromAsset || selectedRoute?.refuel?.fromAsset
-  }
+    amount: !!activeRoute ? activeRoute?.refuel?.fromAmount : selectedRoute?.refuel?.fromAmount,
+    asset: !!activeRoute ? activeRoute?.refuel?.fromAsset : selectedRoute?.refuel?.fromAsset,
+  };
   const refuelDestToken = {
-    amount: activeRoute?.refuel?.toAmount || selectedRoute?.refuel?.toAmount,
-    asset: activeRoute?.refuel?.toAsset || selectedRoute?.refuel?.toAsset
-  }
-  const refuelEnabled = refuelDestToken?.amount;
+    amount: !!activeRoute ? activeRoute?.refuel?.toAmount : selectedRoute?.refuel?.toAmount,
+    asset: !!activeRoute ? activeRoute?.refuel?.toAsset : selectedRoute?.refuel?.toAsset,
+  };
 
   return (
     <Modal
@@ -326,20 +326,18 @@ export const TxModal = ({ style }) => {
     >
       <div className="flex flex-col flex-1 overflow-hidden justify-between relative">
         <div className="flex-1 overflow-y-auto">
-          <div className={`flex justify-between mt-5 px-3 mb-2.5 ${refuelEnabled ? 'flex-col gap-3': 'flex-row items-center'}`}>
-            <TokenDetail
-              token={currentRoute?.sourceTokenDetails?.token}
-              amount={currentRoute?.sourceTokenDetails?.amount}
-              refuel={refuelSourceToken}
-            />
-            <ChevronRight className="w-4 h-4 text-widget-secondary" />
-            <TokenDetail
-              token={currentRoute?.destTokenDetails?.token}
-              amount={currentRoute?.destTokenDetails?.amount}
-              refuel={refuelDestToken}
-              rtl={!refuelEnabled}
-            />
-          </div>
+          <TokenDetailsRow
+            srcDetails={{
+              token: currentRoute?.sourceTokenDetails?.token,
+              amount: currentRoute?.sourceTokenDetails?.amount,
+            }}
+            destDetails={{
+              token: currentRoute?.destTokenDetails?.token,
+              amount: currentRoute?.destTokenDetails?.amount,
+            }}
+            srcRefuel={refuelSourceToken}
+            destRefuel={refuelDestToken}
+          />
 
           <div className="px-3 py-3">
             <TxStepDetails
