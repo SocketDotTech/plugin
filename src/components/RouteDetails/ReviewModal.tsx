@@ -7,7 +7,7 @@ import { BRIDGE_DISPLAY_NAMES } from "../../consts/";
 import { Button } from "../common/Button";
 import { Modal } from "../common/Modal";
 import { TokenDetail } from "../common/TokenDetail";
-import { ChevronRight, ChevronUp } from "react-feather";
+import { ArrowDown, ChevronUp } from "react-feather";
 import { InnerCard } from "../common/InnerCard";
 
 // actions
@@ -25,6 +25,7 @@ export const ReviewModal = ({
   const dispatch = useDispatch();
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
   const selectedRoute = useSelector((state: any) => state.routes.selectedRoute);
+  console.log('selected route', selectedRoute);
   const [showTxDetails, setShowTxDetails] = useState<boolean>(false);
   const [quoteUpdated, setQuoteUpdated] = useState<boolean>(false);
 
@@ -46,6 +47,16 @@ export const ReviewModal = ({
     } else setQuoteUpdated(false);
   }, [selectedRoute, bestRoute]);
 
+  const refuelSourceToken = {
+    amount: selectedRoute?.refuel?.fromAmount,
+    asset: selectedRoute?.refuel?.fromAsset
+  }
+  const refuelDestToken = {
+    amount: selectedRoute?.refuel?.toAmount,
+    asset: selectedRoute?.refuel?.toAsset
+  }
+  const refuelEnabled = refuelDestToken?.amount;
+
   return (
     <Modal
       title="Review Quote"
@@ -54,16 +65,18 @@ export const ReviewModal = ({
     >
       <div className="flex flex-col justify-between flex-1 relative">
         <div>
-          <div className="flex justify-between mt-5 items-center px-3">
+          <div className={`flex justify-between mt-5 px-3 ${refuelEnabled ? 'flex-col gap-3': 'flex-row items-center'}`}>
             <TokenDetail
               token={selectedRoute?.path?.fromToken}
               amount={selectedRoute?.amount}
+              refuel={refuelSourceToken}
             />
-            <ChevronRight className="w-4 h-4 text-widget-secondary" />
+            <ArrowDown className={`w-4 h-4 text-widget-secondary ${refuelEnabled ? '' : '-rotate-90'}`} />
             <TokenDetail
               token={selectedRoute?.path?.toToken}
               amount={selectedRoute?.route?.toAmount}
-              rtl
+              refuel={refuelDestToken}
+              rtl={!refuelEnabled}
             />
           </div>
 

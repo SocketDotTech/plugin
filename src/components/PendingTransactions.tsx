@@ -68,28 +68,30 @@ export const PendingTransactions = () => {
                 style={style}
               >
                 <div className="flex flex-col justify-start p-1 flex-1 overflow-y-auto">
-                  {activeRoutes?.map((route: ActiveRouteResponse) => {
+                  {activeRoutes?.map((route: any) => {
                     return (
                       <button
                         onClick={() => openTxModal(route)}
                         key={route?.activeRouteId}
-                        className="flex justify-between items-center px-2 py-4 w-full hover:bg-widget-secondary"
+                        className={`w-full flex flex-col px-2 py-4 hover:bg-widget-secondary ${route?.refuel?.fromAmount ? '' : ''}`}
                         style={{
                           borderRadius: `calc(0.5rem * ${borderRadius})`,
                         }}
                       >
-                        <TokenDetail
-                          token={route?.fromAsset}
-                          amount={route?.fromAmount}
-                          small
-                        />
-                        <ChevronRight className="w-4 h-4 text-widget-secondary" />
-                        <TokenDetail
-                          token={route?.toAsset}
-                          amount={route?.toAmount}
-                          rtl
-                          small
-                        />
+                        <div className="flex justify-between items-center w-full">
+                          <TokenDetail
+                            token={route?.fromAsset}
+                            amount={route?.fromAmount}
+                            small
+                          />
+                          <ChevronRight className="w-4 h-4 text-widget-secondary" />
+                          <TokenDetail
+                            token={route?.toAsset}
+                            amount={route?.toAmount}                      
+                            rtl
+                            small
+                          />
+                        </div>
                       </button>
                     );
                   })}

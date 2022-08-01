@@ -307,6 +307,16 @@ export const TxModal = ({ style }) => {
     };
   }, []); // the activeRoute is set before the txModal is opened.
 
+  const refuelSourceToken = {
+    amount: activeRoute?.refuel?.fromAmount || selectedRoute?.refuel?.fromAmount,
+    asset: activeRoute?.refuel?.fromAsset || selectedRoute?.refuel?.fromAsset
+  }
+  const refuelDestToken = {
+    amount: activeRoute?.refuel?.toAmount || selectedRoute?.refuel?.toAmount,
+    asset: activeRoute?.refuel?.toAsset || selectedRoute?.refuel?.toAsset
+  }
+  const refuelEnabled = refuelDestToken?.amount;
+
   return (
     <Modal
       title="Bridging transaction"
@@ -316,16 +326,18 @@ export const TxModal = ({ style }) => {
     >
       <div className="flex flex-col flex-1 overflow-hidden justify-between relative">
         <div className="flex-1 overflow-y-auto">
-          <div className="flex justify-between mt-5 items-center px-3 mb-2.5">
+          <div className={`flex justify-between mt-5 px-3 mb-2.5 ${refuelEnabled ? 'flex-col gap-3': 'flex-row items-center'}`}>
             <TokenDetail
               token={currentRoute?.sourceTokenDetails?.token}
               amount={currentRoute?.sourceTokenDetails?.amount}
+              refuel={refuelSourceToken}
             />
             <ChevronRight className="w-4 h-4 text-widget-secondary" />
             <TokenDetail
               token={currentRoute?.destTokenDetails?.token}
               amount={currentRoute?.destTokenDetails?.amount}
-              rtl
+              refuel={refuelDestToken}
+              rtl={!refuelEnabled}
             />
           </div>
 
