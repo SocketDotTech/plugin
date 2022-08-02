@@ -223,7 +223,17 @@ export const TxModal = ({ style }) => {
         mutateActiveRoutes();
       }
     } catch (e) {
-      dispatch(setError(e.message));
+      const err = e.message;
+      let errMessage: string;
+      if (err.match("execution reverted: MIDDLEWARE_ACTION_FAILED")) {
+        errMessage =
+          "Swap failed due to slippage or low DEX liquidity, please retry or contact support";
+      } else if (err.match("execution reverted")) {
+        errMessage = "Transaction failed, please try again or contact support";
+      } else {
+        errMessage = err;
+      }
+      dispatch(setError(errMessage));
       setBridging(false);
       setTxInProgress(false);
     }

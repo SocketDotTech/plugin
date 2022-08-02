@@ -55,6 +55,11 @@ export const ReviewModal = ({
     asset: selectedRoute?.refuel?.toAsset
   }
 
+  function formattedGasFees(){
+    const feesInUsd = selectedRoute?.route?.totalGasFeesInUsd?.toFixed(3);
+    return `${feesInUsd} USD`;
+  }
+
   return (
     <Modal
       title="Review Quote"
@@ -81,7 +86,7 @@ export const ReviewModal = ({
             />
             <RouteDetailRow
               label="Total Gas Fee"
-              value={selectedRoute?.route?.totalGasFeesInUsd?.toFixed(3)}
+              value={formattedGasFees()}
             />
           </div>
         </div>
