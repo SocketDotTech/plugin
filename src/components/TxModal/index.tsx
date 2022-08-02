@@ -225,15 +225,22 @@ export const TxModal = ({ style }) => {
     } catch (e) {
       const err = e.message;
       let errMessage: string;
+
       if (err.match("execution reverted: MIDDLEWARE_ACTION_FAILED")) {
         errMessage =
           "Swap failed due to slippage or low DEX liquidity, please retry or contact support";
-      } else if (err.match("execution reverted")) {
+      } else if (err.match("execution reverted" || err.match("reverted"))) {
         errMessage = "Transaction failed, please try again or contact support";
       } else {
         errMessage = err;
       }
-      dispatch(setError(errMessage));
+
+      const activeRouteId = currentRoute?.route?.activeRouteId;
+      const routeIdString = activeRouteId
+        ? ` - Route ID: ${activeRouteId}`
+        : null;
+
+      dispatch(setError(`${errMessage} ${routeIdString ?? ""}`));
       setBridging(false);
       setTxInProgress(false);
     }

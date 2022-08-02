@@ -1,6 +1,6 @@
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { useState, useEffect, useContext } from "react";
-import { ChevronRight, ExternalLink } from "react-feather";
+import { ExternalLink } from "react-feather";
 import { ethers } from "ethers";
 
 import useMappedChainData from "../../hooks/useMappedChainData";
@@ -10,8 +10,8 @@ import { TxDetails } from "../../types";
 
 // components
 import { Spinner } from "../common/Spinner";
-import { TokenDetail } from "../common/TokenDetail";
 import { TokenDetailsRow } from "../common/TokenDetailsRow";
+import { Stepper } from "../common/Stepper";
 
 // This component is displayed when transaction of type 'fund-movr' (bridging tx) is in progress
 export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
@@ -92,18 +92,16 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
         srcRefuel={refuelSourceToken}
         destRefuel={refuelDestToken}
       />
-      <div className="flex justify-between mt-5 items-center px-3 mb-2.5 w-full">
-        <TokenDetail
-          token={currentRoute?.sourceTokenDetails?.token}
-          amount={currentRoute?.sourceTokenDetails?.amount}
-        />
-        <ChevronRight className="w-4 h-4 text-widget-secondary" />
-        <TokenDetail
-          token={currentRoute?.destTokenDetails?.token}
-          amount={currentRoute?.destTokenDetails?.amount}
-          rtl
-        />
-      </div>
+      <div className="border-b border-widget-secondary" />
+
+      {currentRoute?.route?.userTxs?.length > 1 && (
+        <div className="px-3.5 py-3 mt-2">
+          <Stepper
+            currentTx={currentRoute?.route?.currentUserTxIndex}
+            userTxs={currentRoute?.route?.userTxs}
+          />
+        </div>
+      )}
       <div className="py-10 flex gap-3 flex-col items-center">
         <Spinner size={10} />
         <div>
