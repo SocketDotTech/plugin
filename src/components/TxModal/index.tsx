@@ -1,14 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
 import { SocketTx } from "socket-v2-sdk";
-import { ChevronRight } from "react-feather";
 
 // components
 import { Modal } from "../common/Modal";
 import { Button } from "../common/Button";
 import { TxStepDetails } from "./TxStepDetails";
-import { TokenDetail } from "../common/TokenDetail";
 import { BridgingLoader } from "./BridgingLoader";
+import { Stepper } from "../common/Stepper";
 
 // actions
 import { setActiveRoute, setError, setIsTxModalOpen } from "../../state/modals";
@@ -309,12 +308,20 @@ export const TxModal = ({ style }) => {
   }, []); // the activeRoute is set before the txModal is opened.
 
   const refuelSourceToken = {
-    amount: !!activeRoute ? activeRoute?.refuel?.fromAmount : selectedRoute?.refuel?.fromAmount,
-    asset: !!activeRoute ? activeRoute?.refuel?.fromAsset : selectedRoute?.refuel?.fromAsset,
+    amount: !!activeRoute
+      ? activeRoute?.refuel?.fromAmount
+      : selectedRoute?.refuel?.fromAmount,
+    asset: !!activeRoute
+      ? activeRoute?.refuel?.fromAsset
+      : selectedRoute?.refuel?.fromAsset,
   };
   const refuelDestToken = {
-    amount: !!activeRoute ? activeRoute?.refuel?.toAmount : selectedRoute?.refuel?.toAmount,
-    asset: !!activeRoute ? activeRoute?.refuel?.toAsset : selectedRoute?.refuel?.toAsset,
+    amount: !!activeRoute
+      ? activeRoute?.refuel?.toAmount
+      : selectedRoute?.refuel?.toAmount,
+    asset: !!activeRoute
+      ? activeRoute?.refuel?.toAsset
+      : selectedRoute?.refuel?.toAsset,
   };
 
   return (
@@ -338,6 +345,18 @@ export const TxModal = ({ style }) => {
             srcRefuel={refuelSourceToken}
             destRefuel={refuelDestToken}
           />
+          <div className="border-b border-widget-secondary" />
+
+          {currentRoute?.route?.userTxs?.length > 1 && (
+            <div className="px-3.5 py-3 mt-2">
+              <Stepper
+                currentTx={
+                  userTx?.userTxIndex || activeRoute?.currentUserTxIndex || 0
+                }
+                userTxs={currentRoute?.route?.userTxs}
+              />
+            </div>
+          )}
 
           <div className="px-3 py-3">
             <TxStepDetails

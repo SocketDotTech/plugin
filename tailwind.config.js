@@ -31,7 +31,8 @@ module.exports = {
           primary: withOpacity("--socket-widget-primary-color"),
           secondary: withOpacity("--socket-widget-secondary-color"),
           outline: withOpacity("--socket-widget-outline-color"),
-          interactive: withOpacity('--socket-widget-interactive')
+          interactive: withOpacity('--socket-widget-interactive'),
+          'secondary-text': withOpacity('--socket-widget-secondary-text-color')
         },
       },
       borderColor: {
