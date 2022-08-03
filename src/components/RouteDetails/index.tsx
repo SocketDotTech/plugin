@@ -25,6 +25,7 @@ export const RouteDetails = () => {
   const sortPref = useSelector((state: any) => state.quotes.sortPref);
   const sourceAmount = useSelector((state: any) => state.amount.sourceAmount);
   const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
+  const refuelEnabled = useSelector((state: any) => state.quotes.refuelEnabled);
   const isEnoughBalance = useSelector(
     (state: any) => state.amount.isEnoughBalance
   );
@@ -37,7 +38,8 @@ export const RouteDetails = () => {
     destToken,
     sourceAmount,
     sortPref,
-    userAddress
+    userAddress,
+    refuelEnabled
   );
 
   // Boolean variable to fill all condition before the api call is made to fetch quotes.

@@ -2,6 +2,7 @@ import {
   ExplorerDataType,
   formatCurrencyAmount,
   getExplorerLink,
+  truncateDecimalValue,
 } from "../../utils/";
 import useMappedChainData from "../../hooks/useMappedChainData";
 import { ArrowRight, CheckCircle, ExternalLink } from "react-feather";
@@ -18,6 +19,7 @@ export const TxStepDetails = ({
   inProgress,
   forReview,
   txData,
+  refuel,
 }: {
   activeRoute: any;
   currentTxIndex?: number;
@@ -25,11 +27,12 @@ export const TxStepDetails = ({
   inProgress?: boolean;
   forReview?: boolean;
   txData?: any;
+  refuel?: any;
 }) => {
   const mappedChainData = useMappedChainData();
 
   return (
-    <div className="flex flex-col gap-3 text-sm">
+    <div className="flex flex-col gap-4 text-sm">
       {activeRoute?.userTxs?.map((tx, txIndex) => {
         const txComplete =
           tx?.userTxStatus === "completed" ||
@@ -45,7 +48,8 @@ export const TxStepDetails = ({
             )
           : null;
 
-        // function to return token details - amount, chain id, symbol and protocol name.
+        // function to return token details -
+        // @returns - amount, chain id, symbol and protocol name.
         const getTxDetail = (stepId: number, toAsset: boolean) => {
           const step = stepId === null ? tx : tx?.steps?.[stepId];
 
@@ -67,6 +71,23 @@ export const TxStepDetails = ({
           const bridgeSrc = getTxDetail(isSwap ? 1 : 0, false);
           const bridgeDest = getTxDetail(isSwap ? 1 : 0, true);
 
+          const refuelSrc = {
+            amount: formatCurrencyAmount(
+              refuel?.fromAmount,
+              refuel?.fromAsset?.decimals
+            ),
+            chainId: refuel?.fromChainId,
+            symbol: refuel?.fromAsset?.symbol,
+          };
+          const refuelDest = {
+            amount: formatCurrencyAmount(
+              refuel?.toAmount,
+              refuel?.toAsset?.decimals
+            ),
+            chainId: refuel?.toChainId,
+            symbol: refuel?.toAsset?.symbol,
+          };
+
           return (
             <div
               className="flex flex-col gap-3 text-sm"
@@ -74,7 +95,7 @@ export const TxStepDetails = ({
             >
               {isSwap ? (
                 <TxStep
-                  label="Swap &amp; Bridge"
+                  label={`Tx ${txIndex + 1} : Swap & Bridge`}
                   complete={txComplete}
                   currentTx={currentTx}
                   url={url}
@@ -96,22 +117,53 @@ export const TxStepDetails = ({
                       {mappedChainData?.[bridgeDest?.chainId]?.name} via{" "}
                       {bridgeSrc?.protocolName} bridge
                     </span>
+                    {/* Refuel statement */}
+                    {refuel && (
+                      <span>
+                        <span className="text-widget-accent">For Gas : </span> 
+                        {Number(refuelSrc?.amount).toFixed(3)}{" "}
+                        {refuelSrc?.symbol} on{" "}
+                        {mappedChainData?.[refuelSrc?.chainId]?.name} to{" "}
+                        {truncateDecimalValue(Number(refuelDest?.amount), 3)}{" "}
+                        {refuelDest?.symbol} on{" "}
+                        {mappedChainData?.[refuelDest?.chainId]?.name} via{" "}
+                        Refuel
+                      </span>
+                    )}
                   </div>
                 </TxStep>
               ) : (
                 <TxStep
-                  label="Bridge"
+                  label={`Tx ${txIndex + 1} : Bridge`}
                   complete={txComplete}
                   currentTx={currentTx}
                   url={url}
                   inProgress={inProgress}
                   forReview={forReview}
                 >
-                  {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol} on{" "}
-                  {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
-                  {Number(bridgeDest?.amount).toFixed(3)} {bridgeDest?.symbol}{" "}
-                  on {mappedChainData?.[bridgeDest?.chainId]?.name} via{" "}
-                  {bridgeSrc?.protocolName} bridge
+                  <div className="flex flex-col gap-2">
+                    <span>
+                      {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol}{" "}
+                      on {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
+                      {Number(bridgeDest?.amount).toFixed(3)}{" "}
+                      {bridgeDest?.symbol} on{" "}
+                      {mappedChainData?.[bridgeDest?.chainId]?.name} via{" "}
+                      {bridgeSrc?.protocolName} bridge
+                    </span>
+                    {/* Refuel statement */}
+                    {refuel && (
+                      <span>
+                        <span className="text-widget-accent">For Gas : </span> 
+                        {Number(refuelSrc?.amount).toFixed(3)}{" "}
+                        {refuelSrc?.symbol} on{" "}
+                        {mappedChainData?.[refuelSrc?.chainId]?.name} to{" "}
+                        {truncateDecimalValue(Number(refuelDest?.amount), 3)}{" "}
+                        {refuelDest?.symbol} on{" "}
+                        {mappedChainData?.[refuelDest?.chainId]?.name} via{" "}
+                        Refuel
+                      </span>
+                    )}
+                  </div>
                 </TxStep>
               )}
             </div>
@@ -122,7 +174,7 @@ export const TxStepDetails = ({
 
           return (
             <TxStep
-              label="Swap"
+              label={`Tx ${txIndex + 1} : Swap`}
               key={`${activeRoute?.activeRouteId}-dex-swap-${txIndex}`}
               complete={txComplete}
               currentTx={currentTx}
@@ -139,7 +191,7 @@ export const TxStepDetails = ({
         } else if (tx?.userTxType === "claim") {
           return (
             <TxStep
-              label="Claim"
+              label={`Tx ${txIndex + 1} : Claim`}
               key={`${activeRoute?.activeRouteId}-claim`}
               complete={txComplete}
               currentTx={currentTx}
@@ -179,7 +231,7 @@ const TxStep = ({
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
   return (
-    <div className="flex gap-3.5">
+    <div className={`flex gap-3.5 ${currentTx ? 'bg-widget-secondary p-3 bg-opacity-20 border border-widget-accent' : ''}`} style={{borderRadius: `calc(0.5rem * ${borderRadius}`}}>
       <div
         className={`h-6 w-6 flex items-center justify-center shrink-0 mt-[3px] ${
           complete ? "bg-widget-secondary" : "bg-transparent"
@@ -205,7 +257,7 @@ const TxStep = ({
           !active && !forReview ? "opacity-60" : ""
         }`}
       >
-        <span className={`${active || forReview ? "font-medium" : ""}`}>
+        <span className={`${active || forReview ? "font-medium text-widget-primary" : ""}`}>
           {url ? (
             <a
               href={url}
@@ -213,7 +265,7 @@ const TxStep = ({
               target="_blank"
               rel="noopener noreferrer"
             >
-              {label} <ExternalLink className="w-3 h-3 opacity-50"/>
+              {label} <ExternalLink className="w-3 h-3 opacity-50" />
             </a>
           ) : (
             label

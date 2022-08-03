@@ -10,9 +10,6 @@ const tokensSlice = createSlice({
   name: "tokens",
   initialState,
   reducers: {
-    setTokenList: (state, action) => {
-      state.tokenList = action.payload;
-    },
     setSourceToken: (state, action) => {
       state.sourceToken = action.payload;
     },
@@ -23,4 +20,4 @@ const tokensSlice = createSlice({
 });
 
 export default tokensSlice.reducer;
-export const { setTokenList, setSourceToken, setDestToken } = tokensSlice.actions;
+export const { setSourceToken, setDestToken } = tokensSlice.actions;

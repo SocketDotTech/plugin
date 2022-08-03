@@ -90,6 +90,7 @@ export const Widget = (props: WidgetProps) => {
       style={{
         width: widgetWidth,
         borderRadius: `calc(1rem * ${borderRadius})`,
+        minWidth: '360px'
       }}
       className="bg-widget-primary p-1 overflow-hidden relative"
     >

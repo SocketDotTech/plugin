@@ -1757,51 +1757,51 @@
     qrcode "1.5.0"
     react-remove-scroll "2.5.4"
 
-"@react-spring/animated@~9.5.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/@react-spring/animated/-/animated-9.5.0.tgz#bedc9301ec81a29331327aa25e37125a94080f48"
-  integrity sha512-FgotFIRQsgxFTgNZhsqi19GUO8isFAeUF/Ica6TeBkR87LQelHGWOg+wW5S3kaX9pzUgC4LOfzj0fRoMFaQKmA==
+"@react-spring/animated@~9.5.2":
+  version "9.5.2"
+  resolved "https://registry.npmjs.org/@react-spring/animated/-/animated-9.5.2.tgz"
+  integrity sha512-oRlX+MmYLbK8IuUZR7SQUnRjXxJ4PMIZeBkBd1SUWVgVJAHMTfJzPltzm+I6p59qX+qLlklYHfnWaonQKDqLuQ==
   dependencies:
-    "@react-spring/shared" "~9.5.0"
-    "@react-spring/types" "~9.5.0"
+    "@react-spring/shared" "~9.5.2"
+    "@react-spring/types" "~9.5.2"
 
-"@react-spring/core@~9.5.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/@react-spring/core/-/core-9.5.0.tgz#0f3ba069237ce08752e319aac71c621adc37500b"
-  integrity sha512-/5uopqj3NztZ8g2tD7jhtpSlUFSCr+WbLs0sb6ylwjuOJB050LCpYTJ8iurPf/wuhkYd7Q2xLK0Kr5PO0v53eQ==
+"@react-spring/core@~9.5.2":
+  version "9.5.2"
+  resolved "https://registry.npmjs.org/@react-spring/core/-/core-9.5.2.tgz"
+  integrity sha512-UMRtFH6EfebMp/NMDGCUY5+hZFXsg9iT9hzt/iPzJSz2WMXKBjLoFZHJXcmiVOrIhzHmg1O0pFECn1Wp6pZ5Gw==
   dependencies:
-    "@react-spring/animated" "~9.5.0"
-    "@react-spring/rafz" "~9.5.0"
-    "@react-spring/shared" "~9.5.0"
-    "@react-spring/types" "~9.5.0"
+    "@react-spring/animated" "~9.5.2"
+    "@react-spring/rafz" "~9.5.2"
+    "@react-spring/shared" "~9.5.2"
+    "@react-spring/types" "~9.5.2"
 
-"@react-spring/rafz@~9.5.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/@react-spring/rafz/-/rafz-9.5.0.tgz#25ee5ad7dbac2b7486b3a0dd23aa0a6880793d9f"
-  integrity sha512-jvelJ/YNeVTkPIRnVu6mD/lopZqixiAY5omCgQM8kT1kAnRPeyuGfHAb73HTnqOzcIL8vOluNfTfUM/xcPm3RQ==
+"@react-spring/rafz@~9.5.2":
+  version "9.5.2"
+  resolved "https://registry.npmjs.org/@react-spring/rafz/-/rafz-9.5.2.tgz"
+  integrity sha512-xHSRXKKBI/wDUkZGrspkOm4VlgN6lZi8Tw9Jzibp9QKf3neoof+U2mDNgklvnLaasymtUwAq9o4ZfFvQIVNgPQ==
 
-"@react-spring/shared@~9.5.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/@react-spring/shared/-/shared-9.5.0.tgz#d80df5a6496fe4d414e608a7bcef448598e4ffee"
-  integrity sha512-XuRFgWiiV6LRd3JMQAVhsMnDIBF+M1Z3MeNI6Y+5oIf6mINQHLNPWjYt/lcLZ4cuKYi+OOce4G9zJx003b9w4g==
+"@react-spring/shared@~9.5.2":
+  version "9.5.2"
+  resolved "https://registry.npmjs.org/@react-spring/shared/-/shared-9.5.2.tgz"
+  integrity sha512-/OSf2sjwY4BUnjZL6xMC+H3WxOOhMUCk+yZwgdj40XuyUpk6E6tYyiPeD9Yq5GLsZHodkvE1syVMRVReL4ndAg==
   dependencies:
-    "@react-spring/rafz" "~9.5.0"
-    "@react-spring/types" "~9.5.0"
+    "@react-spring/rafz" "~9.5.2"
+    "@react-spring/types" "~9.5.2"
 
-"@react-spring/types@~9.5.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.5.0.tgz#5ef3af4edc4a5d667f202b9581ac0dfc20889cfb"
-  integrity sha512-qrLwe77qa1LdS/tjCZKljzoXDSg9WPAgrfAkl8x1w8y9E8jHnCr2Z8UkM/sXvFlCZvMfsGes4XnE4oUNdjNuNQ==
+"@react-spring/types@~9.5.2":
+  version "9.5.2"
+  resolved "https://registry.npmjs.org/@react-spring/types/-/types-9.5.2.tgz"
+  integrity sha512-n/wBRSHPqTmEd4BFWY6TeR1o/UY+3ujoqMxLjqy90CcY/ozJzDRuREL3c+pxMeTF2+B7dX33dTPCtFMX51nbxg==
 
 "@react-spring/web@^9.5.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/@react-spring/web/-/web-9.5.0.tgz#a47dbf9bf2942a29c22339711eb580c61631d3b3"
-  integrity sha512-fq33Og23zCLxH7HELdOyAk0pWtwbSsk8MzPenN2JZMYI1dElB208r4CedM78TPY99YWIY2XRJ45VxbikxVeWLQ==
+  version "9.5.2"
+  resolved "https://registry.npmjs.org/@react-spring/web/-/web-9.5.2.tgz"
+  integrity sha512-cusTjbOGTgtbsnpBDjb6Ia+B0lQLE0Fk5rGDog6Sww7hWnLIQ521PMiOBnAWtkntB9eXDUfj7L91nwJviEC0lw==
   dependencies:
-    "@react-spring/animated" "~9.5.0"
-    "@react-spring/core" "~9.5.0"
-    "@react-spring/shared" "~9.5.0"
-    "@react-spring/types" "~9.5.0"
+    "@react-spring/animated" "~9.5.2"
+    "@react-spring/core" "~9.5.2"
+    "@react-spring/shared" "~9.5.2"
+    "@react-spring/types" "~9.5.2"
 
 "@reduxjs/toolkit@^1.8.2":
   version "1.8.2"
@@ -1871,15 +1871,10 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@socket.tech/ll-core@^0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@socket.tech/ll-core/-/ll-core-0.1.10.tgz#34c7d2cf508ab27bee30d1f5a8cad5b80ee35a2d"
-  integrity sha512-TBKpYHBPS4sw7cDBrYrsXfaQENDnXgkOB0xxyAdh80f9JqE8+lyHR4gxuW/DLuDIkkcIKiTcUBNcIYzvuCd7wA==
-
-"@socket.tech/ll-core@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.npmjs.org/@socket.tech/ll-core/-/ll-core-0.1.8.tgz"
-  integrity sha512-K7jEQPXvmkIh9EF4Y7xPxmHvAR8ITuv32A77pvZeadQ4PP8yrD/Ok7tG+VaG9TQEXgzR0W+cAZU2OmoGxqs+4g==
+"@socket.tech/ll-core@^0.1.10", "@socket.tech/ll-core@^0.1.14":
+  version "0.1.14"
+  resolved "https://registry.npmjs.org/@socket.tech/ll-core/-/ll-core-0.1.14.tgz"
+  integrity sha512-6gkUVN/RAoN1ZnjPcq5O9tmyagLXnWFjLDa5G8jz4Y+zFatwr9x345yFPJFHcRB59WfRMYpm2SxrPdpYAJiX8A==
 
 "@storybook/addon-actions@6.5.9", "@storybook/addon-actions@^6.5.9":
   version "6.5.9"
@@ -4390,9 +4385,9 @@ chownr@^2.0.0:
   integrity sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==
 
 chromatic@^6.7.0:
-  version "6.7.0"
-  resolved "https://registry.yarnpkg.com/chromatic/-/chromatic-6.7.0.tgz#1d56c56acea6762d18c6042774fbfb6b434c6d91"
-  integrity sha512-kLpvVBKHp1uh7v14N0gPoejILsepS2OI8a4cJgM4Na0Du5GbZ0Iq7Yq/QknCuNiztlalSpBYHuD9SuVdBxL9vg==
+  version "6.7.1"
+  resolved "https://registry.npmjs.org/chromatic/-/chromatic-6.7.1.tgz"
+  integrity sha512-iDVYnB24zPrMROvVBblIxlOaj5+vO1uDI0wRXObi5DVrkvCjDvHzsFfPwUoIHGiXE7f6tmw38ZZRI+LGarM9Ow==
   dependencies:
     "@types/webpack-env" "^1.17.0"
 
@@ -5234,7 +5229,7 @@ dotenv-expand@^5.1.0:
 
 dotenv@^16.0.1:
   version "16.0.1"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.1.tgz#8f8f9d94876c35dac989876a5d3a82a267fdce1d"
+  resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.0.1.tgz"
   integrity sha512-1K6hR6wtk2FviQ4kEiSjFiH5rpzEVi8WW0x96aztHVMhEspNpc4DVOUTEHtEva5VThQ8IaBX1Pe4gSzpVVUsKQ==
 
 dotenv@^8.0.0:
@@ -7541,7 +7536,7 @@ magic-string@^0.25.7:
 
 magic-string@^0.26.1:
   version "0.26.2"
-  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.26.2.tgz#5331700e4158cd6befda738bb6b0c7b93c0d4432"
+  resolved "https://registry.npmjs.org/magic-string/-/magic-string-0.26.2.tgz"
   integrity sha512-NzzlXpclt5zAbmo6h6jNc8zl2gNRGHvmsZW4IvZhTC4W7k4OlLP+S5YLussa/r3ixNT66KOQfNORlXHSOy/X4A==
   dependencies:
     sourcemap-codec "^1.4.8"
@@ -9275,7 +9270,7 @@ react-docgen@^5.0.0:
 
 react-dom@>=17.0.1:
   version "18.2.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
+  resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
   integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
   dependencies:
     loose-envify "^1.1.0"
@@ -9292,7 +9287,7 @@ react-element-to-jsx-string@^14.3.4:
 
 react-feather@^2.0.10:
   version "2.0.10"
-  resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-2.0.10.tgz#0e9abf05a66754f7b7bb71757ac4da7fb6be3b68"
+  resolved "https://registry.npmjs.org/react-feather/-/react-feather-2.0.10.tgz"
   integrity sha512-BLhukwJ+Z92Nmdcs+EMw6dy1Z/VLiJTzEQACDUEnWMClhYnFykJCGWQx+NmwP/qQHGX/5CzQ+TGi8ofg2+HzVQ==
   dependencies:
     prop-types "^15.7.2"
@@ -9384,7 +9379,7 @@ react-syntax-highlighter@^15.4.5:
 
 react@>=17.0.1:
   version "18.2.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
+  resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
   dependencies:
     loose-envify "^1.1.0"
@@ -9760,7 +9755,7 @@ rollup-plugin-babel@^4.4.0:
 
 rollup-plugin-dts@^4.2.2:
   version "4.2.2"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-dts/-/rollup-plugin-dts-4.2.2.tgz#82876b8784213af29b02cf260b45e404ff835ce1"
+  resolved "https://registry.npmjs.org/rollup-plugin-dts/-/rollup-plugin-dts-4.2.2.tgz"
   integrity sha512-A3g6Rogyko/PXeKoUlkjxkP++8UDVpgA7C+Tdl77Xj4fgEaIjPSnxRmR53EzvoYy97VMVwLAOcWJudaVAuxneQ==
   dependencies:
     magic-string "^0.26.1"
@@ -10142,12 +10137,12 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-socket-v2-sdk@1.11.0:
-  version "1.11.0"
-  resolved "https://registry.npmjs.org/socket-v2-sdk/-/socket-v2-sdk-1.11.0.tgz"
-  integrity sha512-m3lP0GTEaDH9DLOKiUdWLvwwyr9AgPcZXsnWb77sfzLWm3lu9/5I7vgJmqAo7px9MkZh2l09+mFvHZjLKoRBKg==
+socket-v2-sdk@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.npmjs.org/socket-v2-sdk/-/socket-v2-sdk-1.16.0.tgz"
+  integrity sha512-b6lFM3/4Ds0m7D40o2ZBrBHwz9o+57X3/u/QC7B0wzvIlecmecbbmCFJK/48SNhoS9pyDHN7r/yqHMlfteNSUA==
   dependencies:
-    "@socket.tech/ll-core" "^0.1.8"
+    "@socket.tech/ll-core" "^0.1.14"
     axios "^0.27.2"
     ethers "^5.6.5"
     form-data "^4.0.0"
