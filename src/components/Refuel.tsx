@@ -4,7 +4,7 @@ import { CheckBox } from "./common/CheckBox";
 import { enableRefuel } from "../state/quotesSlice";
 import { CustomizeContext } from "../providers/CustomizeProvider";
 import useMappedChainData from "../hooks/useMappedChainData";
-import { Info } from "react-feather";
+// import { Info } from "react-feather";
 
 export const Refuel = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -32,7 +32,10 @@ export const Refuel = () => {
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
     >
       <div>
-        <p className="text-sm text-widget-primary font-medium flex items-center">Enable Refuel <Info className="ml-1.5 w-3.5 h-3.5 opacity-70"/></p>
+        <p className="text-sm text-widget-primary font-medium flex items-center">
+          Enable Refuel
+          {/* <Info className="ml-1.5 w-3.5 h-3.5 opacity-70"/> */}
+        </p>
         <p className="text-xs text-widget-secondary mt-0.5">
           {destChainId === 1 ? (
             <span className="text-red-500">

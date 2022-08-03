@@ -1,14 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
 import { SocketTx } from "socket-v2-sdk";
-import { ChevronRight } from "react-feather";
 
 // components
 import { Modal } from "../common/Modal";
 import { Button } from "../common/Button";
 import { TxStepDetails } from "./TxStepDetails";
-import { TokenDetail } from "../common/TokenDetail";
 import { BridgingLoader } from "./BridgingLoader";
+import { Stepper } from "../common/Stepper";
 
 // actions
 import { setActiveRoute, setError, setIsTxModalOpen } from "../../state/modals";
@@ -27,6 +26,7 @@ import {
 
 import { Web3Context } from "../../providers/Web3Provider";
 import { SuccessToast } from "./SuccessToast";
+import { TokenDetailsRow } from "../common/TokenDetailsRow";
 
 // The main modal that contains all the information related after clicking on review quote.
 // Responsible for the progression of the route.
@@ -223,7 +223,26 @@ export const TxModal = ({ style }) => {
         mutateActiveRoutes();
       }
     } catch (e) {
-      dispatch(setError(e.message));
+      const err = e?.data?.message?.toLowerCase() || e.message.toLowerCase();
+      let errMessage: string; 
+
+      if (err.match("execution reverted: middleware_action_failed")) {
+        errMessage =
+          "Swap failed due to slippage or low DEX liquidity, please retry or contact support";
+      } else if (err.match("insufficient funds")) {
+        errMessage = "Insufficient funds";
+      } else if (err.match("execution reverted") || err.match("reverted")) {
+        errMessage = "Transaction failed, please try again or contact support";
+      } else {
+        errMessage = err;
+      }
+
+      const activeRouteId = currentRoute?.route?.activeRouteId;
+      const routeIdString = activeRouteId
+        ? ` - Route ID: ${activeRouteId}`
+        : null;
+
+      dispatch(setError(`${errMessage} ${routeIdString ?? ""}`));
       setBridging(false);
       setTxInProgress(false);
     }
@@ -307,6 +326,23 @@ export const TxModal = ({ style }) => {
     };
   }, []); // the activeRoute is set before the txModal is opened.
 
+  const refuelSourceToken = {
+    amount: !!activeRoute
+      ? activeRoute?.refuel?.fromAmount
+      : selectedRoute?.refuel?.fromAmount,
+    asset: !!activeRoute
+      ? activeRoute?.refuel?.fromAsset
+      : selectedRoute?.refuel?.fromAsset,
+  };
+  const refuelDestToken = {
+    amount: !!activeRoute
+      ? activeRoute?.refuel?.toAmount
+      : selectedRoute?.refuel?.toAmount,
+    asset: !!activeRoute
+      ? activeRoute?.refuel?.toAsset
+      : selectedRoute?.refuel?.toAsset,
+  };
+
   return (
     <Modal
       title="Bridging transaction"
@@ -316,18 +352,30 @@ export const TxModal = ({ style }) => {
     >
       <div className="flex flex-col flex-1 overflow-hidden justify-between relative">
         <div className="flex-1 overflow-y-auto">
-          <div className="flex justify-between mt-5 items-center px-3 mb-2.5">
-            <TokenDetail
-              token={currentRoute?.sourceTokenDetails?.token}
-              amount={currentRoute?.sourceTokenDetails?.amount}
-            />
-            <ChevronRight className="w-4 h-4 text-widget-secondary" />
-            <TokenDetail
-              token={currentRoute?.destTokenDetails?.token}
-              amount={currentRoute?.destTokenDetails?.amount}
-              rtl
-            />
-          </div>
+          <TokenDetailsRow
+            srcDetails={{
+              token: currentRoute?.sourceTokenDetails?.token,
+              amount: currentRoute?.sourceTokenDetails?.amount,
+            }}
+            destDetails={{
+              token: currentRoute?.destTokenDetails?.token,
+              amount: currentRoute?.destTokenDetails?.amount,
+            }}
+            srcRefuel={refuelSourceToken}
+            destRefuel={refuelDestToken}
+          />
+          <div className="border-b border-widget-secondary" />
+
+          {currentRoute?.route?.userTxs?.length > 1 && (
+            <div className="px-3.5 py-3 mt-2">
+              <Stepper
+                currentTx={
+                  userTx?.userTxIndex || activeRoute?.currentUserTxIndex || 0
+                }
+                userTxs={currentRoute?.route?.userTxs}
+              />
+            </div>
+          )}
 
           <div className="px-3 py-3">
             <TxStepDetails

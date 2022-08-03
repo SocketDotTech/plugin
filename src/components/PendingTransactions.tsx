@@ -5,14 +5,13 @@ import { CustomizeContext } from "../providers/CustomizeProvider";
 
 // components
 import { Modal } from "./common/Modal";
-import { TokenDetail } from "./common/TokenDetail";
-import { ChevronRight } from "react-feather";
 
 // actions
 import { setActiveRoute, setIsTxModalOpen } from "../state/modals";
 
 import { useActiveRoutes } from "../hooks/apis";
 import { useTransition } from "@react-spring/web";
+import { TokenDetailsRow } from "./common/TokenDetailsRow";
 
 // Pending Transactions are basically routes that have not been completed yet. User can continue from the previous step whenever he opens the modal again.
 export const PendingTransactions = () => {
@@ -68,29 +67,31 @@ export const PendingTransactions = () => {
                 style={style}
               >
                 <div className="flex flex-col justify-start p-1 flex-1 overflow-y-auto">
-                  {activeRoutes?.map((route: ActiveRouteResponse) => {
+                  {activeRoutes?.map((route: any) => {
+                    const refuelSourceToken = {
+                      amount: route?.refuel?.fromAmount,
+                      asset: route?.refuel?.fromAsset,
+                    };
+                    const refuelDestToken = {
+                      amount: route?.refuel?.toAmount,
+                      asset: route?.refuel?.toAsset,
+                    };
+
                     return (
-                      <button
-                        onClick={() => openTxModal(route)}
+                      <TokenDetailsRow
                         key={route?.activeRouteId}
-                        className="flex justify-between items-center px-2 py-4 w-full hover:bg-widget-secondary"
-                        style={{
-                          borderRadius: `calc(0.5rem * ${borderRadius})`,
+                        onClick={() => openTxModal(route)}
+                        srcDetails={{
+                          token: route?.fromAsset,
+                          amount: route?.fromAmount,
                         }}
-                      >
-                        <TokenDetail
-                          token={route?.fromAsset}
-                          amount={route?.fromAmount}
-                          small
-                        />
-                        <ChevronRight className="w-4 h-4 text-widget-secondary" />
-                        <TokenDetail
-                          token={route?.toAsset}
-                          amount={route?.toAmount}
-                          rtl
-                          small
-                        />
-                      </button>
+                        destDetails={{
+                          token: route?.toAsset,
+                          amount: route?.toAmount,
+                        }}
+                        srcRefuel={refuelSourceToken}
+                        destRefuel={refuelDestToken}
+                      />
                     );
                   })}
 

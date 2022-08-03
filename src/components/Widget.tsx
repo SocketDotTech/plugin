@@ -23,8 +23,6 @@ import { useCustomSettings } from "../hooks/useCustomSettings";
 import { CreditCard } from "react-feather";
 import { useTransition } from "@react-spring/web";
 
-import { Refuel } from "./Refuel";
-
 // Main Widget -> Base file.
 export const Widget = (props: WidgetProps) => {
   const { customize } = props;
@@ -92,6 +90,7 @@ export const Widget = (props: WidgetProps) => {
       style={{
         width: widgetWidth,
         borderRadius: `calc(1rem * ${borderRadius})`,
+        minWidth: '360px'
       }}
       className="bg-widget-primary p-1 overflow-hidden relative"
     >
@@ -113,7 +112,6 @@ export const Widget = (props: WidgetProps) => {
         </Header>
         <Input customTokenList={props.tokenList} />
         <Output customTokenList={props.tokenList} />
-        <Refuel />
       </div>
       <RouteDetails />
       {transitions((style, item) => item && <TxModal style={style} />)}

@@ -6,14 +6,14 @@ import { BRIDGE_DISPLAY_NAMES } from "../../consts/";
 // components
 import { Button } from "../common/Button";
 import { Modal } from "../common/Modal";
-import { TokenDetail } from "../common/TokenDetail";
-import { ChevronRight, ChevronUp } from "react-feather";
+import { ChevronUp } from "react-feather";
 import { InnerCard } from "../common/InnerCard";
 
 // actions
 import { setIsTxModalOpen } from "../../state/modals";
 import { setSelectedRoute } from "../../state/selectedRouteSlice";
 import { TxStepDetails } from "../TxModal/TxStepDetails";
+import { TokenDetailsRow } from "../common/TokenDetailsRow";
 
 export const ReviewModal = ({
   closeModal,
@@ -46,6 +46,20 @@ export const ReviewModal = ({
     } else setQuoteUpdated(false);
   }, [selectedRoute, bestRoute]);
 
+  const refuelSourceToken = {
+    amount: selectedRoute?.refuel?.fromAmount,
+    asset: selectedRoute?.refuel?.fromAsset
+  }
+  const refuelDestToken = {
+    amount: selectedRoute?.refuel?.toAmount,
+    asset: selectedRoute?.refuel?.toAsset
+  }
+
+  function formattedGasFees(){
+    const feesInUsd = selectedRoute?.route?.totalGasFeesInUsd?.toFixed(3);
+    return `${feesInUsd} USD`;
+  }
+
   return (
     <Modal
       title="Review Quote"
@@ -53,21 +67,15 @@ export const ReviewModal = ({
       style={style}
     >
       <div className="flex flex-col justify-between flex-1 relative">
-        <div>
-          <div className="flex justify-between mt-5 items-center px-3">
-            <TokenDetail
-              token={selectedRoute?.path?.fromToken}
-              amount={selectedRoute?.amount}
-            />
-            <ChevronRight className="w-4 h-4 text-widget-secondary" />
-            <TokenDetail
-              token={selectedRoute?.path?.toToken}
-              amount={selectedRoute?.route?.toAmount}
-              rtl
-            />
-          </div>
+        <div className="w-full">
+          <TokenDetailsRow 
+            srcDetails={{token: selectedRoute?.path?.fromToken, amount: selectedRoute?.amount}}
+            destDetails={{token: selectedRoute?.path?.toToken, amount: selectedRoute?.route?.toAmount}}
+            srcRefuel={refuelSourceToken}
+            destRefuel={refuelDestToken}
+          />
 
-          <div className="p-3 flex flex-col gap-3 mt-5">
+          <div className="p-3 flex flex-col gap-3 mt-1">
             <RouteDetailRow
               label="Bridge Name"
               value={
@@ -78,7 +86,7 @@ export const ReviewModal = ({
             />
             <RouteDetailRow
               label="Total Gas Fee"
-              value={selectedRoute?.route?.totalGasFeesInUsd?.toFixed(3)}
+              value={formattedGasFees()}
             />
           </div>
         </div>
