@@ -34,7 +34,7 @@ const Step = (props: {
     >
       {/* circle */}
       <span
-        className={`relative z-10 w-4 h-4 rounded-full flex justify-center items-center ${
+        className={`relative w-4 h-4 rounded-full flex justify-center items-center ${
           completed ? "bg-widget-accent border-0" : ""
         } ${
           active

@@ -118,6 +118,7 @@ export const TxModal = ({ style }) => {
       setIsApprovalRequired(false); // Set to false when approval is done.
     } catch (e) {
       dispatch(setError(e.message));
+      setIsApproving(false);
     }
   }
 
