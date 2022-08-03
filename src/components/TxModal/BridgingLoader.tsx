@@ -19,6 +19,7 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
   const [url, setUrl] = useState("");
   const [bridgeDetails, setBridgeDetails] = useState(null);
   const [showSupportLink, setShowSupportLink] = useState(false);
+  const [furtherStepsAvailable, setFurtherStepsAvailable] = useState(false);
 
   const formatedTime = (time: number) => {
     return Math.floor(time / 60) + "m";
@@ -63,10 +64,18 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
       const timeDiffInSeconds = timeDiff.div(1000).toString();
 
       // If time difference is twice the service time, show discord support link
-      if (Number(timeDiffInSeconds) * 2 > bridgeStep?.serviceTime) {
+      if (Number(timeDiffInSeconds) > bridgeStep?.serviceTime * 2) {
         setShowSupportLink(true);
       }
     }
+
+    // Check if there are any further steps
+    const _currentUserTx = currentRoute?.route?.currentUserTxIndex
+      ? currentRoute?.route?.currentUserTxIndex + 1
+      : 1;
+    setFurtherStepsAvailable(
+      _currentUserTx < currentRoute?.route?.userTxs?.length
+    );
   }, [currentRoute, txDetails]);
 
   const refuelSourceToken = {
@@ -102,13 +111,13 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
           />
         </div>
       )}
-      <div className="py-10 flex gap-3 flex-col items-center">
+      <div className="flex gap-3 flex-col items-center my-auto pb-3">
         <Spinner size={10} />
         <div>
           <p className="text-sm text-widget-primary mb-1 font-medium text-center">
             Bridging via {bridgeDetails?.protocol?.displayName} in progress
           </p>
-          <p className="text-sm font-normal text-widget-secondary mb-4 text-center">
+          <p className="text-sm font-normal text-widget-secondary mb-4 text-center px-3">
             {showSupportLink ? (
               <span>
                 Get in touch for support on{" "}
@@ -125,6 +134,8 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
               <span>
                 Estimated wait time is{" "}
                 {formatedTime(bridgeDetails?.serviceTime)}
+                {furtherStepsAvailable &&
+                  ", please come back later to sign the next transaction."}
               </span>
             )}
           </p>

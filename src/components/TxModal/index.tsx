@@ -230,12 +230,12 @@ export const TxModal = ({ style }) => {
       if (err.match("execution reverted: middleware_action_failed")) {
         errMessage =
           "Swap failed due to slippage or low DEX liquidity, please retry or contact support";
-      } else if (err.match("insufficient funds")) {
+      } else if (err.match("insufficient funds") || err.match("transfer amount exceeds balance")) {
         errMessage = "Insufficient funds";
-      } else if (err.match("execution reverted") || err.match("reverted")) {
+      } else if (err.match("execution reverted") || err.match("reverted") || err.match("transaction failed")) {
         errMessage = "Transaction failed, please try again or contact support";
       } else {
-        errMessage = err;
+        errMessage = `${err} - Please try again or contact support`;
       }
 
       const activeRouteId = currentRoute?.route?.activeRouteId;
