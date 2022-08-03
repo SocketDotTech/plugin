@@ -23,8 +23,6 @@ import { useCustomSettings } from "../hooks/useCustomSettings";
 import { CreditCard } from "react-feather";
 import { useTransition } from "@react-spring/web";
 
-import { Refuel } from "./Refuel";
-
 // Main Widget -> Base file.
 export const Widget = (props: WidgetProps) => {
   const { customize } = props;
@@ -114,7 +112,6 @@ export const Widget = (props: WidgetProps) => {
         </Header>
         <Input customTokenList={props.tokenList} />
         <Output customTokenList={props.tokenList} />
-        <Refuel />
       </div>
       <RouteDetails />
       {transitions((style, item) => item && <TxModal style={style} />)}

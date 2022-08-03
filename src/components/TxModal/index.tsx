@@ -223,13 +223,15 @@ export const TxModal = ({ style }) => {
         mutateActiveRoutes();
       }
     } catch (e) {
-      const err = e.message;
-      let errMessage: string;
+      const err = e?.data?.message?.toLowerCase() || e.message.toLowerCase();
+      let errMessage: string; 
 
-      if (err.match("execution reverted: MIDDLEWARE_ACTION_FAILED")) {
+      if (err.match("execution reverted: middleware_action_failed")) {
         errMessage =
           "Swap failed due to slippage or low DEX liquidity, please retry or contact support";
-      } else if (err.match("execution reverted" || err.match("reverted"))) {
+      } else if (err.match("insufficient funds")) {
+        errMessage = "Insufficient funds";
+      } else if (err.match("execution reverted") || err.match("reverted")) {
         errMessage = "Transaction failed, please try again or contact support";
       } else {
         errMessage = err;

@@ -2,6 +2,7 @@ import {
   ExplorerDataType,
   formatCurrencyAmount,
   getExplorerLink,
+  truncateDecimalValue,
 } from "../../utils/";
 import useMappedChainData from "../../hooks/useMappedChainData";
 import { ArrowRight, CheckCircle, ExternalLink } from "react-feather";
@@ -123,7 +124,7 @@ export const TxStepDetails = ({
                         {Number(refuelSrc?.amount).toFixed(3)}{" "}
                         {refuelSrc?.symbol} on{" "}
                         {mappedChainData?.[refuelSrc?.chainId]?.name} to{" "}
-                        {Number(refuelDest?.amount).toFixed(3)}{" "}
+                        {truncateDecimalValue(Number(refuelDest?.amount), 3)}{" "}
                         {refuelDest?.symbol} on{" "}
                         {mappedChainData?.[refuelDest?.chainId]?.name} via{" "}
                         Refuel
@@ -152,11 +153,11 @@ export const TxStepDetails = ({
                     {/* Refuel statement */}
                     {refuel && (
                       <span>
-                        For gas:
+                        <span className="text-widget-accent">For Gas : </span> 
                         {Number(refuelSrc?.amount).toFixed(3)}{" "}
                         {refuelSrc?.symbol} on{" "}
                         {mappedChainData?.[refuelSrc?.chainId]?.name} to{" "}
-                        {Number(refuelDest?.amount).toFixed(3)}{" "}
+                        {truncateDecimalValue(Number(refuelDest?.amount), 3)}{" "}
                         {refuelDest?.symbol} on{" "}
                         {mappedChainData?.[refuelDest?.chainId]?.name} via{" "}
                         Refuel
