@@ -3,6 +3,7 @@ import {
   Balances,
   ChainId,
   Routes,
+  Server,
   Socket,
   Supported,
   Token,
@@ -190,3 +191,21 @@ export const useAllTokenBalances = () => {
     isLoading: userAddress && ((!error && !data) || isValidating),
   };
 };
+
+
+// for gas price
+export const useGasPrice = (chainId) => {
+  async function checkGasPrice(_chainId: number) {
+    const gasPrice = await Server.getGasPrice({chainId: _chainId});
+    return gasPrice;
+  }
+
+  const { data, error, isValidating } = useSWR(
+    chainId ? [chainId, "gas price"] : null,
+    checkGasPrice,
+  );
+
+  return {
+    data: data?.result
+  }
+}

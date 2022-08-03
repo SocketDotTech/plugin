@@ -44,6 +44,7 @@ export const RouteDetails = () => {
 
   // Boolean variable to fill all condition before the api call is made to fetch quotes.
   const shouldFetch = sourceAmount && sourceToken && destToken && sortPref;
+
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
 
@@ -65,7 +66,13 @@ export const RouteDetails = () => {
 
   useEffect(() => {
     if (data) {
-      dispatch(setBestRoute(data?.[0]));
+      const bestRoute = data?.[0];
+      dispatch(setBestRoute(bestRoute));
+
+      // if refuel object is available, check the total native token required is available or not. 
+      // const nativeTokenAmount = bestRoute?.refuel?.fromAmount;
+      // Check the native token. See if that much balance is availabe and then disable button.
+      // Also, you need to store the native token balance instead of selected token balance. 
     } else {
       dispatch(setBestRoute(null));
     }

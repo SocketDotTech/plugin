@@ -15,6 +15,7 @@ import { setIsEnoughBalance, setSourceAmount } from "../state/amountSlice";
 import { setSourceChain } from "../state/networksSlice";
 import { setError } from "../state/modals";
 import { setBestRoute } from "../state/quotesSlice";
+import { setSourceTokenBalance } from "../state/tokenBalanceSlice";
 
 import {
   filterTokensByChain,
@@ -166,6 +167,8 @@ export const Input = ({
         ethers.BigNumber.from(tokenWithBalance?.balance)
       );
       dispatch(setIsEnoughBalance(isEnoughBalance));
+      // console.log(tokenWithBalance, tokenWithBalance?.balance, parseInputAmount);
+      !!tokenWithBalance?.balance && dispatch(setSourceTokenBalance(tokenWithBalance?.balance))
     }
   }, [parsedInputAmount, tokenWithBalance]);
 
