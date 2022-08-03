@@ -88,6 +88,10 @@ export const ReviewModal = ({
               label="Total Gas Fee"
               value={formattedGasFees()}
             />
+            <RouteDetailRow
+              label="Number of transactions"
+              value={selectedRoute?.route?.totalUserTx}
+            />
           </div>
         </div>
 
