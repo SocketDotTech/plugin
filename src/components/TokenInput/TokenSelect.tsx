@@ -96,11 +96,11 @@ export const TokenSelect = (props: Props) => {
         >
           <img
             src={activeToken?.logoURI}
-            className="h-6 w-6 rounded-full mr-1 border"
+            className="skt-w h-6 w-6 rounded-full mr-1 border"
           />
-          <div className="flex items-center gap-0.5">
+          <div className="skt-w flex items-center gap-0.5">
             <span>{activeToken?.symbol}</span>
-            <ChevronDown className="w-4 h-4" />
+            <ChevronDown className="skt-w w-4 h-4" />
           </div>
         </button>
       )}
@@ -113,26 +113,26 @@ export const TokenSelect = (props: Props) => {
               closeModal={() => setOpenTokenList(false)}
               style={style}
             >
-              <div className="h-full overflow-y-auto p-1.5">
+              <div className="skt-w h-full overflow-y-auto p-1.5">
                 {filteredTokens?.map((token: Currency) => {
                   return (
                     <button
-                      className="flex hover:bg-widget-secondary items-center p-2 w-full justify-between"
+                      className="skt-w flex hover:bg-widget-secondary items-center p-2 w-full justify-between"
                       onClick={() => selectToken(token)}
                       key={token?.address}
                       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
                     >
-                      <div className="flex items-center">
+                      <div className="skt-w flex items-center">
                         <img
                           src={token?.logoURI}
-                          className="w-6 h-6 rounded-full"
+                          className="skt-w w-6 h-6 rounded-full"
                         />
-                        <div className="flex flex-col items-start ml-2 text-widget-secondary">
-                          <span className="text-sm">{token?.symbol}</span>
-                          <span className="text-xs -mt-0.5">{token?.name}</span>
+                        <div className="skt-w flex flex-col items-start ml-2 text-widget-secondary">
+                          <span className="skt-w text-sm">{token?.symbol}</span>
+                          <span className="skt-w text-xs -mt-0.5">{token?.name}</span>
                         </div>
                       </div>
-                      <span className="text-widget-secondary text-xs text-right font-medium">
+                      <span className="skt-w text-widget-secondary text-xs text-right font-medium">
                         {showBalance(token)}
                       </span>
                     </button>

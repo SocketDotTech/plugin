@@ -63,12 +63,12 @@ export const Settings = () => {
               closeModal={() => setIsSettingsOpen(false)}
               style={style}
             >
-              <div className="px-3 flex items-center mt-2 gap-2">
-                <p className="text-sm text-widget-secondary font-medium my-2 gap-8">
+              <div className="skt-w px-3 flex items-center mt-2 gap-2">
+                <p className="skt-w text-sm text-widget-secondary font-medium my-2 gap-8">
                   Sort
                 </p>
                 <div
-                  className="relative border border-widget-secondary-text border-opacity-10 flex w-auto"
+                  className="skt-w relative border border-widget-secondary-text border-opacity-10 flex w-auto"
                   style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
                   ref={dropdownRef}
                 >
@@ -82,7 +82,7 @@ export const Settings = () => {
                   </Option>
                   {dropdown && (
                     <div
-                      className="absolute top-10 left-0 w-full border border-widget-secondary-text border-opacity-10 overflow-hidden"
+                      className="skt-w absolute top-10 left-0 w-full border border-widget-secondary-text border-opacity-10 overflow-hidden"
                       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
                     >
                       {sortOptions.map((x) => {
@@ -100,7 +100,7 @@ export const Settings = () => {
           )
       )}
       <button onClick={() => setIsSettingsOpen(true)}>
-        <SettingsIcon className="w-5.5 h-5.5 text-widget-secondary hover:text-widget-primary hover:rotate-45 duration-200 ease-linear" />
+        <SettingsIcon className="skt-w w-5.5 h-5.5 text-widget-secondary hover:text-widget-primary hover:rotate-45 duration-200 ease-linear" />
       </button>
     </>
   );

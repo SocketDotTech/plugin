@@ -28,17 +28,17 @@ export const Refuel = () => {
 
   return (
     <div
-      className="flex gap-1 bg-widget-secondary py-3 pl-4 pr-3 justify-between mt-6 items-center"
+      className="skt-w flex gap-1 bg-widget-secondary py-3 pl-4 pr-3 justify-between mt-6 items-center"
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
     >
       <div>
-        <p className="text-sm text-widget-primary font-medium flex items-center">
+        <p className="skt-w text-sm text-widget-primary font-medium flex items-center">
           Enable Refuel
-          {/* <Info className="ml-1.5 w-3.5 h-3.5 opacity-70"/> */}
+          {/* <Info className="skt-w ml-1.5 w-3.5 h-3.5 opacity-70"/> */}
         </p>
-        <p className="text-xs text-widget-secondary mt-0.5">
+        <p className="skt-w text-xs text-widget-secondary mt-0.5">
           {destChainId === 1 ? (
-            <span className="text-red-500">
+            <span className="skt-w text-red-500">
               Refuel isn't supported on Ethereum
             </span>
           ) : (

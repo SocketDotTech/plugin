@@ -23,6 +23,48 @@ input[type="number"] {
     --socket-widget-secondary-text-color: 68, 68, 68;
     --socket-widget-outline-color: 208, 208, 208;
     --socket-widget-interactive: 241, 245, 249;
-    --socket-widget-on-interactive: 10,10,10;
+    --socket-widget-on-interactive: 10, 10, 10;
+  }
+
+  /* Resetting browser default styles. I have disabled the preflight as it was affecting the integrators' layouts */
+
+  .skt-w {
+    @apply box-border p-0 m-0;
+  }
+
+  .skt-w:after, .skt-w:before {
+    border: 0 solid #e5e7eb;
+    border-top-color: rgb(229, 231, 235);
+    border-top-style: solid;
+    border-top-width: 0px;
+    border-right-color: rgb(229, 231, 235);
+    border-right-style: solid;
+    border-right-width: 0px;
+    border-bottom-color: rgb(229, 231, 235);
+    border-bottom-style: solid;
+    border-bottom-width: 0px;
+    border-left-color: rgb(229, 231, 235);
+    border-left-style: solid;
+    border-left-width: 0px;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+  }
+
+  .skt-w-button {
+    @apply cursor-pointer bg-transparent bg-none
+  }
+
+  .skt-w-input {
+    @apply m-0 p-0 border-0 outline-0
+    /* font-family: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0; */
   }
 }

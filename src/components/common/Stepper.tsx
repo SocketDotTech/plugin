@@ -7,7 +7,7 @@ interface StepperProps {
 export const Stepper = (props: StepperProps) => {
   const { currentTx, userTxs } = props;
   return (
-    <div className="flex">
+    <div className="skt-w flex">
       {userTxs?.map((x, index) => {
         return (
           <Step
@@ -42,7 +42,7 @@ const Step = (props: {
             : "border border-widget-secondary-text"
         } `}
       >
-        {completed && <Check className="text-widget-onAccent w-3 h-3" />}
+        {completed && <Check className="skt-w text-widget-onAccent w-3 h-3" />}
       </span>
       {/* line */}
       {!lastItem && (

@@ -32,7 +32,7 @@ export const TxStepDetails = ({
   const mappedChainData = useMappedChainData();
 
   return (
-    <div className="flex flex-col gap-4 text-sm">
+    <div className="skt-w flex flex-col gap-4 text-sm">
       {activeRoute?.userTxs?.map((tx, txIndex) => {
         const txComplete =
           tx?.userTxStatus === "completed" ||
@@ -90,7 +90,7 @@ export const TxStepDetails = ({
 
           return (
             <div
-              className="flex flex-col gap-3 text-sm"
+              className="skt-w flex flex-col gap-3 text-sm"
               key={`${activeRoute?.activeRouteId}-fund-movr-swap`}
             >
               {isSwap ? (
@@ -102,7 +102,7 @@ export const TxStepDetails = ({
                   inProgress={inProgress}
                   forReview={forReview}
                 >
-                  <div className="flex flex-col gap-2">
+                  <div className="skt-w flex flex-col gap-2">
                     <span>
                       {Number(swapSrc?.amount).toFixed(3)} {swapSrc?.symbol} for{" "}
                       {Number(swapDest?.amount).toFixed(3)} {swapDest?.symbol}{" "}
@@ -120,7 +120,7 @@ export const TxStepDetails = ({
                     {/* Refuel statement */}
                     {refuel && (
                       <span>
-                        <span className="text-widget-accent">For Gas : </span> 
+                        <span className="skt-w text-widget-accent">For Gas : </span> 
                         {Number(refuelSrc?.amount).toFixed(3)}{" "}
                         {refuelSrc?.symbol} on{" "}
                         {mappedChainData?.[refuelSrc?.chainId]?.name} to{" "}
@@ -141,7 +141,7 @@ export const TxStepDetails = ({
                   inProgress={inProgress}
                   forReview={forReview}
                 >
-                  <div className="flex flex-col gap-2">
+                  <div className="skt-w flex flex-col gap-2">
                     <span>
                       {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol}{" "}
                       on {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
@@ -153,7 +153,7 @@ export const TxStepDetails = ({
                     {/* Refuel statement */}
                     {refuel && (
                       <span>
-                        <span className="text-widget-accent">For Gas : </span> 
+                        <span className="skt-w text-widget-accent">For Gas : </span> 
                         {Number(refuelSrc?.amount).toFixed(3)}{" "}
                         {refuelSrc?.symbol} on{" "}
                         {mappedChainData?.[refuelSrc?.chainId]?.name} to{" "}
@@ -241,7 +241,7 @@ const TxStep = ({
         {inProgress && currentTx ? (
           <Spinner size={4} />
         ) : complete ? (
-          <CheckCircle className="w-[18px] h-[18px] text-widget-accent" />
+          <CheckCircle className="skt-w w-[18px] h-[18px] text-widget-accent" />
         ) : (
           <ArrowRight
             className={`w-[18px] h-[18px] ${
@@ -261,11 +261,11 @@ const TxStep = ({
           {url ? (
             <a
               href={url}
-              className="underline flex items-center gap-1"
+              className="skt-w underline flex items-center gap-1"
               target="_blank"
               rel="noopener noreferrer"
             >
-              {label} <ExternalLink className="w-3 h-3 opacity-50" />
+              {label} <ExternalLink className="skt-w w-3 h-3 opacity-50" />
             </a>
           ) : (
             label

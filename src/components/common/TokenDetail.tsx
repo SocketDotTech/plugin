@@ -40,12 +40,12 @@ export const TokenDetail = (props: TokenAssetProps) => {
         <div className={`relative flex flex-shrink-0`}>
           <img
             src={token?.logoURI}
-            className="w-6 h-6 rounded-full border-widget-primary"
+            className="skt-w w-6 h-6 rounded-full border-widget-primary"
           />
           {!!refuel?.amount && (
             <img
               src={refuel?.asset?.logoURI}
-              className="w-6 h-6 rounded-full -ml-2 border-2 border-widget-accent object-cover bg-widget-accent"
+              className="skt-w w-6 h-6 rounded-full -ml-2 border-2 border-widget-accent object-cover bg-widget-accent"
             />
           )}
         </div>

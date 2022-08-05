@@ -72,7 +72,7 @@ const Template = (args: WidgetProps) => {
   }, [window.ethereum]);
 
   return (
-    <div className="bg-gray-400 p-10" style={{ height: "calc(100vh - 40px)" }}>
+    <div className="skt-w bg-gray-400 p-10" style={{ height: "calc(100vh - 40px)" }}>
       <p style={{ color: "black" }}>
         User Address : {userAddress}
         <br />

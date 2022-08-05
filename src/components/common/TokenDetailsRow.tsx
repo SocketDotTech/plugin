@@ -34,12 +34,12 @@ export const TokenDetailsRow = (props: Props) => {
     <button
       onClick={onClick ?? null}
       disabled={!onClick}
-      className={`px-3 py-4 border-widget-secondary flex flex-col items-start w-full ${
+      className={`skt-w-button skt-w-input px-3 py-4 border-widget-secondary flex flex-col items-start w-full ${
         !!onClick ? "hover:bg-widget-secondary" : ""
       }`}
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
     >
-      <div className="flex justify-between items-center w-full">
+      <div className="skt-w flex justify-between items-center w-full">
         <TokenDetail
           token={srcDetails?.token}
           amount={srcDetails?.amount}

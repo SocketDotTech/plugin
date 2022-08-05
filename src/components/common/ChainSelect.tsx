@@ -33,16 +33,16 @@ function Option({
       }`}
       onClick={onClick}
     >
-      <div className="flex items-center gap-1">
+      <div className="skt-w flex items-center gap-1">
         <img
           src={network?.icon}
-          className="h-6 w-6"
+          className="skt-w h-6 w-6"
           style={{ borderRadius: `calc(0.3rem * ${borderRadius})` }}
         />
-        <span className="text-sm text-widget-primary">{network?.name}</span>
+        <span className="skt-w text-sm text-widget-primary">{network?.name}</span>
       </div>
       {selected && !onlyOneNetwork && (
-        <ChevronDown className="text-widget-secondary w-4 h-4" />
+        <ChevronDown className="skt-w text-widget-secondary w-4 h-4" />
       )}
       {children}
     </div>
@@ -91,7 +91,7 @@ export function ChainSelect({
         />
       ) : (
         <span
-          className="text-sm text-widget-primary bg-widget-secondary py-1.5 px-2"
+          className="skt-w text-sm text-widget-primary bg-widget-secondary py-1.5 px-2"
           style={{ borderRadius: `calc(0.3rem * ${borderRadius})` }}
         >
           Loading chains
@@ -100,7 +100,7 @@ export function ChainSelect({
 
       {openDropdown && (
         <div
-          className="pt-1 z-10 left-0 absolute bg-widget-interactive flex flex-col w-full max-h-[150px] overflow-y-auto overflow-hidden"
+          className="skt-w pt-1 z-10 left-0 absolute bg-widget-interactive flex flex-col w-full max-h-[150px] overflow-y-auto overflow-hidden"
           style={{
             borderBottomRightRadius: `calc(0.75rem * ${borderRadius})`,
             borderBottomLeftRadius: `calc(0.75rem * ${borderRadius})`,
