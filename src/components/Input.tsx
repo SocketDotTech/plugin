@@ -127,9 +127,7 @@ export const Input = ({
   const inputAmountFromReduxState = useSelector(
     (state: any) => state.amount.sourceAmount
   );
-  const [inputAmount, updateInputAmount] = useState<string>(
-    formatCurrencyAmount(inputAmountFromReduxState, sourceToken?.decimals) ?? ""
-  );
+  const [inputAmount, updateInputAmount] = useState<string>("");
   const [parsedInputAmount, setParsedInputAmount] = useState<string>(""); // to check the min balance requirement
 
   // Updates the input amount if changed.
@@ -274,6 +272,11 @@ export const Input = ({
       }
     } else formateAndParseAmount(balance);
   }
+
+  // Reset source amount on mount
+  useEffect(() => {
+    inputAmountFromReduxState && dispatch(setSourceAmount(null));
+  }, []);
 
   return (
     <div className="mt-3.5">
