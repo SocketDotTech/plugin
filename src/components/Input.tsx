@@ -124,7 +124,12 @@ export const Input = ({
   }, [allNetworks]);
 
   // For Input & tokens
-  const [inputAmount, updateInputAmount] = useState<string>("");
+  const inputAmountFromReduxState = useSelector(
+    (state: any) => state.amount.sourceAmount
+  );
+  const [inputAmount, updateInputAmount] = useState<string>(
+    formatCurrencyAmount(inputAmountFromReduxState, sourceToken?.decimals) ?? ""
+  );
   const [parsedInputAmount, setParsedInputAmount] = useState<string>(""); // to check the min balance requirement
 
   // Updates the input amount if changed.

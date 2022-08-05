@@ -21,11 +21,11 @@ import { Web3Context } from "../providers/Web3Provider";
 export let socket;
 
 // Function that lets you set the api key and preferences.
-export const initSocket = (apiKey) => {
+export const initSocket = (apiKey: string, _singleTxOnly: boolean) => {
   socket = new Socket({
     apiKey: apiKey,
     defaultQuotePreferences: {
-      singleTxOnly: false,
+      singleTxOnly: _singleTxOnly,
     },
   });
 };
@@ -114,7 +114,15 @@ export const useRoutes = (
 
   const { data, error, isValidating } = useSWR(
     shouldFetch
-      ? [sourceToken, destToken, amount, userAddress, sort, refuelEnabled, "quotes"]
+      ? [
+          sourceToken,
+          destToken,
+          amount,
+          userAddress,
+          sort,
+          refuelEnabled,
+          "quotes",
+        ]
       : null,
     fetchQuotes,
     {

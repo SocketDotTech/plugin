@@ -23,7 +23,10 @@ export interface WidgetProps {
   defaultSourceToken?: string;
   defaultDestToken?: string;
 
-  locale?: string;
+  // To enable only single tx quotes
+  singleTxOnly?: boolean;
+
+  locale?: string; 
   customize?: Customize;
 }
 
