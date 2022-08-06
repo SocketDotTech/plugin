@@ -91,9 +91,10 @@ export const useCustomSettings = (props: WidgetProps) => {
         "--socket-widget-on-interactive",
         formatRGB(customize.onInteractive)
       );
-    customize?.fontFamily && document.documentElement.style.setProperty(
-      "--socket-widget-font-family",
-      customize.fontFamily
-    )
+    customize?.fontFamily &&
+      document.documentElement.style.setProperty(
+        "--socket-widget-font-family",
+        customize.fontFamily
+      );
   }, [customize]);
 };

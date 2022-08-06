@@ -84,12 +84,12 @@ export interface Network {
 export interface Currency {
   address: string;
   decimals: number;
-  icon: string;
+  icon?: string;
   minNativeCurrencyForGas?: string;
   name: string;
   symbol: string;
   chainId?: number;
-  logoURI?: string;
+  logoURI: string;
   chainAgnosticId?: string | null;
 }
 
