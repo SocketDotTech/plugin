@@ -124,6 +124,9 @@ export const Input = ({
   }, [allNetworks]);
 
   // For Input & tokens
+  const inputAmountFromReduxState = useSelector(
+    (state: any) => state.amount.sourceAmount
+  );
   const [inputAmount, updateInputAmount] = useState<string>("");
   const [parsedInputAmount, setParsedInputAmount] = useState<string>(""); // to check the min balance requirement
 
@@ -269,6 +272,11 @@ export const Input = ({
       }
     } else formateAndParseAmount(balance);
   }
+
+  // Reset source amount on mount
+  useEffect(() => {
+    inputAmountFromReduxState && dispatch(setSourceAmount(null));
+  }, []);
 
   return (
     <div className="skt-w mt-3.5">

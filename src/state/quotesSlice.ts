@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   allQuotes: null,
   bestRoute: null,
-  sortPref: 'output',
+  sortPref: "output",
   refuelEnabled: false,
 };
 
@@ -12,19 +12,20 @@ const quotesSlice = createSlice({
   initialState,
   reducers: {
     setQuotes: (state, action) => {
-        state.allQuotes = action.payload
+      state.allQuotes = action.payload;
     },
     setBestRoute: (state, action) => {
-      state.bestRoute = action.payload
+      state.bestRoute = action.payload;
     },
     setSortPref: (state, action) => {
-      state.sortPref = action.payload
+      state.sortPref = action.payload;
     },
     enableRefuel: (state, action) => {
-      state.refuelEnabled = action.payload
-    }
+      state.refuelEnabled = action.payload;
+    },
   },
 });
 
 export default quotesSlice.reducer;
-export const { setQuotes, setBestRoute, setSortPref, enableRefuel } = quotesSlice.actions;
+export const { setQuotes, setBestRoute, setSortPref, enableRefuel } =
+  quotesSlice.actions;
