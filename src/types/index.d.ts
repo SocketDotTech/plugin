@@ -60,6 +60,9 @@ export interface Customize {
 
   // Outline color - used for lines, borders and icons
   outline?: string;
+
+  // Font family
+  fontFamily?: string;
 }
 
 export interface Network {

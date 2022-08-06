@@ -106,6 +106,7 @@ const Customize = {
   onInteractive: "rgb(240,240,240)",
   text: "rgb(255,255,255)",
   secondaryText: "rgb(200,200,200)",
+  fontFamily: '"Comic Sans MS", cursive'
   // width: 400
 };
 

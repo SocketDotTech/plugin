@@ -347,7 +347,7 @@ export const TxModal = ({ style }) => {
   return (
     <Modal
       title="Bridging transaction"
-      closeModal={isApproving ? null : closeTxModal}
+      closeModal={closeTxModal}
       disableClose={isApproving || txInProgress}
       style={style}
     >

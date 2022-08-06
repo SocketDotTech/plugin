@@ -24,6 +24,8 @@ input[type="number"] {
     --socket-widget-outline-color: 208, 208, 208;
     --socket-widget-interactive: 241, 245, 249;
     --socket-widget-on-interactive: 10, 10, 10;
+    --socket-widget-font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   }
 
   /* Resetting browser default styles. I have disabled the preflight as it was affecting the integrators' layouts */
@@ -82,9 +84,7 @@ input[type="number"] {
   }
 
   .skt-w-container {
-    font-family: system-ui, -apple-system,
-      /* Firefox supports this but not yet `system-ui` */ "Segoe UI", Roboto,
-      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; /* 2 */
+    font-family: var(--socket-widget-font-family);
   }
 
   .skt-w:after,
@@ -111,7 +111,7 @@ input[type="number"] {
   /* For buttons */
   .skt-w-button {
     @apply cursor-pointer bg-transparent bg-none;
-    text-transform: none
+    text-transform: none;
   }
 
   /* For anchor tags */
