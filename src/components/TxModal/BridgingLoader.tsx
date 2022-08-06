@@ -106,7 +106,7 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
       {currentRoute?.route?.userTxs?.length > 1 && (
         <div className="skt-w px-3.5 py-3 mt-2">
           <Stepper
-            currentTx={currentRoute?.route?.currentUserTxIndex}
+            currentTx={currentRoute?.route?.currentUserTxIndex || 0}
             userTxs={currentRoute?.route?.userTxs}
           />
         </div>

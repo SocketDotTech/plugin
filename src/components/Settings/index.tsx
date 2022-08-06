@@ -65,7 +65,7 @@ export const Settings = () => {
             >
               <div className="skt-w px-3 flex items-center mt-2 gap-2">
                 <p className="skt-w text-sm text-widget-secondary font-medium my-2 gap-8">
-                  Sort
+                  Preferred Route
                 </p>
                 <div
                   className="skt-w relative border border-widget-secondary-text border-opacity-10 flex w-auto"
