@@ -51,7 +51,7 @@ export const PendingTransactions = () => {
     return (
       <>
         <button
-          className="uppercase text-sm px-2 py-0.5 bg-widget-accent shadow-inner bg-opacity-90 text-widget-onAccent"
+          className="skt-w skt-w-button skt-w-input uppercase text-sm px-2 py-0.5 bg-widget-accent shadow-inner bg-opacity-90 text-widget-onAccent"
           onClick={() => setIsModalOpen(true)}
           style={{ borderRadius: `calc(0.75rem * ${borderRadius})` }}
         >
@@ -66,7 +66,7 @@ export const PendingTransactions = () => {
                 closeModal={() => setIsModalOpen(false)}
                 style={style}
               >
-                <div className="flex flex-col justify-start p-1 flex-1 overflow-y-auto">
+                <div className="skt-w flex flex-col justify-start p-1 flex-1 overflow-y-auto">
                   {activeRoutes?.map((route: any) => {
                     const refuelSourceToken = {
                       amount: route?.refuel?.fromAmount,
@@ -95,7 +95,7 @@ export const PendingTransactions = () => {
                     );
                   })}
 
-                  <p className="text-widget-secondary text-xs px-3 py-2 text-left">
+                  <p className="skt-w text-widget-secondary text-xs px-3 py-2 text-left">
                     Showing {activeRoutes?.length}/{totalRoutes} active routes
                   </p>
                 </div>

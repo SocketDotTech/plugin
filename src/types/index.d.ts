@@ -23,7 +23,10 @@ export interface WidgetProps {
   defaultSourceToken?: string;
   defaultDestToken?: string;
 
-  locale?: string;
+  // To enable only single tx quotes
+  singleTxOnly?: boolean;
+
+  locale?: string; 
   customize?: Customize;
 }
 
@@ -60,6 +63,9 @@ export interface Customize {
 
   // Outline color - used for lines, borders and icons
   outline?: string;
+
+  // Font family
+  fontFamily?: string;
 }
 
 export interface Network {
@@ -81,12 +87,12 @@ export interface Network {
 export interface Currency {
   address: string;
   decimals: number;
-  icon: string;
+  icon?: string;
   minNativeCurrencyForGas?: string;
   name: string;
   symbol: string;
   chainId?: number;
-  logoURI?: string;
+  logoURI: string;
   chainAgnosticId?: string | null;
 }
 

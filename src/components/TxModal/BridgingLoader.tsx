@@ -19,6 +19,7 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
   const [url, setUrl] = useState("");
   const [bridgeDetails, setBridgeDetails] = useState(null);
   const [showSupportLink, setShowSupportLink] = useState(false);
+  const [furtherStepsAvailable, setFurtherStepsAvailable] = useState(false);
 
   const formatedTime = (time: number) => {
     return Math.floor(time / 60) + "m";
@@ -63,10 +64,18 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
       const timeDiffInSeconds = timeDiff.div(1000).toString();
 
       // If time difference is twice the service time, show discord support link
-      if (Number(timeDiffInSeconds) * 2 > bridgeStep?.serviceTime) {
+      if (Number(timeDiffInSeconds) > bridgeStep?.serviceTime * 2) {
         setShowSupportLink(true);
       }
     }
+
+    // Check if there are any further steps
+    const _currentUserTx = currentRoute?.route?.currentUserTxIndex
+      ? currentRoute?.route?.currentUserTxIndex + 1
+      : 1;
+    setFurtherStepsAvailable(
+      _currentUserTx < currentRoute?.route?.userTxs?.length
+    );
   }, [currentRoute, txDetails]);
 
   const refuelSourceToken = {
@@ -79,7 +88,7 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
   };
 
   return (
-    <div className="absolute bg-widget-primary h-full w-full top-0 left-0 flex flex-col">
+    <div className="skt-w absolute bg-widget-primary h-full w-full top-0 left-0 flex flex-col">
       <TokenDetailsRow
         srcDetails={{
           token: currentRoute?.sourceTokenDetails?.token,
@@ -92,23 +101,23 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
         srcRefuel={refuelSourceToken}
         destRefuel={refuelDestToken}
       />
-      <div className="border-b border-widget-secondary" />
+      <div className="skt-w border-b border-widget-secondary" />
 
       {currentRoute?.route?.userTxs?.length > 1 && (
-        <div className="px-3.5 py-3 mt-2">
+        <div className="skt-w px-3.5 py-3 mt-2">
           <Stepper
-            currentTx={currentRoute?.route?.currentUserTxIndex}
+            currentTx={currentRoute?.route?.currentUserTxIndex || 0}
             userTxs={currentRoute?.route?.userTxs}
           />
         </div>
       )}
-      <div className="py-10 flex gap-3 flex-col items-center">
+      <div className="skt-w flex gap-3 flex-col items-center my-auto pb-3">
         <Spinner size={10} />
         <div>
-          <p className="text-sm text-widget-primary mb-1 font-medium text-center">
+          <p className="skt-w text-sm text-widget-primary mb-1 font-medium text-center">
             Bridging via {bridgeDetails?.protocol?.displayName} in progress
           </p>
-          <p className="text-sm font-normal text-widget-secondary mb-4 text-center">
+          <p className="skt-w text-sm font-normal text-widget-secondary mb-4 text-center px-3">
             {showSupportLink ? (
               <span>
                 Get in touch for support on{" "}
@@ -116,21 +125,23 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
                   href="https://discord.gg/23Gk2Fa9JZ"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline"
+                  className="skt-w skt-w-anchor underline"
                 >
                   Discord
                 </a>
               </span>
             ) : (
-              <span>
+              <span className="text-xs">
                 Estimated wait time is{" "}
                 {formatedTime(bridgeDetails?.serviceTime)}
+                {furtherStepsAvailable &&
+                  ", please come back later to sign the next transaction."}
               </span>
             )}
           </p>
         </div>
 
-        <div className="flex gap-4">
+        <div className="skt-w flex gap-4">
           <TxUrlChip label="Source tx" url={url} />
           <TxUrlChip label="Destination tx" />
         </div>
@@ -144,7 +155,7 @@ const TxUrlChip = ({ url, label }: { url?: string; label: string }) => {
   const { borderRadius } = customSettings.customization;
   return (
     <span
-      className="text-xs bg-widget-secondary text-widget-secondary flex items-center gap-1 flex-nowrap px-2 py-0.5"
+      className="skt-w text-xs bg-widget-secondary text-widget-secondary flex items-center gap-1 flex-nowrap px-2 py-0.5"
       style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
     >
       {url ? (
@@ -152,9 +163,9 @@ const TxUrlChip = ({ url, label }: { url?: string; label: string }) => {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1 hover:underline"
+          className="skt-w skt-w-anchor flex items-center gap-1 hover:underline"
         >
-          {label} <ExternalLink className="text-widget-secondary w-3" />
+          {label} <ExternalLink className="skt-w text-widget-secondary w-3" />
         </a>
       ) : (
         <>

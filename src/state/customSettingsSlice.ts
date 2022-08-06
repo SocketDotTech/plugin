@@ -25,20 +25,20 @@ const customSettingsSlice = createSlice({
       state.defaultSourceNetwork = action.payload;
     },
     setDefaultDestNetwork: (state, action) => {
-      state.defaultDestNetwork = action.payload
+      state.defaultDestNetwork = action.payload;
     },
     setCustomSourceTokens: (state, action) => {
-      state.sourceTokens = action.payload
-    }, 
+      state.sourceTokens = action.payload;
+    },
     setCustomDestTokens: (state, action) => {
-      state.destTokens = action.payload
+      state.destTokens = action.payload;
     },
     setDefaultSourceToken: (state, action) => {
-      state.defaultSourceToken = action.payload
+      state.defaultSourceToken = action.payload;
     },
     setDefaultDestToken: (state, action) => {
-      state.defaultDestToken = action.payload
-    }
+      state.defaultDestToken = action.payload;
+    },
   },
 });
 

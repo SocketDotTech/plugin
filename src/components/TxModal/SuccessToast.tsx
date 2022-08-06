@@ -10,10 +10,10 @@ export const SuccessToast = () => {
 
   return (
     <animated.div
-      className="bg-widget-accent text-widget-onAccent p-4 flex items-center absolute left-3 right-3"
+      className="skt-w bg-widget-accent text-widget-onAccent p-4 flex items-center absolute left-3 right-3"
       style={{ borderRadius: `calc(0.625rem * ${borderRadius})`, ...animationProps }}
     >
-      <CheckCircle className="mr-3 text-widget-onAccent" /> Transaction is
+      <CheckCircle className="skt-w mr-3 text-widget-onAccent" /> Transaction is
       complete
     </animated.div>
   );

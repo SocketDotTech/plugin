@@ -23,6 +23,100 @@ input[type="number"] {
     --socket-widget-secondary-text-color: 68, 68, 68;
     --socket-widget-outline-color: 208, 208, 208;
     --socket-widget-interactive: 241, 245, 249;
-    --socket-widget-on-interactive: 10,10,10;
+    --socket-widget-on-interactive: 10, 10, 10;
+    --socket-widget-font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  }
+
+  /* Resetting browser default styles. I have disabled the preflight as it was affecting the integrators' layouts */
+
+  .skt-w {
+    @apply box-border p-0 m-0 border-0 border-solid border-[#e5e7eb];
+    line-height: 1.15;
+    --tw-border-spacing-x: 0;
+    --tw-border-spacing-y: 0;
+    --tw-translate-x: 0;
+    --tw-translate-y: 0;
+    --tw-rotate: 0;
+    --tw-skew-x: 0;
+    --tw-skew-y: 0;
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+    --tw-pan-x: ;
+    --tw-pan-y: ;
+    --tw-pinch-zoom: ;
+    --tw-scroll-snap-strictness: proximity;
+    --tw-ordinal: ;
+    --tw-slashed-zero: ;
+    --tw-numeric-figure: ;
+    --tw-numeric-spacing: ;
+    --tw-numeric-fraction: ;
+    --tw-ring-inset: ;
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgba(59, 130, 246, 0.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    --tw-blur: ;
+    --tw-brightness: ;
+    --tw-contrast: ;
+    --tw-grayscale: ;
+    --tw-hue-rotate: ;
+    --tw-invert: ;
+    --tw-saturate: ;
+    --tw-sepia: ;
+    --tw-drop-shadow: ;
+    --tw-backdrop-blur: ;
+    --tw-backdrop-brightness: ;
+    --tw-backdrop-contrast: ;
+    --tw-backdrop-grayscale: ;
+    --tw-backdrop-hue-rotate: ;
+    --tw-backdrop-invert: ;
+    --tw-backdrop-opacity: ;
+    --tw-backdrop-saturate: ;
+    --tw-backdrop-sepia: ;
+  }
+
+  .skt-w:disabled {
+    cursor: default;
+  }
+
+  .skt-w-container {
+    font-family: var(--socket-widget-font-family);
+  }
+
+  .skt-w:after,
+  .skt-w:before {
+    border: 0 solid #e5e7eb;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+  }
+
+  /* for all input elements */
+  .skt-w-input {
+    @apply m-0 p-0 border-0 outline-0;
+
+    color: inherit;
+    font-family: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+  }
+
+  /* For buttons */
+  .skt-w-button {
+    @apply cursor-pointer bg-transparent bg-none;
+    text-transform: none;
+  }
+
+  /* For anchor tags */
+  .skt-w-anchor {
+    @apply text-inherit;
+    text-decoration: none;
   }
 }

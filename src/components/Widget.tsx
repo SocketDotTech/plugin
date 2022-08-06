@@ -92,14 +92,14 @@ export const Widget = (props: WidgetProps) => {
         borderRadius: `calc(1rem * ${borderRadius})`,
         minWidth: '360px'
       }}
-      className="bg-widget-primary p-1 overflow-hidden relative"
+      className="skt-w skt-w-container bg-widget-primary p-1 overflow-hidden relative"
     >
-      <div className="p-3 pt-2.5 pb-3.5">
+      <div className="skt-w p-3 pt-2.5 pb-3.5">
         <Header title="Bridge">
-          <div className="flex items-center gap-3">
+          <div className="skt-w flex items-center gap-3">
             {!props?.provider ? (
-              <span className="text-sm text-widget-secondary flex items-center">
-                <CreditCard className="mr-2 w-5 h-5 text-widget-primary" />{" "}
+              <span className="skt-w text-sm text-widget-secondary flex items-center">
+                <CreditCard className="skt-w mr-2 w-5 h-5 text-widget-primary" />{" "}
                 Please connect your wallet
               </span>
             ) : (

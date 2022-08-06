@@ -29,34 +29,34 @@ export const TokenDetail = (props: TokenAssetProps) => {
 
   return (
     <div
-      className={`flex flex-col flex-1 max-w-full ${rtl ? "items-end" : "flex-row"}`}
+      className={`skt-w flex flex-col flex-1 max-w-full ${rtl ? "items-end" : "flex-row"}`}
       style={{ borderRadius: `calc(0.7rem * ${borderRadius})` }}
     >
       <div
-        className={`flex items-center gap-2 flex-1 overflow-hidden ${
+        className={`skt-w flex items-center gap-2 flex-1 overflow-hidden ${
           rtl ? "flex-row-reverse" : "flex-row"
         }`}
       >
-        <div className={`relative flex flex-shrink-0`}>
+        <div className={`skt-w relative flex flex-shrink-0`}>
           <img
             src={token?.logoURI}
-            className="w-6 h-6 rounded-full border-widget-primary"
+            className="skt-w w-6 h-6 rounded-full border-widget-primary"
           />
           {!!refuel?.amount && (
             <img
               src={refuel?.asset?.logoURI}
-              className="w-6 h-6 rounded-full -ml-2 border-2 border-widget-accent object-cover bg-widget-accent"
+              className="skt-w w-6 h-6 rounded-full -ml-2 border-2 border-widget-accent object-cover bg-widget-accent"
             />
           )}
         </div>
 
         <div
-          className={`flex flex-col flex-auto overflow-hidden ${
+          className={`skt-w flex flex-col flex-auto overflow-hidden ${
             rtl ? "items-end" : "items-start"
           }`}
         >
           <span
-            className={`text-widget-primary w-full font-medium overflow-hidden whitespace-nowrap text-ellipsis flex flex-col gap-1 ${
+            className={`skt-w text-widget-primary w-full font-medium overflow-hidden whitespace-nowrap text-ellipsis flex flex-col gap-1 ${
               rtl ? "text-right items-end" : "text-left items-start"
             } ${small ? "text-xs" : "text-sm"}`}
           >
@@ -64,14 +64,14 @@ export const TokenDetail = (props: TokenAssetProps) => {
               {formattedAmount} {token?.symbol}
             </span>
             {refuelEnabled && (
-              <span className={`text-[10px] -mt-1 font-normal text-widget-accent ${rtl ? "text-right" : "text-left"}`}>
+              <span className={`skt-w text-[10px] -mt-1 font-normal text-widget-accent ${rtl ? "text-right" : "text-left"}`}>
                 (+ {formattedRefuelAmount} {refuel?.asset?.symbol})
               </span>
             )}
           </span>
         </div>
       </div>
-      <p className={`text-xs text-widget-secondary mt-1 ${rtl ? 'text-right' : 'text-left'}`}>on {chain?.name}</p>
+      <p className={`skt-w text-xs text-widget-secondary mt-1 ${rtl ? 'text-right' : 'text-left'}`}>on {chain?.name}</p>
     </div>
   );
 };
