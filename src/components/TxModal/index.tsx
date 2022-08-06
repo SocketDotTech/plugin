@@ -347,12 +347,12 @@ export const TxModal = ({ style }) => {
   return (
     <Modal
       title="Bridging transaction"
-      closeModal={isApproving ? null : closeTxModal}
+      closeModal={closeTxModal}
       disableClose={isApproving || txInProgress}
       style={style}
     >
-      <div className="flex flex-col flex-1 overflow-hidden justify-between relative">
-        <div className="flex-1 overflow-y-auto">
+      <div className="skt-w flex flex-col flex-1 overflow-hidden justify-between relative">
+        <div className="skt-w flex-1 overflow-y-auto">
           <TokenDetailsRow
             srcDetails={{
               token: currentRoute?.sourceTokenDetails?.token,
@@ -365,10 +365,10 @@ export const TxModal = ({ style }) => {
             srcRefuel={refuelSourceToken}
             destRefuel={refuelDestToken}
           />
-          <div className="border-b border-widget-secondary" />
+          <div className="skt-w border-b border-widget-secondary" />
 
           {currentRoute?.route?.userTxs?.length > 1 && (
-            <div className="px-3.5 py-3 mt-2">
+            <div className="skt-w px-3.5 py-3 mt-2">
               <Stepper
                 currentTx={
                   userTx?.userTxIndex || activeRoute?.currentUserTxIndex || 0
@@ -378,7 +378,7 @@ export const TxModal = ({ style }) => {
             </div>
           )}
 
-          <div className="px-3 py-3">
+          <div className="skt-w px-3 py-3">
             <TxStepDetails
               activeRoute={currentRoute?.route}
               refuel={currentRoute?.refuel}
@@ -393,7 +393,7 @@ export const TxModal = ({ style }) => {
           </div>
         </div>
 
-        <div className="p-3 shrink-0">
+        <div className="skt-w p-3 shrink-0">
           {!txCompleted && (
             <>
               {userTx && activeChain !== userTx?.chainId ? (

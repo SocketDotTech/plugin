@@ -108,7 +108,7 @@ export const RouteDetails = () => {
 
   return (
     <InnerCard>
-      <div className="text-widget-secondary mb-3 text-sm flex items-center gap-1">
+      <div className="skt-w text-widget-secondary mb-3 text-sm flex items-center gap-1">
         {sourceAmount && sourceAmount !== "0" && isQuotesLoading && (
           <Spinner size={4} />
         )}{" "}
@@ -120,14 +120,15 @@ export const RouteDetails = () => {
       >
         {getButtonStatus()}
       </Button>
-      <div className="flex items-center justify-between text-widget-secondary mt-2.5 text-xs">
-        <a href="http://socket.tech/" target="_blank" rel="noopener noreferrer">
+      <div className="skt-w flex items-center justify-between text-widget-secondary mt-2.5 text-xs">
+        <a href="http://socket.tech/" target="_blank" rel="noopener noreferrer" className="skt-w skt-w-anchor">
           Powered by Socket
         </a>
         <a
           href="https://socketdottech.zendesk.com/hc/en-us"
           target="_blank"
           rel="noopener noreferrer"
+          className="skt-w skt-w-anchor"
         >
           Support
         </a>

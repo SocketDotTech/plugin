@@ -32,7 +32,7 @@ export const TxStepDetails = ({
   const mappedChainData = useMappedChainData();
 
   return (
-    <div className="flex flex-col gap-4 text-sm">
+    <div className="skt-w flex flex-col gap-4 text-sm">
       {activeRoute?.userTxs?.map((tx, txIndex) => {
         const txComplete =
           tx?.userTxStatus === "completed" ||
@@ -90,7 +90,7 @@ export const TxStepDetails = ({
 
           return (
             <div
-              className="flex flex-col gap-3 text-sm"
+              className="skt-w flex flex-col gap-3 text-sm"
               key={`${activeRoute?.activeRouteId}-fund-movr-swap`}
             >
               {isSwap ? (
@@ -102,7 +102,7 @@ export const TxStepDetails = ({
                   inProgress={inProgress}
                   forReview={forReview}
                 >
-                  <div className="flex flex-col gap-2">
+                  <div className="skt-w flex flex-col gap-2">
                     <span>
                       {Number(swapSrc?.amount).toFixed(3)} {swapSrc?.symbol} for{" "}
                       {Number(swapDest?.amount).toFixed(3)} {swapDest?.symbol}{" "}
@@ -120,7 +120,7 @@ export const TxStepDetails = ({
                     {/* Refuel statement */}
                     {refuel && (
                       <span>
-                        <span className="text-widget-accent">For Gas : </span> 
+                        <span className="skt-w text-widget-accent">For Gas : </span> 
                         {Number(refuelSrc?.amount).toFixed(3)}{" "}
                         {refuelSrc?.symbol} on{" "}
                         {mappedChainData?.[refuelSrc?.chainId]?.name} to{" "}
@@ -141,7 +141,7 @@ export const TxStepDetails = ({
                   inProgress={inProgress}
                   forReview={forReview}
                 >
-                  <div className="flex flex-col gap-2">
+                  <div className="skt-w flex flex-col gap-2">
                     <span>
                       {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol}{" "}
                       on {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
@@ -153,7 +153,7 @@ export const TxStepDetails = ({
                     {/* Refuel statement */}
                     {refuel && (
                       <span>
-                        <span className="text-widget-accent">For Gas : </span> 
+                        <span className="skt-w text-widget-accent">For Gas : </span> 
                         {Number(refuelSrc?.amount).toFixed(3)}{" "}
                         {refuelSrc?.symbol} on{" "}
                         {mappedChainData?.[refuelSrc?.chainId]?.name} to{" "}
@@ -231,9 +231,9 @@ const TxStep = ({
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
   return (
-    <div className={`flex gap-3.5 ${currentTx ? 'bg-widget-secondary p-3 bg-opacity-20 border border-widget-accent' : ''}`} style={{borderRadius: `calc(0.5rem * ${borderRadius}`}}>
+    <div className={`skt-w flex gap-3.5 ${currentTx ? 'bg-widget-secondary p-3 bg-opacity-20 border border-widget-accent' : ''}`} style={{borderRadius: `calc(0.5rem * ${borderRadius}`}}>
       <div
-        className={`h-6 w-6 flex items-center justify-center shrink-0 mt-[3px] ${
+        className={`skt-w h-6 w-6 flex items-center justify-center shrink-0 mt-[3px] ${
           complete ? "bg-widget-secondary" : "bg-transparent"
         }`}
         style={{ borderRadius: `calc(0.25rem * ${borderRadius})` }}
@@ -241,10 +241,10 @@ const TxStep = ({
         {inProgress && currentTx ? (
           <Spinner size={4} />
         ) : complete ? (
-          <CheckCircle className="w-[18px] h-[18px] text-widget-accent" />
+          <CheckCircle className="skt-w w-[18px] h-[18px] text-widget-accent" />
         ) : (
           <ArrowRight
-            className={`w-[18px] h-[18px] ${
+            className={`skt-w w-[18px] h-[18px] ${
               currentTx || forReview
                 ? "text-widget-accent"
                 : "text-widget-secondary opacity-60"
@@ -253,19 +253,19 @@ const TxStep = ({
         )}
       </div>
       <div
-        className={`flex flex-col text-xs text-left text-widget-secondary gap-0.5 ${
+        className={`skt-w flex flex-col text-xs text-left text-widget-secondary gap-0.5 ${
           !active && !forReview ? "opacity-60" : ""
         }`}
       >
-        <span className={`${active || forReview ? "font-medium text-widget-primary" : ""}`}>
+        <span className={`skt-w ${active || forReview ? "font-medium text-widget-primary" : ""}`}>
           {url ? (
             <a
               href={url}
-              className="underline flex items-center gap-1"
+              className="skt-w skt-w-anchor underline flex items-center gap-1"
               target="_blank"
               rel="noopener noreferrer"
             >
-              {label} <ExternalLink className="w-3 h-3 opacity-50" />
+              {label} <ExternalLink className="skt-w w-3 h-3 opacity-50" />
             </a>
           ) : (
             label
