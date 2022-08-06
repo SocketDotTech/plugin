@@ -26,7 +26,7 @@ export const TokenInput = (props: TokenInputProps) => {
     <div className="skt-w flex items-center justify-between mt-2.5 overflow-hidden">
       <div className="skt-w flex flex-1">
         <input
-          className={`text-widget-primary text-3xl focus:outline-none w-full h-full overflow-ellipsis bg-transparent`}
+          className={`skt-w skt-w-input text-widget-primary text-3xl focus:outline-none w-full h-full overflow-ellipsis bg-transparent`}
           value={amount}
           onChange={(e) => onChangeInput(e.target.value)}
           placeholder="0.0"

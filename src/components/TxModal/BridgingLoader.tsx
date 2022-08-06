@@ -125,13 +125,13 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
                   href="https://discord.gg/23Gk2Fa9JZ"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="skt-w underline"
+                  className="skt-w skt-w-anchor underline"
                 >
                   Discord
                 </a>
               </span>
             ) : (
-              <span>
+              <span className="text-xs">
                 Estimated wait time is{" "}
                 {formatedTime(bridgeDetails?.serviceTime)}
                 {furtherStepsAvailable &&
@@ -163,7 +163,7 @@ const TxUrlChip = ({ url, label }: { url?: string; label: string }) => {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="skt-w flex items-center gap-1 hover:underline"
+          className="skt-w skt-w-anchor flex items-center gap-1 hover:underline"
         >
           {label} <ExternalLink className="skt-w text-widget-secondary w-3" />
         </a>

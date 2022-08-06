@@ -258,7 +258,7 @@ export const Input = ({
                 href="https://www.bungee.exchange/refuel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="skt-w text-widget-accent text-medium"
+                className="skt-w skt-w-anchor text-widget-accent text-medium"
               >
                 Refuel
               </a>{" "}

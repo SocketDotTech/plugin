@@ -75,7 +75,7 @@ export const Settings = () => {
                   <Option onClick={() => openDropdown(!dropdown)} active>
                     {label}{" "}
                     <ChevronDown
-                      className={`w-4 h-4 text-widget-secondary transition-all ${
+                      className={`skt-w w-4 h-4 text-widget-secondary transition-all ${
                         dropdown ? "rotate-180" : ""
                       }`}
                     />
@@ -99,7 +99,7 @@ export const Settings = () => {
             </Modal>
           )
       )}
-      <button onClick={() => setIsSettingsOpen(true)}>
+      <button onClick={() => setIsSettingsOpen(true)} className="skt-w skt-w-button skt-w-input flex">
         <SettingsIcon className="skt-w w-5.5 h-5.5 text-widget-secondary hover:text-widget-primary hover:rotate-45 duration-200 ease-linear" />
       </button>
     </>
@@ -117,7 +117,7 @@ const Option = ({
 }) => {
   return (
     <button
-      className={`w-32 px-2 py-2 text-widget-secondary text-sm flex items-center justify-between gap-2 ${
+      className={`skt-w skt-w-input skt-w-button w-32 px-2 py-2 text-widget-secondary text-sm flex items-center justify-between gap-2 ${
         active ? "" : "hover:bg-widget-secondary"
       }`}
       onClick={onClick}

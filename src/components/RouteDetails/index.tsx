@@ -121,13 +121,14 @@ export const RouteDetails = () => {
         {getButtonStatus()}
       </Button>
       <div className="skt-w flex items-center justify-between text-widget-secondary mt-2.5 text-xs">
-        <a href="http://socket.tech/" target="_blank" rel="noopener noreferrer">
+        <a href="http://socket.tech/" target="_blank" rel="noopener noreferrer" className="skt-w skt-w-anchor">
           Powered by Socket
         </a>
         <a
           href="https://socketdottech.zendesk.com/hc/en-us"
           target="_blank"
           rel="noopener noreferrer"
+          className="skt-w skt-w-anchor"
         >
           Support
         </a>

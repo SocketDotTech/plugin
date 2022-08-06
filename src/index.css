@@ -29,23 +29,67 @@ input[type="number"] {
   /* Resetting browser default styles. I have disabled the preflight as it was affecting the integrators' layouts */
 
   .skt-w {
-    @apply box-border p-0 m-0;
+    @apply box-border p-0 m-0 border-0 border-solid border-[#e5e7eb];
+    line-height: 1.15;
+    --tw-border-spacing-x: 0;
+    --tw-border-spacing-y: 0;
+    --tw-translate-x: 0;
+    --tw-translate-y: 0;
+    --tw-rotate: 0;
+    --tw-skew-x: 0;
+    --tw-skew-y: 0;
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+    --tw-pan-x: ;
+    --tw-pan-y: ;
+    --tw-pinch-zoom: ;
+    --tw-scroll-snap-strictness: proximity;
+    --tw-ordinal: ;
+    --tw-slashed-zero: ;
+    --tw-numeric-figure: ;
+    --tw-numeric-spacing: ;
+    --tw-numeric-fraction: ;
+    --tw-ring-inset: ;
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgba(59, 130, 246, 0.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    --tw-blur: ;
+    --tw-brightness: ;
+    --tw-contrast: ;
+    --tw-grayscale: ;
+    --tw-hue-rotate: ;
+    --tw-invert: ;
+    --tw-saturate: ;
+    --tw-sepia: ;
+    --tw-drop-shadow: ;
+    --tw-backdrop-blur: ;
+    --tw-backdrop-brightness: ;
+    --tw-backdrop-contrast: ;
+    --tw-backdrop-grayscale: ;
+    --tw-backdrop-hue-rotate: ;
+    --tw-backdrop-invert: ;
+    --tw-backdrop-opacity: ;
+    --tw-backdrop-saturate: ;
+    --tw-backdrop-sepia: ;
   }
 
-  .skt-w:after, .skt-w:before {
+  .skt-w:disabled {
+    cursor: default;
+  }
+
+  .skt-w-container {
+    font-family: system-ui, -apple-system,
+      /* Firefox supports this but not yet `system-ui` */ "Segoe UI", Roboto,
+      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; /* 2 */
+  }
+
+  .skt-w:after,
+  .skt-w:before {
     border: 0 solid #e5e7eb;
-    border-top-color: rgb(229, 231, 235);
-    border-top-style: solid;
-    border-top-width: 0px;
-    border-right-color: rgb(229, 231, 235);
-    border-right-style: solid;
-    border-right-width: 0px;
-    border-bottom-color: rgb(229, 231, 235);
-    border-bottom-style: solid;
-    border-bottom-width: 0px;
-    border-left-color: rgb(229, 231, 235);
-    border-left-style: solid;
-    border-left-width: 0px;
     border-image-source: initial;
     border-image-slice: initial;
     border-image-width: initial;
@@ -53,18 +97,26 @@ input[type="number"] {
     border-image-repeat: initial;
   }
 
-  .skt-w-button {
-    @apply cursor-pointer bg-transparent bg-none
-  }
-
+  /* for all input elements */
   .skt-w-input {
-    @apply m-0 p-0 border-0 outline-0
-    /* font-family: inherit;
+    @apply m-0 p-0 border-0 outline-0;
+
+    color: inherit;
+    font-family: inherit;
     font-size: 100%;
     font-weight: inherit;
     line-height: inherit;
-    color: inherit;
-    margin: 0;
-    padding: 0; */
+  }
+
+  /* For buttons */
+  .skt-w-button {
+    @apply cursor-pointer bg-transparent bg-none;
+    text-transform: none
+  }
+
+  /* For anchor tags */
+  .skt-w-anchor {
+    @apply text-inherit;
+    text-decoration: none;
   }
 }

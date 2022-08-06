@@ -24,7 +24,7 @@ export const Modal = ({
   return (
     <animated.div style={style} className="skt-w p-1 w-full h-full absolute top-0 left-0 z-50 bg-black bg-opacity-10">
       <div
-        className={`w-full h-full bg-widget-primary flex flex-col overflow-hidden ${
+        className={`skt-w w-full h-full bg-widget-primary flex flex-col overflow-hidden ${
           classNames ?? ""
         }`}
         style={{ borderRadius: `calc(0.75rem * ${borderRadius})` }}
@@ -35,7 +35,7 @@ export const Modal = ({
               <button
                 onClick={closeModal}
                 disabled={disableClose}
-                className="skt-w disabled:opacity-20 disabled:cursor-not-allowed"
+                className="skt-w skt-w-input skt-w-button disabled:opacity-20 disabled:cursor-not-allowed"
               >
                 <X className="skt-w w-5.5 h-5.5 text-widget-secondary" />
               </button>

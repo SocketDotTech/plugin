@@ -231,9 +231,9 @@ const TxStep = ({
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
   return (
-    <div className={`flex gap-3.5 ${currentTx ? 'bg-widget-secondary p-3 bg-opacity-20 border border-widget-accent' : ''}`} style={{borderRadius: `calc(0.5rem * ${borderRadius}`}}>
+    <div className={`skt-w flex gap-3.5 ${currentTx ? 'bg-widget-secondary p-3 bg-opacity-20 border border-widget-accent' : ''}`} style={{borderRadius: `calc(0.5rem * ${borderRadius}`}}>
       <div
-        className={`h-6 w-6 flex items-center justify-center shrink-0 mt-[3px] ${
+        className={`skt-w h-6 w-6 flex items-center justify-center shrink-0 mt-[3px] ${
           complete ? "bg-widget-secondary" : "bg-transparent"
         }`}
         style={{ borderRadius: `calc(0.25rem * ${borderRadius})` }}
@@ -244,7 +244,7 @@ const TxStep = ({
           <CheckCircle className="skt-w w-[18px] h-[18px] text-widget-accent" />
         ) : (
           <ArrowRight
-            className={`w-[18px] h-[18px] ${
+            className={`skt-w w-[18px] h-[18px] ${
               currentTx || forReview
                 ? "text-widget-accent"
                 : "text-widget-secondary opacity-60"
@@ -253,15 +253,15 @@ const TxStep = ({
         )}
       </div>
       <div
-        className={`flex flex-col text-xs text-left text-widget-secondary gap-0.5 ${
+        className={`skt-w flex flex-col text-xs text-left text-widget-secondary gap-0.5 ${
           !active && !forReview ? "opacity-60" : ""
         }`}
       >
-        <span className={`${active || forReview ? "font-medium text-widget-primary" : ""}`}>
+        <span className={`skt-w ${active || forReview ? "font-medium text-widget-primary" : ""}`}>
           {url ? (
             <a
               href={url}
-              className="skt-w underline flex items-center gap-1"
+              className="skt-w skt-w-anchor underline flex items-center gap-1"
               target="_blank"
               rel="noopener noreferrer"
             >

@@ -91,7 +91,7 @@ export const TokenSelect = (props: Props) => {
       {activeToken && (
         <button
           onClick={() => setOpenTokenList(!openTokenList)}
-          className={`flex items-center flex-1 bg-widget-interactive flex-shrink-0 flex-nowrap w-auto overflow-hidden p-1 gap-1 text-widget-on-interactive`}
+          className={`skt-w skt-w-input skt-w-button flex items-center flex-1 bg-widget-interactive flex-shrink-0 flex-nowrap w-auto overflow-hidden p-1 gap-1 text-widget-on-interactive`}
           style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
         >
           <img
@@ -117,7 +117,7 @@ export const TokenSelect = (props: Props) => {
                 {filteredTokens?.map((token: Currency) => {
                   return (
                     <button
-                      className="skt-w flex hover:bg-widget-secondary items-center p-2 w-full justify-between"
+                      className="skt-w skt-w-input skt-w-button flex hover:bg-widget-secondary items-center p-2 w-full justify-between"
                       onClick={() => selectToken(token)}
                       key={token?.address}
                       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}

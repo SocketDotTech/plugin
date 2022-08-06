@@ -30,16 +30,16 @@ const Step = (props: {
   const { active, completed, lastItem } = props;
   return (
     <div
-      className={`flex flex-row items-center ${!lastItem ? "flex-grow" : ""}`}
+      className={`skt-w flex flex-row items-center ${!lastItem ? "flex-grow" : ""}`}
     >
       {/* circle */}
       <span
-        className={`relative w-4 h-4 rounded-full flex justify-center items-center ${
+        className={`skt-w relative w-4 h-4 rounded-full flex justify-center items-center ${
           completed ? "bg-widget-accent border-0" : ""
         } ${
           active
             ? "border-2 border-widget-accent"
-            : "border border-widget-secondary-text"
+            : "border border-widget-secondary-text border-opacity-40"
         } `}
       >
         {completed && <Check className="skt-w text-widget-onAccent w-3 h-3" />}
@@ -47,8 +47,8 @@ const Step = (props: {
       {/* line */}
       {!lastItem && (
         <span
-          className={`h-px flex-grow ${
-            completed ? "bg-widget-accent" : "bg-widget-secondary-text"
+          className={`skt-w h-px flex-grow ${
+            completed ? "bg-widget-accent" : "bg-widget-secondary-text bg-opacity-40"
           }`}
         ></span>
       )}

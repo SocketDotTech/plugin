@@ -102,11 +102,11 @@ export const ReviewModal = ({
         >
           <div className="skt-w flex-1 flex flex-col overflow-auto">
             <button
-              className="skt-w flex items-center gap-1.5 text-sm text-widget-secondary mb-3"
+              className="skt-w skt-w-button skt-w-input flex items-center gap-1.5 text-sm text-widget-secondary mb-3"
               onClick={() => setShowTxDetails(!showTxDetails)}
             >
               <ChevronUp
-                className={`w-4 h-4 text-widget-secondary transition-all ${
+                className={`skt-w w-4 h-4 text-widget-secondary transition-all ${
                   showTxDetails ? "rotate-180" : "rotate-0"
                 }`}
               />{" "}
@@ -121,7 +121,7 @@ export const ReviewModal = ({
           </div>
 
           <div
-            className={`h-14 transition-all duration-300 flex justify-between items-center border ${
+            className={`skt-w h-14 transition-all duration-300 flex justify-between items-center border ${
               quoteUpdated
                 ? "border-widget-outline p-1 pl-2"
                 : "border-transparent"

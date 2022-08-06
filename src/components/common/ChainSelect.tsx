@@ -28,7 +28,7 @@ function Option({
 }) {
   return (
     <div
-      className={`flex w-28 gap-1 items-center cursor-pointer ${
+      className={`skt-w flex w-28 gap-1 items-center cursor-pointer ${
         selected ? "" : "p-1.5 hover:bg-widget-secondary hover:bg-opacity-80" 
       }`}
       onClick={onClick}
@@ -76,7 +76,7 @@ export function ChainSelect({
           ? null
           : () => setOpenDropdown(!openDropdown)
       }
-      className={`relative p-1.5 ${
+      className={`skt-w relative p-1.5 ${
         openDropdown ? "bg-widget-interactive h-auto" : ""
       }`}
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}

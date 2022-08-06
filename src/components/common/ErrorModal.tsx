@@ -26,7 +26,7 @@ export const ErrorModal = () => {
                 href="https://socketdottech.zendesk.com/hc/en-us"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="skt-w text-sm text-widget-secondary underline hover:text-widget-primary"
+                className="skt-w skt-w-anchor text-sm text-widget-secondary underline hover:text-widget-primary"
               >
                 Support
               </a>

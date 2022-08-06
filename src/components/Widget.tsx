@@ -92,7 +92,7 @@ export const Widget = (props: WidgetProps) => {
         borderRadius: `calc(1rem * ${borderRadius})`,
         minWidth: '360px'
       }}
-      className="skt-w bg-widget-primary p-1 overflow-hidden relative"
+      className="skt-w skt-w-container bg-widget-primary p-1 overflow-hidden relative"
     >
       <div className="skt-w p-3 pt-2.5 pb-3.5">
         <Header title="Bridge">
