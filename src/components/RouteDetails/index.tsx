@@ -1,6 +1,7 @@
-import { useRoutes } from "../../hooks/apis";
+import { useBalance, useRoutes } from "../../hooks/apis";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
+import { ethers } from "ethers";
 
 // actions
 import { setSelectedRoute } from "../../state/selectedRouteSlice";
@@ -14,7 +15,12 @@ import { Spinner } from "../common/Spinner";
 import { InnerCard } from "../common/InnerCard";
 
 import { Web3Context } from "../../providers/Web3Provider";
-import { BRIDGE_DISPLAY_NAMES, QuoteStatus, ButtonTexts } from "../../consts";
+import {
+  BRIDGE_DISPLAY_NAMES,
+  QuoteStatus,
+  ButtonTexts,
+  NATIVE_TOKEN_ADDRESS,
+} from "../../consts";
 import { useTransition } from "@react-spring/web";
 
 export const RouteDetails = () => {
@@ -48,6 +54,13 @@ export const RouteDetails = () => {
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
 
+  // Hook to get Balance for the native token.
+  const { data: nativeTokenWithBalance } = useBalance(
+    NATIVE_TOKEN_ADDRESS,
+    sourceToken?.chainId,
+    userAddress
+  );
+
   // SetTxDetails from local storage to state
   useEffect(() => {
     if (localStorage) {
@@ -64,15 +77,35 @@ export const RouteDetails = () => {
     isTxModalOpen && setIsReviewOpen(false);
   }, [isTxModalOpen]);
 
+  const [isNativeTokenEnough, setIsNativeTokenEnough] = useState(false);
+
   useEffect(() => {
     if (data) {
       const bestRoute = data?.[0];
       dispatch(setBestRoute(bestRoute));
 
-      // if refuel object is available, check the total native token required is available or not. 
-      // const nativeTokenAmount = bestRoute?.refuel?.fromAmount;
-      // Check the native token. See if that much balance is availabe and then disable button.
-      // Also, you need to store the native token balance instead of selected token balance. 
+      // Check if there is sufficient native token for refuel
+      // If selected source token is same as native token, add the 2
+      if (!!bestRoute?.refuel) {
+        let nativeTokenRequired: string;
+        const nativeTokenTransferAmount = bestRoute?.refuel?.fromAmount;
+
+        if (sourceToken?.address === NATIVE_TOKEN_ADDRESS) {
+          nativeTokenRequired = ethers.BigNumber.from(sourceAmount)
+            .add(nativeTokenTransferAmount)
+            .toString();
+        } else {
+          nativeTokenRequired = nativeTokenTransferAmount;
+        }
+
+        if (
+          ethers.BigNumber.from(nativeTokenRequired).lte(
+            nativeTokenWithBalance?.balance
+          )
+        ) {
+          setIsNativeTokenEnough(true);
+        } else setIsNativeTokenEnough(false);
+      }
     } else {
       dispatch(setBestRoute(null));
     }
@@ -100,6 +133,8 @@ export const RouteDetails = () => {
   function getButtonStatus() {
     if (!isEnoughBalance) {
       return ButtonTexts.NOT_ENOUGH_BALANCE;
+    } else if (!!bestRoute?.refuel && !isNativeTokenEnough) {
+      return ButtonTexts.NOT_ENOUGH_NATIVE_BALANCE;
     } else {
       return ButtonTexts.REVIEW_QUOTE;
     }
@@ -123,12 +158,22 @@ export const RouteDetails = () => {
       </div>
       <Button
         onClick={review}
-        disabled={!bestRoute || isQuotesLoading || !isEnoughBalance}
+        disabled={
+          !bestRoute ||
+          isQuotesLoading ||
+          !isEnoughBalance ||
+          (bestRoute?.refuel && !isNativeTokenEnough)
+        }
       >
         {getButtonStatus()}
       </Button>
       <div className="skt-w flex items-center justify-between text-widget-secondary mt-2.5 text-xs">
-        <a href="http://socket.tech/" target="_blank" rel="noopener noreferrer" className="skt-w skt-w-anchor">
+        <a
+          href="http://socket.tech/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="skt-w skt-w-anchor"
+        >
           Powered by Socket
         </a>
         <a

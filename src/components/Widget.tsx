@@ -16,6 +16,7 @@ import { Settings } from "./Settings";
 import { TxModal } from "./TxModal";
 import { PendingTransactions } from "./PendingTransactions";
 import { ErrorModal } from "./common/ErrorModal";
+import { Refuel } from "./Refuel";
 
 // hooks
 import { useChains } from "../hooks/apis";
@@ -112,6 +113,7 @@ export const Widget = (props: WidgetProps) => {
         </Header>
         <Input customTokenList={props.tokenList} />
         <Output customTokenList={props.tokenList} />
+        <Refuel />
       </div>
       <RouteDetails />
       {transitions((style, item) => item && <TxModal style={style} />)}
