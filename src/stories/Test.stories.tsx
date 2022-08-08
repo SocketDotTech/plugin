@@ -106,7 +106,7 @@ const Customize = {
   onInteractive: "rgb(240,240,240)",
   text: "rgb(255,255,255)",
   secondaryText: "rgb(200,200,200)",
-  fontFamily: '"Comic Sans MS", cursive'
+  // fontFamily: '"Comic Sans MS", cursive'
   // width: 400
 };
 
@@ -116,6 +116,7 @@ export const Default = Template.bind({});
 Default.args = {
   API_KEY: SOCKET_API_KEY,
   customize: Customize,
+  // enableRefuel: true,
   // tokenList: MY_LIST,
   // tokenList: UNISWAP_DEFAULT_LIST,
   // destNetworks: [137],

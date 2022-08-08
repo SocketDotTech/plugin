@@ -39,11 +39,12 @@ export const Widget = (props: WidgetProps) => {
   // run when the props are changed
   useEffect(() => {
     // If border radius passed is greater than 1.2, set it to 1.2. Default value is 1
-    const _borderRadius = customize?.borderRadius !== undefined
-      ? customize?.borderRadius > 1.2
-        ? 1.2
-        : customize?.borderRadius
-      : 1;
+    const _borderRadius =
+      customize?.borderRadius !== undefined
+        ? customize?.borderRadius > 1.2
+          ? 1.2
+          : customize?.borderRadius
+        : 1;
 
     customSettings.setCustomization({
       ...customSettings.customization,
@@ -91,7 +92,7 @@ export const Widget = (props: WidgetProps) => {
       style={{
         width: widgetWidth,
         borderRadius: `calc(1rem * ${borderRadius})`,
-        minWidth: '360px'
+        minWidth: "360px",
       }}
       className="skt-w skt-w-container bg-widget-primary p-1 overflow-hidden relative"
     >
@@ -113,7 +114,7 @@ export const Widget = (props: WidgetProps) => {
         </Header>
         <Input customTokenList={props.tokenList} />
         <Output customTokenList={props.tokenList} />
-        <Refuel />
+        {props.enableRefuel && <Refuel />}
       </div>
       <RouteDetails />
       {transitions((style, item) => item && <TxModal style={style} />)}
