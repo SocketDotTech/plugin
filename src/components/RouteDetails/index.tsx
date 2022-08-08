@@ -22,6 +22,8 @@ import {
   NATIVE_TOKEN_ADDRESS,
 } from "../../consts";
 import { useTransition } from "@react-spring/web";
+import { Info } from "react-feather";
+import { formatCurrencyAmount } from "../../utils/";
 
 export const RouteDetails = () => {
   const dispatch = useDispatch();
@@ -120,6 +122,17 @@ export const RouteDetails = () => {
   function quotesStatus() {
     const bridgeKey = bestRoute?.route?.usedBridgeNames?.[0];
     const bridgeName = BRIDGE_DISPLAY_NAMES[bridgeKey] || bridgeKey;
+
+    // Checking for min native token requirement
+    if (!!bestRoute?.refuel && !isNativeTokenEnough) {
+      const minReq = formatCurrencyAmount(
+        bestRoute?.refuel?.fromAmount,
+        bestRoute?.refuel?.fromAsset?.decimals,
+        2
+      );
+      return `Not enough ${nativeTokenWithBalance?.symbol} for Refuel (${minReq} reqd)`;
+    }
+
     return shouldFetch
       ? isQuotesLoading
         ? QuoteStatus.FETCHING_QUOTE
@@ -133,8 +146,6 @@ export const RouteDetails = () => {
   function getButtonStatus() {
     if (!isEnoughBalance) {
       return ButtonTexts.NOT_ENOUGH_BALANCE;
-    } else if (!!bestRoute?.refuel && !isNativeTokenEnough) {
-      return ButtonTexts.NOT_ENOUGH_NATIVE_BALANCE;
     } else {
       return ButtonTexts.REVIEW_QUOTE;
     }
@@ -151,8 +162,12 @@ export const RouteDetails = () => {
   return (
     <InnerCard>
       <div className="skt-w text-widget-secondary mb-3 text-sm flex items-center gap-1">
-        {sourceAmount && sourceAmount !== "0" && isQuotesLoading && (
+        {sourceAmount && sourceAmount !== "0" && isQuotesLoading ? (
           <Spinner size={4} />
+        ) : !!bestRoute?.refuel && !isNativeTokenEnough ? (
+          <Info className="w-4 h-4" />
+        ) : (
+          ""
         )}{" "}
         {quotesStatus()}
       </div>

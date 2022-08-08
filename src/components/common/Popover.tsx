@@ -24,7 +24,7 @@ export const Popover = ({
         } ${classNames ?? ""}`}
       >
         <div
-          className="skt-w bg-gray-900/90 border border-widget-outline text-white text-xs font-normal p-2"
+          className="skt-w text-left bg-black/90 border border-widget-outline text-white text-xs font-normal p-2"
           style={{ borderRadius: `calc(0.4rem * ${borderRadius})` }}
         >
           {content}
