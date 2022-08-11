@@ -71,6 +71,23 @@ export const TxStepDetails = ({
           const bridgeSrc = getTxDetail(isSwap ? 1 : 0, false);
           const bridgeDest = getTxDetail(isSwap ? 1 : 0, true);
 
+          // Destination Transaction Urls
+          const destinationTxUrl = tx?.destinationTxHash
+            ? getExplorerLink(
+                mappedChainData?.[bridgeDest?.chainId]?.explorers[0],
+                tx.destinationTxHash,
+                ExplorerDataType.TRANSACTION
+              )
+            : null;
+
+          const refuelDestinationTxUrl = tx?.refuelDestinationHash
+            ? getExplorerLink(
+                mappedChainData?.[bridgeDest?.chainId]?.explorers[0],
+                tx.refuelDestinationHash,
+                ExplorerDataType.TRANSACTION
+              )
+            : null;
+
           const refuelSrc = {
             amount: formatCurrencyAmount(
               refuel?.fromAmount,
@@ -115,19 +132,42 @@ export const TxStepDetails = ({
                       {Number(bridgeDest?.amount).toFixed(3)}{" "}
                       {bridgeDest?.symbol} on{" "}
                       {mappedChainData?.[bridgeDest?.chainId]?.name} via{" "}
-                      {bridgeSrc?.protocolName} bridge
+                      {bridgeSrc?.protocolName} bridge.{" "}
+                      {destinationTxUrl && (
+                        <a
+                          href={destinationTxUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="skt-w skt-w-anchor underline inline-flex items-center text-widget-primary"
+                        >
+                          Dest tx{" "}
+                          <ExternalLink className="skt-w w-3 h-3 ml-1" />
+                        </a>
+                      )}
                     </span>
-                    {/* Refuel statement */}
                     {refuel && (
                       <span>
-                        <span className="skt-w text-widget-accent">For Gas : </span> 
+                        <span className="skt-w text-widget-accent">
+                          For Refuel :{" "}
+                        </span>
                         {Number(refuelSrc?.amount).toFixed(3)}{" "}
                         {refuelSrc?.symbol} on{" "}
                         {mappedChainData?.[refuelSrc?.chainId]?.name} to{" "}
                         {truncateDecimalValue(Number(refuelDest?.amount), 3)}{" "}
                         {refuelDest?.symbol} on{" "}
                         {mappedChainData?.[refuelDest?.chainId]?.name} via{" "}
-                        Refuel
+                        Refuel.{" "}
+                        {refuelDestinationTxUrl && (
+                          <a
+                            href={refuelDestinationTxUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="skt-w skt-w-anchor underline inline-flex items-center text-widget-primary"
+                          >
+                            Dest tx{" "}
+                            <ExternalLink className="skt-w w-3 h-3 ml-1" />
+                          </a>
+                        )}
                       </span>
                     )}
                   </div>
@@ -148,19 +188,43 @@ export const TxStepDetails = ({
                       {Number(bridgeDest?.amount).toFixed(3)}{" "}
                       {bridgeDest?.symbol} on{" "}
                       {mappedChainData?.[bridgeDest?.chainId]?.name} via{" "}
-                      {bridgeSrc?.protocolName} bridge
+                      {bridgeSrc?.protocolName} bridge.{" "}
+                      {destinationTxUrl && (
+                        <a
+                          href={destinationTxUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="skt-w skt-w-anchor underline inline-flex items-center text-widget-primary"
+                        >
+                          Dest tx{" "}
+                          <ExternalLink className="skt-w w-3 h-3 ml-1" />
+                        </a>
+                      )}
                     </span>
                     {/* Refuel statement */}
                     {refuel && (
                       <span>
-                        <span className="skt-w text-widget-accent">For Gas : </span> 
+                        <span className="skt-w text-widget-accent">
+                          For Refuel :{" "}
+                        </span>
                         {Number(refuelSrc?.amount).toFixed(3)}{" "}
                         {refuelSrc?.symbol} on{" "}
                         {mappedChainData?.[refuelSrc?.chainId]?.name} to{" "}
                         {truncateDecimalValue(Number(refuelDest?.amount), 3)}{" "}
                         {refuelDest?.symbol} on{" "}
                         {mappedChainData?.[refuelDest?.chainId]?.name} via{" "}
-                        Refuel
+                        Refuel.{" "}
+                        {refuelDestinationTxUrl && (
+                          <a
+                            href={refuelDestinationTxUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="skt-w skt-w-anchor underline inline-flex items-center text-widget-primary"
+                          >
+                            Dest tx{" "}
+                            <ExternalLink className="skt-w w-3 h-3 ml-1" />
+                          </a>
+                        )}
                       </span>
                     )}
                   </div>
@@ -231,7 +295,14 @@ const TxStep = ({
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
   return (
-    <div className={`skt-w flex gap-3.5 ${currentTx ? 'bg-widget-secondary p-3 bg-opacity-20 border border-widget-accent' : ''}`} style={{borderRadius: `calc(0.5rem * ${borderRadius}`}}>
+    <div
+      className={`skt-w flex gap-3.5 ${
+        currentTx
+          ? "bg-widget-secondary p-3 bg-opacity-20 border border-widget-accent"
+          : ""
+      }`}
+      style={{ borderRadius: `calc(0.5rem * ${borderRadius}` }}
+    >
       <div
         className={`skt-w h-6 w-6 flex items-center justify-center shrink-0 mt-[3px] ${
           complete ? "bg-widget-secondary" : "bg-transparent"
@@ -257,7 +328,11 @@ const TxStep = ({
           !active && !forReview ? "opacity-60" : ""
         }`}
       >
-        <span className={`skt-w ${active || forReview ? "font-medium text-widget-primary" : ""}`}>
+        <span
+          className={`skt-w ${
+            active || forReview ? "font-medium text-widget-primary" : ""
+          }`}
+        >
           {url ? (
             <a
               href={url}

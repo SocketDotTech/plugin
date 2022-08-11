@@ -125,12 +125,29 @@ export const RouteDetails = () => {
 
     // Checking for min native token requirement
     if (!!bestRoute?.refuel && !isNativeTokenEnough) {
-      const minReq = formatCurrencyAmount(
-        bestRoute?.refuel?.fromAmount,
-        bestRoute?.refuel?.fromAsset?.decimals,
-        2
-      );
-      return `Not enough ${nativeTokenWithBalance?.symbol} for Refuel (${minReq} reqd)`;
+      let minReq: string;
+
+      // If selected source token is same as source native token, add the input amount with minimum tokens required for refuel
+      // Else, show only the minimum amount required for refuel
+      if (bestRoute?.path?.fromToken?.address === NATIVE_TOKEN_ADDRESS) {
+        const inputAmount = bestRoute?.amount;
+        const refuelAmount = bestRoute?.refuel?.fromAmount;
+        const totalAmount = ethers.BigNumber.from(inputAmount)
+          .add(ethers.BigNumber.from(refuelAmount))
+          .toString();
+        minReq = formatCurrencyAmount(
+          totalAmount,
+          bestRoute?.refuel?.fromAsset?.decimals,
+          2
+        );
+      } else {
+        minReq = formatCurrencyAmount(
+          bestRoute?.refuel?.fromAmount,
+          bestRoute?.refuel?.fromAsset?.decimals,
+          2
+        );
+      }
+      return `Not enough ${nativeTokenWithBalance?.symbol} for Refuel (${minReq} required)`;
     }
 
     return shouldFetch

@@ -4,7 +4,7 @@ import { CheckBox } from "./common/CheckBox";
 import { enableRefuel } from "../state/quotesSlice";
 import { CustomizeContext } from "../providers/CustomizeProvider";
 import useMappedChainData from "../hooks/useMappedChainData";
-import { Info } from "react-feather";
+import { HelpCircle } from "react-feather";
 import { Popover } from "./common/Popover";
 
 export const Refuel = () => {
@@ -36,11 +36,11 @@ export const Refuel = () => {
         <p className="skt-w text-sm text-widget-primary font-medium flex items-center">
           Enable Refuel
           <Popover
-            content="With Refuel, you can swap native tokens on the source chain and get native tokens for transactions on the destination chain"
+            content="With Refuel, you can swap native tokens on the source chain for native tokens to transact on the destination chain"
             classNames="-top-14"
             cursor="cursor-help"
           >
-            <Info className="skt-w ml-1.5 w-4 h-4 opacity-70" />
+            <HelpCircle className="skt-w ml-1.5 w-4 h-4 opacity-70" />
           </Popover>
         </p>
         <p className="skt-w text-xs text-widget-secondary mt-0.5">
