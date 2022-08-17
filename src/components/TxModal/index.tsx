@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
-import { SocketTx } from "socket-v2-sdk";
+import { SocketTx } from "@socket.tech/socket-v2-sdk";
 
 // components
 import { Modal } from "../common/Modal";
@@ -230,7 +230,7 @@ export const TxModal = ({ style }) => {
       } else if (currentStatus === PrepareTxStatus.COMPLETED) {
         setTxCompleted(true);
         setBridging(false);
-        mutateActiveRoutes();
+        mutateActiveRoutes(); // mutating the pending tx list
       }
     } catch (e) {
       const err = e?.data?.message?.toLowerCase() || e.message.toLowerCase();
@@ -472,6 +472,7 @@ export const TxModal = ({ style }) => {
             currentRoute={currentRoute}
             explorerParams={explorerParams}
             txDetails={txDetails?.[userAddress]?.[activeRoute?.activeRouteId]}
+            refuelEnabled={!!currentRoute?.refuel}
           />
         )}
 

@@ -14,7 +14,7 @@ import { TokenDetailsRow } from "../common/TokenDetailsRow";
 import { Stepper } from "../common/Stepper";
 
 // This component is displayed when transaction of type 'fund-movr' (bridging tx) is in progress
-export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
+export const BridgingLoader = ({ currentRoute, explorerParams, txDetails, refuelEnabled }) => {
   const mappedChainData = useMappedChainData();
   const [srcTxHash, setSrcTxHash] = useState("");
   const [destTxHash, setDestTxHash] = useState("");
@@ -163,7 +163,9 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
             srcUrl={srcTxHash}
             destUrl={destTxHash}
           />
-          <TxRow title="Refuel" destUrl={destRefuelTxHash} />
+          {!!refuelEnabled && (
+            <TxRow title="Refuel" destUrl={destRefuelTxHash} />
+          )}
         </div>
       </div>
     </div>
@@ -178,7 +180,7 @@ const TxUrlChip = ({ url, label }: { url?: string; label: string }) => {
       className="skt-w text-xs bg-widget-primary text-widget-secondary flex items-center gap-1 flex-nowrap px-2 py-1.5"
       style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
     >
-      {url && !url.match('undefined') ? (
+      {url && !url.match("undefined") ? (
         <a
           href={url}
           target="_blank"

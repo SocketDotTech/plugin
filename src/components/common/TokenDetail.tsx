@@ -1,4 +1,4 @@
-import { Token } from "socket-v2-sdk";
+import { Token } from "@socket.tech/socket-v2-sdk";
 import useMappedChainData from "../../hooks/useMappedChainData";
 import { formatCurrencyAmount } from "../../utils";
 import { Currency } from "../../types";

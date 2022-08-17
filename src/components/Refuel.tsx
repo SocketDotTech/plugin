@@ -33,7 +33,7 @@ export const Refuel = () => {
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
     >
       <div>
-        <p className="skt-w text-sm text-widget-primary font-medium flex items-center">
+        <div className="skt-w text-sm text-widget-primary font-medium flex items-center">
           Enable Refuel
           <Popover
             content="With Refuel, you can swap native tokens on the source chain for native tokens to transact on the destination chain"
@@ -42,7 +42,7 @@ export const Refuel = () => {
           >
             <HelpCircle className="skt-w ml-1.5 w-4 h-4 opacity-70" />
           </Popover>
-        </p>
+        </div>
         <p className="skt-w text-xs text-widget-secondary mt-0.5">
           {destChainId === 1 ? (
             <span className="skt-w text-red-500">

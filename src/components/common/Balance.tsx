@@ -1,6 +1,6 @@
 import { formatCurrencyAmount } from "../../utils";
 import { Spinner } from "./Spinner";
-import { TokenBalanceReponseDTO } from "socket-v2-sdk";
+import { TokenBalanceReponseDTO } from "@socket.tech/socket-v2-sdk";
 
 export const Balance = ({
   token,
