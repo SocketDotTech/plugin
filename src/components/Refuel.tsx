@@ -4,7 +4,8 @@ import { CheckBox } from "./common/CheckBox";
 import { enableRefuel } from "../state/quotesSlice";
 import { CustomizeContext } from "../providers/CustomizeProvider";
 import useMappedChainData from "../hooks/useMappedChainData";
-// import { Info } from "react-feather";
+import { HelpCircle } from "react-feather";
+import { Popover } from "./common/Popover";
 
 export const Refuel = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -28,14 +29,20 @@ export const Refuel = () => {
 
   return (
     <div
-      className="skt-w flex gap-1 bg-widget-secondary py-3 pl-4 pr-3 justify-between mt-6 items-center"
+      className="skt-w flex gap-1 bg-widget-secondary py-3 pl-4 pr-3 justify-between mt-6 items-center relative"
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
     >
       <div>
-        <p className="skt-w text-sm text-widget-primary font-medium flex items-center">
+        <div className="skt-w text-sm text-widget-primary font-medium flex items-center">
           Enable Refuel
-          {/* <Info className="skt-w ml-1.5 w-3.5 h-3.5 opacity-70"/> */}
-        </p>
+          <Popover
+            content="With Refuel, you can swap native tokens on the source chain for native tokens to transact on the destination chain"
+            classNames="-top-14"
+            cursor="cursor-help"
+          >
+            <HelpCircle className="skt-w ml-1.5 w-4 h-4 opacity-70" />
+          </Popover>
+        </div>
         <p className="skt-w text-xs text-widget-secondary mt-0.5">
           {destChainId === 1 ? (
             <span className="skt-w text-red-500">

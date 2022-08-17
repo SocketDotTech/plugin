@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { ActiveRouteResponse } from "socket-v2-sdk";
+import { ActiveRouteResponse } from "@socket.tech/socket-v2-sdk";
 import { CustomizeContext } from "../providers/CustomizeProvider";
 
 // components

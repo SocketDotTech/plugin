@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
-import { SocketTx } from "socket-v2-sdk";
+import { SocketTx } from "@socket.tech/socket-v2-sdk";
 
 // components
 import { Modal } from "../common/Modal";
@@ -62,9 +62,18 @@ export const TxModal = ({ style }) => {
   const [approvalTxData, setApprovalTxData] = useState<any>(null);
   const [userTx, setUserTx] = useState(null);
   const { mutate: mutateActiveRoutes } = useActiveRoutes();
-  const [explorerParams, setExplorerParams] = useState({
-    txHash: "",
-    chainId: "",
+  const [explorerParams, setExplorerParams] = useState<{
+    srcTxHash: string;
+    srcChainId: number;
+    destTxHash?: string;
+    destChainId?: number;
+    destRefuelTxHash?: string;
+  }>({
+    srcTxHash: "",
+    srcChainId: null,
+    destChainId: null,
+    destTxHash: "",
+    destRefuelTxHash: "",
   });
 
   // Function to switch the connected network.
@@ -206,8 +215,8 @@ export const TxModal = ({ style }) => {
       // if tx is of type fund-movr, set bridging loader to true
       if (userTx.userTxType === UserTxType.FUND_MOVR) {
         setExplorerParams({
-          txHash: sendTx.hash,
-          chainId: selectedRoute?.path?.fromToken?.chainId,
+          srcTxHash: sendTx.hash,
+          srcChainId: selectedRoute?.path?.fromToken?.chainId,
         });
         setBridging(true);
       }
@@ -221,18 +230,25 @@ export const TxModal = ({ style }) => {
       } else if (currentStatus === PrepareTxStatus.COMPLETED) {
         setTxCompleted(true);
         setBridging(false);
-        mutateActiveRoutes();
+        mutateActiveRoutes(); // mutating the pending tx list
       }
     } catch (e) {
       const err = e?.data?.message?.toLowerCase() || e.message.toLowerCase();
-      let errMessage: string; 
+      let errMessage: string;
 
       if (err.match("execution reverted: middleware_action_failed")) {
         errMessage =
           "Swap failed due to slippage or low DEX liquidity, please retry or contact support";
-      } else if (err.match("insufficient funds") || err.match("transfer amount exceeds balance")) {
+      } else if (
+        err.match("insufficient funds") ||
+        err.match("transfer amount exceeds balance")
+      ) {
         errMessage = "Insufficient funds";
-      } else if (err.match("execution reverted") || err.match("reverted") || err.match("transaction failed")) {
+      } else if (
+        err.match("execution reverted") ||
+        err.match("reverted") ||
+        err.match("transaction failed")
+      ) {
         errMessage = "Transaction failed, please try again or contact support";
       } else {
         errMessage = `${err} - Please try again or contact support`;
@@ -257,11 +273,21 @@ export const TxModal = ({ style }) => {
   ) => {
     // If the tx is of type 'fund-movr', set bridging to true.
     if (!bridging && txType === UserTxType.FUND_MOVR) {
+      const _currentRoute = activeRoute || selectedRoute?.route;
+      const bridgeTx = _currentRoute?.userTxs?.filter(
+        (x) => x.userTxType === UserTxType.FUND_MOVR
+      )?.[0];
+
       setExplorerParams({
-        txHash: txHash,
-        chainId:
+        srcTxHash: txHash,
+        srcChainId:
           activeRoute?.fromChainId || selectedRoute?.path?.fromToken?.chainId,
+        destChainId:
+          activeRoute?.toChainId || selectedRoute?.path?.toToken?.chainId,
+        destTxHash: bridgeTx?.destinationTxHash,
+        destRefuelTxHash: bridgeTx?.refuelDestinationHash,
       });
+
       setBridging(true);
       setInitiating(false);
     }
@@ -446,6 +472,7 @@ export const TxModal = ({ style }) => {
             currentRoute={currentRoute}
             explorerParams={explorerParams}
             txDetails={txDetails?.[userAddress]?.[activeRoute?.activeRouteId]}
+            refuelEnabled={!!currentRoute?.refuel}
           />
         )}
 

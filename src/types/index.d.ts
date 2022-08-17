@@ -1,5 +1,4 @@
-import { ChainId } from "socket-v2-sdk/lib/src/client/models/ChainId";
-import { UserTxType } from "socket-v2-sdk/lib/src/client/models/UserTxType";
+import { ChainId, UserTxType } from "@socket.tech/socket-v2-sdk";
 
 export interface WidgetProps {
   API_KEY: string;
@@ -25,6 +24,10 @@ export interface WidgetProps {
 
   // To enable only single tx quotes
   singleTxOnly?: boolean;
+
+  // To enable refuel
+  // Refuel feature allows the users to transfer gas tokens across the chains
+  enableRefuel?: boolean;
 
   locale?: string; 
   customize?: Customize;

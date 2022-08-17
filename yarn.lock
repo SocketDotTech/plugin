@@ -1876,6 +1876,17 @@
   resolved "https://registry.npmjs.org/@socket.tech/ll-core/-/ll-core-0.1.14.tgz"
   integrity sha512-6gkUVN/RAoN1ZnjPcq5O9tmyagLXnWFjLDa5G8jz4Y+zFatwr9x345yFPJFHcRB59WfRMYpm2SxrPdpYAJiX8A==
 
+"@socket.tech/socket-v2-sdk@^1.20.0":
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/@socket.tech/socket-v2-sdk/-/socket-v2-sdk-1.20.0.tgz#a80f0465711f9df0c94e0399ea3770015663db3e"
+  integrity sha512-Mc1snZome2OnwHX+hNve+owJHyG+1TOmqz3Yld+ImxeRH8lceSVE8J3cQwGY6JenIv4VFcuQuOI7lCcUxcDcsw==
+  dependencies:
+    "@socket.tech/ll-core" "^0.1.14"
+    axios "^0.27.2"
+    ethers "^5.6.5"
+    form-data "^4.0.0"
+    tslib "^2.4.0"
+
 "@storybook/addon-actions@6.5.9", "@storybook/addon-actions@^6.5.9":
   version "6.5.9"
   resolved "https://registry.npmjs.org/@storybook/addon-actions/-/addon-actions-6.5.9.tgz"
@@ -3750,7 +3761,7 @@ autoprefixer@^9.8.6:
 
 axios@^0.27.2:
   version "0.27.2"
-  resolved "https://registry.npmjs.org/axios/-/axios-0.27.2.tgz"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.27.2.tgz#207658cc8621606e586c85db4b41a750e756d972"
   integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
   dependencies:
     follow-redirects "^1.14.9"
@@ -5907,7 +5918,7 @@ focus-lock@^0.8.0:
 
 follow-redirects@^1.14.9:
   version "1.15.1"
-  resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.1.tgz"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.1.tgz#0ca6a452306c9b276e4d3127483e29575e207ad5"
   integrity sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==
 
 for-in@^1.0.2:
@@ -5966,7 +5977,7 @@ form-data@^3.0.0:
 
 form-data@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.npmjs.org/form-data/-/form-data-4.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.0.tgz#93919daeaf361ee529584b9b31664dc12c9fa452"
   integrity sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==
   dependencies:
     asynckit "^0.4.0"
@@ -10136,17 +10147,6 @@ snapdragon@^0.8.1:
     source-map "^0.5.6"
     source-map-resolve "^0.5.0"
     use "^3.1.0"
-
-socket-v2-sdk@^1.16.0:
-  version "1.16.0"
-  resolved "https://registry.npmjs.org/socket-v2-sdk/-/socket-v2-sdk-1.16.0.tgz"
-  integrity sha512-b6lFM3/4Ds0m7D40o2ZBrBHwz9o+57X3/u/QC7B0wzvIlecmecbbmCFJK/48SNhoS9pyDHN7r/yqHMlfteNSUA==
-  dependencies:
-    "@socket.tech/ll-core" "^0.1.14"
-    axios "^0.27.2"
-    ethers "^5.6.5"
-    form-data "^4.0.0"
-    tslib "^2.4.0"
 
 source-list-map@^2.0.0:
   version "2.0.1"
