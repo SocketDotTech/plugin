@@ -58,6 +58,7 @@ export const TxModal = ({ style }) => {
   const [txInProgress, setTxInProgress] = useState<boolean>(false);
   const [bridging, setBridging] = useState<boolean>(false);
   const [txCompleted, setTxCompleted] = useState<boolean>(false);
+  const [retryEnabled, enableRetry] = useState<boolean>(false);
 
   const [approvalTxData, setApprovalTxData] = useState<any>(null);
   const [userTx, setUserTx] = useState(null);
@@ -170,6 +171,7 @@ export const TxModal = ({ style }) => {
       }
       setInitiating(false);
       setBridging(false);
+      enableRetry(true);
     }
   }
 
@@ -267,6 +269,7 @@ export const TxModal = ({ style }) => {
       dispatch(setError(`${errMessage} ${routeIdString ?? ""}`));
       setBridging(false);
       setTxInProgress(false);
+      enableRetry(true);
     }
   }
 
@@ -322,6 +325,7 @@ export const TxModal = ({ style }) => {
       if (e) dispatch(setError(e.message));
       setBridging(false);
       setInitiating(false);
+      enableRetry(true);
     }
   };
 
@@ -357,6 +361,14 @@ export const TxModal = ({ style }) => {
       dispatch(setActiveRoute(null));
     };
   }, []); // the activeRoute is set before the txModal is opened.
+
+  // Continuing and resetting route when error is caught. 
+  useEffect(() => {
+    if(retryEnabled){
+      continueRoute();
+      enableRetry(false);
+    }
+  }, [retryEnabled])
 
   const refuelSourceToken = {
     amount: !!activeRoute
