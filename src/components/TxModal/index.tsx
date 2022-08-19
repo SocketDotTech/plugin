@@ -225,8 +225,8 @@ export const TxModal = ({ style }) => {
       let currentStatus;
       try {
         currentStatus = await userTx.submit(sendTx.hash);
-      } catch(e){
-        currentStatus = PrepareTxStatus.PENDING
+      } catch (e) {
+        currentStatus = PrepareTxStatus.PENDING;
       }
 
       // If current status is completed mark route as completed else continue the route.
@@ -375,9 +375,19 @@ export const TxModal = ({ style }) => {
       : selectedRoute?.refuel?.toAsset,
   };
 
+  const modalTitle = (
+    <span className="flex items-center gap-1">
+      Bridging transaction{" "}
+      <span className="text-xs text-widget-primary text-opacity-70 font-normal">
+        {currentRoute?.route?.activeRouteId
+          ? ` - #${currentRoute?.route?.activeRouteId}`
+          : ""}
+      </span>
+    </span>
+  );
   return (
     <Modal
-      title="Bridging transaction"
+      title={modalTitle}
       closeModal={closeTxModal}
       disableClose={isApproving || txInProgress}
       style={style}
