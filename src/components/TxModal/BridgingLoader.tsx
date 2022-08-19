@@ -4,7 +4,7 @@ import { ExternalLink } from "react-feather";
 import { ethers } from "ethers";
 
 import useMappedChainData from "../../hooks/useMappedChainData";
-import { getExplorerLink, ExplorerDataType } from "../../utils/";
+import { getExplorerLink, ExplorerDataType, timeInMinutes } from "../../utils/";
 import { UserTxType } from "../../consts/";
 import { TxDetails } from "../../types";
 
@@ -14,7 +14,12 @@ import { TokenDetailsRow } from "../common/TokenDetailsRow";
 import { Stepper } from "../common/Stepper";
 
 // This component is displayed when transaction of type 'fund-movr' (bridging tx) is in progress
-export const BridgingLoader = ({ currentRoute, explorerParams, txDetails, refuelEnabled }) => {
+export const BridgingLoader = ({
+  currentRoute,
+  explorerParams,
+  txDetails,
+  refuelEnabled,
+}) => {
   const mappedChainData = useMappedChainData();
   const [srcTxHash, setSrcTxHash] = useState("");
   const [destTxHash, setDestTxHash] = useState("");
@@ -22,10 +27,6 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails, refuel
   const [bridgeDetails, setBridgeDetails] = useState(null);
   const [showSupportLink, setShowSupportLink] = useState(false);
   const [furtherStepsAvailable, setFurtherStepsAvailable] = useState(false);
-
-  const formatedTime = (time: number) => {
-    return Math.floor(time / 60) + "m";
-  };
 
   useEffect(() => {
     const srcUrl = getExplorerLink(
@@ -149,7 +150,7 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails, refuel
             ) : (
               <span>
                 Estimated wait time is{" "}
-                {formatedTime(bridgeDetails?.serviceTime)}
+                {timeInMinutes(bridgeDetails?.serviceTime)}
                 {furtherStepsAvailable &&
                   ", please come back later to sign the next transaction."}
               </span>

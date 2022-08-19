@@ -222,7 +222,12 @@ export const TxModal = ({ style }) => {
       }
 
       // This checks the status of the transaction. The status can be ready, completed and pending.
-      const currentStatus = await userTx.submit(sendTx.hash);
+      let currentStatus;
+      try {
+        currentStatus = await userTx.submit(sendTx.hash);
+      } catch(e){
+        currentStatus = PrepareTxStatus.PENDING
+      }
 
       // If current status is completed mark route as completed else continue the route.
       if (currentStatus && currentStatus !== PrepareTxStatus.COMPLETED) {
