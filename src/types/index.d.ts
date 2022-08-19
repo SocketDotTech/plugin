@@ -1,5 +1,4 @@
-import { ChainId } from "socket-v2-sdk/lib/src/client/models/ChainId";
-import { UserTxType } from "socket-v2-sdk/lib/src/client/models/UserTxType";
+import { ChainId, UserTxType } from "@socket.tech/socket-v2-sdk";
 
 export interface WidgetProps {
   API_KEY: string;

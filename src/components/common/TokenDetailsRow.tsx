@@ -1,7 +1,7 @@
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { useContext } from "react";
 import { ArrowDown } from "react-feather";
-import { Token } from "socket-v2-sdk";
+import { Token } from "@socket.tech/socket-v2-sdk";
 import { Currency } from "../../types";
 import { TokenDetail } from "./TokenDetail";
 

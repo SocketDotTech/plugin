@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
-import { SocketTx } from "socket-v2-sdk";
+import { SocketTx } from "@socket.tech/socket-v2-sdk";
 
 // components
 import { Modal } from "../common/Modal";
@@ -213,7 +213,12 @@ export const TxModal = ({ style }) => {
       }
 
       // This checks the status of the transaction. The status can be ready, completed and pending.
-      const currentStatus = await userTx.submit(sendTx.hash);
+      let currentStatus;
+      try {
+        currentStatus = await userTx.submit(sendTx.hash);
+      } catch (e) {
+        currentStatus = PrepareTxStatus.PENDING;
+      }
 
       // If current status is completed mark route as completed else continue the route.
       if (currentStatus && currentStatus !== PrepareTxStatus.COMPLETED) {
@@ -225,14 +230,21 @@ export const TxModal = ({ style }) => {
       }
     } catch (e) {
       const err = e?.data?.message?.toLowerCase() || e.message.toLowerCase();
-      let errMessage: string; 
+      let errMessage: string;
 
       if (err.match("execution reverted: middleware_action_failed")) {
         errMessage =
           "Swap failed due to slippage or low DEX liquidity, please retry or contact support";
-      } else if (err.match("insufficient funds") || err.match("transfer amount exceeds balance")) {
+      } else if (
+        err.match("insufficient funds") ||
+        err.match("transfer amount exceeds balance")
+      ) {
         errMessage = "Insufficient funds";
-      } else if (err.match("execution reverted") || err.match("reverted") || err.match("transaction failed")) {
+      } else if (
+        err.match("execution reverted") ||
+        err.match("reverted") ||
+        err.match("transaction failed")
+      ) {
         errMessage = "Transaction failed, please try again or contact support";
       } else {
         errMessage = `${err} - Please try again or contact support`;
