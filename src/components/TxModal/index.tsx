@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
-import { SocketTx } from "socket-v2-sdk";
+import { SocketTx } from "@socket.tech/socket-v2-sdk";
 
 // components
 import { Modal } from "../common/Modal";
@@ -213,7 +213,12 @@ export const TxModal = ({ style }) => {
       }
 
       // This checks the status of the transaction. The status can be ready, completed and pending.
-      const currentStatus = await userTx.submit(sendTx.hash);
+      let currentStatus;
+      try {
+        currentStatus = await userTx.submit(sendTx.hash);
+      } catch (e) {
+        currentStatus = PrepareTxStatus.PENDING;
+      }
 
       // If current status is completed mark route as completed else continue the route.
       if (currentStatus && currentStatus !== PrepareTxStatus.COMPLETED) {
@@ -225,14 +230,21 @@ export const TxModal = ({ style }) => {
       }
     } catch (e) {
       const err = e?.data?.message?.toLowerCase() || e.message.toLowerCase();
-      let errMessage: string; 
+      let errMessage: string;
 
       if (err.match("execution reverted: middleware_action_failed")) {
         errMessage =
           "Swap failed due to slippage or low DEX liquidity, please retry or contact support";
-      } else if (err.match("insufficient funds") || err.match("transfer amount exceeds balance")) {
+      } else if (
+        err.match("insufficient funds") ||
+        err.match("transfer amount exceeds balance")
+      ) {
         errMessage = "Insufficient funds";
-      } else if (err.match("execution reverted") || err.match("reverted") || err.match("transaction failed")) {
+      } else if (
+        err.match("execution reverted") ||
+        err.match("reverted") ||
+        err.match("transaction failed")
+      ) {
         errMessage = "Transaction failed, please try again or contact support";
       } else {
         errMessage = `${err} - Please try again or contact support`;
@@ -347,12 +359,12 @@ export const TxModal = ({ style }) => {
   return (
     <Modal
       title="Bridging transaction"
-      closeModal={isApproving ? null : closeTxModal}
+      closeModal={closeTxModal}
       disableClose={isApproving || txInProgress}
       style={style}
     >
-      <div className="flex flex-col flex-1 overflow-hidden justify-between relative">
-        <div className="flex-1 overflow-y-auto">
+      <div className="skt-w flex flex-col flex-1 overflow-hidden justify-between relative">
+        <div className="skt-w flex-1 overflow-y-auto">
           <TokenDetailsRow
             srcDetails={{
               token: currentRoute?.sourceTokenDetails?.token,
@@ -365,10 +377,10 @@ export const TxModal = ({ style }) => {
             srcRefuel={refuelSourceToken}
             destRefuel={refuelDestToken}
           />
-          <div className="border-b border-widget-secondary" />
+          <div className="skt-w border-b border-widget-secondary" />
 
           {currentRoute?.route?.userTxs?.length > 1 && (
-            <div className="px-3.5 py-3 mt-2">
+            <div className="skt-w px-3.5 py-3 mt-2">
               <Stepper
                 currentTx={
                   userTx?.userTxIndex || activeRoute?.currentUserTxIndex || 0
@@ -378,7 +390,7 @@ export const TxModal = ({ style }) => {
             </div>
           )}
 
-          <div className="px-3 py-3">
+          <div className="skt-w px-3 py-3">
             <TxStepDetails
               activeRoute={currentRoute?.route}
               refuel={currentRoute?.refuel}
@@ -393,7 +405,7 @@ export const TxModal = ({ style }) => {
           </div>
         </div>
 
-        <div className="p-3 shrink-0">
+        <div className="skt-w p-3 shrink-0">
           {!txCompleted && (
             <>
               {userTx && activeChain !== userTx?.chainId ? (

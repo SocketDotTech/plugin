@@ -240,13 +240,19 @@ export const Input = ({
       updateInputAmount(_formattedAmount);
       parseInputAmount(_formattedAmount);
     }
-
     // Condition to leave some native tokens for transaction fee.
     if (sourceToken.address === NATIVE_TOKEN_ADDRESS) {
       // subtracting min gas from the total amount
       const minGas =
         mappedChainData[sourceChainId].currency.minNativeCurrencyForGas;
-      const minGasBN = ethers.BigNumber.from(minGas);
+      let minGasBN;
+      minGasBN = ethers.BigNumber.from(minGas);
+      
+      // In case of ethereum we have divided the value by 1.7
+      if(sourceChainId === 1){
+        minGasBN = minGasBN.mul(17);
+        minGasBN = minGasBN.div(10);
+      } 
       const balanceBN = ethers.BigNumber.from(balance);
 
       if (minGasBN.lt(balanceBN)) {
@@ -261,7 +267,7 @@ export const Input = ({
                 href="https://www.bungee.exchange/refuel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-widget-accent text-medium"
+                className="skt-w skt-w-anchor text-widget-accent text-medium"
               >
                 Refuel
               </a>{" "}
@@ -279,10 +285,10 @@ export const Input = ({
   }, []);
 
   return (
-    <div className="mt-3.5">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <span className="text-widget-secondary text-sm">From</span>
+    <div className="skt-w mt-3.5">
+      <div className="skt-w flex items-center justify-between">
+        <div className="skt-w flex items-center gap-1.5">
+          <span className="skt-w text-widget-secondary text-sm">From</span>
           <ChainSelect
             networks={supportedNetworks}
             activeNetworkId={sourceChainId}

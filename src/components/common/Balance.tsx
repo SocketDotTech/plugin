@@ -1,6 +1,6 @@
 import { formatCurrencyAmount } from "../../utils";
 import { Spinner } from "./Spinner";
-import { TokenBalanceReponseDTO } from "socket-v2-sdk";
+import { TokenBalanceReponseDTO } from "@socket.tech/socket-v2-sdk";
 
 export const Balance = ({
   token,
@@ -19,7 +19,7 @@ export const Balance = ({
   return (
     <button
       disabled={!onClick}
-      className={`text-widget-primary text-opacity-70 text-xs text-right flex items-center gap-1 transition-all ${
+      className={`skt-w skt-w-input skt-w-button text-widget-primary text-opacity-70 text-xs text-right flex items-center gap-1 transition-all ${
         onClick ? "hover:underline" : ""
       }`}
       onClick={onClick}

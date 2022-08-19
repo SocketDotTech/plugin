@@ -66,8 +66,8 @@ export const ReviewModal = ({
       closeModal={showTxDetails ? () => setShowTxDetails(!showTxDetails) : closeModal}
       style={style}
     >
-      <div className="flex flex-col justify-between flex-1 relative">
-        <div className="w-full">
+      <div className="skt-w flex flex-col justify-between flex-1 relative">
+        <div className="skt-w w-full">
           <TokenDetailsRow 
             srcDetails={{token: selectedRoute?.path?.fromToken, amount: selectedRoute?.amount}}
             destDetails={{token: selectedRoute?.path?.toToken, amount: selectedRoute?.route?.toAmount}}
@@ -75,7 +75,7 @@ export const ReviewModal = ({
             destRefuel={refuelDestToken}
           />
 
-          <div className="p-3 flex flex-col gap-3 mt-1">
+          <div className="skt-w p-3 flex flex-col gap-3 mt-1">
             <RouteDetailRow
               label="Bridge Name"
               value={
@@ -100,13 +100,13 @@ export const ReviewModal = ({
             showTxDetails ? `h-full max-h-full` : "h-auto max-h-min"
           }`}
         >
-          <div className="flex-1 flex flex-col overflow-auto">
+          <div className="skt-w flex-1 flex flex-col overflow-auto">
             <button
-              className="flex items-center gap-1.5 text-sm text-widget-secondary mb-3"
+              className="skt-w skt-w-button skt-w-input flex items-center gap-1.5 text-sm text-widget-secondary mb-3"
               onClick={() => setShowTxDetails(!showTxDetails)}
             >
               <ChevronUp
-                className={`w-4 h-4 text-widget-secondary transition-all ${
+                className={`skt-w w-4 h-4 text-widget-secondary transition-all ${
                   showTxDetails ? "rotate-180" : "rotate-0"
                 }`}
               />{" "}
@@ -114,14 +114,14 @@ export const ReviewModal = ({
             </button>
 
             {showTxDetails && (
-              <div className="mb-3 flex-1 overflow-y-auto">
+              <div className="skt-w mb-3 flex-1 overflow-y-auto">
                 <TxStepDetails activeRoute={selectedRoute?.route} forReview refuel={selectedRoute?.refuel}/>
               </div>
             )}
           </div>
 
           <div
-            className={`h-14 transition-all duration-300 flex justify-between items-center border ${
+            className={`skt-w h-14 transition-all duration-300 flex justify-between items-center border ${
               quoteUpdated
                 ? "border-widget-outline p-1 pl-2"
                 : "border-transparent"
@@ -129,7 +129,7 @@ export const ReviewModal = ({
             style={{ borderRadius: `calc(0.875rem * ${borderRadius})` }}
           >
             {quoteUpdated && (
-              <span className="whitespace-nowrap w-full text-widget-secondary text-sm text-left">
+              <span className="skt-w whitespace-nowrap w-full text-widget-secondary text-sm text-left">
                 Quote updated
               </span>
             )}
@@ -149,7 +149,7 @@ export const ReviewModal = ({
 
 const RouteDetailRow = ({ label, value }: { label: string; value: string }) => {
   return (
-    <div className="w-full flex justify-between text-sm text-widget-secondary">
+    <div className="skt-w w-full flex justify-between text-sm text-widget-secondary">
       <span>{label}</span>
       <span>{value}</span>
     </div>

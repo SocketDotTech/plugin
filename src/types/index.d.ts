@@ -1,5 +1,4 @@
-import { ChainId } from "socket-v2-sdk/lib/src/client/models/ChainId";
-import { UserTxType } from "socket-v2-sdk/lib/src/client/models/UserTxType";
+import { ChainId, UserTxType } from "@socket.tech/socket-v2-sdk";
 
 export interface WidgetProps {
   API_KEY: string;
@@ -63,6 +62,9 @@ export interface Customize {
 
   // Outline color - used for lines, borders and icons
   outline?: string;
+
+  // Font family
+  fontFamily?: string;
 }
 
 export interface Network {
@@ -84,12 +86,12 @@ export interface Network {
 export interface Currency {
   address: string;
   decimals: number;
-  icon: string;
+  icon?: string;
   minNativeCurrencyForGas?: string;
   name: string;
   symbol: string;
   chainId?: number;
-  logoURI?: string;
+  logoURI: string;
   chainAgnosticId?: string | null;
 }
 

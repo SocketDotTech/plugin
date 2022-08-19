@@ -4,9 +4,10 @@ import {
   ChainId,
   Routes,
   Socket,
+  SortOptions,
   Supported,
   Token,
-} from "socket-v2-sdk";
+} from "@socket.tech/socket-v2-sdk";
 import { useDispatch, useSelector } from "react-redux";
 import useSWR from "swr";
 
@@ -14,7 +15,6 @@ import { time } from "../consts";
 
 // redux actions
 import { setNetworks } from "../state/networksSlice";
-import { SortOptions } from "socket-v2-sdk/lib/src/client/models/QuoteRequest";
 
 import { Web3Context } from "../providers/Web3Provider";
 

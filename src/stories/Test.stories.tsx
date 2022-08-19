@@ -72,7 +72,7 @@ const Template = (args: WidgetProps) => {
   }, [window.ethereum]);
 
   return (
-    <div className="bg-gray-400 p-10" style={{ height: "calc(100vh - 40px)" }}>
+    <div className="skt-w bg-gray-400 p-10" style={{ height: "calc(100vh - 40px)" }}>
       <p style={{ color: "black" }}>
         User Address : {userAddress}
         <br />
@@ -106,6 +106,7 @@ const Customize = {
   onInteractive: "rgb(240,240,240)",
   text: "rgb(255,255,255)",
   secondaryText: "rgb(200,200,200)",
+  fontFamily: '"Comic Sans MS", cursive'
   // width: 400
 };
 
