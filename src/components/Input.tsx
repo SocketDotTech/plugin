@@ -240,13 +240,19 @@ export const Input = ({
       updateInputAmount(_formattedAmount);
       parseInputAmount(_formattedAmount);
     }
-
     // Condition to leave some native tokens for transaction fee.
     if (sourceToken.address === NATIVE_TOKEN_ADDRESS) {
       // subtracting min gas from the total amount
       const minGas =
         mappedChainData[sourceChainId].currency.minNativeCurrencyForGas;
-      const minGasBN = ethers.BigNumber.from(minGas);
+      let minGasBN;
+      minGasBN = ethers.BigNumber.from(minGas);
+      
+      // In case of ethereum we have divided the value by 1.7
+      if(sourceChainId === 1){
+        minGasBN = minGasBN.mul(17);
+        minGasBN = minGasBN.div(10);
+      } 
       const balanceBN = ethers.BigNumber.from(balance);
 
       if (minGasBN.lt(balanceBN)) {
