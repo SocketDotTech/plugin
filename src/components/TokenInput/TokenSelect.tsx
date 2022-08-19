@@ -109,7 +109,7 @@ export const TokenSelect = (props: Props) => {
         (style, item) =>
           item && (
             <Modal
-              title="Token selector"
+              title="Select Token"
               closeModal={() => setOpenTokenList(false)}
               style={style}
             >
