@@ -24,7 +24,7 @@ export const TokenInput = (props: TokenInputProps) => {
     noTokens = false,
   } = props;
   return (
-    <div className="skt-w flex items-center justify-between mt-2.5 overflow-hidden pb-4">
+    <div className="skt-w flex items-center justify-between mt-2.5 overflow-hidden pb-[1.125rem]">
       <div className="skt-w flex flex-1">
         <div className="stk-w flex flex-col relative">
           <input
