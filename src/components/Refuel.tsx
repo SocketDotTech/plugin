@@ -24,10 +24,7 @@ export const Refuel = () => {
   }, [isChecked]);
 
   useEffect(() => {
-    if (destChainId === 1) {
-      setIsChecked(false);
-      dispatch(enableRefuel(false));
-    } else if (destChainId === sourceChainId) {
+    if (destChainId === 1 || destChainId === sourceChainId) {
       setIsChecked(false);
       dispatch(enableRefuel(false));
     }
