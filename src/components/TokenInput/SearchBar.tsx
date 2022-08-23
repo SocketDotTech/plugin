@@ -15,7 +15,7 @@ export const SearchBar = (props: SearchBarProps) => {
 
   return (
     <div
-      className="skt-w flex items-center px-2 w-full bg-widget-primary border border-widget-secondary text-widget-primary text-sm overflow-hidden focus-within:border-widget-secondary-text relative"
+      className="skt-w flex items-center px-2 w-full bg-widget-primary border border-widget-secondary-text/30 text-widget-primary text-sm overflow-hidden focus-within:border-widget-secondary-text relative"
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
     >
       <Search className="skt-w w-5 h-5 text-widget-secondary mr-2" />
