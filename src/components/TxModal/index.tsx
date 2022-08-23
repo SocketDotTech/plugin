@@ -148,7 +148,8 @@ export const TxModal = ({ style }) => {
     setInitiating(true);
     // in normal flow, txType and activeRouteId  will be passed.
     // when continuing from tx history section, prevTxData from the localStorage will be fetched;
-    const prevTxData = txDetails?.[userAddress]?.[activeRoute?.activeRouteId];
+    let activeRouteToBeUsed = activeRoute?.activeRouteId ?? _activeRouteId;
+    const prevTxData = txDetails?.[userAddress]?.[activeRouteToBeUsed];
     const keysArr = prevTxData && Object.keys(prevTxData);
     const lastStep = prevTxData?.[keysArr?.[keysArr?.length - 1]];
 
@@ -286,6 +287,9 @@ export const TxModal = ({ style }) => {
         (x) => x.userTxType === UserTxType.FUND_MOVR
       )?.[0];
 
+      setBridging(true);
+      setInitiating(false);
+
       setExplorerParams({
         srcTxHash: txHash,
         srcChainId:
@@ -295,9 +299,6 @@ export const TxModal = ({ style }) => {
         destTxHash: bridgeTx?.destinationTxHash,
         destRefuelTxHash: bridgeTx?.refuelDestinationHash,
       });
-
-      setBridging(true);
-      setInitiating(false);
     }
 
     try {
@@ -362,14 +363,6 @@ export const TxModal = ({ style }) => {
     };
   }, []); // the activeRoute is set before the txModal is opened.
 
-  // Continuing and resetting route when error is caught. 
-  useEffect(() => {
-    if(retryEnabled){
-      continueRoute();
-      enableRetry(false);
-    }
-  }, [retryEnabled])
-
   const refuelSourceToken = {
     amount: !!activeRoute
       ? activeRoute?.refuel?.fromAmount
@@ -408,6 +401,14 @@ export const TxModal = ({ style }) => {
 
     setModalTitle(_modalTitle);
   }, [currentRoute, userTx]);
+
+  // To reinitiate the route when an error is caught
+  function reinitiateRoute() {
+    if (!!activeRoute || userTx?.activeRouteId) {
+      continueRoute(null, userTx?.activeRouteId);
+    } else startRoute();
+    enableRetry(false);
+  }
 
   return (
     <Modal
@@ -461,7 +462,9 @@ export const TxModal = ({ style }) => {
         <div className="skt-w p-3 shrink-0">
           {!txCompleted && (
             <>
-              {userTx && activeChain !== userTx?.chainId ? (
+              {retryEnabled ? (
+                <Button onClick={reinitiateRoute}>Retry</Button>
+              ) : userTx && activeChain !== userTx?.chainId ? (
                 <Button onClick={switchNetwork} disabled={initiating}>
                   {initiating
                     ? ButtonTexts.INITIATING
