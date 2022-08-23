@@ -10,6 +10,9 @@ import { Popover } from "./common/Popover";
 export const Refuel = () => {
   const [isChecked, setIsChecked] = useState(false);
   const destChainId = useSelector((state: any) => state.networks.destChainId);
+  const sourceChainId = useSelector(
+    (state: any) => state.networks.sourceChainId
+  );
   const mappedChainData = useMappedChainData();
   const dispatch = useDispatch();
 
@@ -21,7 +24,7 @@ export const Refuel = () => {
   }, [isChecked]);
 
   useEffect(() => {
-    if (destChainId === 1) {
+    if (destChainId === 1 || destChainId === sourceChainId) {
       setIsChecked(false);
       dispatch(enableRefuel(false));
     }
@@ -48,6 +51,10 @@ export const Refuel = () => {
             <span className="skt-w text-red-500">
               Refuel isn't supported on Ethereum
             </span>
+          ) : destChainId === sourceChainId ? (
+            <span className="skt-w text-red-500">
+              Refuel isn't supported for same chain swaps
+            </span>
           ) : (
             `Get Gas for transactions on ${mappedChainData?.[destChainId]?.name}`
           )}
@@ -58,7 +65,7 @@ export const Refuel = () => {
         small
         isChecked={isChecked}
         setIsChecked={setIsChecked}
-        disabled={destChainId === 1}
+        disabled={destChainId === 1 || destChainId === sourceChainId}
       />
     </div>
   );

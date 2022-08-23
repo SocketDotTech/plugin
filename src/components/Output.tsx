@@ -65,14 +65,14 @@ export const Output = ({
   const customDestNetworks = useSelector(
     (state: any) => state.customSettings.destNetworks
   );
-  const customSourceNetworks = useSelector(
-    (state: any) => state.customSettings.sourceNetworks
-  );
   const defaultDestNetwork = useSelector(
     (state: any) => state.customSettings.defaultDestNetwork
   );
   const defaultDestTokenAddress = useSelector(
     (state: any) => state.customSettings.defaultDestToken
+  );
+  const sameChainSwapsEnabled = useSelector(
+    (state: any) => state.customSettings.sameChainSwapsEnabled
   );
 
   // Hack to check if it's the first render
@@ -112,9 +112,15 @@ export const Output = ({
   const [firstNetworkRender, setFirstRenderNetwork] = useState<boolean>(false);
   useEffect(() => {
     if (supportedNetworks?.length) {
-      const networksSubset = supportedNetworks.filter(
-        (x: Network) => x.chainId !== sourceChainId
-      );
+      let networksSubset;
+      if (sameChainSwapsEnabled) {
+        // do not exclude the source chain from dest chain list if same chain swaps are enabled
+        networksSubset = supportedNetworks;
+      } else {
+        networksSubset = supportedNetworks.filter(
+          (x: Network) => x.chainId !== sourceChainId
+        );
+      }
       setSupportedNetworksSubset(networksSubset);
 
       if (firstNetworkRender) {
@@ -145,13 +151,21 @@ export const Output = ({
 
   // To set the tokens on load & when the source token changes
   function fallbackToUSDC() {
-    return (
-      allDestTokens.filter(
-        (x: Currency) =>
-          (x?.chainAgnosticId?.toLowerCase() || x.symbol.toLowerCase()) ===
-          "usdc"
-      )?.[0] ?? allDestTokens[0]
-    );
+    // USDC token
+    const usdc = allDestTokens.filter(
+      (x: Currency) =>
+        (x?.chainAgnosticId?.toLowerCase() || x.symbol.toLowerCase()) === "usdc"
+    )?.[0];
+
+    // If same chains are selected, and if the source token is same as usdc, set the dest token to the first token from the list
+    if (
+      sourceChainId === destChainId &&
+      usdc?.address === sourceToken?.address
+    ) {
+      return allDestTokens[0];
+    }
+
+    return usdc ?? allDestTokens[0];
   }
 
   useEffect(() => {
@@ -173,24 +187,29 @@ export const Output = ({
           _token = fallbackToUSDC();
         }
       } else {
-        // Check if the current dest token exists in the new token list. If yes, retain the same token. Else, change it.
-        const destTokenExists =
-          destToken &&
-          allDestTokens.find(
-            (x: Currency) =>
-              x.address.toLowerCase() === destToken?.address?.toLowerCase()
-          );
-
-        if (!destTokenExists) {
-          // Check if corresponding token is available - This will work only for Socket's token list
-          if (sourceToken.chainAgnosticId) {
-            _token = allDestTokens.filter(
+        if (sourceToken?.address === destToken?.address) {
+          _token = fallbackToUSDC();
+        } else {
+          // Check if the current dest token exists in the new token list. If yes, retain the same token. Else, change it.
+          const destTokenExists =
+            destToken &&
+            allDestTokens.find(
               (x: Currency) =>
-                x?.chainAgnosticId?.toLowerCase() ===
-                sourceToken.chainAgnosticId.toLowerCase()
-            )?.[0];
-          } else {
-            _token = fallbackToUSDC();
+                x.address.toLowerCase() === destToken?.address?.toLowerCase()
+            );
+
+          if (!destTokenExists) {
+            // Check if corresponding token is available - This will work only for Socket's token list
+            if (sourceToken.chainAgnosticId && sourceChainId !== destChainId) {
+              _token =
+                allDestTokens.filter(
+                  (x: Currency) =>
+                    x?.chainAgnosticId?.toLowerCase() ===
+                    sourceToken.chainAgnosticId.toLowerCase()
+                )?.[0] ?? fallbackToUSDC();
+            } else {
+              _token = fallbackToUSDC();
+            }
           }
         }
       }
@@ -225,6 +244,7 @@ export const Output = ({
         activeToken={destToken}
         tokens={allDestTokens}
         noTokens={noTokens}
+        tokenToDisable={sourceChainId === destChainId && sourceToken}
       />
     </div>
   );

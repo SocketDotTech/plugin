@@ -150,11 +150,16 @@ export const RouteDetails = () => {
       return `Not enough ${nativeTokenWithBalance?.symbol} for Refuel (${minReq} required)`;
     }
 
+    const sourceAmount = formatCurrencyAmount(bestRoute?.route?.fromAmount, bestRoute?.path?.fromToken?.decimals);
+    const destAmount = formatCurrencyAmount(bestRoute?.route?.toAmount, bestRoute?.path?.toToken?.decimals);
+    const conversion = Number(destAmount)/Number(sourceAmount);
+    const conversionMessage = `1 ${bestRoute?.path?.fromToken?.symbol} = ${conversion?.toFixed(4)} ${bestRoute?.path?.toToken?.symbol}`;
+
     return shouldFetch
       ? isQuotesLoading
         ? QuoteStatus.FETCHING_QUOTE
         : bestRoute
-        ? bridgeName
+        ? bridgeName ?? conversionMessage
         : QuoteStatus.NO_ROUTES_AVAILABLE
       : QuoteStatus.ENTER_AMOUNT;
   }

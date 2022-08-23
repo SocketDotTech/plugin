@@ -11,10 +11,11 @@ interface Props {
   activeToken: Currency;
   updateToken: (token: Currency) => void;
   tokens: Currency[];
+  tokenToDisable?: Currency;
 }
 
 export const TokenSelect = (props: Props) => {
-  const { activeToken, updateToken, tokens } = props;
+  const { activeToken, updateToken, tokens, tokenToDisable} = props;
   const [openTokenList, setOpenTokenList] = useState<boolean>(false);
   const [filteredTokens, setFilteredTokens] = useState(null);
   const customSettings = useContext(CustomizeContext);
@@ -117,10 +118,11 @@ export const TokenSelect = (props: Props) => {
                 {filteredTokens?.map((token: Currency) => {
                   return (
                     <button
-                      className="skt-w skt-w-input skt-w-button flex hover:bg-widget-secondary items-center p-2 w-full justify-between"
+                      className="skt-w skt-w-input skt-w-button flex hover:bg-widget-secondary items-center p-2 w-full justify-between disabled:opacity-60 disabled:pointer-events-none"
                       onClick={() => selectToken(token)}
                       key={token?.address}
                       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
+                      disabled={tokenToDisable?.address === token?.address}
                     >
                       <div className="skt-w flex items-center">
                         <img

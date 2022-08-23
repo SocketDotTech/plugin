@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useContext, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import { SocketTx } from "@socket.tech/socket-v2-sdk";
 
 // components
@@ -387,16 +387,28 @@ export const TxModal = ({ style }) => {
       : selectedRoute?.refuel?.toAsset,
   };
 
-  const modalTitle = (
-    <span className="flex items-center gap-1">
-      Bridging transaction{" "}
-      <span className="text-xs text-widget-primary text-opacity-70 font-normal">
-        {currentRoute?.route?.activeRouteId
-          ? ` - #${currentRoute?.route?.activeRouteId}`
-          : ""}
+  const [modalTitle, setModalTitle] = useState<ReactElement>(null);
+  useEffect(() => {
+    const isSameChainSwap =
+      currentRoute?.sourceTokenDetails?.token?.chainId ===
+      currentRoute?.destTokenDetails?.token?.chainId;
+
+    const _modalTitle = (
+      <span className="flex items-center gap-1">
+        {isSameChainSwap ? "Swap" : "Bridging"} transaction{" "}
+        <span className="text-xs text-widget-primary text-opacity-70 font-normal">
+          {currentRoute?.route?.activeRouteId
+            ? ` - #${currentRoute?.route?.activeRouteId}`
+            : userTx?.activeRouteId
+            ? ` - #${userTx?.activeRouteId}`
+            : ""}
+        </span>
       </span>
-    </span>
-  );
+    );
+
+    setModalTitle(_modalTitle);
+  }, [currentRoute, userTx]);
+
   return (
     <Modal
       title={modalTitle}
