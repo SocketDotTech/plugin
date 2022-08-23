@@ -1,11 +1,12 @@
 import { useAllTokenBalances } from "../../hooks/apis";
 import { Currency } from "../../types";
-import { useContext, useEffect } from "react";
+import { createRef, useContext, useEffect } from "react";
 import { useState } from "react";
 import { ChevronDown } from "react-feather";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Modal } from "../common/Modal";
 import { useTransition } from "@react-spring/web";
+import { SearchBar } from "./SearchBar";
 
 interface Props {
   activeToken: Currency;
@@ -15,9 +16,10 @@ interface Props {
 }
 
 export const TokenSelect = (props: Props) => {
-  const { activeToken, updateToken, tokens, tokenToDisable} = props;
+  const { activeToken, updateToken, tokens, tokenToDisable } = props;
   const [openTokenList, setOpenTokenList] = useState<boolean>(false);
   const [filteredTokens, setFilteredTokens] = useState(null);
+  const [displayTokens, setDisplayTokens] = useState(null);
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
 
@@ -85,7 +87,24 @@ export const TokenSelect = (props: Props) => {
       restTokens && [...sortedTokens, ...restTokens];
 
     setFilteredTokens(_filteredTokens);
+    setDisplayTokens(_filteredTokens);
   }, [tokens, tokensWithBalances]);
+
+  const searchInputRef = createRef<HTMLInputElement>();
+  const [searchInput, setSearchInput] = useState<string>("");
+
+  function handleSearchInput(searchKeyword) {
+    setSearchInput(searchKeyword);
+  }
+
+  useEffect(() => {
+    const _filteredTokens = filteredTokens?.filter(
+      (x: Currency) =>
+        x?.symbol?.toLowerCase()?.includes(searchInput) ||
+        x?.address?.toLowerCase()?.includes(searchInput)
+    );
+    setDisplayTokens(_filteredTokens);
+  }, [searchInput]);
 
   return (
     <div>
@@ -111,11 +130,22 @@ export const TokenSelect = (props: Props) => {
           item && (
             <Modal
               title="Select Token"
-              closeModal={() => setOpenTokenList(false)}
+              closeModal={() => {
+                setOpenTokenList(false);
+                handleSearchInput("");
+              }}
               style={style}
             >
+              <div className="skt-w px-1.5 pt-2 mb-2">
+                <SearchBar
+                  searchInput={searchInput}
+                  setSearchInput={setSearchInput}
+                  handleInput={(e) => handleSearchInput(e)}
+                  ref={searchInputRef}
+                />
+              </div>
               <div className="skt-w h-full overflow-y-auto p-1.5">
-                {filteredTokens?.map((token: Currency) => {
+                {displayTokens?.map((token: Currency) => {
                   return (
                     <button
                       className="skt-w skt-w-input skt-w-button flex hover:bg-widget-secondary items-center p-2 w-full justify-between disabled:opacity-60 disabled:pointer-events-none"
@@ -131,7 +161,9 @@ export const TokenSelect = (props: Props) => {
                         />
                         <div className="skt-w flex flex-col items-start ml-2 text-widget-secondary">
                           <span className="skt-w text-sm">{token?.symbol}</span>
-                          <span className="skt-w text-xs -mt-0.5">{token?.name}</span>
+                          <span className="skt-w text-xs -mt-0.5">
+                            {token?.name}
+                          </span>
                         </div>
                       </div>
                       <span className="skt-w text-widget-secondary text-xs text-right font-medium">
