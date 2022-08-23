@@ -1,4 +1,4 @@
-import React, { SetStateAction, useContext } from "react";
+import { SetStateAction, useContext } from "react";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Search, XCircle } from "react-feather";
 
@@ -8,7 +8,7 @@ interface SearchBarProps {
   setSearchInput: React.Dispatch<SetStateAction<string>>;
 }
 
-export const SearchBar = React.forwardRef((props: SearchBarProps, ref: any) => {
+export const SearchBar = (props: SearchBarProps) => {
   const { handleInput, searchInput, setSearchInput } = props;
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
@@ -23,7 +23,6 @@ export const SearchBar = React.forwardRef((props: SearchBarProps, ref: any) => {
         onChange={(e) => handleInput(e.target.value)}
         placeholder="Search Name or Address"
         className="stk-w skt-w-input w-full border-none py-2 bg-transparent"
-        ref={ref}
         role="search"
         value={searchInput}
         spellCheck={false}
@@ -40,4 +39,4 @@ export const SearchBar = React.forwardRef((props: SearchBarProps, ref: any) => {
       )}
     </div>
   );
-});
+};

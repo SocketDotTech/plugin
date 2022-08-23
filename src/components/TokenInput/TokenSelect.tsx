@@ -1,6 +1,6 @@
 import { useAllTokenBalances } from "../../hooks/apis";
 import { Currency } from "../../types";
-import { createRef, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { ChevronDown } from "react-feather";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
@@ -90,7 +90,6 @@ export const TokenSelect = (props: Props) => {
     setDisplayTokens(_filteredTokens);
   }, [tokens, tokensWithBalances]);
 
-  const searchInputRef = createRef<HTMLInputElement>();
   const [searchInput, setSearchInput] = useState<string>("");
 
   function handleSearchInput(searchKeyword) {
@@ -141,7 +140,6 @@ export const TokenSelect = (props: Props) => {
                   searchInput={searchInput}
                   setSearchInput={setSearchInput}
                   handleInput={(e) => handleSearchInput(e)}
-                  ref={searchInputRef}
                 />
               </div>
               <div className="skt-w h-full overflow-y-auto p-1.5">
