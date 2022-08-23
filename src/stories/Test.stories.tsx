@@ -116,6 +116,7 @@ export const Default = Template.bind({});
 Default.args = {
   API_KEY: SOCKET_API_KEY,
   customize: Customize,
+  enableSameChainSwaps: true,
   // enableRefuel: true,
   // tokenList: MY_LIST,
   // tokenList: UNISWAP_DEFAULT_LIST,

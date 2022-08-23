@@ -97,7 +97,7 @@ export const Widget = (props: WidgetProps) => {
       className="skt-w skt-w-container bg-widget-primary p-1 overflow-hidden relative"
     >
       <div className="skt-w p-3 pt-2.5 pb-3.5">
-        <Header title="Bridge">
+        <Header title={props.enableSameChainSwaps ? 'Bridge & Swap' : 'Bridge'}>
           <div className="skt-w flex items-center gap-3">
             {!props?.provider ? (
               <span className="skt-w text-sm text-widget-secondary flex items-center">
