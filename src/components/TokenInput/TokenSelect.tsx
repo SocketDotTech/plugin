@@ -99,8 +99,8 @@ export const TokenSelect = (props: Props) => {
   useEffect(() => {
     const _filteredTokens = filteredTokens?.filter(
       (x: Currency) =>
-        x?.symbol?.toLowerCase()?.includes(searchInput) ||
-        x?.address?.toLowerCase()?.includes(searchInput)
+        x?.symbol?.toLowerCase()?.includes(searchInput.toLowerCase()) ||
+        x?.address?.toLowerCase() === searchInput.toLowerCase()
     );
     setDisplayTokens(_filteredTokens);
   }, [searchInput]);
