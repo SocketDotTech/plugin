@@ -8,6 +8,7 @@ import {
   setDefaultSourceNetwork,
   setDefaultSourceToken,
   setDefaultDestToken,
+  setSameChainSwaps,
 } from "../state/customSettingsSlice";
 import { formatRGB } from "../utils";
 
@@ -21,33 +22,20 @@ export const useCustomSettings = (props: WidgetProps) => {
     defaultSourceToken,
     defaultDestToken,
     customize,
+    enableSameChainSwaps,
   } = props;
   const dispatch = useDispatch();
 
   useEffect(() => {
     sourceNetworks && dispatch(setCustomSourceNetworks(sourceNetworks));
-  }, [sourceNetworks]);
-
-  useEffect(() => {
     destNetworks && dispatch(setCustomDestNetworks(destNetworks));
-  }, [destNetworks]);
-
-  useEffect(() => {
     defaultSourceNetwork &&
       dispatch(setDefaultSourceNetwork(defaultSourceNetwork));
-  }, [defaultSourceNetwork]);
-
-  useEffect(() => {
     defaultDestNetwork && dispatch(setDefaultDestNetwork(defaultDestNetwork));
-  }, [defaultDestNetwork]);
-
-  useEffect(() => {
     defaultSourceToken && dispatch(setDefaultSourceToken(defaultSourceToken));
-  }, [defaultSourceToken]);
-
-  useEffect(() => {
     defaultDestToken && dispatch(setDefaultDestToken(defaultDestToken));
-  }, [defaultDestToken]);
+    dispatch(setSameChainSwaps(enableSameChainSwaps));
+  }, [props]);
 
   // Theme
   useEffect(() => {

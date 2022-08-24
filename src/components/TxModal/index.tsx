@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useContext, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import { SocketTx } from "@socket.tech/socket-v2-sdk";
 
 // components
@@ -58,6 +58,7 @@ export const TxModal = ({ style }) => {
   const [txInProgress, setTxInProgress] = useState<boolean>(false);
   const [bridging, setBridging] = useState<boolean>(false);
   const [txCompleted, setTxCompleted] = useState<boolean>(false);
+  const [retryEnabled, enableRetry] = useState<boolean>(false);
 
   const [approvalTxData, setApprovalTxData] = useState<any>(null);
   const [userTx, setUserTx] = useState(null);
@@ -147,7 +148,8 @@ export const TxModal = ({ style }) => {
     setInitiating(true);
     // in normal flow, txType and activeRouteId  will be passed.
     // when continuing from tx history section, prevTxData from the localStorage will be fetched;
-    const prevTxData = txDetails?.[userAddress]?.[activeRoute?.activeRouteId];
+    let activeRouteToBeUsed = activeRoute?.activeRouteId ?? _activeRouteId;
+    const prevTxData = txDetails?.[userAddress]?.[activeRouteToBeUsed];
     const keysArr = prevTxData && Object.keys(prevTxData);
     const lastStep = prevTxData?.[keysArr?.[keysArr?.length - 1]];
 
@@ -170,6 +172,7 @@ export const TxModal = ({ style }) => {
       }
       setInitiating(false);
       setBridging(false);
+      enableRetry(true);
     }
   }
 
@@ -267,6 +270,7 @@ export const TxModal = ({ style }) => {
       dispatch(setError(`${errMessage} ${routeIdString ?? ""}`));
       setBridging(false);
       setTxInProgress(false);
+      enableRetry(true);
     }
   }
 
@@ -283,6 +287,9 @@ export const TxModal = ({ style }) => {
         (x) => x.userTxType === UserTxType.FUND_MOVR
       )?.[0];
 
+      setBridging(true);
+      setInitiating(false);
+
       setExplorerParams({
         srcTxHash: txHash,
         srcChainId:
@@ -292,9 +299,6 @@ export const TxModal = ({ style }) => {
         destTxHash: bridgeTx?.destinationTxHash,
         destRefuelTxHash: bridgeTx?.refuelDestinationHash,
       });
-
-      setBridging(true);
-      setInitiating(false);
     }
 
     try {
@@ -322,6 +326,7 @@ export const TxModal = ({ style }) => {
       if (e) dispatch(setError(e.message));
       setBridging(false);
       setInitiating(false);
+      enableRetry(true);
     }
   };
 
@@ -375,16 +380,36 @@ export const TxModal = ({ style }) => {
       : selectedRoute?.refuel?.toAsset,
   };
 
-  const modalTitle = (
-    <span className="flex items-center gap-1">
-      Bridging transaction{" "}
-      <span className="text-xs text-widget-primary text-opacity-70 font-normal">
-        {currentRoute?.route?.activeRouteId
-          ? ` - #${currentRoute?.route?.activeRouteId}`
-          : ""}
+  const [modalTitle, setModalTitle] = useState<ReactElement>(null);
+  useEffect(() => {
+    const isSameChainSwap =
+      currentRoute?.sourceTokenDetails?.token?.chainId ===
+      currentRoute?.destTokenDetails?.token?.chainId;
+
+    const _modalTitle = (
+      <span className="flex items-center gap-1">
+        {isSameChainSwap ? "Swap" : "Bridging"} transaction{" "}
+        <span className="text-xs text-widget-primary text-opacity-70 font-normal">
+          {currentRoute?.route?.activeRouteId
+            ? ` - #${currentRoute?.route?.activeRouteId}`
+            : userTx?.activeRouteId
+            ? ` - #${userTx?.activeRouteId}`
+            : ""}
+        </span>
       </span>
-    </span>
-  );
+    );
+
+    setModalTitle(_modalTitle);
+  }, [currentRoute, userTx]);
+
+  // To reinitiate the route when an error is caught
+  function reinitiateRoute() {
+    if (!!activeRoute || userTx?.activeRouteId) {
+      continueRoute(null, userTx?.activeRouteId);
+    } else startRoute();
+    enableRetry(false);
+  }
+
   return (
     <Modal
       title={modalTitle}
@@ -437,7 +462,9 @@ export const TxModal = ({ style }) => {
         <div className="skt-w p-3 shrink-0">
           {!txCompleted && (
             <>
-              {userTx && activeChain !== userTx?.chainId ? (
+              {retryEnabled ? (
+                <Button onClick={reinitiateRoute}>Retry</Button>
+              ) : userTx && activeChain !== userTx?.chainId ? (
                 <Button onClick={switchNetwork} disabled={initiating}>
                   {initiating
                     ? ButtonTexts.INITIATING

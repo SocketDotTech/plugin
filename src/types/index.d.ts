@@ -29,6 +29,9 @@ export interface WidgetProps {
   // Refuel feature allows the users to transfer gas tokens across the chains
   enableRefuel?: boolean;
 
+  // To enable same chain swaps
+  enableSameChainSwaps?: boolean;
+
   locale?: string; 
   customize?: Customize;
 }

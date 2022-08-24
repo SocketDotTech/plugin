@@ -39,10 +39,10 @@ export const useTokenList = (customTokenList?: string | Currency[]) => {
         toChainId: destChainId,
       });
 
-      // Converting the response into standard token list formate
+      // Converting the response into standard token list format
       const standardTokenList = {
         name: "Socket Default",
-        tokens: [..._tokens?.from?.tokens, ..._tokens?.to?.tokens],
+        tokens: sourceChainId === destChainId ? [..._tokens?.to?.tokens] : [..._tokens?.from?.tokens, ..._tokens?.to?.tokens],
       };
       return standardTokenList;
     } catch (e) {
