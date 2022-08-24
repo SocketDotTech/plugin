@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { ChainId, UserTxType } from "@socket.tech/socket-v2-sdk";
 
 export interface WidgetProps {
@@ -28,8 +29,8 @@ export interface WidgetProps {
   // To enable refuel
   // Refuel feature allows the users to transfer gas tokens across the chains
   enableRefuel?: boolean;
-
-  locale?: string; 
+  locale?: string;
+  title?: ReactNode | string;
   customize?: Customize;
 }
 
