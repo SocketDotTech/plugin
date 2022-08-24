@@ -3,6 +3,7 @@ import {
   Balances,
   ChainId,
   Routes,
+  Server,
   Socket,
   SortOptions,
   Supported,
@@ -71,6 +72,29 @@ export const useActiveRoutes = () => {
   return {
     data: data,
     isQuotesLoading: userAddress && ((!data && !error) || isValidating),
+    mutate,
+  };
+};
+
+// Function to get current activeRoute details
+export const useCurrentActiveRoute = (activeRouteId) => {
+  async function fetchActiveRouteDetails(_activeRouteId: number) {
+    const result = await Routes.getActiveRoute({
+      activeRouteId: _activeRouteId,
+    });
+    return result;
+  }
+
+  const { data, error, isValidating, mutate } = useSWR(
+    activeRouteId ? [activeRouteId, "current-active-route"] : null,
+    fetchActiveRouteDetails,
+    {
+      refreshInterval: time.ACTIVE_ROUTES_REFRESH * 1000
+    }
+  );
+
+  return {
+    data: data,
     mutate,
   };
 };
@@ -196,5 +220,22 @@ export const useAllTokenBalances = () => {
   return {
     data: data?.result,
     isLoading: userAddress && ((!error && !data) || isValidating),
+  };
+};
+
+// for gas price
+export const useGasPrice = (chainId) => {
+  async function checkGasPrice(_chainId: number) {
+    const gasPrice = await Server.getGasPrice({ chainId: _chainId });
+    return gasPrice;
+  }
+
+  const { data, error, isValidating } = useSWR(
+    chainId ? [chainId, "gas price"] : null,
+    checkGasPrice
+  );
+
+  return {
+    data: data?.result,
   };
 };

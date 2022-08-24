@@ -25,6 +25,13 @@ export interface WidgetProps {
   // To enable only single tx quotes
   singleTxOnly?: boolean;
 
+  // To enable refuel
+  // Refuel feature allows the users to transfer gas tokens across the chains
+  enableRefuel?: boolean;
+
+  // To enable same chain swaps
+  enableSameChainSwaps?: boolean;
+
   locale?: string; 
   customize?: Customize;
 }

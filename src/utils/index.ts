@@ -122,3 +122,7 @@ export function formatRGB(color: string) {
 export function filterTokensByChain(tokens: Currency[], chainId: number) {
   return tokens.filter((x: Currency) => x.chainId === chainId);
 }
+
+export const timeInMinutes = (time: number) => {
+  return Math.floor(time / 60) + "m";
+};

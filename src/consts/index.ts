@@ -56,6 +56,7 @@ export enum QuoteStatus {
 }
 
 export enum ButtonTexts {
+  NOT_ENOUGH_NATIVE_BALANCE = "Native token not enough",
   NOT_ENOUGH_BALANCE = 'Not enough balance',
   REVIEW_QUOTE = 'Review Quote',
   CHECKING_APPROVAL = 'Checking approval',

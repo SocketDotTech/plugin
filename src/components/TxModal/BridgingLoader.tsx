@@ -4,7 +4,7 @@ import { ExternalLink } from "react-feather";
 import { ethers } from "ethers";
 
 import useMappedChainData from "../../hooks/useMappedChainData";
-import { getExplorerLink, ExplorerDataType } from "../../utils/";
+import { getExplorerLink, ExplorerDataType, timeInMinutes } from "../../utils/";
 import { UserTxType } from "../../consts/";
 import { TxDetails } from "../../types";
 
@@ -14,26 +14,43 @@ import { TokenDetailsRow } from "../common/TokenDetailsRow";
 import { Stepper } from "../common/Stepper";
 
 // This component is displayed when transaction of type 'fund-movr' (bridging tx) is in progress
-export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
+export const BridgingLoader = ({
+  currentRoute,
+  explorerParams,
+  txDetails,
+  refuelEnabled,
+}) => {
   const mappedChainData = useMappedChainData();
-  const [url, setUrl] = useState("");
+  const [srcTxHash, setSrcTxHash] = useState("");
+  const [destTxHash, setDestTxHash] = useState("");
+  const [destRefuelTxHash, setDestRefuelTxHash] = useState("");
   const [bridgeDetails, setBridgeDetails] = useState(null);
   const [showSupportLink, setShowSupportLink] = useState(false);
   const [furtherStepsAvailable, setFurtherStepsAvailable] = useState(false);
 
-  const formatedTime = (time: number) => {
-    return Math.floor(time / 60) + "m";
-  };
-
   useEffect(() => {
-    const url = getExplorerLink(
-      mappedChainData?.[explorerParams.chainId]?.explorers[0],
-      explorerParams.txHash,
+    const srcUrl = getExplorerLink(
+      mappedChainData?.[explorerParams.srcChainId]?.explorers[0],
+      explorerParams.srcTxHash,
       ExplorerDataType.TRANSACTION
     );
 
-    setUrl(url);
-  }, [mappedChainData]);
+    const destUrl = getExplorerLink(
+      mappedChainData?.[explorerParams.destChainId]?.explorers[0],
+      explorerParams.destTxHash,
+      ExplorerDataType.TRANSACTION
+    );
+
+    const destRefuelUrl = getExplorerLink(
+      mappedChainData?.[explorerParams.destRefuelTxHash]?.explorers[0],
+      explorerParams.destRefuelTxHash,
+      ExplorerDataType.TRANSACTION
+    );
+
+    setSrcTxHash(srcUrl);
+    setDestTxHash(destUrl);
+    setDestRefuelTxHash(destRefuelUrl);
+  }, [mappedChainData, explorerParams]);
 
   // To set the bridge name, service time and discord url
   useEffect(() => {
@@ -111,13 +128,13 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
           />
         </div>
       )}
-      <div className="skt-w flex gap-3 flex-col items-center my-auto pb-3">
+      <div className="skt-w flex gap-4 flex-col items-center my-auto pb-3">
         <Spinner size={10} />
         <div>
-          <p className="skt-w text-sm text-widget-primary mb-1 font-medium text-center">
-            Bridging via {bridgeDetails?.protocol?.displayName} in progress
+          <p className="skt-w text-sm text-widget-primary mb-2 font-medium text-center">
+            Bridging in progress
           </p>
-          <p className="skt-w text-sm font-normal text-widget-secondary mb-4 text-center px-3">
+          <p className="skt-w text-xs font-normal text-widget-secondary mb-3 text-center px-3">
             {showSupportLink ? (
               <span>
                 Get in touch for support on{" "}
@@ -131,9 +148,9 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
                 </a>
               </span>
             ) : (
-              <span className="text-xs">
+              <span>
                 Estimated wait time is{" "}
-                {formatedTime(bridgeDetails?.serviceTime)}
+                {timeInMinutes(bridgeDetails?.serviceTime)}
                 {furtherStepsAvailable &&
                   ", please come back later to sign the next transaction."}
               </span>
@@ -141,9 +158,15 @@ export const BridgingLoader = ({ currentRoute, explorerParams, txDetails }) => {
           </p>
         </div>
 
-        <div className="skt-w flex gap-4">
-          <TxUrlChip label="Source tx" url={url} />
-          <TxUrlChip label="Destination tx" />
+        <div className="skt-w flex flex-col gap-3.5 items-center">
+          <TxRow
+            title={`Bridging via ${bridgeDetails?.protocol?.displayName}`}
+            srcUrl={srcTxHash}
+            destUrl={destTxHash}
+          />
+          {!!refuelEnabled && (
+            <TxRow title="Refuel" destUrl={destRefuelTxHash} />
+          )}
         </div>
       </div>
     </div>
@@ -155,23 +178,44 @@ const TxUrlChip = ({ url, label }: { url?: string; label: string }) => {
   const { borderRadius } = customSettings.customization;
   return (
     <span
-      className="skt-w text-xs bg-widget-secondary text-widget-secondary flex items-center gap-1 flex-nowrap px-2 py-0.5"
+      className="skt-w text-xs bg-widget-primary text-widget-secondary flex items-center gap-1 flex-nowrap px-2 py-1.5"
       style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
     >
-      {url ? (
+      {url && !url.match("undefined") ? (
         <a
           href={url}
           target="_blank"
           rel="noopener noreferrer"
           className="skt-w skt-w-anchor flex items-center gap-1 hover:underline"
         >
-          {label} <ExternalLink className="skt-w text-widget-secondary w-3" />
+          {label}{" "}
+          <ExternalLink className="skt-w text-widget-secondary w-3 h-auto" />
         </a>
       ) : (
-        <>
+        <span className="skt-w flex items-center gap-1 h-auto">
           {label} <Spinner size={3} />
-        </>
+        </span>
       )}
     </span>
+  );
+};
+
+const TxRow = ({
+  title,
+  srcUrl,
+  destUrl,
+}: {
+  title: string;
+  srcUrl?: string;
+  destUrl?: string;
+}) => {
+  return (
+    <div className="skw-w flex items-center pl-2.5 p-0.5 rounded-full bg-widget-secondary border border-widget-secondary">
+      <span className="skt-w text-white text-xs pr-2">{title}</span>
+      <div className="skt-w flex items-center gap-0.5">
+        {!!srcUrl && <TxUrlChip label="Src tx" url={srcUrl} />}
+        <TxUrlChip label="Dest tx" url={destUrl || null} />
+      </div>
+    </div>
   );
 };

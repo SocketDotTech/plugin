@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useContext, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import { SocketTx } from "@socket.tech/socket-v2-sdk";
 
 // components
@@ -58,13 +58,23 @@ export const TxModal = ({ style }) => {
   const [txInProgress, setTxInProgress] = useState<boolean>(false);
   const [bridging, setBridging] = useState<boolean>(false);
   const [txCompleted, setTxCompleted] = useState<boolean>(false);
+  const [retryEnabled, enableRetry] = useState<boolean>(false);
 
   const [approvalTxData, setApprovalTxData] = useState<any>(null);
   const [userTx, setUserTx] = useState(null);
   const { mutate: mutateActiveRoutes } = useActiveRoutes();
-  const [explorerParams, setExplorerParams] = useState({
-    txHash: "",
-    chainId: "",
+  const [explorerParams, setExplorerParams] = useState<{
+    srcTxHash: string;
+    srcChainId: number;
+    destTxHash?: string;
+    destChainId?: number;
+    destRefuelTxHash?: string;
+  }>({
+    srcTxHash: "",
+    srcChainId: null,
+    destChainId: null,
+    destTxHash: "",
+    destRefuelTxHash: "",
   });
 
   // Function to switch the connected network.
@@ -138,7 +148,8 @@ export const TxModal = ({ style }) => {
     setInitiating(true);
     // in normal flow, txType and activeRouteId  will be passed.
     // when continuing from tx history section, prevTxData from the localStorage will be fetched;
-    const prevTxData = txDetails?.[userAddress]?.[activeRoute?.activeRouteId];
+    let activeRouteToBeUsed = activeRoute?.activeRouteId ?? _activeRouteId;
+    const prevTxData = txDetails?.[userAddress]?.[activeRouteToBeUsed];
     const keysArr = prevTxData && Object.keys(prevTxData);
     const lastStep = prevTxData?.[keysArr?.[keysArr?.length - 1]];
 
@@ -161,6 +172,7 @@ export const TxModal = ({ style }) => {
       }
       setInitiating(false);
       setBridging(false);
+      enableRetry(true);
     }
   }
 
@@ -206,8 +218,8 @@ export const TxModal = ({ style }) => {
       // if tx is of type fund-movr, set bridging loader to true
       if (userTx.userTxType === UserTxType.FUND_MOVR) {
         setExplorerParams({
-          txHash: sendTx.hash,
-          chainId: selectedRoute?.path?.fromToken?.chainId,
+          srcTxHash: sendTx.hash,
+          srcChainId: selectedRoute?.path?.fromToken?.chainId,
         });
         setBridging(true);
       }
@@ -226,7 +238,7 @@ export const TxModal = ({ style }) => {
       } else if (currentStatus === PrepareTxStatus.COMPLETED) {
         setTxCompleted(true);
         setBridging(false);
-        mutateActiveRoutes();
+        mutateActiveRoutes(); // mutating the pending tx list
       }
     } catch (e) {
       const err = e?.data?.message?.toLowerCase() || e.message.toLowerCase();
@@ -258,6 +270,7 @@ export const TxModal = ({ style }) => {
       dispatch(setError(`${errMessage} ${routeIdString ?? ""}`));
       setBridging(false);
       setTxInProgress(false);
+      enableRetry(true);
     }
   }
 
@@ -269,13 +282,23 @@ export const TxModal = ({ style }) => {
   ) => {
     // If the tx is of type 'fund-movr', set bridging to true.
     if (!bridging && txType === UserTxType.FUND_MOVR) {
-      setExplorerParams({
-        txHash: txHash,
-        chainId:
-          activeRoute?.fromChainId || selectedRoute?.path?.fromToken?.chainId,
-      });
+      const _currentRoute = activeRoute || selectedRoute?.route;
+      const bridgeTx = _currentRoute?.userTxs?.filter(
+        (x) => x.userTxType === UserTxType.FUND_MOVR
+      )?.[0];
+
       setBridging(true);
       setInitiating(false);
+
+      setExplorerParams({
+        srcTxHash: txHash,
+        srcChainId:
+          activeRoute?.fromChainId || selectedRoute?.path?.fromToken?.chainId,
+        destChainId:
+          activeRoute?.toChainId || selectedRoute?.path?.toToken?.chainId,
+        destTxHash: bridgeTx?.destinationTxHash,
+        destRefuelTxHash: bridgeTx?.refuelDestinationHash,
+      });
     }
 
     try {
@@ -303,6 +326,7 @@ export const TxModal = ({ style }) => {
       if (e) dispatch(setError(e.message));
       setBridging(false);
       setInitiating(false);
+      enableRetry(true);
     }
   };
 
@@ -356,9 +380,39 @@ export const TxModal = ({ style }) => {
       : selectedRoute?.refuel?.toAsset,
   };
 
+  const [modalTitle, setModalTitle] = useState<ReactElement>(null);
+  useEffect(() => {
+    const isSameChainSwap =
+      currentRoute?.sourceTokenDetails?.token?.chainId ===
+      currentRoute?.destTokenDetails?.token?.chainId;
+
+    const _modalTitle = (
+      <span className="flex items-center gap-1">
+        {isSameChainSwap ? "Swap" : "Bridging"} transaction{" "}
+        <span className="text-xs text-widget-primary text-opacity-70 font-normal">
+          {currentRoute?.route?.activeRouteId
+            ? ` - #${currentRoute?.route?.activeRouteId}`
+            : userTx?.activeRouteId
+            ? ` - #${userTx?.activeRouteId}`
+            : ""}
+        </span>
+      </span>
+    );
+
+    setModalTitle(_modalTitle);
+  }, [currentRoute, userTx]);
+
+  // To reinitiate the route when an error is caught
+  function reinitiateRoute() {
+    if (!!activeRoute || userTx?.activeRouteId) {
+      continueRoute(null, userTx?.activeRouteId);
+    } else startRoute();
+    enableRetry(false);
+  }
+
   return (
     <Modal
-      title="Bridging transaction"
+      title={modalTitle}
       closeModal={closeTxModal}
       disableClose={isApproving || txInProgress}
       style={style}
@@ -408,7 +462,9 @@ export const TxModal = ({ style }) => {
         <div className="skt-w p-3 shrink-0">
           {!txCompleted && (
             <>
-              {userTx && activeChain !== userTx?.chainId ? (
+              {retryEnabled ? (
+                <Button onClick={reinitiateRoute}>Retry</Button>
+              ) : userTx && activeChain !== userTx?.chainId ? (
                 <Button onClick={switchNetwork} disabled={initiating}>
                   {initiating
                     ? ButtonTexts.INITIATING
@@ -458,6 +514,7 @@ export const TxModal = ({ style }) => {
             currentRoute={currentRoute}
             explorerParams={explorerParams}
             txDetails={txDetails?.[userAddress]?.[activeRoute?.activeRouteId]}
+            refuelEnabled={!!currentRoute?.refuel}
           />
         )}
 
