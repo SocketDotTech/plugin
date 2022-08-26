@@ -1,4 +1,15 @@
 import { ChainId, UserTxType } from "@socket.tech/socket-v2-sdk";
+type supportedBridges =
+  | "polygon-bridge"
+  | "hop"
+  | "anyswap-router-v4"
+  | "hyphen"
+  | "arbitrum-bridge"
+  | "connext"
+  | "celer"
+  | "across"
+  | "optimism-bridge"
+  | "refuel-bridge";
 
 export interface WidgetProps {
   API_KEY: string;
@@ -32,7 +43,13 @@ export interface WidgetProps {
   // To enable same chain swaps
   enableSameChainSwaps?: boolean;
 
-  locale?: string; 
+  // To include bridges - only the bridges passed will be included
+  includeBridges?: supportedBridges[];
+
+  // To exclude bridges - bridges passed will be excluded from the original supported list
+  excludeBridges?: supportedBridges[];
+
+  locale?: string;
   customize?: Customize;
 }
 
