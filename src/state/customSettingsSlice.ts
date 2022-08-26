@@ -10,6 +10,8 @@ const initialState = {
   defaultSourceToken: null,
   defaultDestToken: null,
   sameChainSwapsEnabled: false,
+  includeBridges: null,
+  excludeBridges: null,
 };
 
 const customSettingsSlice = createSlice({
@@ -42,6 +44,12 @@ const customSettingsSlice = createSlice({
     },
     setSameChainSwaps: (state, action) => {
       state.sameChainSwapsEnabled = action.payload;
+    },
+    setIncludeBridges: (state, action) => {
+      state.includeBridges = action.payload;
+    },
+    setExludeBridges: (state, action) => {
+      state.excludeBridges = action.payload
     }
   },
 });
@@ -56,7 +64,9 @@ export const {
   setCustomDestTokens,
   setDefaultSourceToken,
   setDefaultDestToken,
-  setSameChainSwaps
+  setSameChainSwaps,
+  setIncludeBridges,
+  setExludeBridges
 } = customSettingsSlice.actions;
 
 

@@ -26,7 +26,10 @@ import { useTransition } from "@react-spring/web";
 
 // Main Widget -> Base file.
 export const Widget = (props: WidgetProps) => {
-  const { customize } = props;
+  const {
+    customize,
+    title = props?.enableSameChainSwaps ? "Bridge & Swap" : "Bridge",
+  } = props;
   const customSettings = useContext(CustomizeContext);
   const web3Context = useContext(Web3Context);
 
@@ -94,14 +97,14 @@ export const Widget = (props: WidgetProps) => {
         borderRadius: `calc(1rem * ${borderRadius})`,
         minWidth: "360px",
       }}
-      className="skt-w skt-w-container bg-widget-primary p-1 overflow-hidden relative"
+      className="relative p-1 overflow-hidden skt-w skt-w-container bg-widget-primary"
     >
       <div className="skt-w p-3 pt-2.5 pb-3.5">
-        <Header title={props.enableSameChainSwaps ? 'Bridge & Swap' : 'Bridge'}>
-          <div className="skt-w flex items-center gap-3">
+        <Header title={title}>
+          <div className="flex items-center gap-3 skt-w">
             {!props?.provider ? (
-              <span className="skt-w text-sm text-widget-secondary flex items-center">
-                <CreditCard className="skt-w mr-2 w-5 h-5 text-widget-primary" />{" "}
+              <span className="flex items-center text-sm skt-w text-widget-secondary">
+                <CreditCard className="w-5 h-5 mr-2 skt-w text-widget-primary" />{" "}
                 Please connect your wallet
               </span>
             ) : (
