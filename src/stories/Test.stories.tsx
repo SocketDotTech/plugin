@@ -111,14 +111,16 @@ const Customize = {
 };
 
 const UNISWAP_DEFAULT_LIST = "https://gateway.ipfs.io/ipns/tokens.uniswap.org";
+const displayName = <span style={{color: 'red'}}>Salil</span>
 
 export const Default = Template.bind({});
 Default.args = {
   API_KEY: SOCKET_API_KEY,
   customize: Customize,
   enableSameChainSwaps: true,
+  // title: [displayName],
   includeBridges: ['hop'],
-  excludeBridges: ['hop', 'polygon-bridge'],
+  // excludeBridges: ['hop', 'polygon-bridge'],
   // enableRefuel: true,
   // tokenList: MY_LIST,
   // tokenList: UNISWAP_DEFAULT_LIST,

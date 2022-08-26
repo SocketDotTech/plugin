@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { ChainId, UserTxType } from "@socket.tech/socket-v2-sdk";
 type supportedBridges =
   | "polygon-bridge"
@@ -50,6 +51,7 @@ export interface WidgetProps {
   excludeBridges?: supportedBridges[];
 
   locale?: string;
+  title?: ReactNode | string;
   customize?: Customize;
 }
 

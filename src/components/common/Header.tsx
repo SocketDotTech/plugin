@@ -1,14 +1,20 @@
 import { ReactElement, ReactNode } from "react";
 
 interface headerProp {
-  title?: ReactElement | string;
+  title?: ReactNode | string;
   children: ReactNode;
 }
 export function Header({ title, children }: headerProp) {
   return (
-    <div className="skt-w flex justify-between items-center text-widget-primary">
-      <span className="skt-w font-medium">{title}</span>
-      {children}
+    <div className="flex items-center justify-between skt-w text-widget-primary">
+      <>
+        {typeof title === "string" ? (
+          <span className="font-medium skt-w">{title}</span>
+        ) : (
+          title
+        )}
+        {children}
+      </>
     </div>
   );
 }
