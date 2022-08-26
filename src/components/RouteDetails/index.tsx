@@ -34,6 +34,12 @@ export const RouteDetails = () => {
   const sourceAmount = useSelector((state: any) => state.amount.sourceAmount);
   const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
   const refuelEnabled = useSelector((state: any) => state.quotes.refuelEnabled);
+  const includeBridges = useSelector(
+    (state: any) => state.customSettings.includeBridges
+  );
+  const excludeBridges = useSelector(
+    (state: any) => state.customSettings.excludeBridges
+  );
   const isEnoughBalance = useSelector(
     (state: any) => state.amount.isEnoughBalance
   );
@@ -47,7 +53,9 @@ export const RouteDetails = () => {
     sourceAmount,
     sortPref,
     userAddress,
-    refuelEnabled
+    refuelEnabled,
+    includeBridges,
+    excludeBridges
   );
 
   // Boolean variable to fill all condition before the api call is made to fetch quotes.
@@ -150,11 +158,24 @@ export const RouteDetails = () => {
       return `Not enough ${nativeTokenWithBalance?.symbol} for Refuel (${minReq} required)`;
     }
 
+    const sourceAmount = formatCurrencyAmount(
+      bestRoute?.route?.fromAmount,
+      bestRoute?.path?.fromToken?.decimals
+    );
+    const destAmount = formatCurrencyAmount(
+      bestRoute?.route?.toAmount,
+      bestRoute?.path?.toToken?.decimals
+    );
+    const conversion = Number(destAmount) / Number(sourceAmount);
+    const conversionMessage = `1 ${
+      bestRoute?.path?.fromToken?.symbol
+    } = ${conversion?.toFixed(4)} ${bestRoute?.path?.toToken?.symbol}`;
+
     return shouldFetch
       ? isQuotesLoading
         ? QuoteStatus.FETCHING_QUOTE
         : bestRoute
-        ? bridgeName
+        ? bridgeName ?? conversionMessage
         : QuoteStatus.NO_ROUTES_AVAILABLE
       : QuoteStatus.ENTER_AMOUNT;
   }

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
-import { BRIDGE_DISPLAY_NAMES } from "../../consts/";
+import { BRIDGE_DISPLAY_NAMES, UserTxType } from "../../consts/";
 
 // components
 import { Button } from "../common/Button";
@@ -35,6 +35,7 @@ export const ReviewModal = ({
   const selectedRoute = useSelector((state: any) => state.routes.selectedRoute);
   const [showTxDetails, setShowTxDetails] = useState<boolean>(false);
   const [quoteUpdated, setQuoteUpdated] = useState<boolean>(false);
+  const [isSameChainSwap, setIsSameChainSwap] = useState<boolean>(false);
 
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
@@ -96,11 +97,16 @@ export const ReviewModal = ({
 
   // Extracting Bridge Step from fundMove userTx
   const fundMovrData = selectedRoute?.route?.userTxs.filter(
-    (item) => item.userTxType === "fund-movr"
+    (item) => item.userTxType === UserTxType.FUND_MOVR
   )[0];
   const bridgeData =
     fundMovrData?.steps &&
     fundMovrData?.steps.filter((step) => step.type === "bridge")[0];
+
+  // Extracting the Swap step from userTxs
+  const swapData = selectedRoute?.route?.userTxs.filter(
+    (item) => item.userTxType === UserTxType.DEX_SWAP
+  )?.[0];
 
   // Bridge Fee
   const bridgeFee = bridgeData?.protocolFees.feesInUsd;
@@ -110,6 +116,13 @@ export const ReviewModal = ({
     5
   );
   const bridgeFeeTokenSymbol = bridgeData?.protocolFees.asset.symbol;
+
+  useEffect(() => {
+    setIsSameChainSwap(
+      selectedRoute?.path?.fromToken?.chainId ===
+        selectedRoute?.path?.toToken?.chainId
+    );
+  }, [selectedRoute]);
 
   return (
     <Modal
@@ -135,18 +148,34 @@ export const ReviewModal = ({
           />
 
           <div className="skt-w p-3 flex flex-col gap-3 mt-1">
-            <RouteDetailRow
-              label="Bridge Name"
-              value={
-                BRIDGE_DISPLAY_NAMES[
-                  selectedRoute?.route?.usedBridgeNames?.[0]
-                ] || selectedRoute?.route?.usedBridgeNames?.[0]
-              }
-            />
-            <RouteDetailRow
-              label="Estimated Bridging Time"
-              value={timeInMinutes(selectedRoute?.route?.serviceTime)}
-            />
+            {!isSameChainSwap ? (
+              <>
+                <RouteDetailRow
+                  label="Bridge Name"
+                  value={
+                    BRIDGE_DISPLAY_NAMES[
+                      selectedRoute?.route?.usedBridgeNames?.[0]
+                    ] || selectedRoute?.route?.usedBridgeNames?.[0]
+                  }
+                />
+                <RouteDetailRow
+                  label="Estimated Bridging Time"
+                  value={timeInMinutes(selectedRoute?.route?.serviceTime)}
+                />
+                <RouteDetailRow label="Bridge Fee">
+                  <FeeDisplay
+                    feeInToken={bridgeFeeInToken}
+                    feeInUsd={bridgeFee}
+                    tokenSymbol={bridgeFeeTokenSymbol}
+                  />
+                </RouteDetailRow>
+              </>
+            ) : (
+              <RouteDetailRow
+                label="Dex Name"
+                value={swapData?.protocol?.displayName}
+              />
+            )}
             <RouteDetailRow label="Source Gas Fee">
               <FeeDisplay
                 feeInToken={sourceFeesInToken}
@@ -154,26 +183,21 @@ export const ReviewModal = ({
                 tokenSymbol={sourceNativeToken?.symbol}
               />
             </RouteDetailRow>
-            {!!destFeesInToken && (
-              <RouteDetailRow label="Dest Gas Fee">
-                <FeeDisplay
-                  feeInToken={destFeesInToken}
-                  feeInUsd={destFeesInUSD}
-                  tokenSymbol={destNativeToken?.symbol}
+            {!!destFeesInToken && !isSameChainSwap && (
+              <>
+                <RouteDetailRow label="Dest Gas Fee">
+                  <FeeDisplay
+                    feeInToken={destFeesInToken}
+                    feeInUsd={destFeesInUSD}
+                    tokenSymbol={destNativeToken?.symbol}
+                  />
+                </RouteDetailRow>
+                <RouteDetailRow
+                  label="Number of transactions"
+                  value={selectedRoute?.route?.totalUserTx}
                 />
-              </RouteDetailRow>
+              </>
             )}
-            <RouteDetailRow label="Bridge Fee">
-              <FeeDisplay
-                feeInToken={bridgeFeeInToken}
-                feeInUsd={bridgeFee}
-                tokenSymbol={bridgeFeeTokenSymbol}
-              />
-            </RouteDetailRow>
-            <RouteDetailRow
-              label="Number of transactions"
-              value={selectedRoute?.route?.totalUserTx}
-            />
           </div>
         </div>
 
@@ -224,7 +248,9 @@ export const ReviewModal = ({
               onClick={quoteUpdated ? updateSelectedRoute : openTxModal}
               classNames={`${quoteUpdated ? "h-12" : ""}`}
             >
-              {quoteUpdated ? "Accept" : "Confirm Bridge"}
+              {quoteUpdated
+                ? "Accept"
+                : `Confirm ${isSameChainSwap ? "Swap" : "Bridge"}`}
             </Button>
           </div>
         </InnerCard>
@@ -272,7 +298,7 @@ const FeeDisplay = (props: FeeDisplayProps) => {
         )}
         {feeInUsd !== 0 && (
           <span className="opacity-80 font-normal">
-            (${feeInUsd.toFixed(4)})
+            (${feeInUsd?.toFixed(4)})
           </span>
         )}
       </span>

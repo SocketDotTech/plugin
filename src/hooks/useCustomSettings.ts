@@ -8,6 +8,9 @@ import {
   setDefaultSourceNetwork,
   setDefaultSourceToken,
   setDefaultDestToken,
+  setSameChainSwaps,
+  setIncludeBridges,
+  setExludeBridges,
 } from "../state/customSettingsSlice";
 import { formatRGB } from "../utils";
 
@@ -21,33 +24,26 @@ export const useCustomSettings = (props: WidgetProps) => {
     defaultSourceToken,
     defaultDestToken,
     customize,
+    enableSameChainSwaps,
+    includeBridges,
+    excludeBridges,
   } = props;
   const dispatch = useDispatch();
 
   useEffect(() => {
     sourceNetworks && dispatch(setCustomSourceNetworks(sourceNetworks));
-  }, [sourceNetworks]);
-
-  useEffect(() => {
     destNetworks && dispatch(setCustomDestNetworks(destNetworks));
-  }, [destNetworks]);
-
-  useEffect(() => {
     defaultSourceNetwork &&
       dispatch(setDefaultSourceNetwork(defaultSourceNetwork));
-  }, [defaultSourceNetwork]);
-
-  useEffect(() => {
     defaultDestNetwork && dispatch(setDefaultDestNetwork(defaultDestNetwork));
-  }, [defaultDestNetwork]);
-
-  useEffect(() => {
     defaultSourceToken && dispatch(setDefaultSourceToken(defaultSourceToken));
-  }, [defaultSourceToken]);
-
-  useEffect(() => {
     defaultDestToken && dispatch(setDefaultDestToken(defaultDestToken));
-  }, [defaultDestToken]);
+    dispatch(setSameChainSwaps(enableSameChainSwaps));
+    includeBridges?.length > 0 && dispatch(setIncludeBridges(includeBridges));
+    !includeBridges &&
+      excludeBridges?.length > 0 &&
+      dispatch(setExludeBridges(excludeBridges));
+  }, [props]);
 
   // Theme
   useEffect(() => {
