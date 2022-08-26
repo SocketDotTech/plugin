@@ -9,6 +9,8 @@ import {
   setDefaultSourceToken,
   setDefaultDestToken,
   setSameChainSwaps,
+  setIncludeBridges,
+  setExludeBridges,
 } from "../state/customSettingsSlice";
 import { formatRGB } from "../utils";
 
@@ -23,6 +25,8 @@ export const useCustomSettings = (props: WidgetProps) => {
     defaultDestToken,
     customize,
     enableSameChainSwaps,
+    includeBridges,
+    excludeBridges,
   } = props;
   const dispatch = useDispatch();
 
@@ -35,6 +39,10 @@ export const useCustomSettings = (props: WidgetProps) => {
     defaultSourceToken && dispatch(setDefaultSourceToken(defaultSourceToken));
     defaultDestToken && dispatch(setDefaultDestToken(defaultDestToken));
     dispatch(setSameChainSwaps(enableSameChainSwaps));
+    includeBridges?.length > 0 && dispatch(setIncludeBridges(includeBridges));
+    !includeBridges &&
+      excludeBridges?.length > 0 &&
+      dispatch(setExludeBridges(excludeBridges));
   }, [props]);
 
   // Theme
