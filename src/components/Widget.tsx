@@ -28,7 +28,7 @@ import { useTransition } from "@react-spring/web";
 export const Widget = (props: WidgetProps) => {
   const {
     customize,
-    title = props.enableSameChainSwaps ? "Bridge & Swap" : "Bridge",
+    title = props?.enableSameChainSwaps ? "Bridge & Swap" : "Bridge",
   } = props;
   const customSettings = useContext(CustomizeContext);
   const web3Context = useContext(Web3Context);
