@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { WidgetProps } from "../types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // context
 import { useContext } from "react";
@@ -23,6 +23,8 @@ import { useChains } from "../hooks/apis";
 import { useCustomSettings } from "../hooks/useCustomSettings";
 import { CreditCard } from "react-feather";
 import { useTransition } from "@react-spring/web";
+import { setActiveRoute, setIsTxModalOpen } from "../state/modals";
+import { setSourceAmount } from "../state/amountSlice";
 
 // Main Widget -> Base file.
 export const Widget = (props: WidgetProps) => {
@@ -32,6 +34,7 @@ export const Widget = (props: WidgetProps) => {
   } = props;
   const customSettings = useContext(CustomizeContext);
   const web3Context = useContext(Web3Context);
+  const dispatch = useDispatch();
 
   // Hook to get all supported chains.
   useChains();
@@ -89,6 +92,15 @@ export const Widget = (props: WidgetProps) => {
     delay: 300,
     config: { duration: 300 },
   });
+
+  // resetting states on unmount
+  useEffect(() => {
+    return () => {
+      dispatch(setIsTxModalOpen(false));
+      dispatch(setActiveRoute(null));
+      dispatch(setSourceAmount(null));
+    };
+  }, []);
 
   return (
     <div
