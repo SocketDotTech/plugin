@@ -42,7 +42,10 @@ export const useTokenList = (customTokenList?: string | Currency[]) => {
       // Converting the response into standard token list format
       const standardTokenList = {
         name: "Socket Default",
-        tokens: sourceChainId === destChainId ? [..._tokens?.to?.tokens] : [..._tokens?.from?.tokens, ..._tokens?.to?.tokens],
+        tokens:
+          sourceChainId === destChainId
+            ? [..._tokens?.to?.tokens]
+            : [..._tokens?.from?.tokens, ..._tokens?.to?.tokens],
       };
       return standardTokenList;
     } catch (e) {
@@ -51,7 +54,10 @@ export const useTokenList = (customTokenList?: string | Currency[]) => {
   }
   const { data: tokensFromSDK, error: errorFromSDK } = useSWR(
     shouldFetchFromSDK ? [sourceChainId, destChainId, "fetching tokens"] : null,
-    fetchTokens
+    fetchTokens,
+    {
+      revalidateOnFocus: false,
+    }
   );
 
   if (customTokenList && !isURL) {

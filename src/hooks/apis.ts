@@ -57,6 +57,7 @@ export const useActiveRoutes = () => {
     const result = await Routes.getActiveRoutesForUser({
       userAddress: address,
       routeStatus: "PENDING",
+      limit: '30'
     });
     return result;
   }

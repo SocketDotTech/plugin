@@ -211,7 +211,7 @@ const TxRow = ({
 }) => {
   return (
     <div className="skw-w flex items-center pl-2.5 p-0.5 rounded-full bg-widget-secondary border border-widget-secondary">
-      <span className="skt-w text-white text-xs pr-2">{title}</span>
+      <span className="skt-w text-widget-primary text-xs pr-2">{title}</span>
       <div className="skt-w flex items-center gap-0.5">
         {!!srcUrl && <TxUrlChip label="Src tx" url={srcUrl} />}
         <TxUrlChip label="Dest tx" url={destUrl || null} />
