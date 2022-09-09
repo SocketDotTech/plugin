@@ -9,6 +9,7 @@ import { Widget } from "./components/Widget";
 import { CustomizeProvider } from "./providers/CustomizeProvider";
 import { Web3Provider } from "./providers/Web3Provider";
 import { initSocket } from "./hooks/apis";
+import { SWRConfig } from "swr";
 
 export const Bridge = (props: WidgetProps) => {
   const { API_KEY, singleTxOnly = false } = props;
@@ -19,13 +20,21 @@ export const Bridge = (props: WidgetProps) => {
 
   if (API_KEY) {
     return (
-      <Web3Provider>
-        <ReduxProvider store={store}>
-          <CustomizeProvider>
-            <Widget {...props} />
-          </CustomizeProvider>
-        </ReduxProvider>
-      </Web3Provider>
+      <SWRConfig
+        value={{
+          suspense: false,
+          revalidateIfStale: false,
+          revalidateOnFocus: true,
+        }}
+      >
+        <Web3Provider>
+          <ReduxProvider store={store}>
+            <CustomizeProvider>
+              <Widget {...props} />
+            </CustomizeProvider>
+          </ReduxProvider>
+        </Web3Provider>
+      </SWRConfig>
     );
   }
 };
