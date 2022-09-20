@@ -23,7 +23,7 @@ import { useChains } from "../hooks/apis";
 import { useCustomSettings } from "../hooks/useCustomSettings";
 import { CreditCard } from "react-feather";
 import { useTransition } from "@react-spring/web";
-import { setActiveRoute, setIsTxModalOpen } from "../state/modals";
+import { setActiveRoute, setError, setIsTxModalOpen } from "../state/modals";
 import { setSourceAmount } from "../state/amountSlice";
 
 // Main Widget -> Base file.
@@ -99,6 +99,7 @@ export const Widget = (props: WidgetProps) => {
       dispatch(setIsTxModalOpen(false));
       dispatch(setActiveRoute(null));
       dispatch(setSourceAmount(null));
+      dispatch(setError(null));
     };
   }, []);
 
