@@ -1,16 +1,21 @@
 import { setSortPref } from "../../state/quotesSlice";
 import { ReactNode, useContext, useEffect, useState } from "react";
+import { CustomizeContext } from "../../providers/CustomizeProvider";
+
+// hooks
 import { useDispatch } from "react-redux";
+import { useTransition } from "@react-spring/web";
+import useClickOutside from "../../hooks/useClickOutside";
+
+// components
 import { Modal } from "../common/Modal";
 import { ChevronDown, Settings as SettingsIcon } from "react-feather";
-import { CustomizeContext } from "../../providers/CustomizeProvider";
-import useClickOutside from "../../hooks/useClickOutside";
-import { useTransition } from "@react-spring/web";
+import { SwapSlippage } from "./SwapSlippage";
 
 // Component that lets you set the parameters for fetching quotes or building a transaction.
 export const Settings = () => {
   const dispatch = useDispatch();
-  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(true);
   const [_sortPref, _setSortPref] = useState<string>("output");
   const [dropdown, openDropdown] = useState<boolean>(false);
   const [label, setLabel] = useState<string>("");
@@ -63,43 +68,54 @@ export const Settings = () => {
               closeModal={() => setIsSettingsOpen(false)}
               style={style}
             >
-              <div className="skt-w px-3 flex items-center mt-2 gap-2">
-                <p className="skt-w text-sm text-widget-secondary font-medium my-2 gap-8">
-                  Preferred Route
-                </p>
-                <div
-                  className="skt-w relative border border-widget-secondary-text border-opacity-10 flex w-auto"
-                  style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
-                  ref={dropdownRef}
-                >
-                  <Option onClick={() => openDropdown(!dropdown)} active>
-                    {label}{" "}
-                    <ChevronDown
-                      className={`skt-w w-4 h-4 text-widget-secondary transition-all ${
-                        dropdown ? "rotate-180" : ""
-                      }`}
-                    />
-                  </Option>
-                  {dropdown && (
-                    <div
-                      className="skt-w absolute top-10 left-0 w-full border border-widget-secondary-text border-opacity-10 overflow-hidden"
-                      style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
-                    >
-                      {sortOptions.map((x) => {
-                        return (
-                          <Option onClick={() => handleChange(x)} key={x.id}>
-                            {x.label}
-                          </Option>
-                        );
-                      })}
-                    </div>
-                  )}
+              <div className="skt-w px-3 pt-2">
+                {/* Sort options */}
+                <div className="skt-w flex items-center relative z-30">
+                  <p className="skt-w text-sm text-widget-primary font-medium">
+                    Preferred Route
+                  </p>
+                  <div
+                    className="skt-w relative border border-widget-secondary-text border-opacity-40 flex w-auto ml-2"
+                    style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
+                    ref={dropdownRef}
+                  >
+                    <Option onClick={() => openDropdown(!dropdown)} active>
+                      {label}{" "}
+                      <ChevronDown
+                        className={`skt-w w-4 h-4 text-widget-secondary transition-all ${
+                          dropdown ? "rotate-180" : ""
+                        }`}
+                      />
+                    </Option>
+                    {dropdown && (
+                      <div
+                        className="skt-w absolute top-10 left-0 w-full border border-widget-secondary-text border-opacity-40 overflow-hidden bg-widget-primary"
+                        style={{
+                          borderRadius: `calc(0.5rem * ${borderRadius})`,
+                        }}
+                      >
+                        {sortOptions.map((x) => {
+                          return (
+                            <Option onClick={() => handleChange(x)} key={x.id}>
+                              {x.label}
+                            </Option>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 </div>
+
+                {/* Swap Slippage */}
+                <SwapSlippage />
               </div>
             </Modal>
           )
       )}
-      <button onClick={() => setIsSettingsOpen(true)} className="skt-w skt-w-button skt-w-input flex">
+      <button
+        onClick={() => setIsSettingsOpen(true)}
+        className="skt-w skt-w-button skt-w-input flex"
+      >
         <SettingsIcon className="skt-w w-5.5 h-5.5 text-widget-secondary hover:text-widget-primary hover:rotate-45 duration-200 ease-linear" />
       </button>
     </>

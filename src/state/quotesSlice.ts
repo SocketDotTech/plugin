@@ -5,6 +5,11 @@ const initialState = {
   bestRoute: null,
   sortPref: "output",
   refuelEnabled: false,
+  swapSlippage: Number(
+    typeof window !== "undefined"
+      ? localStorage.getItem("swapSlippage") ?? 1
+      : 1
+  ),
 };
 
 const quotesSlice = createSlice({
@@ -23,9 +28,17 @@ const quotesSlice = createSlice({
     enableRefuel: (state, action) => {
       state.refuelEnabled = action.payload;
     },
+    setSwapSlippage: (state, action) => {
+      state.swapSlippage = action.payload;
+    },
   },
 });
 
 export default quotesSlice.reducer;
-export const { setQuotes, setBestRoute, setSortPref, enableRefuel } =
-  quotesSlice.actions;
+export const {
+  setQuotes,
+  setBestRoute,
+  setSortPref,
+  enableRefuel,
+  setSwapSlippage,
+} = quotesSlice.actions;
