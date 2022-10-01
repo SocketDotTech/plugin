@@ -6,11 +6,11 @@ import { BRIDGE_DISPLAY_NAMES, UserTxType } from "../../consts/";
 // components
 import { Button } from "../common/Button";
 import { Modal } from "../common/Modal";
-import { ChevronUp } from "react-feather";
+import { ChevronUp, Edit } from "react-feather";
 import { InnerCard } from "../common/InnerCard";
 
 // actions
-import { setIsTxModalOpen } from "../../state/modals";
+import { setIsSettingsModalOpen, setIsTxModalOpen } from "../../state/modals";
 import { setSelectedRoute } from "../../state/selectedRouteSlice";
 import { TxStepDetails } from "../TxModal/TxStepDetails";
 import { TokenDetailsRow } from "../common/TokenDetailsRow";
@@ -124,6 +124,12 @@ export const ReviewModal = ({
     );
   }, [selectedRoute]);
 
+  const openSettingsModal = () => {
+    // Need to close the review modal first
+    closeModal(); // remove this if edit is not required in review section
+    dispatch(setIsSettingsModalOpen(true));
+  };
+
   return (
     <Modal
       title="Review Quote"
@@ -133,7 +139,10 @@ export const ReviewModal = ({
       style={style}
     >
       <div className="skt-w flex flex-col justify-between flex-1 relative">
-        <div className="skt-w w-full">
+        <div
+          className="skt-w w-full overflow-y-auto"
+          style={{ height: "calc(100% - 7rem)" }}
+        >
           <TokenDetailsRow
             srcDetails={{
               token: selectedRoute?.path?.fromToken,
@@ -198,11 +207,24 @@ export const ReviewModal = ({
                 />
               </>
             )}
+            {!!swapData && (
+              <RouteDetailRow label="Swap Slippage">
+                <div className="flex items-center">
+                  {swapData?.swapSlippage}%{" "}
+                  <button
+                    className="skt-w skt-w-input skt-w-button flex"
+                    onClick={openSettingsModal}
+                  >
+                    <Edit className="ml-2 w-4 h-4 text-widget-accent" />
+                  </button>
+                </div>
+              </RouteDetailRow>
+            )}
           </div>
         </div>
 
         <InnerCard
-          classNames={`absolute w-full flex bottom-0 flex-col justify-between transition-all	 ${
+          classNames={`absolute w-full flex bottom-0 flex-col justify-between transition-all ${
             showTxDetails ? `h-full max-h-full` : "h-auto max-h-min"
           }`}
         >

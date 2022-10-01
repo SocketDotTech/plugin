@@ -22,7 +22,7 @@ export const CustomInputBox = (props: {
         step=".001"
         min="0"
       />
-      <span className="absolute right-3 top-2 my-auto font-medium bg-widget-primary pl-2">
+      <span className="absolute right-3 top-2 my-auto font-medium bg-widget-primary pl-2 text-widget-primary">
         %
       </span>
     </div>

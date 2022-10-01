@@ -112,7 +112,7 @@ export const TxStepDetails = ({
             >
               {isSwap ? (
                 <TxStep
-                  label={`Tx ${txIndex + 1} : Swap & Bridge`}
+                  label={`Tx ${txIndex + 1}: Swap & Bridge`}
                   complete={txComplete}
                   currentTx={currentTx}
                   url={url}
@@ -238,7 +238,7 @@ export const TxStepDetails = ({
 
           return (
             <TxStep
-              label={`Tx ${txIndex + 1} : Swap`}
+              label={`Tx ${txIndex + 1}: Swap`}
               key={`${activeRoute?.activeRouteId}-dex-swap-${txIndex}`}
               complete={txComplete}
               currentTx={currentTx}
@@ -255,7 +255,7 @@ export const TxStepDetails = ({
         } else if (tx?.userTxType === "claim") {
           return (
             <TxStep
-              label={`Tx ${txIndex + 1} : Claim`}
+              label={`Tx ${txIndex + 1}: Claim`}
               key={`${activeRoute?.activeRouteId}-claim`}
               complete={txComplete}
               currentTx={currentTx}
@@ -296,10 +296,10 @@ const TxStep = ({
   const { borderRadius } = customSettings.customization;
   return (
     <div
-      className={`skt-w flex gap-3.5 ${
+      className={`skt-w flex gap-3.5 p-3 border ${
         currentTx
-          ? "bg-widget-secondary p-3 bg-opacity-20 border border-widget-accent"
-          : ""
+          ? "bg-widget-secondary bg-opacity-20 border-widget-accent"
+          : "border-widget-secondary"
       }`}
       style={{ borderRadius: `calc(0.5rem * ${borderRadius}` }}
     >

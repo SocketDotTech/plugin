@@ -27,7 +27,6 @@ export const SwapSlippage = () => {
   // if the swap slippage is one of the slippageValues, check the relevant checkbox,
   // else fill the custom input box
   useEffect(() => {
-    console.log("hi");
     if (Object.values(slippageValues).includes(swapSlippage)) {
       setButtonInput(swapSlippage);
     } else {
@@ -47,7 +46,7 @@ export const SwapSlippage = () => {
       _value = "0";
     } else if (value && value.indexOf(".") > -1) {
       // if it's a decimal value, restrict the deimal upto 3 places.
-      if (value.split(".")[1].length <= 3) {
+      if (value.split(".")[1].length <= 2) {
         _value = value;
       }
     } else _value = value;
@@ -103,7 +102,7 @@ export const SwapSlippage = () => {
     <div className="mt-5">
       <div className="flex justify-between">
         <div className="skt-w flex items-center mb-1.5">
-          <span className="text-sm font-medium">Swap Slippage</span>
+          <span className="text-sm font-medium text-widget-primary">Swap Slippage</span>
           <Info className="ml-1.5 w-4 h-4 text-widget-secondary" />
           {/* Your swap transaction will revert if the price changes unfavourably by more than this percentage. */}
         </div>

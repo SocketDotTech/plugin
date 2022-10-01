@@ -7,10 +7,10 @@ import { Modal } from "../common/Modal";
 import { Button } from "../common/Button";
 import { TxStepDetails } from "./TxStepDetails";
 import { BridgingLoader } from "./BridgingLoader";
-import { Stepper } from "../common/Stepper";
+import { Edit } from "react-feather";
 
 // actions
-import { setActiveRoute, setError, setIsTxModalOpen } from "../../state/modals";
+import { setActiveRoute, setError, setIsSettingsModalOpen, setIsTxModalOpen } from "../../state/modals";
 import { setTxDetails } from "../../state/txDetails";
 
 // hooks
@@ -39,8 +39,8 @@ export const TxModal = ({ style }) => {
 
   // When the tx modal is opened from the tx-history(pending) section, selectedRoute will be set to null & activeRoute will be truthy
   // If the tx modal is opened in the normal user flow, the selected route will be truthy and activeRoute will be null
-  const selectedRoute = useSelector((state: any) => state.routes.selectedRoute);
-  const activeRoute = useSelector((state: any) => state.modals.activeRoute);
+  const selectedRoute = useSelector((state: any) => state.routes.selectedRoute); // the route the user selects initially
+  const activeRoute = useSelector((state: any) => state.modals.activeRoute); // the route that is opened from pending transactions
   const allNetworks = useSelector((state: any) => state.networks.allNetworks);
   const txDetails = useSelector((state: any) => state.txDetails.txDetails);
 
@@ -410,6 +410,11 @@ export const TxModal = ({ style }) => {
     enableRetry(false);
   }
 
+  const fundMovr = currentRoute?.route?.userTxs?.filter(
+    (x) => x.userTxType === UserTxType.FUND_MOVR
+  )?.[0];
+
+  const swapTx = fundMovr?.steps?.filter((x) => x.type === "middleware")?.[0]; // need to still check for the dex step
   return (
     <Modal
       title={modalTitle}
@@ -433,7 +438,7 @@ export const TxModal = ({ style }) => {
           />
           <div className="skt-w border-b border-widget-secondary" />
 
-          {currentRoute?.route?.userTxs?.length > 1 && (
+          {/* {currentRoute?.route?.userTxs?.length > 1 && (
             <div className="skt-w px-3.5 py-3 mt-2">
               <Stepper
                 currentTx={
@@ -442,9 +447,14 @@ export const TxModal = ({ style }) => {
                 userTxs={currentRoute?.route?.userTxs}
               />
             </div>
-          )}
+          )} */}
 
           <div className="skt-w px-3 py-3">
+            {!!swapTx && (
+              <p className="skt-w text-widget-primary mb-3 text-xs flex items-center justify-end">
+                Swap slippage: {swapTx?.swapSlippage}% <button onClick={() => dispatch(setIsSettingsModalOpen(true))} className="skt-w skt-w-button skt-w-input flex"><Edit className="ml-2 w-3 h-3 text-widget-accent" /></button>
+              </p>
+            )}
             <TxStepDetails
               activeRoute={currentRoute?.route}
               refuel={currentRoute?.refuel}

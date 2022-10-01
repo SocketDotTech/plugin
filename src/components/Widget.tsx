@@ -17,6 +17,7 @@ import { TxModal } from "./TxModal";
 import { PendingTransactions } from "./PendingTransactions";
 import { ErrorModal } from "./common/ErrorModal";
 import { Refuel } from "./Refuel";
+import { SettingsModal } from "./Settings/SettingsModal";
 
 // hooks
 import { useChains } from "../hooks/apis";
@@ -134,6 +135,7 @@ export const Widget = (props: WidgetProps) => {
       </div>
       <RouteDetails />
       {transitions((style, item) => item && <TxModal style={style} />)}
+      <SettingsModal />
       <ErrorModal />
     </div>
   );
