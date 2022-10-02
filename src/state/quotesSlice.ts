@@ -10,6 +10,10 @@ const initialState = {
       ? localStorage.getItem("swapSlippage") ?? 1
       : 1
   ),
+  singleTxOnly:
+    typeof window !== undefined
+      ? localStorage.getItem("singleTxOnly") === "true" ?? false
+      : false,
 };
 
 const quotesSlice = createSlice({
@@ -31,6 +35,9 @@ const quotesSlice = createSlice({
     setSwapSlippage: (state, action) => {
       state.swapSlippage = action.payload;
     },
+    setSingleTxOnly: (state, action) => {
+      state.singleTxOnly = action.payload;
+    },
   },
 });
 
@@ -41,4 +48,5 @@ export const {
   setSortPref,
   enableRefuel,
   setSwapSlippage,
+  setSingleTxOnly,
 } = quotesSlice.actions;

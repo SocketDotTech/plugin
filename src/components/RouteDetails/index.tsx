@@ -45,6 +45,7 @@ export const RouteDetails = () => {
   );
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
+  const singleTxOnly = useSelector((state:any) => state.quotes.singleTxOnly);
 
   // Hook to fetch the quotes for given params.
   const { data, isQuotesLoading } = useRoutes(
@@ -55,7 +56,8 @@ export const RouteDetails = () => {
     userAddress,
     refuelEnabled,
     includeBridges,
-    excludeBridges
+    excludeBridges,
+    singleTxOnly
   );
 
   // Boolean variable to fill all condition before the api call is made to fetch quotes.

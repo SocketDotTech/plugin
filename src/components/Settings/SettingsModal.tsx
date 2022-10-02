@@ -6,6 +6,7 @@ import { setIsSettingsModalOpen } from "../../state/modals";
 import { Modal } from "../common/Modal";
 import { SwapSlippage } from "./SwapSlippage";
 import { SortPreference } from "./SortPreference";
+import { SingleTx } from "./SingleTx";
 
 export const SettingsModal = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,9 @@ export const SettingsModal = () => {
 
                 {/* Swap Slippage */}
                 <SwapSlippage />
+
+                {/* Single tx checkbox */}
+               <SingleTx />
               </div>
             </Modal>
           )

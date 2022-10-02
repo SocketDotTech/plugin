@@ -109,7 +109,8 @@ export const useRoutes = (
   userAddress,
   refuelEnabled,
   includeBridges,
-  excludeBridges
+  excludeBridges,
+  singleTxOnly
 ) => {
   const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
   const shouldFetch =
@@ -128,7 +129,8 @@ export const useRoutes = (
     sort: SortOptions,
     bridgeWithGas,
     includeBridges,
-    excludeBridges
+    excludeBridges,
+    singleTxOnly
   ) {
     const quotes = await socket.getAllQuotes(
       {
@@ -136,7 +138,7 @@ export const useRoutes = (
         amount,
         address: userAddress,
       },
-      { sort, bridgeWithGas: bridgeWithGas, includeBridges, excludeBridges}
+      { sort, bridgeWithGas: bridgeWithGas, includeBridges, excludeBridges, singleTxOnly}
     );
     return quotes;
   }
@@ -152,6 +154,7 @@ export const useRoutes = (
           refuelEnabled,
           includeBridges,
           excludeBridges,
+          singleTxOnly,
           "quotes",
         ]
       : null,

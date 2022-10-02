@@ -9,6 +9,7 @@ import { CustomInputBox } from "../common/CustomInput";
 import { RadioCheckbox } from "../common/RadioCheckbox";
 import { useDispatch, useSelector } from "react-redux";
 import { DisclaimerBox } from "../common/DisclaimerBox";
+import { SubTitle } from "./SubTitle";
 
 export const SwapSlippage = () => {
   const [buttonInput, setButtonInput] = useState<number | null>(null);
@@ -102,7 +103,7 @@ export const SwapSlippage = () => {
     <div className="mt-5">
       <div className="flex justify-between">
         <div className="skt-w flex items-center mb-1.5">
-          <span className="text-sm font-medium text-widget-primary">Swap Slippage</span>
+          <SubTitle>Swap Slippage</SubTitle>
           <Info className="ml-1.5 w-4 h-4 text-widget-secondary" />
           {/* Your swap transaction will revert if the price changes unfavourably by more than this percentage. */}
         </div>

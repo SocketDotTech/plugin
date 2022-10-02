@@ -120,6 +120,7 @@ Default.args = {
   enableSameChainSwaps: true,
   // title: [displayName],
   includeBridges: ['hop'],
+  // singleTxOnly: true,
   // excludeBridges: ['hop', 'polygon-bridge'],
   // enableRefuel: true,
   // tokenList: MY_LIST,

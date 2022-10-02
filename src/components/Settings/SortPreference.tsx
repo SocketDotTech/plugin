@@ -5,6 +5,7 @@ import { ChevronDown } from "react-feather";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import useClickOutside from "../../hooks/useClickOutside";
 import { setSortPref } from "../../state/quotesSlice";
+import { SubTitle } from "./SubTitle";
 
 export const SortPreference = () => {
   const dispatch = useDispatch();
@@ -45,9 +46,7 @@ export const SortPreference = () => {
 
   return (
     <div className="skt-w flex items-center relative z-30">
-      <p className="skt-w text-sm text-widget-primary font-medium">
-        Preferred Route
-      </p>
+      <SubTitle>Preferred Route</SubTitle>
       <div
         className="skt-w relative border border-widget-secondary-text border-opacity-40 flex w-auto ml-2"
         style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
