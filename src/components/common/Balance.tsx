@@ -19,12 +19,12 @@ export const Balance = ({
   return (
     <button
       disabled={!onClick}
-      className={`skt-w skt-w-input skt-w-button text-widget-primary text-opacity-70 text-xs text-right flex items-center gap-1 transition-all ${
+      className={`skt-w skt-w-input skt-w-button text-widget-primary text-opacity-70 text-xs text-right flex items-center transition-all ${
         onClick ? "hover:underline" : ""
       }`}
       onClick={onClick}
     >
-      <span>Bal: {token && _formattedBalance}</span>
+      <span className="mr-1">Bal: {token && _formattedBalance}</span>
       {isLoading && <Spinner size={3} />}
     </button>
   );

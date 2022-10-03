@@ -115,7 +115,7 @@ export const Widget = (props: WidgetProps) => {
     >
       <div className="skt-w p-3 pt-2.5 pb-3.5">
         <Header title={title}>
-          <div className="flex items-center gap-3 skt-w">
+          <div className="flex items-center skt-w">
             {!props?.provider ? (
               <span className="flex items-center text-sm skt-w text-widget-secondary">
                 <CreditCard className="w-5 h-5 mr-2 skt-w text-widget-primary" />{" "}

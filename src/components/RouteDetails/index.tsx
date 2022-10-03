@@ -45,7 +45,7 @@ export const RouteDetails = () => {
   );
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
-  const singleTxOnly = useSelector((state:any) => state.quotes.singleTxOnly);
+  const singleTxOnly = useSelector((state: any) => state.quotes.singleTxOnly);
 
   // Hook to fetch the quotes for given params.
   const { data, isQuotesLoading } = useRoutes(
@@ -201,14 +201,16 @@ export const RouteDetails = () => {
 
   return (
     <InnerCard>
-      <div className="skt-w text-widget-secondary mb-3 text-sm flex items-center gap-1">
+      <div className="skt-w text-widget-secondary mb-3 text-sm flex items-center">
         {sourceAmount && sourceAmount !== "0" && isQuotesLoading ? (
-          <Spinner size={4} />
+          <span className="mr-1">
+            <Spinner size={4} />
+          </span>
         ) : !!bestRoute?.refuel && !isNativeTokenEnough ? (
-          <Info className="w-4 h-4" />
+          <Info className="w-4 h-4 mr-1" />
         ) : (
           ""
-        )}{" "}
+        )}
         {quotesStatus()}
       </div>
       <Button

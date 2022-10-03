@@ -92,7 +92,7 @@ const Option = ({
 }) => {
   return (
     <button
-      className={`skt-w skt-w-input skt-w-button w-32 px-2 py-2 text-widget-secondary text-sm flex items-center justify-between gap-2 ${
+      className={`skt-w skt-w-input skt-w-button w-32 px-2 py-2 text-widget-secondary text-sm flex items-center justify-between ${
         active ? "" : "hover:bg-widget-secondary"
       }`}
       onClick={onClick}

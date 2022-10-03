@@ -28,18 +28,18 @@ function Option({
 }) {
   return (
     <div
-      className={`skt-w flex w-28 gap-1 items-center cursor-pointer ${
+      className={`skt-w flex w-28 items-center cursor-pointer ${
         selected ? "" : "p-1.5 hover:bg-widget-secondary hover:bg-opacity-80" 
       }`}
       onClick={onClick}
     >
-      <div className="skt-w flex items-center gap-1">
+      <div className="skt-w flex items-center">
         <img
           src={network?.icon}
           className="skt-w h-6 w-6"
           style={{ borderRadius: `calc(0.3rem * ${borderRadius})` }}
         />
-        <span className="skt-w text-sm text-widget-primary">{network?.name}</span>
+        <span className="skt-w text-sm text-widget-primary mx-1">{network?.name}</span>
       </div>
       {selected && !onlyOneNetwork && (
         <ChevronDown className="skt-w text-widget-secondary w-4 h-4" />

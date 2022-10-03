@@ -156,7 +156,7 @@ export const ReviewModal = ({
             destRefuel={refuelDestToken}
           />
 
-          <div className="skt-w p-3 flex flex-col gap-3 mt-1">
+          <div className="skt-w px-3 py-1.5 flex flex-col mt-1">
             {!isSameChainSwap ? (
               <>
                 <RouteDetailRow
@@ -230,11 +230,11 @@ export const ReviewModal = ({
         >
           <div className="skt-w flex-1 flex flex-col overflow-auto">
             <button
-              className="skt-w skt-w-button skt-w-input flex items-center gap-1.5 text-sm text-widget-secondary mb-3"
+              className="skt-w skt-w-button skt-w-input flex items-center text-sm text-widget-secondary mb-3"
               onClick={() => setShowTxDetails(!showTxDetails)}
             >
               <ChevronUp
-                className={`skt-w w-4 h-4 text-widget-secondary transition-all ${
+                className={`skt-w w-4 h-4 text-widget-secondary transition-all mr-1.5 ${
                   showTxDetails ? "rotate-180" : "rotate-0"
                 }`}
               />{" "}
@@ -291,7 +291,7 @@ const RouteDetailRow = ({
   children?: ReactNode;
 }) => {
   return (
-    <div className="skt-w w-full flex justify-between text-sm text-widget-secondary">
+    <div className="skt-w w-full flex justify-between text-sm text-widget-secondary my-1.5">
       <span>{label}</span>
       <span>{value}</span>
       {children}

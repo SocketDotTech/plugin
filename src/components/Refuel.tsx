@@ -32,10 +32,10 @@ export const Refuel = () => {
 
   return (
     <div
-      className="skt-w flex gap-1 bg-widget-secondary py-3 pl-4 pr-3 justify-between mt-6 items-center relative"
+      className="skt-w flex bg-widget-secondary py-3 pl-4 pr-3 justify-between mt-6 items-center relative"
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
     >
-      <div>
+      <div className="mr-1">
         <div className="skt-w text-sm text-widget-primary font-medium flex items-center">
           Enable Refuel
           <Popover

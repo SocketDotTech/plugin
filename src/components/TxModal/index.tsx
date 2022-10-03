@@ -387,9 +387,9 @@ export const TxModal = ({ style }) => {
       currentRoute?.destTokenDetails?.token?.chainId;
 
     const _modalTitle = (
-      <span className="flex items-center gap-1">
+      <span className="flex items-center">
         {isSameChainSwap ? "Swap" : "Bridging"} transaction{" "}
-        <span className="text-xs text-widget-primary text-opacity-70 font-normal">
+        <span className="text-xs text-widget-primary text-opacity-70 font-normal ml-1">
           {currentRoute?.route?.activeRouteId
             ? ` - #${currentRoute?.route?.activeRouteId}`
             : userTx?.activeRouteId
@@ -451,7 +451,7 @@ export const TxModal = ({ style }) => {
 
           <div className="skt-w px-3 py-3">
             {!!swapTx && (
-              <p className="skt-w text-widget-primary mb-3 text-xs flex items-center justify-end">
+              <p className="skt-w text-widget-primary mb-3 text-xs flex items-center justify-end pr-0.5">
                 Swap slippage: {swapTx?.swapSlippage}% <button onClick={() => dispatch(setIsSettingsModalOpen(true))} className="skt-w skt-w-button skt-w-input flex"><Edit className="ml-2 w-3 h-3 text-widget-accent" /></button>
               </p>
             )}
