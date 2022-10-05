@@ -340,7 +340,7 @@ export const TxModal = ({ style }) => {
 
   useEffect(() => {
     // start route only at the absolute beginning
-    if(!activeRoute && !userTx?.activeRouteId) startRoute();
+    if (!activeRoute && !userTx?.activeRouteId) startRoute();
     else continueRoute(null, userTx?.activeRouteId);
 
     // Always check for active route before checking for selected route
@@ -418,7 +418,7 @@ export const TxModal = ({ style }) => {
 
   // Update and refetch quote when the swap slippage is changed
   const swapTx = getSwapTx(currentRoute?.route, userTx?.userTxIndex ?? 0);
-  const {loading: isUpdating} = updateAndRefetch(
+  const { loading: isUpdating } = updateAndRefetch(
     currentRoute?.route?.activeRouteId ?? userTx?.activeRouteId,
     swapTx?.swapSlippage,
     userTx?.userTxIndex ?? 0
@@ -491,10 +491,17 @@ export const TxModal = ({ style }) => {
               ) : isApprovalRequired ? (
                 <Button
                   onClick={submitApproval}
-                  disabled={!isApprovalRequired || isApproving || initiating || isUpdating}
-                  isLoading={isApproving}
+                  disabled={
+                    !isApprovalRequired ||
+                    isApproving ||
+                    initiating ||
+                    isUpdating
+                  }
+                  isLoading={isApproving || isUpdating || initiating}
                 >
-                  {initiating
+                  {isUpdating
+                    ? ButtonTexts.REFETCHING
+                    : initiating
                     ? ButtonTexts.CHECKING_APPROVAL
                     : isApproving
                     ? ButtonTexts.APPROVING
@@ -506,11 +513,17 @@ export const TxModal = ({ style }) => {
                 <Button
                   onClick={submitNextTx}
                   disabled={
-                    isApprovalRequired || txInProgress || initiating || bridging || isUpdating
+                    isApprovalRequired ||
+                    txInProgress ||
+                    initiating ||
+                    bridging ||
+                    isUpdating
                   }
-                  isLoading={txInProgress}
+                  isLoading={txInProgress || isUpdating}
                 >
-                  {bridging
+                  {isUpdating
+                    ? ButtonTexts.REFETCHING
+                    : bridging
                     ? ButtonTexts.BRIDGE_IN_PROGRESS
                     : initiating
                     ? ButtonTexts.INITIATING

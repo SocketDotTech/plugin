@@ -1,5 +1,5 @@
 import { time } from "../../consts/time";
-import { Routes } from "../../lib/src";
+import { Routes } from "@socket.tech/socket-v2-sdk";
 import { useContext } from "react";
 import useSWR from "swr";
 import { Web3Context } from "../../providers/Web3Provider";
@@ -7,7 +7,6 @@ import { Web3Context } from "../../providers/Web3Provider";
 // Function to get all the pending routes.
 export const usePendingRoutes = () => {
   const web3Context = useContext(Web3Context);
-  // const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
   const { userAddress } = web3Context.web3Provider;
 
   async function fetchActiveRoutes(address: string) {

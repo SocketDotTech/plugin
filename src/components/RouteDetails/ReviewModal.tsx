@@ -103,6 +103,10 @@ export const ReviewModal = ({
     fundMovrData?.steps &&
     fundMovrData?.steps.filter((step) => step.type === "bridge")[0];
 
+  const swapStepInFundMovr =
+    fundMovrData?.steps &&
+    fundMovrData?.steps.filter((step) => step.type === "middleware")[0];
+
   // Extracting the Swap step from userTxs
   const swapData = selectedRoute?.route?.userTxs.filter(
     (item) => item.userTxType === UserTxType.DEX_SWAP
@@ -207,10 +211,10 @@ export const ReviewModal = ({
                 />
               </>
             )}
-            {!!swapData && (
+            {(!!swapStepInFundMovr || !!swapData) && (
               <RouteDetailRow label="Swap Slippage">
                 <div className="flex items-center">
-                  {swapData?.swapSlippage}%{" "}
+                  {swapData?.swapSlippage ?? swapStepInFundMovr?.swapSlippage}%{" "}
                   <button
                     className="skt-w skt-w-input skt-w-button flex"
                     onClick={openSettingsModal}

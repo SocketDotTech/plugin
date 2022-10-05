@@ -1,4 +1,4 @@
-import { Routes } from "../../lib/src";
+import { Routes } from "@socket.tech/socket-v2-sdk";
 import useSWR from "swr";
 
 export const useNextTx = (activeRouteId, shouldFetch, swapSlippage) => {
@@ -6,7 +6,7 @@ export const useNextTx = (activeRouteId, shouldFetch, swapSlippage) => {
   async function callBuildNextTx(id, _swapSlippage) {
     const result = await Routes.nextTx({
       activeRouteId: id,
-      swapSlippage: swapSlippage,
+      swapSlippage: _swapSlippage,
     });
     return result;
   }
@@ -21,7 +21,7 @@ export const useNextTx = (activeRouteId, shouldFetch, swapSlippage) => {
 
   return {
     data: data,
-    isBuildNextTxLoading: _shouldFetch && !data && !error, //check should fetch logic
-    error: error
+    isBuildNextTxLoading: _shouldFetch && !data && !error,
+    error: error,
   };
 };

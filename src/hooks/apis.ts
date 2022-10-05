@@ -1,5 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { Balances, ChainId, Server, Socket, Supported } from "../lib/src";
+import {
+  Balances,
+  ChainId,
+  Server,
+  Socket,
+  Supported,
+} from "@socket.tech/socket-v2-sdk";
 import { useDispatch, useSelector } from "react-redux";
 import useSWR from "swr";
 

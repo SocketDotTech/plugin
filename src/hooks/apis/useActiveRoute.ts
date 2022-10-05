@@ -1,4 +1,4 @@
-import { Routes } from "../../lib/src";
+import { Routes } from "@socket.tech/socket-v2-sdk";
 import useSWR from "swr";
 
 // Function to get current activeRoute details
@@ -24,6 +24,6 @@ export const useActiveRoute = (activeRouteId, shouldFetch) => {
     data: data,
     mutate,
     error: error,
-    isActiveRoutesLoading: shouldFetch && !data && !error
+    isActiveRoutesLoading: shouldFetch && !data && !error,
   };
 };
