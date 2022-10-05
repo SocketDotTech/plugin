@@ -23,6 +23,7 @@ yarn-error.log*
 *.zip
 /storybook-static
 build-storybook.log
+/src/lib
 
 # Dev Notes
 *.txt

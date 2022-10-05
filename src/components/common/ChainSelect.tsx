@@ -28,7 +28,7 @@ function Option({
 }) {
   return (
     <div
-      className={`skt-w flex w-28 items-center cursor-pointer ${
+      className={`skt-w flex w-28 items-center cursor-pointer flex-shrink-0 ${
         selected ? "" : "p-1.5 hover:bg-widget-secondary hover:bg-opacity-80" 
       }`}
       onClick={onClick}

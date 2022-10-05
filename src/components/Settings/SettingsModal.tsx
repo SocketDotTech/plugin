@@ -38,7 +38,7 @@ export const SettingsModal = () => {
               style={style}
               classNames="z-50"
             >
-              <div className="skt-w px-3 pt-2">
+              <div className="skt-w px-3 pt-3">
                 {/* Sort options */}
                 <SortPreference />
 
