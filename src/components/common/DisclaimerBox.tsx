@@ -16,7 +16,7 @@ export const DisclaimerBox = ({ children }: { children: ReactNode }) => {
         <AlertTriangle className="mr-1 text-orange-500" />{" "}
         <span className="font-medium text-gray-800">Disclaimer</span>
       </div>
-      <span className="text-gray-800">{children}</span>
+      <span className="text-gray-800 text-left">{children}</span>
     </div>
   );
 };

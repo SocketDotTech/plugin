@@ -49,7 +49,7 @@ export const SortPreference = () => {
       <SubTitle>Preferred Route</SubTitle>
       <div
         className="skt-w relative border border-widget-secondary-text border-opacity-40 flex w-auto ml-2"
-        style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
+        style={{ borderRadius: `calc(0.375rem * ${borderRadius})` }}
         ref={dropdownRef}
       >
         <Option onClick={() => openDropdown(!dropdown)} active>
@@ -64,7 +64,7 @@ export const SortPreference = () => {
           <div
             className="skt-w absolute top-10 left-0 w-full border border-widget-secondary-text border-opacity-40 overflow-hidden bg-widget-primary"
             style={{
-              borderRadius: `calc(0.5rem * ${borderRadius})`,
+              borderRadius: `calc(0.375rem * ${borderRadius})`,
             }}
           >
             {sortOptions.map((x) => {
