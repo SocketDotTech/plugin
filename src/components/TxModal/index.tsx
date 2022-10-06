@@ -519,7 +519,7 @@ export const TxModal = ({ style }) => {
                     bridging ||
                     isUpdating
                   }
-                  isLoading={txInProgress || isUpdating}
+                  isLoading={txInProgress || isUpdating || initiating}
                 >
                   {isUpdating
                     ? ButtonTexts.REFETCHING

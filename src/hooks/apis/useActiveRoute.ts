@@ -24,6 +24,6 @@ export const useActiveRoute = (activeRouteId, shouldFetch) => {
     data: data,
     mutate,
     error: error,
-    isActiveRoutesLoading: shouldFetch && !data && !error,
+    isActiveRoutesLoading: isValidating || (shouldFetch && !data && !error),
   };
 };
