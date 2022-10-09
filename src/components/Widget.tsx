@@ -22,9 +22,14 @@ import { SettingsModal } from "./Settings/SettingsModal";
 // hooks
 import { useChains } from "../hooks/apis";
 import { useCustomSettings } from "../hooks/useCustomSettings";
-import { CreditCard } from "react-feather";
+import { CreditCard, Edit } from "react-feather";
 import { useTransition } from "@react-spring/web";
-import { setActiveRoute, setError, setIsTxModalOpen } from "../state/modals";
+import {
+  setActiveRoute,
+  setError,
+  setIsSettingsModalOpen,
+  setIsTxModalOpen,
+} from "../state/modals";
 import { setSourceAmount } from "../state/amountSlice";
 
 // Main Widget -> Base file.
@@ -104,6 +109,8 @@ export const Widget = (props: WidgetProps) => {
     };
   }, []);
 
+  console.log("hello");
+
   return (
     <div
       style={{
@@ -133,10 +140,38 @@ export const Widget = (props: WidgetProps) => {
         <Output customTokenList={props.tokenList} />
         {props.enableRefuel && <Refuel />}
       </div>
+      <SingleTxMessage />
       <RouteDetails />
       {transitions((style, item) => item && <TxModal style={style} />)}
       <SettingsModal />
       <ErrorModal />
     </div>
+  );
+};
+
+const SingleTxMessage = () => {
+  const singleTxOnly = useSelector((state: any) => state.quotes.singleTxOnly); // this state changes on user input
+  const singleTxOnlyFromDev = useSelector(
+    (state: any) => state.customSettings.singleTxOnly
+  ); // this is set by the developer in the plugin config
+  const dispatch = useDispatch();
+
+  function openSettingsModal() {
+    dispatch(setIsSettingsModalOpen(true));
+  }
+
+  if (!singleTxOnly) return <p className="skt-w h-5"></p>; // to prevent the layout shift
+  return (
+    <p className="skt-w text-sm text-widget-secondary px-3 flex items-center h-5">
+      Showing single transaction routes only{" "}
+      {!singleTxOnlyFromDev && (
+        <button
+          onClick={openSettingsModal}
+          className="skt-w skt-w-button skt-w-input ml-1.5 flex"
+        >
+          <Edit className="skt-w w-3.5 h-3.5 text-widget-accent" />
+        </button>
+      )}
+    </p>
   );
 };

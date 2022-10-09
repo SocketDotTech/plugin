@@ -27,7 +27,7 @@ export const SingleTx = () => {
 
   if (singleTxOnlyFromDev) return null;
   return (
-    <div className="skt-w flex items-center relative mt-5">
+    <div className="skt-w flex items-center relative mt-6 justify-between">
       <SubTitle>Single Transaction only</SubTitle>
       <span className="px-1"></span>
       <CheckBox

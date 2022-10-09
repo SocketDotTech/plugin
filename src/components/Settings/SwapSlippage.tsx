@@ -100,7 +100,7 @@ export const SwapSlippage = () => {
   );
 
   return (
-    <div className="mt-5">
+    <div className="mt-6">
       <div className="flex justify-between">
         <div className="skt-w flex items-center mb-1.5">
           <SubTitle>Swap Slippage</SubTitle>

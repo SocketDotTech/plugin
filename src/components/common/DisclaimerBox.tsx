@@ -8,15 +8,17 @@ export const DisclaimerBox = ({ children }: { children: ReactNode }) => {
 
   return (
     <div
-      className="py-3 px-3.5 text-sm text-opacity-90 mt-4"
-      style={{ background: "#FAF3E6", borderRadius: `calc(0.75rem * ${borderRadius})` }}
+      className="skt-w py-3 px-3.5 text-sm text-opacity-90 mt-4 flex items-start"
+      style={{
+        background: "#FAF3E6",
+        borderRadius: `calc(0.75rem * ${borderRadius})`,
+      }}
       role="alert"
     >
       <div className="flex items-center mb-2">
-        <AlertTriangle className="mr-1 text-orange-500" />{" "}
-        <span className="font-medium text-gray-800">Disclaimer</span>
+        <AlertTriangle className="skt-w mr-3 mt-0.5 text-orange-500" />{" "}
       </div>
-      <span className="text-gray-800 text-left">{children}</span>
+      <p className="skt-w text-gray-800 text-left leading-5">{children}</p>
     </div>
   );
 };

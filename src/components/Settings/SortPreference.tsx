@@ -45,7 +45,7 @@ export const SortPreference = () => {
   }, []);
 
   return (
-    <div className="skt-w flex items-center relative z-30">
+    <div className="skt-w flex items-center relative z-30 justify-between">
       <SubTitle>Preferred Route</SubTitle>
       <div
         className="skt-w relative border border-widget-secondary-text border-opacity-40 flex w-auto ml-2"

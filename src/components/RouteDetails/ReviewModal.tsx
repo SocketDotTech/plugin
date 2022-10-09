@@ -129,8 +129,6 @@ export const ReviewModal = ({
   }, [selectedRoute]);
 
   const openSettingsModal = () => {
-    // Need to close the review modal first
-    closeModal(); // remove this if edit is not required in review section
     dispatch(setIsSettingsModalOpen(true));
   };
 
