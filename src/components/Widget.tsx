@@ -152,15 +152,20 @@ const SingleTxMessage = () => {
   const singleTxOnlyFromDev = useSelector(
     (state: any) => state.customSettings.singleTxOnly
   ); // this is set by the developer in the plugin config
+  const sourceChainId = useSelector(
+    (state: any) => state.networks.sourceChainId
+  );
+  const destChainId = useSelector((state: any) => state.networks.destChainId);
   const dispatch = useDispatch();
 
   function openSettingsModal() {
     dispatch(setIsSettingsModalOpen(true));
   }
 
-  if (!singleTxOnly) return <p className="skt-w h-5"></p>; // to prevent the layout shift
+  if (!singleTxOnly || sourceChainId === destChainId)
+    return <p className="skt-w h-5"></p>; // to prevent the layout shift
   return (
-    <p className="skt-w text-sm text-widget-secondary px-3 flex items-center h-5">
+    <p className="skt-w text-sm text-widget-secondary pr-3 pl-3.5 flex items-center h-5">
       Showing single transaction routes only{" "}
       {!singleTxOnlyFromDev && (
         <button

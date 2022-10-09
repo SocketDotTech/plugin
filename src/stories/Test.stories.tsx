@@ -122,7 +122,7 @@ Default.args = {
   includeBridges: ['hop'],
   // singleTxOnly: true,
   // excludeBridges: ['hop', 'polygon-bridge'],
-  // enableRefuel: true,
+  enableRefuel: true,
   // tokenList: MY_LIST,
   // tokenList: UNISWAP_DEFAULT_LIST,
   // destNetworks: [100],
