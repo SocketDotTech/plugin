@@ -109,8 +109,6 @@ export const Widget = (props: WidgetProps) => {
     };
   }, []);
 
-  console.log("hello");
-
   return (
     <div
       style={{
