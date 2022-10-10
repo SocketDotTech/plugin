@@ -10,6 +10,7 @@ import { RadioCheckbox } from "../common/RadioCheckbox";
 import { useDispatch, useSelector } from "react-redux";
 import { DisclaimerBox } from "../common/DisclaimerBox";
 import { SubTitle } from "./SubTitle";
+import { Popover } from "../common/Popover";
 
 export const SwapSlippage = () => {
   const [buttonInput, setButtonInput] = useState<number | null>(null);
@@ -101,10 +102,17 @@ export const SwapSlippage = () => {
 
   return (
     <div className="mt-6">
-      <div className="flex justify-between">
+      <div className="flex justify-between relative">
         <div className="skt-w flex items-center mb-1.5">
           <SubTitle>Swap Slippage</SubTitle>
-          <Info className="ml-1.5 w-4 h-4 text-widget-secondary" />
+          <Popover
+            content="Only select routes with one user transaction i.e. direct bridge or source chain swap + bridge."
+            classNames="bottom-8"
+            cursor="cursor-help"
+          >
+            <Info className="ml-1.5 w-4 h-4 text-widget-secondary" />
+          </Popover>
+
           {/* Your swap transaction will revert if the price changes unfavourably by more than this percentage. */}
         </div>
         {buttonInput || customInput ? (

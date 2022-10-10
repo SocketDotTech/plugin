@@ -2,7 +2,13 @@ import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { ReactNode, useContext } from "react";
 import { AlertTriangle } from "react-feather";
 
-export const DisclaimerBox = ({ children }: { children: ReactNode }) => {
+export const DisclaimerBox = ({
+  children,
+  showIcon = false,
+}: {
+  children: ReactNode;
+  showIcon?: boolean;
+}) => {
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
 
@@ -15,9 +21,11 @@ export const DisclaimerBox = ({ children }: { children: ReactNode }) => {
       }}
       role="alert"
     >
-      <div className="flex items-center mb-2">
-        <AlertTriangle className="skt-w mr-3 mt-0.5 text-orange-500" />{" "}
-      </div>
+      {showIcon && (
+        <div className="flex items-center mb-2">
+          <AlertTriangle className="skt-w mr-3 mt-0.5 text-orange-500" />{" "}
+        </div>
+      )}
       <p className="skt-w text-gray-800 text-left leading-5">{children}</p>
     </div>
   );
