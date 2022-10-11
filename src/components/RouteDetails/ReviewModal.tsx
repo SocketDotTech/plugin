@@ -264,13 +264,14 @@ export const ReviewModal = ({
           >
             {quoteUpdated && (
               <span className="skt-w whitespace-nowrap w-full text-widget-secondary text-sm text-left">
-                Quote updated
+                {!bestRoute ? 'Quote updating...' : 'Quote updated'}
               </span>
             )}
 
             <Button
               onClick={quoteUpdated ? updateSelectedRoute : openTxModal}
               classNames={`${quoteUpdated ? "h-12" : ""}`}
+              disabled={!bestRoute}
             >
               {quoteUpdated
                 ? "Accept"
