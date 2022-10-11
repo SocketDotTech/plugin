@@ -106,14 +106,12 @@ export const SwapSlippage = () => {
         <div className="skt-w flex items-center mb-1.5">
           <SubTitle>Swap Slippage</SubTitle>
           <Popover
-            content="Only select routes with one user transaction i.e. direct bridge or source chain swap + bridge."
+            content="Your swap transaction will revert if the price changes unfavourably by more than this percentage."
             classNames="bottom-8"
             cursor="cursor-help"
           >
             <Info className="ml-1.5 w-4 h-4 text-widget-secondary" />
           </Popover>
-
-          {/* Your swap transaction will revert if the price changes unfavourably by more than this percentage. */}
         </div>
         {buttonInput || customInput ? (
           <span className="text-xs text-widget-secondary ml-3">
