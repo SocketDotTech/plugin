@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isTxModalOpen: false,
   isSettingsModalOpen: false,
-  activeRoute: null,
+  activeRoute: null, // @salil-naik, ideally this should be together with selectedRoute state
   execute: null,
   error: null,
 };

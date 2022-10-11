@@ -417,11 +417,11 @@ export const TxModal = ({ style }) => {
   }
 
   // Update and refetch quote when the swap slippage is changed
-  const swapTx = getSwapTx(currentRoute?.route, userTx?.userTxIndex ?? 0);
+  const swapTx = getSwapTx(currentRoute?.route, userTx?.userTxIndex);
   const { loading: isUpdating } = updateAndRefetch(
     currentRoute?.route?.activeRouteId ?? userTx?.activeRouteId,
     swapTx?.swapSlippage,
-    userTx?.userTxIndex ?? 0
+    userTx?.userTxIndex
   );
 
   return (
@@ -479,8 +479,14 @@ export const TxModal = ({ style }) => {
               {retryEnabled ? (
                 <Button onClick={reinitiateRoute}>Retry</Button>
               ) : userTx && activeChain !== userTx?.chainId ? (
-                <Button onClick={switchNetwork} disabled={initiating}>
-                  {initiating
+                <Button
+                  onClick={switchNetwork}
+                  disabled={initiating || isUpdating}
+                  isLoading={initiating || isUpdating}
+                >
+                  {isUpdating
+                    ? ButtonTexts.REFETCHING
+                    : initiating
                     ? ButtonTexts.INITIATING
                     : `Switch chain to ${
                         allNetworks.filter(

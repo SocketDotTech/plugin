@@ -26,6 +26,7 @@ export const updateAndRefetch = (
     (state: any) => state.modals.isSettingsModalOpen
   );
   const selectedRoute = useSelector((state: any) => state.routes.selectedRoute);
+  const currentActiveRoute = useSelector((state: any) => state.modals.activeRoute); // running in a loop
 
   // passing the new slippage to the database: build-next-tx api
   build = useNextTx(
@@ -46,12 +47,16 @@ export const updateAndRefetch = (
   );
 
   useEffect(() => {
+    // Get new swap tx, after the slippage is changed
     const newSwapTx = getSwapTx(
       updatedActiveRoute?.data?.result,
       currentTxIndex
     );
-    const currentSwapTx = getSwapTx(selectedRoute?.route, currentTxIndex);
 
+    // Get current swap tx (before the slippage is changed)
+    const currentSwapTx = getSwapTx(selectedRoute?.route ?? currentActiveRoute, currentTxIndex);
+
+    // shouldDispatch should be true only if the new swap slippage and current swap slippage are different
     const shouldDispatch =
       !!newSwapTx &&
       !!currentSwapTx &&
@@ -59,13 +64,15 @@ export const updateAndRefetch = (
 
     // Setting the selectedRoute/activeRoute (depending on which one's is in use) with the new route data.
     if (shouldDispatch) {
-      if (selectedRoute) {
+      if(!!currentActiveRoute){
+        dispatch(setActiveRoute(updatedActiveRoute?.data?.result));
+      } else if (selectedRoute){
         const _update = {
           ...selectedRoute,
           route: updatedActiveRoute?.data?.result,
-        };
+        }
         dispatch(setSelectedRoute(_update));
-      } else dispatch(setActiveRoute(updatedActiveRoute?.data?.result));
+      }
     }
   }, [updatedActiveRoute]);
 

@@ -129,16 +129,20 @@ export const timeInMinutes = (time: number) => {
 
 // To get the swap step
 export const getSwapTx = (route: any, currentTx: number) => {
-  const fundMovr = route?.userTxs?.filter(
-    (x) => x.userTxType === UserTxType.FUND_MOVR
-  )?.[0];
+  if (currentTx !== undefined || currentTx !== null) {
+    const fundMovr = route?.userTxs?.filter(
+      (x) => x.userTxType === UserTxType.FUND_MOVR
+    )?.[0];
 
-  const dex = route?.userTxs?.filter(
-    (x) => x.userTxType === UserTxType.DEX_SWAP
-  )?.[0];
+    const dex = route?.userTxs?.filter(
+      (x) => x.userTxType === UserTxType.DEX_SWAP
+    )?.[0];
 
-  if (fundMovr?.userTxIndex === currentTx) {
-    return fundMovr?.steps?.filter((x) => x.type === "middleware")?.[0];
-  } else if (dex?.userTxIndex === currentTx) return dex;
-  return null;
+    if (fundMovr?.userTxIndex === currentTx) {
+      return fundMovr?.steps?.filter((x) => x.type === "middleware")?.[0];
+    } else if (dex?.userTxIndex === currentTx) {
+      return dex;
+    }
+    return null;
+  }
 };
