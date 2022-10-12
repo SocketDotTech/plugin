@@ -363,11 +363,13 @@ export const TxModal = ({ style }) => {
     };
 
     setCurrentRoute(_currentRoute);
+  }, [activeRoute, selectedRoute]); // the activeRoute is set before the txModal is opened.
 
+  useEffect(() => {
     return () => {
       dispatch(setActiveRoute(null));
     };
-  }, [activeRoute, selectedRoute]); // the activeRoute is set before the txModal is opened.
+  }, []);
 
   const refuelSourceToken = {
     amount: !!activeRoute
