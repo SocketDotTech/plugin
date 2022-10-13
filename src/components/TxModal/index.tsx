@@ -251,7 +251,7 @@ export const TxModal = ({ style }) => {
 
       if (err.match("execution reverted: middleware_action_failed")) {
         errMessage =
-          "Swap failed due to slippage or low DEX liquidity, please retry or contact support";
+          "Swap failed due to slippage or low DEX liquidity, please increase the slippage and retry or contact support";
       } else if (
         err.match("insufficient funds") ||
         err.match("transfer amount exceeds balance")
