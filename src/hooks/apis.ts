@@ -2,12 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import {
   Balances,
   ChainId,
-  Routes,
   Server,
   Socket,
-  SortOptions,
   Supported,
-  Token,
 } from "@socket.tech/socket-v2-sdk";
 import { useDispatch, useSelector } from "react-redux";
 import useSWR from "swr";
@@ -47,125 +44,17 @@ export const useChains = () => {
   return allChains;
 };
 
-// Function to get all the pending routes.
-export const useActiveRoutes = () => {
-  const web3Context = useContext(Web3Context);
-  // const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
-  const { userAddress } = web3Context.web3Provider;
-
-  async function fetchActiveRoutes(address: string) {
-    const result = await Routes.getActiveRoutesForUser({
-      userAddress: address,
-      routeStatus: "PENDING",
-      limit: '30'
-    });
-    return result;
-  }
-
-  const { data, error, isValidating, mutate } = useSWR(
-    userAddress ? [userAddress, "active-routes"] : null,
-    fetchActiveRoutes,
-    {
-      refreshInterval: time.ACTIVE_ROUTES_REFRESH * 1000, //refresh active routes every 30 seconds
-    }
-  );
-
-  return {
-    data: data,
-    isQuotesLoading: userAddress && ((!data && !error) || isValidating),
-    mutate,
-  };
-};
-
-// Function to get current activeRoute details
-export const useCurrentActiveRoute = (activeRouteId) => {
-  async function fetchActiveRouteDetails(_activeRouteId: number) {
-    const result = await Routes.getActiveRoute({
-      activeRouteId: _activeRouteId,
-    });
-    return result;
-  }
-
-  const { data, error, isValidating, mutate } = useSWR(
-    activeRouteId ? [activeRouteId, "current-active-route"] : null,
-    fetchActiveRouteDetails,
-    {
-      refreshInterval: time.ACTIVE_ROUTES_REFRESH * 1000
-    }
-  );
-
-  return {
-    data: data,
-    mutate,
-  };
-};
-
-// Main hook that takes in params and fetches the quotes.
-export const useRoutes = (
-  sourceToken,
-  destToken,
-  amount,
-  sort: SortOptions,
-  userAddress,
-  refuelEnabled,
-  includeBridges,
-  excludeBridges
-) => {
-  const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
-  const shouldFetch =
-    !!sourceToken &&
-    !!destToken &&
-    !!amount &&
-    amount !== "0" &&
-    !!userAddress &&
-    !isTxModalOpen;
-
-  async function fetchQuotes(
-    sourceToken: Token,
-    destToken: Token,
-    amount: string,
-    userAddress: string,
-    sort: SortOptions,
-    bridgeWithGas,
-    includeBridges,
-    excludeBridges
-  ) {
-    const quotes = await socket.getAllQuotes(
-      {
-        path: { fromToken: sourceToken, toToken: destToken },
-        amount,
-        address: userAddress,
-      },
-      { sort, bridgeWithGas: bridgeWithGas, includeBridges, excludeBridges}
-    );
-    return quotes;
-  }
-
-  const { data, error, isValidating } = useSWR(
-    shouldFetch
-      ? [
-          sourceToken,
-          destToken,
-          amount,
-          userAddress,
-          sort,
-          refuelEnabled,
-          includeBridges,
-          excludeBridges,
-          "quotes",
-        ]
-      : null,
-    fetchQuotes,
-    {
-      refreshInterval: time.QUOTES_REFRESH * 1000, //refresh quotes every 60 seconds
-      revalidateOnFocus: false,
-    }
-  );
-
-  return {
-    data: data,
-    isQuotesLoading: userAddress && ((!data && !error) || isValidating),
-  };
+import { useRoutes } from "./apis/useRoutes";
+import { useActiveRoute } from "./apis/useActiveRoute";
+import { useNextTx } from "./apis/useNextTx";
+import { usePendingRoutes } from "./apis/usePendingRoutes";
+import { updateAndRefetch } from "./updateAndRefetch";
+export {
+  useRoutes,
+  useActiveRoute,
+  useNextTx,
+  usePendingRoutes,
+  updateAndRefetch,
 };
 
 // Returns balance of the token address provided

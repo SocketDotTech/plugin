@@ -110,15 +110,15 @@ export const TokenSelect = (props: Props) => {
       {activeToken && (
         <button
           onClick={() => setOpenTokenList(!openTokenList)}
-          className={`skt-w skt-w-input skt-w-button flex items-center flex-1 bg-widget-interactive flex-shrink-0 flex-nowrap w-auto overflow-hidden p-1 gap-1 text-widget-on-interactive`}
+          className={`skt-w skt-w-input skt-w-button flex items-center flex-1 bg-widget-interactive flex-shrink-0 flex-nowrap w-auto overflow-hidden p-1 text-widget-on-interactive`}
           style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
         >
           <img
             src={activeToken?.logoURI}
-            className="skt-w h-6 w-6 rounded-full mr-1 border"
+            className="skt-w h-6 w-6 rounded-full mr-1.5 border"
           />
-          <div className="skt-w flex items-center gap-0.5">
-            <span>{activeToken?.symbol}</span>
+          <div className="skt-w flex items-center">
+            <span className="mr-0.5">{activeToken?.symbol}</span>
             <ChevronDown className="skt-w w-4 h-4" />
           </div>
         </button>

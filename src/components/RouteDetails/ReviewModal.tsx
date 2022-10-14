@@ -6,11 +6,11 @@ import { BRIDGE_DISPLAY_NAMES, UserTxType } from "../../consts/";
 // components
 import { Button } from "../common/Button";
 import { Modal } from "../common/Modal";
-import { ChevronUp } from "react-feather";
+import { ChevronUp, Edit } from "react-feather";
 import { InnerCard } from "../common/InnerCard";
 
 // actions
-import { setIsTxModalOpen } from "../../state/modals";
+import { setIsSettingsModalOpen, setIsTxModalOpen } from "../../state/modals";
 import { setSelectedRoute } from "../../state/selectedRouteSlice";
 import { TxStepDetails } from "../TxModal/TxStepDetails";
 import { TokenDetailsRow } from "../common/TokenDetailsRow";
@@ -103,6 +103,10 @@ export const ReviewModal = ({
     fundMovrData?.steps &&
     fundMovrData?.steps.filter((step) => step.type === "bridge")[0];
 
+  const swapStepInFundMovr =
+    fundMovrData?.steps &&
+    fundMovrData?.steps.filter((step) => step.type === "middleware")[0];
+
   // Extracting the Swap step from userTxs
   const swapData = selectedRoute?.route?.userTxs.filter(
     (item) => item.userTxType === UserTxType.DEX_SWAP
@@ -124,6 +128,10 @@ export const ReviewModal = ({
     );
   }, [selectedRoute]);
 
+  const openSettingsModal = () => {
+    dispatch(setIsSettingsModalOpen(true));
+  };
+
   return (
     <Modal
       title="Review Quote"
@@ -133,7 +141,10 @@ export const ReviewModal = ({
       style={style}
     >
       <div className="skt-w flex flex-col justify-between flex-1 relative">
-        <div className="skt-w w-full">
+        <div
+          className="skt-w w-full overflow-y-auto"
+          style={{ height: "calc(100% - 7rem)" }}
+        >
           <TokenDetailsRow
             srcDetails={{
               token: selectedRoute?.path?.fromToken,
@@ -147,7 +158,7 @@ export const ReviewModal = ({
             destRefuel={refuelDestToken}
           />
 
-          <div className="skt-w p-3 flex flex-col gap-3 mt-1">
+          <div className="skt-w px-3 py-1.5 flex flex-col mt-1">
             {!isSameChainSwap ? (
               <>
                 <RouteDetailRow
@@ -198,21 +209,34 @@ export const ReviewModal = ({
                 />
               </>
             )}
+            {(!!swapStepInFundMovr || !!swapData) && (
+              <RouteDetailRow label="Swap Slippage">
+                <div className="flex items-center">
+                  {swapData?.swapSlippage ?? swapStepInFundMovr?.swapSlippage}%{" "}
+                  <button
+                    className="skt-w skt-w-input skt-w-button flex"
+                    onClick={openSettingsModal}
+                  >
+                    <Edit className="ml-2 w-4 h-4 text-widget-accent" />
+                  </button>
+                </div>
+              </RouteDetailRow>
+            )}
           </div>
         </div>
 
         <InnerCard
-          classNames={`absolute w-full flex bottom-0 flex-col justify-between transition-all	 ${
+          classNames={`absolute w-full flex bottom-0 flex-col justify-between transition-all ${
             showTxDetails ? `h-full max-h-full` : "h-auto max-h-min"
           }`}
         >
           <div className="skt-w flex-1 flex flex-col overflow-auto">
             <button
-              className="skt-w skt-w-button skt-w-input flex items-center gap-1.5 text-sm text-widget-secondary mb-3"
+              className="skt-w skt-w-button skt-w-input flex items-center text-sm text-widget-secondary mb-3"
               onClick={() => setShowTxDetails(!showTxDetails)}
             >
               <ChevronUp
-                className={`skt-w w-4 h-4 text-widget-secondary transition-all ${
+                className={`skt-w w-4 h-4 text-widget-secondary transition-all mr-1.5 ${
                   showTxDetails ? "rotate-180" : "rotate-0"
                 }`}
               />{" "}
@@ -240,13 +264,14 @@ export const ReviewModal = ({
           >
             {quoteUpdated && (
               <span className="skt-w whitespace-nowrap w-full text-widget-secondary text-sm text-left">
-                Quote updated
+                {!bestRoute ? 'Quote updating...' : 'Quote updated'}
               </span>
             )}
 
             <Button
               onClick={quoteUpdated ? updateSelectedRoute : openTxModal}
               classNames={`${quoteUpdated ? "h-12" : ""}`}
+              disabled={!bestRoute}
             >
               {quoteUpdated
                 ? "Accept"
@@ -269,7 +294,7 @@ const RouteDetailRow = ({
   children?: ReactNode;
 }) => {
   return (
-    <div className="skt-w w-full flex justify-between text-sm text-widget-secondary">
+    <div className="skt-w w-full flex justify-between text-sm text-widget-secondary my-1.5">
       <span>{label}</span>
       <span>{value}</span>
       {children}

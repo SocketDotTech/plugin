@@ -9,7 +9,7 @@ import { Modal } from "./common/Modal";
 // actions
 import { setActiveRoute, setIsTxModalOpen } from "../state/modals";
 
-import { useActiveRoutes } from "../hooks/apis";
+import { usePendingRoutes } from "../hooks/apis";
 import { useTransition } from "@react-spring/web";
 import { TokenDetailsRow } from "./common/TokenDetailsRow";
 
@@ -32,7 +32,7 @@ export const PendingTransactions = () => {
   });
 
   // Hook that fetches the routes that are active (routes that have started but have not been completed yet.)
-  const { data: activeRoutesData } = useActiveRoutes();
+  const { data: activeRoutesData } = usePendingRoutes();
 
   useEffect(() => {
     if (activeRoutesData) {

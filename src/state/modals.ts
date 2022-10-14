@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isTxModalOpen: false,
-  activeRoute: null,
+  isSettingsModalOpen: false,
+  activeRoute: null, // @salil-naik, ideally this should be together with selectedRoute state
   execute: null,
   error: null,
 };
@@ -14,14 +15,22 @@ const modalsSlice = createSlice({
     setIsTxModalOpen: (state, action) => {
       state.isTxModalOpen = action.payload;
     },
+    setIsSettingsModalOpen: (state, action) => {
+      state.isSettingsModalOpen = action.payload;
+    },
     setActiveRoute: (state, action) => {
-      state.activeRoute = action.payload
+      state.activeRoute = action.payload;
     },
     setError: (state, action) => {
-      state.error = action.payload
-    }
+      state.error = action.payload;
+    },
   },
 });
 
 export default modalsSlice.reducer;
-export const { setIsTxModalOpen, setActiveRoute, setError} = modalsSlice.actions;
+export const {
+  setIsTxModalOpen,
+  setIsSettingsModalOpen,
+  setActiveRoute,
+  setError,
+} = modalsSlice.actions;

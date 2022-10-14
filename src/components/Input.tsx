@@ -287,8 +287,8 @@ export const Input = ({
   return (
     <div className="skt-w mt-3.5">
       <div className="skt-w flex items-center justify-between">
-        <div className="skt-w flex items-center gap-1.5">
-          <span className="skt-w text-widget-secondary text-sm">From</span>
+        <div className="skt-w flex items-center">
+          <span className="skt-w text-widget-secondary text-sm mr-1.5">From</span>
           <ChainSelect
             networks={supportedNetworks}
             activeNetworkId={sourceChainId}

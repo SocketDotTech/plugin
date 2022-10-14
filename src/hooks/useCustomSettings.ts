@@ -11,7 +11,9 @@ import {
   setSameChainSwaps,
   setIncludeBridges,
   setExludeBridges,
+  setSingleTxOnly,
 } from "../state/customSettingsSlice";
+import { setSingleTxOnly as setSingleTxOnlyFromUser } from "../state/quotesSlice";
 import { formatRGB } from "../utils";
 
 // To set custom chains, tokens, default values passed as props
@@ -27,6 +29,7 @@ export const useCustomSettings = (props: WidgetProps) => {
     enableSameChainSwaps,
     includeBridges,
     excludeBridges,
+    singleTxOnly,
   } = props;
   const dispatch = useDispatch();
 
@@ -43,6 +46,14 @@ export const useCustomSettings = (props: WidgetProps) => {
     !includeBridges &&
       excludeBridges?.length > 0 &&
       dispatch(setExludeBridges(excludeBridges));
+    dispatch(setSingleTxOnly(singleTxOnly));
+    
+    // if singleTxOnly is set to true in the widget config,
+    // additionally set the in-widget singleTxOnly value to true
+    if (singleTxOnly) {
+      dispatch(setSingleTxOnlyFromUser(singleTxOnly));
+      localStorage.setItem("singleTxOnly", singleTxOnly ? "true" : "false");
+    }
   }, [props]);
 
   // Theme

@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { hexStripZeros } from "ethers/lib/utils";
 import { Currency } from "../types";
-import { SOCKET_API_KEY } from "../consts";
+import { SOCKET_API_KEY, UserTxType } from "../consts";
 
 export const fetcher = async (url: string) =>
   fetch(url, {
@@ -125,4 +125,24 @@ export function filterTokensByChain(tokens: Currency[], chainId: number) {
 
 export const timeInMinutes = (time: number) => {
   return Math.floor(time / 60) + "m";
+};
+
+// To get the swap step
+export const getSwapTx = (route: any, currentTx: number) => {
+  if (currentTx !== undefined || currentTx !== null) {
+    const fundMovr = route?.userTxs?.filter(
+      (x) => x.userTxType === UserTxType.FUND_MOVR
+    )?.[0];
+
+    const dex = route?.userTxs?.filter(
+      (x) => x.userTxType === UserTxType.DEX_SWAP
+    )?.[0];
+
+    if (fundMovr?.userTxIndex === currentTx) {
+      return fundMovr?.steps?.filter((x) => x.type === "middleware")?.[0];
+    } else if (dex?.userTxIndex === currentTx) {
+      return dex;
+    }
+    return null;
+  }
 };
