@@ -225,8 +225,8 @@ export const Output = ({
   return (
     <div className="skt-w mt-6">
       <div className="skt-w flex items-center justify-between">
-        <div className="skt-w flex items-center gap-x-1.5">
-          <span className="skt-w text-widget-secondary text-sm">To</span>
+        <div className="skt-w flex items-center">
+          <span className="skt-w text-widget-secondary text-sm mr-1.5">To</span>
           <ChainSelect
             networks={supportedNetworksSubset}
             activeNetworkId={destChainId}

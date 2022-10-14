@@ -11,7 +11,6 @@ import { TxDetails } from "../../types";
 // components
 import { Spinner } from "../common/Spinner";
 import { TokenDetailsRow } from "../common/TokenDetailsRow";
-import { Stepper } from "../common/Stepper";
 
 // This component is displayed when transaction of type 'fund-movr' (bridging tx) is in progress
 export const BridgingLoader = ({
@@ -120,17 +119,9 @@ export const BridgingLoader = ({
       />
       <div className="skt-w border-b border-widget-secondary" />
 
-      {currentRoute?.route?.userTxs?.length > 1 && (
-        <div className="skt-w px-3.5 py-3 mt-2">
-          <Stepper
-            currentTx={currentRoute?.route?.currentUserTxIndex || 0}
-            userTxs={currentRoute?.route?.userTxs}
-          />
-        </div>
-      )}
-      <div className="skt-w flex gap-4 flex-col items-center my-auto pb-3">
+      <div className="skt-w flex flex-col items-center my-auto pb-3">
         <Spinner size={10} />
-        <div>
+        <div className="mt-4">
           <p className="skt-w text-sm text-widget-primary mb-2 font-medium text-center">
             Bridging in progress
           </p>
@@ -158,14 +149,16 @@ export const BridgingLoader = ({
           </p>
         </div>
 
-        <div className="skt-w flex flex-col gap-3.5 items-center">
+        <div className="skt-w flex flex-col items-center mt-4">
           <TxRow
             title={`Bridging via ${bridgeDetails?.protocol?.displayName}`}
             srcUrl={srcTxHash}
             destUrl={destTxHash}
           />
           {!!refuelEnabled && (
-            <TxRow title="Refuel" destUrl={destRefuelTxHash} />
+            <div className="mt-3.5">
+              <TxRow title="Refuel" destUrl={destRefuelTxHash} />
+            </div>
           )}
         </div>
       </div>
@@ -178,7 +171,7 @@ const TxUrlChip = ({ url, label }: { url?: string; label: string }) => {
   const { borderRadius } = customSettings.customization;
   return (
     <span
-      className="skt-w text-xs bg-widget-primary text-widget-secondary flex items-center gap-1 flex-nowrap px-2 py-1.5"
+      className="skt-w text-xs bg-widget-primary text-widget-secondary flex items-center flex-nowrap px-2 py-1.5"
       style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
     >
       {url && !url.match("undefined") ? (
@@ -186,14 +179,14 @@ const TxUrlChip = ({ url, label }: { url?: string; label: string }) => {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="skt-w skt-w-anchor flex items-center gap-1 hover:underline"
+          className="skt-w skt-w-anchor flex items-center hover:underline"
         >
           {label}{" "}
-          <ExternalLink className="skt-w text-widget-secondary w-3 h-auto" />
+          <ExternalLink className="skt-w text-widget-secondary w-3 h-auto ml-1.5" />
         </a>
       ) : (
-        <span className="skt-w flex items-center gap-1 h-auto">
-          {label} <Spinner size={3} />
+        <span className="skt-w flex items-center h-auto">
+          <span className="mr-1.5">{label}</span> <Spinner size={3} />
         </span>
       )}
     </span>
@@ -212,8 +205,12 @@ const TxRow = ({
   return (
     <div className="skw-w flex items-center pl-2.5 p-0.5 rounded-full bg-widget-secondary border border-widget-secondary">
       <span className="skt-w text-widget-primary text-xs pr-2">{title}</span>
-      <div className="skt-w flex items-center gap-0.5">
-        {!!srcUrl && <TxUrlChip label="Src tx" url={srcUrl} />}
+      <div className="skt-w flex items-center">
+        {!!srcUrl && (
+          <span className="mr-0.5">
+            <TxUrlChip label="Src tx" url={srcUrl} />
+          </span>
+        )}
         <TxUrlChip label="Dest tx" url={destUrl || null} />
       </div>
     </div>

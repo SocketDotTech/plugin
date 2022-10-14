@@ -66,4 +66,5 @@ export enum ButtonTexts {
   BRIDGE_IN_PROGRESS = 'Bridging in progress',
   INITIATING = 'Initiating...',
   IN_PROGRESS = 'In progress',
+  REFETCHING = 'Refetching...'
 }

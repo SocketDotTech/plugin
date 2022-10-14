@@ -12,6 +12,7 @@ const initialState = {
   sameChainSwapsEnabled: false,
   includeBridges: null,
   excludeBridges: null,
+  singleTxOnly: false,
 };
 
 const customSettingsSlice = createSlice({
@@ -49,8 +50,11 @@ const customSettingsSlice = createSlice({
       state.includeBridges = action.payload;
     },
     setExludeBridges: (state, action) => {
-      state.excludeBridges = action.payload
-    }
+      state.excludeBridges = action.payload;
+    },
+    setSingleTxOnly: (state, action) => {
+      state.singleTxOnly = action.payload;
+    },
   },
 });
 
@@ -66,8 +70,8 @@ export const {
   setDefaultDestToken,
   setSameChainSwaps,
   setIncludeBridges,
-  setExludeBridges
+  setExludeBridges,
+  setSingleTxOnly,
 } = customSettingsSlice.actions;
-
 
 // Note - Custom token list is not set here. Check out hooks/useTokenLists.ts

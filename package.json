@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "repository": "https://github.com/SocketDotTech/widget",
   "license": "MIT",
+  "keywords": ["library", "plugin", "web3", "bridge", "cross-chain", "swap", "cross-chain-swap", "blockchain", "interoperability"],
   "scripts": {
     "storybook": "start-storybook -p 6006",
     "build:storybook": "build-storybook",
@@ -16,7 +17,7 @@
     "@react-spring/web": "^9.5.0",
     "@reduxjs/toolkit": "^1.8.2",
     "@socket.tech/ll-core": "^0.1.10",
-    "@socket.tech/socket-v2-sdk": "^1.20.0",
+    "@socket.tech/socket-v2-sdk": "^1.21.0",
     "ethers": "^5.6.9",
     "react-feather": "^2.0.10",
     "react-redux": "^8.0.2",

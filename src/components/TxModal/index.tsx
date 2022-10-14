@@ -1,21 +1,26 @@
 import { useDispatch, useSelector } from "react-redux";
 import { ReactElement, useContext, useEffect, useState } from "react";
 import { SocketTx } from "@socket.tech/socket-v2-sdk";
+import { getSwapTx, handleNetworkChange } from "../../utils";
 
 // components
 import { Modal } from "../common/Modal";
 import { Button } from "../common/Button";
 import { TxStepDetails } from "./TxStepDetails";
 import { BridgingLoader } from "./BridgingLoader";
-import { Stepper } from "../common/Stepper";
+import { Edit } from "react-feather";
 
 // actions
-import { setActiveRoute, setError, setIsTxModalOpen } from "../../state/modals";
+import {
+  setActiveRoute,
+  setError,
+  setIsSettingsModalOpen,
+  setIsTxModalOpen,
+} from "../../state/modals";
 import { setTxDetails } from "../../state/txDetails";
 
 // hooks
-import { socket, useActiveRoutes } from "../../hooks/apis";
-import { handleNetworkChange } from "../../utils";
+import { socket, updateAndRefetch, usePendingRoutes } from "../../hooks/apis";
 
 import {
   USER_TX_LABELS,
@@ -39,8 +44,8 @@ export const TxModal = ({ style }) => {
 
   // When the tx modal is opened from the tx-history(pending) section, selectedRoute will be set to null & activeRoute will be truthy
   // If the tx modal is opened in the normal user flow, the selected route will be truthy and activeRoute will be null
-  const selectedRoute = useSelector((state: any) => state.routes.selectedRoute);
-  const activeRoute = useSelector((state: any) => state.modals.activeRoute);
+  const selectedRoute = useSelector((state: any) => state.routes.selectedRoute); // the route the user selects initially
+  const activeRoute = useSelector((state: any) => state.modals.activeRoute); // the route that is opened from pending transactions
   const allNetworks = useSelector((state: any) => state.networks.allNetworks);
   const txDetails = useSelector((state: any) => state.txDetails.txDetails);
 
@@ -62,7 +67,7 @@ export const TxModal = ({ style }) => {
 
   const [approvalTxData, setApprovalTxData] = useState<any>(null);
   const [userTx, setUserTx] = useState(null);
-  const { mutate: mutateActiveRoutes } = useActiveRoutes();
+  const { mutate: mutatePendingRoutes } = usePendingRoutes();
   const [explorerParams, setExplorerParams] = useState<{
     srcTxHash: string;
     srcChainId: number;
@@ -238,7 +243,7 @@ export const TxModal = ({ style }) => {
       } else if (currentStatus === PrepareTxStatus.COMPLETED) {
         setTxCompleted(true);
         setBridging(false);
-        mutateActiveRoutes(); // mutating the pending tx list
+        mutatePendingRoutes(); // mutating the pending tx list
       }
     } catch (e) {
       const err = e?.data?.message?.toLowerCase() || e.message.toLowerCase();
@@ -246,7 +251,7 @@ export const TxModal = ({ style }) => {
 
       if (err.match("execution reverted: middleware_action_failed")) {
         errMessage =
-          "Swap failed due to slippage or low DEX liquidity, please retry or contact support";
+          "Swap failed due to slippage or low DEX liquidity, please increase the slippage and retry or contact support";
       } else if (
         err.match("insufficient funds") ||
         err.match("transfer amount exceeds balance")
@@ -334,8 +339,9 @@ export const TxModal = ({ style }) => {
   const [currentRoute, setCurrentRoute] = useState(null);
 
   useEffect(() => {
-    if (!activeRoute) startRoute();
-    else continueRoute();
+    // start route only at the absolute beginning
+    if (!activeRoute && !userTx?.activeRouteId) startRoute();
+    else continueRoute(null, userTx?.activeRouteId);
 
     // Always check for active route before checking for selected route
     const _sourceTokenDetails = {
@@ -357,11 +363,13 @@ export const TxModal = ({ style }) => {
     };
 
     setCurrentRoute(_currentRoute);
+  }, [activeRoute, selectedRoute]); // the activeRoute is set before the txModal is opened.
 
+  useEffect(() => {
     return () => {
       dispatch(setActiveRoute(null));
     };
-  }, []); // the activeRoute is set before the txModal is opened.
+  }, []);
 
   const refuelSourceToken = {
     amount: !!activeRoute
@@ -387,9 +395,9 @@ export const TxModal = ({ style }) => {
       currentRoute?.destTokenDetails?.token?.chainId;
 
     const _modalTitle = (
-      <span className="flex items-center gap-1">
+      <span className="flex items-center">
         {isSameChainSwap ? "Swap" : "Bridging"} transaction{" "}
-        <span className="text-xs text-widget-primary text-opacity-70 font-normal">
+        <span className="text-xs text-widget-primary text-opacity-70 font-normal ml-1">
           {currentRoute?.route?.activeRouteId
             ? ` - #${currentRoute?.route?.activeRouteId}`
             : userTx?.activeRouteId
@@ -409,6 +417,14 @@ export const TxModal = ({ style }) => {
     } else startRoute();
     enableRetry(false);
   }
+
+  // Update and refetch quote when the swap slippage is changed
+  const swapTx = getSwapTx(currentRoute?.route, userTx?.userTxIndex);
+  const { loading: isUpdating } = updateAndRefetch(
+    currentRoute?.route?.activeRouteId ?? userTx?.activeRouteId,
+    swapTx?.swapSlippage,
+    userTx?.userTxIndex
+  );
 
   return (
     <Modal
@@ -433,18 +449,18 @@ export const TxModal = ({ style }) => {
           />
           <div className="skt-w border-b border-widget-secondary" />
 
-          {currentRoute?.route?.userTxs?.length > 1 && (
-            <div className="skt-w px-3.5 py-3 mt-2">
-              <Stepper
-                currentTx={
-                  userTx?.userTxIndex || activeRoute?.currentUserTxIndex || 0
-                }
-                userTxs={currentRoute?.route?.userTxs}
-              />
-            </div>
-          )}
-
           <div className="skt-w px-3 py-3">
+            {!!swapTx && (
+              <p className="skt-w text-widget-primary mb-3 text-xs flex items-center justify-end pr-0.5">
+                Swap slippage: {swapTx?.swapSlippage}%{" "}
+                <button
+                  onClick={() => dispatch(setIsSettingsModalOpen(true))}
+                  className="skt-w skt-w-button skt-w-input flex"
+                >
+                  <Edit className="ml-2 w-3 h-3 text-widget-accent" />
+                </button>
+              </p>
+            )}
             <TxStepDetails
               activeRoute={currentRoute?.route}
               refuel={currentRoute?.refuel}
@@ -465,8 +481,14 @@ export const TxModal = ({ style }) => {
               {retryEnabled ? (
                 <Button onClick={reinitiateRoute}>Retry</Button>
               ) : userTx && activeChain !== userTx?.chainId ? (
-                <Button onClick={switchNetwork} disabled={initiating}>
-                  {initiating
+                <Button
+                  onClick={switchNetwork}
+                  disabled={initiating || isUpdating}
+                  isLoading={initiating || isUpdating}
+                >
+                  {isUpdating
+                    ? ButtonTexts.REFETCHING
+                    : initiating
                     ? ButtonTexts.INITIATING
                     : `Switch chain to ${
                         allNetworks.filter(
@@ -477,10 +499,17 @@ export const TxModal = ({ style }) => {
               ) : isApprovalRequired ? (
                 <Button
                   onClick={submitApproval}
-                  disabled={!isApprovalRequired || isApproving}
-                  isLoading={isApproving}
+                  disabled={
+                    !isApprovalRequired ||
+                    isApproving ||
+                    initiating ||
+                    isUpdating
+                  }
+                  isLoading={isApproving || isUpdating || initiating}
                 >
-                  {initiating
+                  {isUpdating
+                    ? ButtonTexts.REFETCHING
+                    : initiating
                     ? ButtonTexts.CHECKING_APPROVAL
                     : isApproving
                     ? ButtonTexts.APPROVING
@@ -492,11 +521,17 @@ export const TxModal = ({ style }) => {
                 <Button
                   onClick={submitNextTx}
                   disabled={
-                    isApprovalRequired || txInProgress || initiating || bridging
+                    isApprovalRequired ||
+                    txInProgress ||
+                    initiating ||
+                    bridging ||
+                    isUpdating
                   }
-                  isLoading={txInProgress}
+                  isLoading={txInProgress || isUpdating || initiating}
                 >
-                  {bridging
+                  {isUpdating
+                    ? ButtonTexts.REFETCHING
+                    : bridging
                     ? ButtonTexts.BRIDGE_IN_PROGRESS
                     : initiating
                     ? ButtonTexts.INITIATING

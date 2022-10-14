@@ -32,7 +32,7 @@ export const TxStepDetails = ({
   const mappedChainData = useMappedChainData();
 
   return (
-    <div className="skt-w flex flex-col gap-4 text-sm">
+    <div className="skt-w flex flex-col text-sm -my-2">
       {activeRoute?.userTxs?.map((tx, txIndex) => {
         const txComplete =
           tx?.userTxStatus === "completed" ||
@@ -107,26 +107,26 @@ export const TxStepDetails = ({
 
           return (
             <div
-              className="skt-w flex flex-col gap-3 text-sm"
+              className="skt-w flex flex-col text-sm"
               key={`${activeRoute?.activeRouteId}-fund-movr-swap`}
             >
               {isSwap ? (
                 <TxStep
-                  label={`Tx ${txIndex + 1} : Swap & Bridge`}
+                  label={`Tx ${txIndex + 1}: Swap & Bridge`}
                   complete={txComplete}
                   currentTx={currentTx}
                   url={url}
                   inProgress={inProgress}
                   forReview={forReview}
                 >
-                  <div className="skt-w flex flex-col gap-2">
-                    <span>
+                  <div className="skt-w flex flex-col">
+                    <span className="my-1">
                       {Number(swapSrc?.amount).toFixed(3)} {swapSrc?.symbol} for{" "}
                       {Number(swapDest?.amount).toFixed(3)} {swapDest?.symbol}{" "}
                       via {swapDest?.protocolName} on{" "}
                       {mappedChainData?.[swapSrc.chainId]?.name}
                     </span>
-                    <span>
+                    <span className="my-1">
                       {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol}{" "}
                       on {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
                       {Number(bridgeDest?.amount).toFixed(3)}{" "}
@@ -146,7 +146,7 @@ export const TxStepDetails = ({
                       )}
                     </span>
                     {refuel && (
-                      <span>
+                      <span className="mt-1">
                         <span className="skt-w text-widget-accent">
                           For Refuel :{" "}
                         </span>
@@ -181,8 +181,8 @@ export const TxStepDetails = ({
                   inProgress={inProgress}
                   forReview={forReview}
                 >
-                  <div className="skt-w flex flex-col gap-2">
-                    <span>
+                  <div className="skt-w flex flex-col -my-1">
+                    <span className="my-1">
                       {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol}{" "}
                       on {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
                       {Number(bridgeDest?.amount).toFixed(3)}{" "}
@@ -203,7 +203,7 @@ export const TxStepDetails = ({
                     </span>
                     {/* Refuel statement */}
                     {refuel && (
-                      <span>
+                      <span className="my-1">
                         <span className="skt-w text-widget-accent">
                           For Refuel :{" "}
                         </span>
@@ -238,7 +238,7 @@ export const TxStepDetails = ({
 
           return (
             <TxStep
-              label={`Tx ${txIndex + 1} : Swap`}
+              label={`Tx ${txIndex + 1}: Swap`}
               key={`${activeRoute?.activeRouteId}-dex-swap-${txIndex}`}
               complete={txComplete}
               currentTx={currentTx}
@@ -255,7 +255,7 @@ export const TxStepDetails = ({
         } else if (tx?.userTxType === "claim") {
           return (
             <TxStep
-              label={`Tx ${txIndex + 1} : Claim`}
+              label={`Tx ${txIndex + 1}: Claim`}
               key={`${activeRoute?.activeRouteId}-claim`}
               complete={txComplete}
               currentTx={currentTx}
@@ -296,15 +296,15 @@ const TxStep = ({
   const { borderRadius } = customSettings.customization;
   return (
     <div
-      className={`skt-w flex gap-3.5 ${
+      className={`skt-w flex border my-2 ${
         currentTx
-          ? "bg-widget-secondary p-3 bg-opacity-20 border border-widget-accent"
-          : ""
-      }`}
+          ? "bg-widget-secondary bg-opacity-20 border-widget-accent"
+          : "border-widget-secondary"
+      } ${forReview ? "" : "p-3"}`}
       style={{ borderRadius: `calc(0.5rem * ${borderRadius}` }}
     >
       <div
-        className={`skt-w h-6 w-6 flex items-center justify-center shrink-0 mt-[3px] ${
+        className={`skt-w h-6 w-6 flex items-center justify-center shrink-0 mt-[3px] mr-3.5 ${
           complete ? "bg-widget-secondary" : "bg-transparent"
         }`}
         style={{ borderRadius: `calc(0.25rem * ${borderRadius})` }}
@@ -324,23 +324,23 @@ const TxStep = ({
         )}
       </div>
       <div
-        className={`skt-w flex flex-col text-xs text-left text-widget-secondary gap-0.5 ${
+        className={`skt-w flex flex-col text-xs text-left text-widget-secondary ${
           !active && !forReview ? "opacity-60" : ""
         }`}
       >
         <span
-          className={`skt-w ${
+          className={`skt-w mb-0.5 ${
             active || forReview ? "font-medium text-widget-primary" : ""
           }`}
         >
           {url ? (
             <a
               href={url}
-              className="skt-w skt-w-anchor underline flex items-center gap-1"
+              className="skt-w skt-w-anchor underline flex items-center"
               target="_blank"
               rel="noopener noreferrer"
             >
-              {label} <ExternalLink className="skt-w w-3 h-3 opacity-50" />
+              {label} <ExternalLink className="skt-w w-3 h-3 opacity-50 ml-1" />
             </a>
           ) : (
             label

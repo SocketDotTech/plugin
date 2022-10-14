@@ -28,7 +28,7 @@ export const Button = (props: ButtonProps) => {
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`skt-w skt-w-input skt-w-button h-14 px-3 flex items-center justify-center gap-2 transition-all duration-100 ease-linear w-full bg-widget-accent text-widget-onAccent hover:bg-opacity-90 border-widget-primary 
+      className={`skt-w skt-w-input skt-w-button h-14 px-3 flex items-center justify-center transition-all duration-100 ease-linear w-full bg-widget-accent text-widget-onAccent hover:bg-opacity-90 border-widget-primary 
       disabled:bg-widget-secondary 
       disabled:text-widget-secondary 
       disabled:opacity-50 
@@ -40,7 +40,7 @@ export const Button = (props: ButtonProps) => {
       }`}
       style={{ borderRadius: `calc(0.625rem * ${borderRadius})` }}
     >
-      {isLoading && <Spinner size={4} />} {children}
+      {isLoading && <Spinner size={4} />} <span className="ml-2">{children}</span>
     </button>
   );
 };
