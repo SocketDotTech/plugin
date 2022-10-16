@@ -32,11 +32,18 @@ import {
 import { Web3Context } from "../../providers/Web3Provider";
 import { SuccessToast } from "./SuccessToast";
 import { TokenDetailsRow } from "../common/TokenDetailsRow";
+import { onBridgeSuccessReturn } from "../../types";
 
 // The main modal that contains all the information related after clicking on review quote.
 // Responsible for the progression of the route.
 // Functions responsible for sending a transaction and checking the status of the route.
-export const TxModal = ({ style }) => {
+export const TxModal = ({
+  style,
+  onBridge,
+}: {
+  style: any;
+  onBridge: (data: onBridgeSuccessReturn) => void;
+}) => {
   const dispatch = useDispatch();
   function closeTxModal() {
     dispatch(setIsTxModalOpen(false));
@@ -425,6 +432,18 @@ export const TxModal = ({ style }) => {
     swapTx?.swapSlippage,
     userTx?.userTxIndex
   );
+
+  // When tx is completed, call the onBridge function
+  useEffect(() => {
+    const data: onBridgeSuccessReturn = {
+      sourceToken: currentRoute?.sourceTokenDetails?.token,
+      sourceAmount: currentRoute?.sourceTokenDetails?.amount,
+      destinationToken: currentRoute?.destTokenDetails?.token,
+      destinationAmount: currentRoute?.destTokenDetails?.amount,
+      sourceGasFee: "9303", // wip
+    };
+    if (txCompleted) onBridge(data);
+  }, [txCompleted]);
 
   return (
     <Modal

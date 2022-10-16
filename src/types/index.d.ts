@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode } from "react";
 import { ChainId, UserTxType } from "@socket.tech/socket-v2-sdk";
 type supportedBridges =
   | "polygon-bridge"
@@ -11,6 +11,22 @@ type supportedBridges =
   | "across"
   | "optimism-bridge"
   | "refuel-bridge";
+
+export interface onBridgeSuccessReturn {
+  sourceAmount: string;
+  destinationAmount: string;
+  sourceToken: Currency;
+  destinationToken: Currency;
+  sourceGasFee: string;
+  destGasFee?: string;
+  bridgeName?: string;
+  bridgeFee?: string;
+  estimatedBridgingTime?: string;
+  dexName?: string;
+}
+
+export type onNetworkChange = (network: Network) => void;
+export type onTokenChange = (token: Currency) => void;
 
 export interface WidgetProps {
   API_KEY: string;
@@ -49,6 +65,23 @@ export interface WidgetProps {
 
   // To exclude bridges - bridges passed will be excluded from the original supported list
   excludeBridges?: supportedBridges[];
+
+  // CALLBACK FUNCTIONS
+  // Will be called when the route is completed successfully
+  // @returns onBridgeSuccessReturn
+  onBridgeSuccess?: (data: onBridgeSuccessReturn) => void;
+
+  // Will be called when source network is changed, @returns new network id
+  onSourceNetworkChange?: onNetworkChange;
+
+  // Will be called when destination network is changed, @returns new network id
+  onDestinationNetworkChange?: onNetworkChange;
+
+  // Will be called when source token is changed, @returns new token
+  onSourceTokenChange?: onTokenChange;
+
+  // Will be called when destination network is changed, @returns new token
+  onDestinationTokenChange?: onTokenChange;
 
   locale?: string;
   title?: ReactNode | string;

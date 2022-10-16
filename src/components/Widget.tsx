@@ -134,13 +134,24 @@ export const Widget = (props: WidgetProps) => {
             )}
           </div>
         </Header>
-        <Input customTokenList={props.tokenList} />
-        <Output customTokenList={props.tokenList} />
+        <Input
+          customTokenList={props.tokenList}
+          onTokenChange={props.onSourceTokenChange}
+          onNetworkChange={props.onSourceNetworkChange}
+        />
+        <Output
+          customTokenList={props.tokenList}
+          onTokenChange={props.onDestinationTokenChange}
+          onNetworkChange={props.onDestinationNetworkChange}
+        />
         {props.enableRefuel && <Refuel />}
       </div>
       <SingleTxMessage />
       <RouteDetails />
-      {transitions((style, item) => item && <TxModal style={style} />)}
+      {transitions(
+        (style, item) =>
+          item && <TxModal style={style} onBridge={props.onBridgeSuccess} />
+      )}
       <SettingsModal />
       <ErrorModal />
     </div>
