@@ -15,14 +15,12 @@ type supportedBridges =
 export interface onBridgeSuccessReturn {
   sourceAmount: string;
   destinationAmount: string;
-  sourceToken: Currency;
+  sourceToken: Currency; // 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee denotes native token
   destinationToken: Currency;
-  sourceGasFee: string;
-  destGasFee?: string;
-  bridgeName?: string;
-  bridgeFee?: string;
-  estimatedBridgingTime?: string;
-  dexName?: string;
+  totalGasFeesInUSD: string;
+  bridgeName?: string; // will be passed only in case of cross chain swaps
+  estimatedServiceTime?: string; // (in ms) will be passed only in case of cross chain swaps
+  dexName?: string; // will be passed only in case of same chain swaps
 }
 
 export type onNetworkChange = (network: Network) => void;

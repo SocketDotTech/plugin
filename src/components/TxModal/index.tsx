@@ -435,13 +435,25 @@ export const TxModal = ({
 
   // When tx is completed, call the onBridge function
   useEffect(() => {
+    // Filtering out bridge tx from userTxs.
+    const bridgeTx = currentRoute?.route?.userTxs?.filter(
+      (x) => x.userTxType === UserTxType.FUND_MOVR
+    )?.[0];
+
+    // Filtering out the bridge step from the steps in bridgeTx
+    const bridgeStep = bridgeTx?.steps?.filter((x) => x.type === "bridge")?.[0];
+
     const data: onBridgeSuccessReturn = {
       sourceToken: currentRoute?.sourceTokenDetails?.token,
       sourceAmount: currentRoute?.sourceTokenDetails?.amount,
       destinationToken: currentRoute?.destTokenDetails?.token,
       destinationAmount: currentRoute?.destTokenDetails?.amount,
-      sourceGasFee: "9303", // wip
+      totalGasFeesInUSD: currentRoute?.route?.totalGasFeesInUsd,
+      bridgeName: bridgeStep?.protocol?.displayName,
+      estimatedServiceTime: bridgeTx?.serviceTime,
+      dexName: currentRoute?.route?.usedDexName,
     };
+
     if (txCompleted) onBridge(data);
   }, [txCompleted]);
 
