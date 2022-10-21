@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
-import { Currency, Network } from "../types";
+import { Currency, Network, onNetworkChange, onTokenChange } from "../types";
 
 // component
 import { TokenInput } from "./TokenInput";
@@ -23,8 +23,12 @@ import { Web3Context } from "../providers/Web3Provider";
 // Shows the balance and the amount you receive for the selected route.
 export const Output = ({
   customTokenList,
+  onTokenChange,
+  onNetworkChange,
 }: {
   customTokenList: string | Currency[];
+  onTokenChange?: onTokenChange;
+  onNetworkChange?: onNetworkChange;
 }) => {
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
@@ -88,6 +92,7 @@ export const Output = ({
       dispatch(setDestToken(null)); // Resetting the token when network is changed
       _setDestToken(null);
     }
+    onNetworkChange && onNetworkChange(network);
   }
 
   const [supportedNetworks, setSupportedNetworks] = useState<Network[]>();
@@ -220,7 +225,14 @@ export const Output = ({
   }, [allDestTokens, sourceToken]);
 
   const [_destToken, _setDestToken] = useState<Currency>();
-  useDebounce(() => dispatch(setDestToken(_destToken)), 300, [_destToken]);
+  useDebounce(
+    () => {
+      dispatch(setDestToken(_destToken));
+      onTokenChange && onTokenChange(_destToken);
+    },
+    300,
+    [_destToken]
+  );
 
   return (
     <div className="skt-w mt-6">
