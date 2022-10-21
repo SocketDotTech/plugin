@@ -1,6 +1,6 @@
 {
   "name": "@socket.tech/widget",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -21,6 +21,7 @@
     "storybook": "start-storybook -p 6006",
     "build:storybook": "build-storybook",
     "build:lib": "NODE_ENV=publish rollup -c && npm pack",
+    "publish:lib": "build:lib && npm publish",
     "chromatic": "npx chromatic --project-token=12c9df8b6cf2"
   },
   "dependencies": {
