@@ -2,7 +2,7 @@ import { Bridge } from "../index";
 import { useEffect, useState } from "react";
 import { SOCKET_API_KEY } from "../consts";
 import { ethers } from "ethers";
-import { WidgetProps } from "../types";
+import { transactionDetails, WidgetProps } from "../types";
 
 declare global {
   interface Window {
@@ -132,6 +132,8 @@ Default.args = {
   onSourceNetworkChange: (value) => console.log('Source Network:', value),
   onDestinationTokenChange: (value) => console.log('Dest Token:', value),
   onDestinationNetworkChange: (value) => console.log('Dest Network:', value),
+  onError: (value) => console.log('Error', value),
+  onSubmit: (value: transactionDetails) => console.log('Submitted: ', value, value?.txData?.[0]?.chainId),
   
   // tokenList: MY_LIST,
   // tokenList: UNISWAP_DEFAULT_LIST,

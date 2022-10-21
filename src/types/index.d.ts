@@ -12,15 +12,19 @@ type supportedBridges =
   | "optimism-bridge"
   | "refuel-bridge";
 
-export interface onBridgeSuccessReturn {
+interface txData {
+  txHash: string;
+  chainId: number;
+}
+export interface transactionDetails {
   sourceAmount: string;
   destinationAmount: string;
   sourceToken: Currency; // 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee denotes native token
   destinationToken: Currency;
-  totalGasFeesInUSD: string;
   bridgeName?: string; // will be passed only in case of cross chain swaps
   estimatedServiceTime?: string; // (in ms) will be passed only in case of cross chain swaps
   dexName?: string; // will be passed only in case of same chain swaps
+  txData?: txData[] // tx hashes will be passed here
 }
 
 export type onNetworkChange = (network: Network) => void;
@@ -67,19 +71,28 @@ export interface WidgetProps {
   // CALLBACK FUNCTIONS
   // Will be called when the route is completed successfully
   // @returns onBridgeSuccessReturn
-  onBridgeSuccess?: (data: onBridgeSuccessReturn) => void;
+  onBridgeSuccess?: (data: transactionDetails) => void;
 
-  // Will be called when source network is changed, @returns new network id
+  // Will be called when source network is changed, @returns Network (new source network)
   onSourceNetworkChange?: onNetworkChange;
 
-  // Will be called when destination network is changed, @returns new network id
+  // Will be called when destination network is changed, @returns Network (new destination network)
   onDestinationNetworkChange?: onNetworkChange;
 
-  // Will be called when source token is changed, @returns new token
+  // Will be called when source token is changed, @returns Currency (new source token)
   onSourceTokenChange?: onTokenChange;
 
-  // Will be called when destination network is changed, @returns new token
+  // Will be called when destination network is changed, @returns Currency (new destination token)
   onDestinationTokenChange?: onTokenChange;
+
+  // Will be called when there is an error, @returns the error
+  // Note - some error objects contain and additional data object and message resides within it
+  // These messages are usually more human readable. Hence on our frontend we check for e.data.message || e.message
+  onError?: (error: any) => void;
+
+  // Will be called when the cross-chain swap or same chain swap transaction is submitted. 
+  // This excludes the source and/or destination swap transactions in case of cross-chain swaps and only the bridging transaction will be considered
+  onSubmit?: (data: transactionDetails) => void;
 
   locale?: string;
   title?: ReactNode | string;

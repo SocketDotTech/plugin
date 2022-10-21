@@ -32,7 +32,7 @@ import {
 import { Web3Context } from "../../providers/Web3Provider";
 import { SuccessToast } from "./SuccessToast";
 import { TokenDetailsRow } from "../common/TokenDetailsRow";
-import { onBridgeSuccessReturn } from "../../types";
+import { transactionDetails } from "../../types";
 
 // The main modal that contains all the information related after clicking on review quote.
 // Responsible for the progression of the route.
@@ -40,9 +40,13 @@ import { onBridgeSuccessReturn } from "../../types";
 export const TxModal = ({
   style,
   onBridge,
+  onError,
+  onSubmit,
 }: {
   style: any;
-  onBridge: (data: onBridgeSuccessReturn) => void;
+  onBridge: (data: transactionDetails) => void;
+  onError: (data: any) => void;
+  onSubmit: (data: transactionDetails) => void;
 }) => {
   const dispatch = useDispatch();
   function closeTxModal() {
@@ -140,6 +144,7 @@ export const TxModal = ({
       setIsApprovalRequired(false); // Set to false when approval is done.
     } catch (e) {
       dispatch(setError(e.message));
+      onError(e);
       setIsApproving(false);
     }
   }
@@ -152,6 +157,7 @@ export const TxModal = ({
       await prepareNextTransaction(execute);
     } catch (e) {
       dispatch(setError(e.message));
+      onError(e);
     }
   }
 
@@ -181,6 +187,7 @@ export const TxModal = ({
         setTxCompleted(true);
       } else {
         dispatch(setError(err));
+        onError(e);
       }
       setInitiating(false);
       setBridging(false);
@@ -222,6 +229,8 @@ export const TxModal = ({
           prevTxDetails,
         })
       );
+
+      userTx?.userTxIndex === 0 && onSubmit && onSubmit(transactionDetailsData);
 
       // Set Tx Progress as false when tx is included in the chain.
       await sendTx.wait();
@@ -280,6 +289,7 @@ export const TxModal = ({
         : null;
 
       dispatch(setError(`${errMessage} ${routeIdString ?? ""}`));
+      onError(e);
       setBridging(false);
       setTxInProgress(false);
       enableRetry(true);
@@ -335,7 +345,10 @@ export const TxModal = ({
         setTxCompleted(true);
       }
     } catch (e) {
-      if (e) dispatch(setError(e.message));
+      if (e) {
+        dispatch(setError(e.message));
+        onError(e);
+      }
       setBridging(false);
       setInitiating(false);
       enableRetry(true);
@@ -433,7 +446,10 @@ export const TxModal = ({
     userTx?.userTxIndex
   );
 
-  // When tx is completed, call the onBridge function
+  // transactions details is used to pass the data to the integrators
+  const [transactionDetailsData, setTransactoinDetailsData] =
+    useState<transactionDetails | null>(null);
+
   useEffect(() => {
     // Filtering out bridge tx from userTxs.
     const bridgeTx = currentRoute?.route?.userTxs?.filter(
@@ -443,18 +459,23 @@ export const TxModal = ({
     // Filtering out the bridge step from the steps in bridgeTx
     const bridgeStep = bridgeTx?.steps?.filter((x) => x.type === "bridge")?.[0];
 
-    const data: onBridgeSuccessReturn = {
+    const data: transactionDetails = {
       sourceToken: currentRoute?.sourceTokenDetails?.token,
       sourceAmount: currentRoute?.sourceTokenDetails?.amount,
       destinationToken: currentRoute?.destTokenDetails?.token,
       destinationAmount: currentRoute?.destTokenDetails?.amount,
-      totalGasFeesInUSD: currentRoute?.route?.totalGasFeesInUsd,
       bridgeName: bridgeStep?.protocol?.displayName,
       estimatedServiceTime: bridgeTx?.serviceTime,
       dexName: currentRoute?.route?.usedDexName,
+      txData: currentRoute?.route?.transactionData || currentRoute?.txData,
     };
 
-    if (txCompleted) onBridge(data);
+    setTransactoinDetailsData(data);
+  }, [currentRoute]);
+
+  // When tx is completed, call the onBridge function
+  useEffect(() => {
+    if (txCompleted) onBridge(transactionDetailsData);
   }, [txCompleted]);
 
   return (
