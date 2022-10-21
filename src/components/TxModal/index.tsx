@@ -207,6 +207,7 @@ export const TxModal = ({
       // set data to local storage, txHash is in storage if the user leaves in the middle of the transaction.
       const value = {
         hash: sendTx.hash,
+        chainId: userTx.chainId,
         userTxType: userTx.userTxType,
         timeStamp: new Date().getTime(),
       };
@@ -230,7 +231,11 @@ export const TxModal = ({
         })
       );
 
-      userTx?.userTxIndex === 0 && onSubmit && onSubmit(transactionDetailsData);
+      if (
+        userTx?.userTxIndex === 0 &&
+        onSubmit
+      )
+        onSubmit({...transactionDetailsData, txData: prevTxDetails[userAddress][userTx.activeRouteId]});
 
       // Set Tx Progress as false when tx is included in the chain.
       await sendTx.wait();
@@ -467,7 +472,7 @@ export const TxModal = ({
       bridgeName: bridgeStep?.protocol?.displayName,
       estimatedServiceTime: bridgeTx?.serviceTime,
       dexName: currentRoute?.route?.usedDexName,
-      txData: currentRoute?.route?.transactionData || currentRoute?.txData,
+      txData: currentRoute?.txData,
     };
 
     setTransactoinDetailsData(data);

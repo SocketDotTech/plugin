@@ -21,10 +21,10 @@ export interface transactionDetails {
   destinationAmount: string;
   sourceToken: Currency; // 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee denotes native token
   destinationToken: Currency;
+  txData: txData[] // tx hashes will be passed here
   bridgeName?: string; // will be passed only in case of cross chain swaps
   estimatedServiceTime?: string; // (in ms) will be passed only in case of cross chain swaps
   dexName?: string; // will be passed only in case of same chain swaps
-  txData?: txData[] // tx hashes will be passed here
 }
 
 export type onNetworkChange = (network: Network) => void;
