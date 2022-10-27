@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode } from "react";
 import { ChainId, UserTxType } from "@socket.tech/socket-v2-sdk";
 type supportedBridges =
   | "polygon-bridge"
@@ -11,6 +11,24 @@ type supportedBridges =
   | "across"
   | "optimism-bridge"
   | "refuel-bridge";
+
+interface txData {
+  hash: string;
+  chainId: number;
+}
+export interface transactionDetails {
+  sourceAmount: string;
+  destinationAmount: string;
+  sourceToken: Currency; // 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee denotes native token
+  destinationToken: Currency;
+  txData: txData[] // tx hashes will be passed here
+  bridgeName?: string; // will be passed only in case of cross chain swaps
+  estimatedServiceTime?: string; // (in ms) will be passed only in case of cross chain swaps
+  dexName?: string; // will be passed only in case of same chain swaps
+}
+
+export type onNetworkChange = (network: Network) => void;
+export type onTokenChange = (token: Currency) => void;
 
 export interface WidgetProps {
   API_KEY: string;
@@ -49,6 +67,32 @@ export interface WidgetProps {
 
   // To exclude bridges - bridges passed will be excluded from the original supported list
   excludeBridges?: supportedBridges[];
+
+  // CALLBACK FUNCTIONS
+  // Will be called when the route is completed successfully
+  // @returns onBridgeSuccessReturn
+  onBridgeSuccess?: (data: transactionDetails) => void;
+
+  // Will be called when source network is changed, @returns Network (new source network)
+  onSourceNetworkChange?: onNetworkChange;
+
+  // Will be called when destination network is changed, @returns Network (new destination network)
+  onDestinationNetworkChange?: onNetworkChange;
+
+  // Will be called when source token is changed, @returns Currency (new source token)
+  onSourceTokenChange?: onTokenChange;
+
+  // Will be called when destination network is changed, @returns Currency (new destination token)
+  onDestinationTokenChange?: onTokenChange;
+
+  // Will be called when there is an error, @returns the error
+  // Note - some error objects contain and additional data object and message resides within it
+  // These messages are usually more human readable. Hence on our frontend we check for e.data.message || e.message
+  onError?: (error: any) => void;
+
+  // Will be called when the cross-chain swap or same chain swap transaction is submitted. 
+  // This excludes the source and/or destination swap transactions in case of cross-chain swaps and only the bridging transaction will be considered
+  onSubmit?: (data: transactionDetails) => void;
 
   locale?: string;
   title?: ReactNode | string;

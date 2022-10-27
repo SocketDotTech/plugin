@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
-import { Currency, Network } from "../types";
+import { Currency, Network, onNetworkChange, onTokenChange } from "../types";
 import { NATIVE_TOKEN_ADDRESS } from "../consts";
 
 // component
@@ -34,8 +34,12 @@ import { useTokenList } from "../hooks/useTokenList";
 // Shows the balance for the source chain, and takes the input from the user for amount.
 export const Input = ({
   customTokenList,
+  onTokenChange,
+  onNetworkChange,
 }: {
   customTokenList: string | Currency[];
+  onTokenChange?: onTokenChange;
+  onNetworkChange?: onNetworkChange;
 }) => {
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
@@ -90,6 +94,8 @@ export const Input = ({
     sourceToken &&
       sourceToken?.chainId !== network?.chainId &&
       dispatch(setSourceToken(null)); // Resetting the token when network is changed
+
+    onNetworkChange && onNetworkChange(network);
   }
   const [supportedNetworks, setSupportedNetworks] = useState<Network[]>();
 
@@ -213,9 +219,14 @@ export const Input = ({
   }, [allSourceTokens]);
 
   const [_sourceToken, _setSourceToken] = useState<Currency>();
-  useDebounce(() => dispatch(setSourceToken(_sourceToken)), 300, [
-    _sourceToken,
-  ]);
+  useDebounce(
+    () => {
+      dispatch(setSourceToken(_sourceToken));
+      onTokenChange && onTokenChange(_sourceToken);
+    },
+    300,
+    [_sourceToken]
+  );
 
   // truncate amount on chain/token change
   useEffect(() => {
@@ -247,12 +258,12 @@ export const Input = ({
         mappedChainData[sourceChainId].currency.minNativeCurrencyForGas;
       let minGasBN;
       minGasBN = ethers.BigNumber.from(minGas);
-      
+
       // In case of ethereum we have divided the value by 1.7
-      if(sourceChainId === 1){
+      if (sourceChainId === 1) {
         minGasBN = minGasBN.mul(17);
         minGasBN = minGasBN.div(10);
-      } 
+      }
       const balanceBN = ethers.BigNumber.from(balance);
 
       if (minGasBN.lt(balanceBN)) {
@@ -288,7 +299,9 @@ export const Input = ({
     <div className="skt-w mt-3.5">
       <div className="skt-w flex items-center justify-between">
         <div className="skt-w flex items-center">
-          <span className="skt-w text-widget-secondary text-sm mr-1.5">From</span>
+          <span className="skt-w text-widget-secondary text-sm mr-1.5">
+            From
+          </span>
           <ChainSelect
             networks={supportedNetworks}
             activeNetworkId={sourceChainId}

@@ -32,11 +32,22 @@ import {
 import { Web3Context } from "../../providers/Web3Provider";
 import { SuccessToast } from "./SuccessToast";
 import { TokenDetailsRow } from "../common/TokenDetailsRow";
+import { transactionDetails } from "../../types";
 
 // The main modal that contains all the information related after clicking on review quote.
 // Responsible for the progression of the route.
 // Functions responsible for sending a transaction and checking the status of the route.
-export const TxModal = ({ style }) => {
+export const TxModal = ({
+  style,
+  onBridge,
+  onError,
+  onSubmit,
+}: {
+  style: any;
+  onBridge?: (data: transactionDetails) => void;
+  onError?: (data: any) => void;
+  onSubmit?: (data: transactionDetails) => void;
+}) => {
   const dispatch = useDispatch();
   function closeTxModal() {
     dispatch(setIsTxModalOpen(false));
@@ -133,6 +144,8 @@ export const TxModal = ({ style }) => {
       setIsApprovalRequired(false); // Set to false when approval is done.
     } catch (e) {
       dispatch(setError(e.message));
+      
+      !!onError && onError(e);
       setIsApproving(false);
     }
   }
@@ -145,6 +158,7 @@ export const TxModal = ({ style }) => {
       await prepareNextTransaction(execute);
     } catch (e) {
       dispatch(setError(e.message));
+      !!onError && onError(e);
     }
   }
 
@@ -174,6 +188,7 @@ export const TxModal = ({ style }) => {
         setTxCompleted(true);
       } else {
         dispatch(setError(err));
+        !!onError && onError(e);
       }
       setInitiating(false);
       setBridging(false);
@@ -193,6 +208,7 @@ export const TxModal = ({ style }) => {
       // set data to local storage, txHash is in storage if the user leaves in the middle of the transaction.
       const value = {
         hash: sendTx.hash,
+        chainId: userTx.chainId,
         userTxType: userTx.userTxType,
         timeStamp: new Date().getTime(),
       };
@@ -215,6 +231,12 @@ export const TxModal = ({ style }) => {
           prevTxDetails,
         })
       );
+
+      if (
+        userTx?.userTxIndex === 0 &&
+        !!onSubmit
+      )
+        onSubmit({...transactionDetailsData, txData: prevTxDetails[userAddress][userTx.activeRouteId]});
 
       // Set Tx Progress as false when tx is included in the chain.
       await sendTx.wait();
@@ -273,6 +295,7 @@ export const TxModal = ({ style }) => {
         : null;
 
       dispatch(setError(`${errMessage} ${routeIdString ?? ""}`));
+      !!onError && onError(e);
       setBridging(false);
       setTxInProgress(false);
       enableRetry(true);
@@ -328,7 +351,10 @@ export const TxModal = ({ style }) => {
         setTxCompleted(true);
       }
     } catch (e) {
-      if (e) dispatch(setError(e.message));
+      if (e) {
+        dispatch(setError(e.message));
+        !!onError && onError(e);
+      }
       setBridging(false);
       setInitiating(false);
       enableRetry(true);
@@ -425,6 +451,38 @@ export const TxModal = ({ style }) => {
     swapTx?.swapSlippage,
     userTx?.userTxIndex
   );
+
+  // transactions details is used to pass the data to the integrators
+  const [transactionDetailsData, setTransactoinDetailsData] =
+    useState<transactionDetails | null>(null);
+
+  useEffect(() => {
+    // Filtering out bridge tx from userTxs.
+    const bridgeTx = currentRoute?.route?.userTxs?.filter(
+      (x) => x.userTxType === UserTxType.FUND_MOVR
+    )?.[0];
+
+    // Filtering out the bridge step from the steps in bridgeTx
+    const bridgeStep = bridgeTx?.steps?.filter((x) => x.type === "bridge")?.[0];
+
+    const data: transactionDetails = {
+      sourceToken: currentRoute?.sourceTokenDetails?.token,
+      sourceAmount: currentRoute?.sourceTokenDetails?.amount,
+      destinationToken: currentRoute?.destTokenDetails?.token,
+      destinationAmount: currentRoute?.destTokenDetails?.amount,
+      bridgeName: bridgeStep?.protocol?.displayName,
+      estimatedServiceTime: bridgeTx?.serviceTime,
+      dexName: currentRoute?.route?.usedDexName,
+      txData: currentRoute?.txData,
+    };
+
+    setTransactoinDetailsData(data);
+  }, [currentRoute]);
+
+  // When tx is completed, call the onBridge function
+  useEffect(() => {
+    if (!!onBridge && txCompleted) onBridge(transactionDetailsData);
+  }, [txCompleted]);
 
   return (
     <Modal

@@ -1,12 +1,22 @@
 {
   "name": "@socket.tech/widget",
-  "version": "0.1.4",
+  "version": "0.2.4",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/SocketDotTech/widget",
   "license": "MIT",
-  "keywords": ["library", "plugin", "web3", "bridge", "cross-chain", "swap", "cross-chain-swap", "blockchain", "interoperability"],
+  "keywords": [
+    "library",
+    "plugin",
+    "web3",
+    "bridge",
+    "cross-chain",
+    "swap",
+    "cross-chain-swap",
+    "blockchain",
+    "interoperability"
+  ],
   "scripts": {
     "storybook": "start-storybook -p 6006",
     "build:storybook": "build-storybook",
