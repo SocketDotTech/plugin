@@ -13,7 +13,7 @@ type supportedBridges =
   | "refuel-bridge";
 
 interface txData {
-  txHash: string;
+  hash: string;
   chainId: number;
 }
 export interface transactionDetails {

@@ -44,9 +44,9 @@ export const TxModal = ({
   onSubmit,
 }: {
   style: any;
-  onBridge: (data: transactionDetails) => void;
-  onError: (data: any) => void;
-  onSubmit: (data: transactionDetails) => void;
+  onBridge?: (data: transactionDetails) => void;
+  onError?: (data: any) => void;
+  onSubmit?: (data: transactionDetails) => void;
 }) => {
   const dispatch = useDispatch();
   function closeTxModal() {
@@ -144,7 +144,8 @@ export const TxModal = ({
       setIsApprovalRequired(false); // Set to false when approval is done.
     } catch (e) {
       dispatch(setError(e.message));
-      onError(e);
+      
+      !!onError && onError(e);
       setIsApproving(false);
     }
   }
@@ -157,7 +158,7 @@ export const TxModal = ({
       await prepareNextTransaction(execute);
     } catch (e) {
       dispatch(setError(e.message));
-      onError(e);
+      !!onError && onError(e);
     }
   }
 
@@ -187,7 +188,7 @@ export const TxModal = ({
         setTxCompleted(true);
       } else {
         dispatch(setError(err));
-        onError(e);
+        !!onError && onError(e);
       }
       setInitiating(false);
       setBridging(false);
@@ -233,7 +234,7 @@ export const TxModal = ({
 
       if (
         userTx?.userTxIndex === 0 &&
-        onSubmit
+        !!onSubmit
       )
         onSubmit({...transactionDetailsData, txData: prevTxDetails[userAddress][userTx.activeRouteId]});
 
@@ -294,7 +295,7 @@ export const TxModal = ({
         : null;
 
       dispatch(setError(`${errMessage} ${routeIdString ?? ""}`));
-      onError(e);
+      !!onError && onError(e);
       setBridging(false);
       setTxInProgress(false);
       enableRetry(true);
@@ -352,7 +353,7 @@ export const TxModal = ({
     } catch (e) {
       if (e) {
         dispatch(setError(e.message));
-        onError(e);
+        !!onError && onError(e);
       }
       setBridging(false);
       setInitiating(false);
@@ -480,7 +481,7 @@ export const TxModal = ({
 
   // When tx is completed, call the onBridge function
   useEffect(() => {
-    if (txCompleted) onBridge(transactionDetailsData);
+    if (!!onBridge && txCompleted) onBridge(transactionDetailsData);
   }, [txCompleted]);
 
   return (
