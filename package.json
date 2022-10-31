@@ -1,10 +1,10 @@
 {
-  "name": "@socket.tech/widget",
-  "version": "0.2.4",
+  "name": "@socket.tech/plugin",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/SocketDotTech/widget",
+  "repository": "https://github.com/SocketDotTech/plugin",
   "license": "MIT",
   "keywords": [
     "library",

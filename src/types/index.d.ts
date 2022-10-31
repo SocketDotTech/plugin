@@ -100,10 +100,10 @@ export interface WidgetProps {
 }
 
 export interface Customize {
-  // Width of the widget
+  // Width of the plugin
   width?: number;
 
-  // To make the widget responsive to the parent element.
+  // To make the plugin responsive to the parent element.
   responsiveWidth?: boolean;
 
   // Border radius [0-1]
