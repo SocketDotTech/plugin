@@ -162,7 +162,7 @@ export const TxModal = ({
     }
   }
 
-  // Function that lets the user continue the route from the previous transaction when he reopens the widget.
+  // Function that lets the user continue the route from the previous transaction when he reopens the plugin.
   async function continueRoute(txHash?: string, _activeRouteId?: number) {
     setInitiating(true);
     // in normal flow, txType and activeRouteId  will be passed.

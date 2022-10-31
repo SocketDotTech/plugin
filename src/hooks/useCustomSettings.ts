@@ -48,8 +48,8 @@ export const useCustomSettings = (props: WidgetProps) => {
       dispatch(setExludeBridges(excludeBridges));
     dispatch(setSingleTxOnly(singleTxOnly));
     
-    // if singleTxOnly is set to true in the widget config,
-    // additionally set the in-widget singleTxOnly value to true
+    // if singleTxOnly is set to true in the plugin config,
+    // additionally set the in-plugin singleTxOnly value to true
     if (singleTxOnly) {
       dispatch(setSingleTxOnlyFromUser(singleTxOnly));
       localStorage.setItem("singleTxOnly", singleTxOnly ? "true" : "false");
