@@ -48,6 +48,8 @@ export const Output = ({
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
   const [allDestTokens, setAllDestTokens] = useState(null);
 
+  const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
+
   useEffect(() => {
     if (tokenList?.length > 0) {
       const tokensByChain = filterTokensByChain(tokenList, destChainId);
@@ -59,11 +61,15 @@ export const Output = ({
   const route = useSelector((state: any) => state.quotes.bestRoute);
 
   // Hook to get Balance for the selected destination token.
-  const { data: tokenWithBalance, isBalanceLoading } = useBalance(
-    destToken?.address,
-    destChainId,
-    userAddress
-  );
+  const {
+    data: tokenWithBalance,
+    isBalanceLoading,
+    mutate: mutateTokenBalance,
+  } = useBalance(destToken?.address, destChainId, userAddress);
+
+  useEffect(() => {
+    !isTxModalOpen && mutateTokenBalance();
+  }, [isTxModalOpen]);
 
   // Custom Settings
   const customDestNetworks = useSelector(
