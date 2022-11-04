@@ -28,6 +28,7 @@ import { formatCurrencyAmount } from "../../utils/";
 export const RouteDetails = () => {
   const dispatch = useDispatch();
 
+  const sourceChainId = useSelector((state: any) => state.networks.sourceChainId)
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
   const destToken = useSelector((state: any) => state.tokens.destToken);
   const sortPref = useSelector((state: any) => state.quotes.sortPref);
@@ -71,7 +72,7 @@ export const RouteDetails = () => {
   // Hook to get Balance for the native token.
   const { data: nativeTokenWithBalance } = useBalance(
     NATIVE_TOKEN_ADDRESS,
-    sourceToken?.chainId,
+    sourceChainId,
     userAddress
   );
 
