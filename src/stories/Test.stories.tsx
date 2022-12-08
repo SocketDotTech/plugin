@@ -121,9 +121,9 @@ export const Default = Template.bind({});
 Default.args = {
   API_KEY: SOCKET_API_KEY,
   customize: Customize,
-  enableSameChainSwaps: true,
+  // enableSameChainSwaps: true,
   // title: [displayName],
-  includeBridges: ['hop'],
+  // includeBridges: ['hyphen'],
   // singleTxOnly: true,
   // excludeBridges: ['hop', 'polygon-bridge'],
   enableRefuel: true,

@@ -29,3 +29,4 @@ build-storybook.log
 *.txt
 
 /test
+/lib
