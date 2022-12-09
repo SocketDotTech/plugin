@@ -132,6 +132,37 @@ export const ReviewModal = ({
     dispatch(setIsSettingsModalOpen(true));
   };
 
+  // getting the minimum amount from the last user tx.
+  // TODO: We definitely need the minimum output at the root.
+  let minAmountInToken;
+  if (!!selectedRoute?.route) {
+    const _selectedRoute = selectedRoute.route; // taking the route object out
+    const lastUserTx =
+      _selectedRoute &&
+      _selectedRoute.userTxs[_selectedRoute.userTxs?.length - 1];
+    const stepsInLastUserTx =
+      lastUserTx?.userTxType === "claim"
+        ? _selectedRoute?.userTxs[_selectedRoute?.userTxs?.length - 2]?.steps
+        : lastUserTx?.steps;
+    const lastStep =
+      stepsInLastUserTx?.length > 0 &&
+      stepsInLastUserTx[stepsInLastUserTx?.length - 1];
+
+    const minAmountOut =
+      _selectedRoute?.userTxs[_selectedRoute?.userTxs?.length - 1]
+        ?.minAmountOut ?? lastStep?.minAmountOut;
+
+    // note that selectedRoute is used below and not _selectedRoute
+    minAmountInToken =
+      minAmountOut &&
+      selectedRoute?.path?.toToken &&
+      formatCurrencyAmount(
+        minAmountOut,
+        selectedRoute?.path?.toToken?.decimals,
+        4
+      );
+  }
+
   return (
     <Modal
       title="Review Quote"
@@ -222,6 +253,15 @@ export const ReviewModal = ({
                 </div>
               </RouteDetailRow>
             )}
+            {bridgeData &&
+              bridgeData?.protocol?.displayName.toLowerCase() !== "hyphen" && (
+                <RouteDetailRow
+                  label="Minimum received"
+                  value={`${minAmountInToken?.toString()} ${
+                    selectedRoute?.path?.toToken?.symbol
+                  }`}
+                />
+              )}
           </div>
         </div>
 
@@ -264,7 +304,7 @@ export const ReviewModal = ({
           >
             {quoteUpdated && (
               <span className="skt-w whitespace-nowrap w-full text-widget-secondary text-sm text-left">
-                {!bestRoute ? 'Quote updating...' : 'Quote updated'}
+                {!bestRoute ? "Quote updating..." : "Quote updated"}
               </span>
             )}
 

@@ -24,7 +24,7 @@ export const Bridge = (props: WidgetProps) => {
         value={{
           suspense: false,
           revalidateIfStale: false,
-          revalidateOnFocus: true,
+          revalidateOnFocus: false,
         }}
       >
         <Web3Provider>

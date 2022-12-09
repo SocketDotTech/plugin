@@ -67,6 +67,10 @@ export const PendingTransactions = () => {
                 style={style}
               >
                 <div className="skt-w flex flex-col justify-start p-1 flex-1 overflow-y-auto">
+                  <p className="skt-w text-widget-secondary text-xs px-3 py-2 text-left">
+                    Transaction status is updated every 30 seconds
+                  </p>
+
                   {activeRoutes?.map((route: any) => {
                     const refuelSourceToken = {
                       amount: route?.refuel?.fromAmount,

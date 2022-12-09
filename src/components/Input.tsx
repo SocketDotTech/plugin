@@ -58,6 +58,11 @@ export const Input = ({
   const [allSourceTokens, setAllSourceTokens] = useState(null);
   const [noTokens, setNoTokens] = useState<boolean>(false);
 
+  const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
+  useEffect(() => {
+    !isTxModalOpen && mutateTokenBalance();
+  }, [isTxModalOpen]);
+
   // Filtering out tokens by chain
   useEffect(() => {
     if (tokenList?.length > 0) {
@@ -69,11 +74,11 @@ export const Input = ({
   }, [tokenList, sourceChainId]);
 
   // Hook to get Balance for the selected source token.
-  const { data: tokenWithBalance, isBalanceLoading } = useBalance(
-    sourceToken?.address,
-    sourceChainId,
-    userAddress
-  );
+  const {
+    data: tokenWithBalance,
+    isBalanceLoading,
+    mutate: mutateTokenBalance,
+  } = useBalance(sourceToken?.address, sourceChainId, userAddress);
 
   // Custom Settings
   const customSourceNetworks = useSelector(

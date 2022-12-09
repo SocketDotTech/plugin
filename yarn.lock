@@ -2223,10 +2223,10 @@
   resolved "https://registry.npmjs.org/@socket.tech/ll-core/-/ll-core-0.1.19.tgz"
   integrity sha512-DZXxUpanf1ZBYwERy2H3ntJaZ+6o5Vi+ssZx4bjdCrX7Pf/vKS+RoDVBo6hpiopLxXbD9XQ2Q9NLdwFSBhxY1w==
 
-"@socket.tech/socket-v2-sdk@^1.21.0":
-  version "1.21.0"
-  resolved "https://registry.yarnpkg.com/@socket.tech/socket-v2-sdk/-/socket-v2-sdk-1.21.0.tgz#12cf82b59c84eda7620ebd9eebe7f64eee567633"
-  integrity sha512-HymWCxG07Evc/LqE4FU9Uzt3GXbZSNT5gFEDGKFVGMUEMZu5V0MG1XORD4p3mrapqDO0e8N5VlUIRgyP3ezmzg==
+"@socket.tech/socket-v2-sdk@^1.21.3":
+  version "1.21.3"
+  resolved "https://registry.yarnpkg.com/@socket.tech/socket-v2-sdk/-/socket-v2-sdk-1.21.3.tgz#1c221fe9c44a22bd57072ad2aa4b5696ff8eac3e"
+  integrity sha512-kHJBwjBtTjv8iA1H/mXOUlSqB6Up8M+nuS3TKQ0vDqk7qKRaH5JnOK3dVgroTouXbnFOu4jA0Yzn6Fu59bxZ1g==
   dependencies:
     "@socket.tech/ll-core" "^0.1.14"
     axios "^0.27.2"

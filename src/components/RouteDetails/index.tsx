@@ -24,10 +24,12 @@ import {
 import { useTransition } from "@react-spring/web";
 import { Info } from "react-feather";
 import { formatCurrencyAmount } from "../../utils/";
+import { SortOptions } from "@socket.tech/socket-v2-sdk";
 
 export const RouteDetails = () => {
   const dispatch = useDispatch();
 
+  const sourceChainId = useSelector((state: any) => state.networks.sourceChainId)
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
   const destToken = useSelector((state: any) => state.tokens.destToken);
   const sortPref = useSelector((state: any) => state.quotes.sortPref);
@@ -71,7 +73,7 @@ export const RouteDetails = () => {
   // Hook to get Balance for the native token.
   const { data: nativeTokenWithBalance } = useBalance(
     NATIVE_TOKEN_ADDRESS,
-    sourceToken?.chainId,
+    sourceChainId,
     userAddress
   );
 
@@ -95,7 +97,8 @@ export const RouteDetails = () => {
 
   useEffect(() => {
     if (data) {
-      const bestRoute = data?.[0];
+      // Reversing the order in case of sort-by-time because the API returns the list in descendind order of service time
+      const bestRoute = sortPref === SortOptions.Time ? data.reverse()[0] : data[0];
       dispatch(setBestRoute(bestRoute));
 
       // Check if there is sufficient native token for refuel

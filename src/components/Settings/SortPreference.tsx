@@ -23,14 +23,12 @@ export const SortPreference = () => {
   const LABEL_STATE = {
     OUTPUT: "High Return",
     TIME: "Fastest",
-    GAS: "Low Gas Fee",
   };
 
   // Option Values
   const sortOptions = [
     { id: "output", label: LABEL_STATE.OUTPUT },
     { id: "time", label: LABEL_STATE.TIME },
-    { id: "gas", label: LABEL_STATE.GAS },
   ];
 
   const handleChange = (item) => {

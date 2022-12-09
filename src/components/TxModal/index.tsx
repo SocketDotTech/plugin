@@ -144,7 +144,7 @@ export const TxModal = ({
       setIsApprovalRequired(false); // Set to false when approval is done.
     } catch (e) {
       dispatch(setError(e.message));
-      
+
       !!onError && onError(e);
       setIsApproving(false);
     }
@@ -232,11 +232,12 @@ export const TxModal = ({
         })
       );
 
-      if (
-        userTx?.userTxIndex === 0 &&
-        !!onSubmit
-      )
-        onSubmit({...transactionDetailsData, txData: prevTxDetails[userAddress][userTx.activeRouteId]});
+      // calling onSubmit on first tx
+      if (userTx?.userTxIndex === 0 && !!onSubmit)
+        onSubmit({
+          ...transactionDetailsData,
+          txData: prevTxDetails[userAddress][userTx.activeRouteId],
+        });
 
       // Set Tx Progress as false when tx is included in the chain.
       await sendTx.wait();

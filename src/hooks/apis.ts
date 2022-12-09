@@ -79,17 +79,15 @@ export const useBalance = (
     return tokenWithBalance;
   }
 
-  const { data, error, isValidating } = useSWR(
+  const { data, error, isValidating, mutate } = useSWR(
     shouldFetch ? [tokenAddress, chainId, userAddress, "token-balance"] : null,
     fetchBalance,
-    {
-      refreshInterval: time.BALANCE_REFRESH * 1000, //revalidate after every 60s.
-    }
   );
 
   return {
     data: data?.result,
     isBalanceLoading: userAddress && !error && !data,
+    mutate
   };
 };
 
