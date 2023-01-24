@@ -121,7 +121,7 @@ export const Default = Template.bind({});
 Default.args = {
   API_KEY: SOCKET_API_KEY,
   customize: Customize,
-  // enableSameChainSwaps: true,
+  enableSameChainSwaps: true,
   // title: [displayName],
   // includeBridges: ['hyphen'],
   // singleTxOnly: true,
@@ -129,7 +129,7 @@ Default.args = {
   enableRefuel: true,
   // onBridgeSuccess: showAlert,
   // onSourceTokenChange: (value) => console.log('Source Token:', value),
-  // onSourceNetworkChange: (value) => console.log('Source Network:', value),
+  onSourceNetworkChange: (value) => console.log('Source Network:', value),
   // onDestinationTokenChange: (value) => console.log('Dest Token:', value),
   // onDestinationNetworkChange: (value) => console.log('Dest Network:', value),
   // onError: (value) => console.log('Error', value),
@@ -137,10 +137,10 @@ Default.args = {
   
   // tokenList: MY_LIST,
   // tokenList: UNISWAP_DEFAULT_LIST,
-  // destNetworks: [100],
-  // sourceNetworks: [1, 137, 100],
-  // defaultSourceNetwork: 10,
-  // defaultDestNetwork: 10,
+  destNetworks: [10],
+  // sourceNetworks: [10],
+  defaultSourceNetwork: 10,
+  defaultDestNetwork: 10,
   // defaultSourceToken: "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9", // susd
   // defaultDestToken: "0xdac17f958d2ee523a2206206994597c13d831EC7",
   // defaultDestToken: "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9",

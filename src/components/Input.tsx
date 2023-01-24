@@ -93,6 +93,9 @@ export const Input = ({
   const defaultSourceTokenAddress = useSelector(
     (state: any) => state.customSettings.defaultSourceToken
   );
+  const sameChainSwapsEnabled = useSelector(
+    (state: any) => state.customSettings.sameChainSwapsEnabled
+  );
 
   function updateNetwork(network: Network) {
     dispatch(setSourceChain(network?.chainId));
@@ -118,7 +121,8 @@ export const Input = ({
       }
 
       // If there is only 1 chain on the destination, and if it exists in the source, remove it from the networks
-      if (customDestNetworks?.length === 1) {
+      // do this only when sameChainSwaps is disabled
+      if (customDestNetworks?.length === 1 && !sameChainSwapsEnabled) {
         setSupportedNetworks(
           _supportedNetworks?.filter(
             (x: Network) => x.chainId !== customDestNetworks?.[0]
