@@ -118,7 +118,7 @@ export const Output = ({
       }
       setSupportedNetworks(_supportedNetworks);
     }
-  }, [allNetworks]);
+  }, [allNetworks, customDestNetworks]);
 
   const [firstNetworkRender, setFirstRenderNetwork] = useState<boolean>(false);
   useEffect(() => {
@@ -137,7 +137,7 @@ export const Output = ({
       if (firstNetworkRender) {
         updateNetwork(
           networksSubset?.find(
-            (x: Network) => x?.chainId === defaultDestNetwork
+            (x: Network) => x.chainId === defaultDestNetwork
           ) ?? networksSubset?.[0]
         );
         setFirstRenderNetwork(false);
@@ -145,7 +145,7 @@ export const Output = ({
         updateNetwork(networksSubset?.[0]);
       }
     }
-  }, [supportedNetworks, sourceChainId]);
+  }, [supportedNetworks, sourceChainId, defaultDestNetwork]);
 
   // For Input & tokens
   const [outputAmount, updateOutputAmount] = useState<string>("");
