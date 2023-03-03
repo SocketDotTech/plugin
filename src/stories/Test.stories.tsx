@@ -2,7 +2,7 @@ import { Bridge } from "../index";
 import { useEffect, useState } from "react";
 import { SOCKET_API_KEY } from "../consts";
 import { ethers } from "ethers";
-import { transactionDetails, WidgetProps } from "../types";
+import { WidgetProps } from "../types";
 
 declare global {
   interface Window {
@@ -129,7 +129,7 @@ Default.args = {
   enableRefuel: true,
   // onBridgeSuccess: showAlert,
   // onSourceTokenChange: (value) => console.log('Source Token:', value),
-  onSourceNetworkChange: (value) => console.log('Source Network:', value),
+  // onSourceNetworkChange: (value) => console.log('Source Network:', value),
   // onDestinationTokenChange: (value) => console.log('Dest Token:', value),
   // onDestinationNetworkChange: (value) => console.log('Dest Network:', value),
   // onError: (value) => console.log('Error', value),
@@ -137,10 +137,10 @@ Default.args = {
   
   // tokenList: MY_LIST,
   // tokenList: UNISWAP_DEFAULT_LIST,
-  destNetworks: [10],
-  // sourceNetworks: [10],
-  defaultSourceNetwork: 10,
-  defaultDestNetwork: 10,
+  // destNetworks: [10],
+  // sourceNetworks: [42161, 10],
+  // defaultSourceNetwork: defaultDestNw,
+  // defaultDestNetwork: 42161,
   // defaultSourceToken: "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9", // susd
   // defaultDestToken: "0xdac17f958d2ee523a2206206994597c13d831EC7",
   // defaultDestToken: "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9",
