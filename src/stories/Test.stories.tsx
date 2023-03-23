@@ -71,6 +71,9 @@ const Template = (args: WidgetProps) => {
     }
   }, [window.ethereum]);
 
+  const _destNetworks = [chain];
+  const _defaultDestNetwork = _destNetworks[0];
+
   return (
     <div className="skt-w bg-gray-400 p-10" style={{ height: "calc(100vh - 40px)" }}>
       <p style={{ color: "black" }}>

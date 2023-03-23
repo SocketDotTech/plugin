@@ -141,9 +141,7 @@ export const Output = ({
           ) ?? networksSubset?.[0]
         );
         setFirstRenderNetwork(false);
-      } else if (sourceChainId === destChainId) {
-        updateNetwork(networksSubset?.[0]);
-      }
+      } else updateNetwork(networksSubset?.[0]);
     }
   }, [supportedNetworks, sourceChainId, defaultDestNetwork]);
 
