@@ -11,6 +11,7 @@ import { TxDetails } from "../../types";
 // components
 import { Spinner } from "../common/Spinner";
 import { TokenDetailsRow } from "../common/TokenDetailsRow";
+import { SocketScanLink } from "../common/SocketScanLink";
 
 // This component is displayed when transaction of type 'fund-movr' (bridging tx) is in progress
 export const BridgingLoader = ({
@@ -162,6 +163,12 @@ export const BridgingLoader = ({
           )}
         </div>
       </div>
+
+      {explorerParams?.srcTxHash && (
+        <div className="mb-10">
+          <SocketScanLink txHash={explorerParams?.srcTxHash} />
+        </div>
+      )}
     </div>
   );
 };

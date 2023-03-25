@@ -39,7 +39,7 @@ export const TxStepDetails = ({
           txIndex < currentTxIndex ||
           completed;
         const currentTx = currentTxIndex === tx?.userTxIndex;
-        const _txHash = txData?.[txIndex]?.txHash || txData?.[txIndex]?.hash;
+        const _txHash = txData?.[txIndex]?.txHash ?? txData?.[txIndex]?.hash;
         const url = _txHash
           ? getExplorerLink(
               mappedChainData?.[tx?.chainId]?.explorers[0],
@@ -118,6 +118,8 @@ export const TxStepDetails = ({
                   url={url}
                   inProgress={inProgress}
                   forReview={forReview}
+                  bridgeTx
+                  txHash={_txHash}
                 >
                   <div className="skt-w flex flex-col">
                     <span className="my-1">
@@ -180,6 +182,8 @@ export const TxStepDetails = ({
                   url={url}
                   inProgress={inProgress}
                   forReview={forReview}
+                  bridgeTx
+                  txHash={_txHash}
                 >
                   <div className="skt-w flex flex-col -my-1">
                     <span className="my-1">
@@ -282,6 +286,8 @@ const TxStep = ({
   url = null,
   inProgress = false,
   forReview = false,
+  bridgeTx = false,
+  txHash
 }: {
   label: string;
   children: ReactNode;
@@ -290,6 +296,8 @@ const TxStep = ({
   url?: string | null;
   inProgress?: boolean;
   forReview?: boolean;
+  bridgeTx?: boolean;
+  txHash?: string;
 }) => {
   const active = complete || currentTx;
   const customSettings = useContext(CustomizeContext);
@@ -334,14 +342,18 @@ const TxStep = ({
           }`}
         >
           {url ? (
-            <a
-              href={url}
-              className="skt-w skt-w-anchor underline flex items-center"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {label} <ExternalLink className="skt-w w-3 h-3 opacity-50 ml-1" />
-            </a>
+            <div className="flex items-center">
+              <a
+                href={url}
+                className="skt-w skt-w-anchor underline flex items-center"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {label}{" "}
+                <ExternalLink className="skt-w w-3 h-3 opacity-50 ml-1" />
+              </a>
+              {bridgeTx && <SocketScanUrl txHash={txHash} />}
+            </div>
           ) : (
             label
           )}
@@ -349,5 +361,18 @@ const TxStep = ({
         <span>{children}</span>
       </div>
     </div>
+  );
+};
+
+const SocketScanUrl = ({ txHash }) => {
+  return (
+    <a
+      href={`https://socketscan.io/tx/${txHash}`}
+      className="skt-w skt-w-anchor underline flex items-center ml-2"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      SocketScan <ExternalLink className="skt-w w-3 h-3 opacity-50 ml-1" />
+    </a>
   );
 };
