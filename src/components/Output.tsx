@@ -134,6 +134,10 @@ export const Output = ({
       }
       setSupportedNetworksSubset(networksSubset);
 
+      /**
+       * If it's first render show the default dest network or the first n/w from the list
+       * If the source chain is same as destination chain && same chain swaps is disabled, show the first chain from the list
+       */
       if (firstNetworkRender) {
         updateNetwork(
           networksSubset?.find(
@@ -141,9 +145,18 @@ export const Output = ({
           ) ?? networksSubset?.[0]
         );
         setFirstRenderNetwork(false);
-      } else updateNetwork(networksSubset?.[0]);
+      } else if (!sameChainSwapsEnabled && sourceChainId === destChainId) {
+        updateNetwork(networksSubset?.[0]);
+      }
     }
-  }, [supportedNetworks, sourceChainId, defaultDestNetwork]);
+  }, [sourceChainId, supportedNetworks]);
+
+  // when the default dest n/w is changed
+  useEffect(() => {
+    if(!firstNetworkRender && defaultDestNetwork){
+      updateNetwork(supportedNetworks?.find((x:Network) => x.chainId === defaultDestNetwork))
+    }
+  }, [supportedNetworks, defaultDestNetwork])
 
   // For Input & tokens
   const [outputAmount, updateOutputAmount] = useState<string>("");

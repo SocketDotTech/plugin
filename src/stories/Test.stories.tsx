@@ -95,7 +95,10 @@ const Template = (args: WidgetProps) => {
           </button>
         )}
       </div>
-      <Bridge {...args} provider={provider} />
+      <Bridge {...args} provider={provider} 
+        // defaultDestNetwork={_defaultDestNetwork} 
+        // destNetworks={_destNetworks}
+      />
     </div>
   );
 };
