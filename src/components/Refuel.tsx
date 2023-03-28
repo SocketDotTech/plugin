@@ -30,6 +30,8 @@ export const Refuel = () => {
     }
   }, [destChainId]);
 
+  if (destChainId === 1 || destChainId === sourceChainId) return null;
+
   return (
     <div
       className="skt-w flex bg-widget-secondary py-3 pl-4 pr-3 justify-between mt-6 items-center relative"
@@ -47,17 +49,7 @@ export const Refuel = () => {
           </Popover>
         </div>
         <p className="skt-w text-xs text-widget-secondary mt-0.5">
-          {destChainId === 1 ? (
-            <span className="skt-w text-red-500">
-              Refuel isn't supported on Ethereum
-            </span>
-          ) : destChainId === sourceChainId ? (
-            <span className="skt-w text-red-500">
-              Refuel isn't supported for same chain swaps
-            </span>
-          ) : (
-            `Get Gas for transactions on ${mappedChainData?.[destChainId]?.name}`
-          )}
+          Get Gas for transactions on ${mappedChainData?.[destChainId]?.name}
         </p>
       </div>
       <CheckBox
