@@ -135,6 +135,9 @@ export interface Customize {
 
   // Font family
   fontFamily?: string;
+
+  // Title of plugin
+  title?: string;
 }
 
 export interface Network {

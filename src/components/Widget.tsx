@@ -34,10 +34,10 @@ import { setSourceAmount } from "../state/amountSlice";
 
 // Main Widget -> Base file.
 export const Widget = (props: WidgetProps) => {
-  const {
-    customize,
-    title = props?.enableSameChainSwaps ? "Bridge & Swap" : "Bridge",
-  } = props;
+  const { customize, enableSameChainSwaps } = props;
+  const title =
+    customize?.title ?? (enableSameChainSwaps ? "Bridge & Swap" : "Bridge");
+
   const customSettings = useContext(CustomizeContext);
   const web3Context = useContext(Web3Context);
   const dispatch = useDispatch();
