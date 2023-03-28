@@ -30,7 +30,9 @@ const Step = (props: {
   const { active, completed, lastItem } = props;
   return (
     <div
-      className={`skt-w flex flex-row items-center ${!lastItem ? "flex-grow" : ""}`}
+      className={`skt-w flex flex-row items-center ${
+        !lastItem ? "flex-grow" : ""
+      }`}
     >
       {/* circle */}
       <span
@@ -48,7 +50,9 @@ const Step = (props: {
       {!lastItem && (
         <span
           className={`skt-w h-px flex-grow ${
-            completed ? "bg-widget-accent" : "bg-widget-secondary-text bg-opacity-40"
+            completed
+              ? "bg-widget-accent"
+              : "bg-widget-secondary-text bg-opacity-40"
           }`}
         ></span>
       )}

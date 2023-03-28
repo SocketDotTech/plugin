@@ -7,7 +7,7 @@ export const useGetFees = (
   gasLimit: string,
   chainId: number,
   decimals: number,
-  route: any,
+  route: any
 ) => {
   const [feesInToken, setFeesInToken] = useState<string>("");
   const [feesInUsd, setFeesInUsd] = useState<number>(0);

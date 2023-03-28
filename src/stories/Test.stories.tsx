@@ -75,7 +75,10 @@ const Template = (args: WidgetProps) => {
   const _defaultDestNetwork = _destNetworks[0];
 
   return (
-    <div className="skt-w bg-gray-400 p-10" style={{ height: "calc(100vh - 40px)" }}>
+    <div
+      className="skt-w bg-gray-400 p-10"
+      style={{ height: "calc(100vh - 40px)" }}
+    >
       <p style={{ color: "black" }}>
         User Address : {userAddress}
         <br />
@@ -95,8 +98,10 @@ const Template = (args: WidgetProps) => {
           </button>
         )}
       </div>
-      <Bridge {...args} provider={provider} 
-        // defaultDestNetwork={_defaultDestNetwork} 
+      <Bridge
+        {...args}
+        provider={provider}
+        // defaultDestNetwork={_defaultDestNetwork}
         // destNetworks={_destNetworks}
       />
     </div>
@@ -117,11 +122,11 @@ const Customize = {
 };
 
 function showAlert(value) {
-  console.log('showing alert', value);
+  console.log("showing alert", value);
 }
 
 const UNISWAP_DEFAULT_LIST = "https://gateway.ipfs.io/ipns/tokens.uniswap.org";
-const displayName = <span style={{color: 'red'}}>Salil</span>
+const displayName = <span style={{ color: "red" }}>Salil</span>;
 
 export const Default = Template.bind({});
 Default.args = {
@@ -140,7 +145,7 @@ Default.args = {
   // onDestinationNetworkChange: (value) => console.log('Dest Network:', value),
   // onError: (value) => console.log('Error', value),
   // onSubmit: (value: transactionDetails) => console.log('Submitted: ', value, value?.txData?.[0]?.chainId),
-  
+
   // tokenList: MY_LIST,
   // tokenList: UNISWAP_DEFAULT_LIST,
   // destNetworks: [10],

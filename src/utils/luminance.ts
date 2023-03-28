@@ -1,4 +1,4 @@
-// Currently this is not used anywhere. 
+// Currently this is not used anywhere.
 import { formatRGB } from ".";
 
 export const getContrast = function (rgbColor) {

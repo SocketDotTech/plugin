@@ -14,7 +14,8 @@ interface ContextType {
 export const CustomizeContext = createContext<ContextType | null>(null);
 
 export const CustomizeProvider = ({ children }: ContextProviderProps) => {
-  const [customization, setCustomization] = useState<Customize>(defaultCustomisation);
+  const [customization, setCustomization] =
+    useState<Customize>(defaultCustomisation);
   return (
     <CustomizeContext.Provider value={{ customization, setCustomization }}>
       {children}

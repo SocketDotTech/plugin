@@ -23,4 +23,5 @@ const amountSlice = createSlice({
 });
 
 export default amountSlice.reducer;
-export const { setSourceAmount, setDestAmount, setIsEnoughBalance } = amountSlice.actions;
+export const { setSourceAmount, setDestAmount, setIsEnoughBalance } =
+  amountSlice.actions;

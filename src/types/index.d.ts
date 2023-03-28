@@ -21,7 +21,7 @@ export interface transactionDetails {
   destinationAmount: string;
   sourceToken: Currency; // 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee denotes native token
   destinationToken: Currency;
-  txData: txData[] // tx hashes will be passed here
+  txData: txData[]; // tx hashes will be passed here
   bridgeName?: string; // will be passed only in case of cross chain swaps
   estimatedServiceTime?: string; // (in ms) will be passed only in case of cross chain swaps
   dexName?: string; // will be passed only in case of same chain swaps
@@ -90,7 +90,7 @@ export interface WidgetProps {
   // These messages are usually more human readable. Hence on our frontend we check for e.data.message || e.message
   onError?: (error: any) => void;
 
-  // Will be called when the cross-chain swap or same chain swap transaction is submitted. 
+  // Will be called when the cross-chain swap or same chain swap transaction is submitted.
   // This excludes the source and/or destination swap transactions in case of cross-chain swaps and only the bridging transaction will be considered
   onSubmit?: (data: transactionDetails) => void;
 

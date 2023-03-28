@@ -150,7 +150,14 @@ export const Widget = (props: WidgetProps) => {
       <RouteDetails />
       {transitions(
         (style, item) =>
-          item && <TxModal style={style} onBridge={props?.onBridgeSuccess} onError={props?.onError} onSubmit={props?.onSubmit}/>
+          item && (
+            <TxModal
+              style={style}
+              onBridge={props?.onBridgeSuccess}
+              onError={props?.onError}
+              onSubmit={props?.onSubmit}
+            />
+          )
       )}
       <SettingsModal />
       <ErrorModal />

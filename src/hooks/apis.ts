@@ -81,13 +81,13 @@ export const useBalance = (
 
   const { data, error, isValidating, mutate } = useSWR(
     shouldFetch ? [tokenAddress, chainId, userAddress, "token-balance"] : null,
-    fetchBalance,
+    fetchBalance
   );
 
   return {
     data: data?.result,
     isBalanceLoading: userAddress && !error && !data,
-    mutate
+    mutate,
   };
 };
 

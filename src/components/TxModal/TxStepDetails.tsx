@@ -287,7 +287,7 @@ const TxStep = ({
   inProgress = false,
   forReview = false,
   bridgeTx = false,
-  txHash
+  txHash,
 }: {
   label: string;
   children: ReactNode;
