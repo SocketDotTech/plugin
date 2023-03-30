@@ -63,7 +63,7 @@ export const Refuel = ({ selectivelyShowRefuel }) => {
             </span>
           ) : (
             `Get Gas for transactions on ${mappedChainData?.[destChainId]?.name}`
-          )}{" "}
+          )}
         </p>
       </div>
       <CheckBox
