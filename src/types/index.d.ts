@@ -62,6 +62,9 @@ export interface WidgetProps {
   // To enable same chain swaps
   enableSameChainSwaps?: boolean;
 
+  // To show refuel option only when it is valid
+  selectivelyShowRefuel?: boolean;
+
   // To include bridges - only the bridges passed will be included
   includeBridges?: supportedBridges[];
 

@@ -144,7 +144,9 @@ export const Widget = (props: WidgetProps) => {
           onTokenChange={props.onDestinationTokenChange}
           onNetworkChange={props.onDestinationNetworkChange}
         />
-        {props.enableRefuel && <Refuel />}
+        {props.enableRefuel && (
+          <Refuel selectivelyShowRefuel={props.selectivelyShowRefuel} />
+        )}
       </div>
       <SingleTxMessage />
       <RouteDetails />

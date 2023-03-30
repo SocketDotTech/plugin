@@ -7,7 +7,7 @@ import useMappedChainData from "../hooks/useMappedChainData";
 import { HelpCircle } from "react-feather";
 import { Popover } from "./common/Popover";
 
-export const Refuel = () => {
+export const Refuel = ({ selectivelyShowRefuel }) => {
   const [isChecked, setIsChecked] = useState(false);
   const destChainId = useSelector((state: any) => state.networks.destChainId);
   const sourceChainId = useSelector(
@@ -30,7 +30,11 @@ export const Refuel = () => {
     }
   }, [destChainId]);
 
-  if (destChainId === 1 || destChainId === sourceChainId) return null;
+  if (
+    selectivelyShowRefuel &&
+    (destChainId === 1 || destChainId === sourceChainId)
+  )
+    return null;
 
   return (
     <div
@@ -49,7 +53,17 @@ export const Refuel = () => {
           </Popover>
         </div>
         <p className="skt-w text-xs text-widget-secondary mt-0.5">
-          Get Gas for transactions on ${mappedChainData?.[destChainId]?.name}
+          {destChainId === 1 ? (
+            <span className="skt-w text-red-500">
+              Refuel isn't supported on Ethereum
+            </span>
+          ) : destChainId === sourceChainId ? (
+            <span className="skt-w text-red-500">
+              Refuel isn't supported for same chain swaps
+            </span>
+          ) : (
+            `Get Gas for transactions on ${mappedChainData?.[destChainId]?.name}`
+          )}{" "}
         </p>
       </div>
       <CheckBox
