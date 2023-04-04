@@ -7,7 +7,7 @@ import useMappedChainData from "../hooks/useMappedChainData";
 import { HelpCircle } from "react-feather";
 import { Popover } from "./common/Popover";
 
-export const Refuel = () => {
+export const Refuel = ({ selectivelyShowRefuel }) => {
   const [isChecked, setIsChecked] = useState(false);
   const destChainId = useSelector((state: any) => state.networks.destChainId);
   const sourceChainId = useSelector(
@@ -29,6 +29,12 @@ export const Refuel = () => {
       dispatch(enableRefuel(false));
     }
   }, [destChainId]);
+
+  if (
+    selectivelyShowRefuel &&
+    (destChainId === 1 || destChainId === sourceChainId)
+  )
+    return null;
 
   return (
     <div
