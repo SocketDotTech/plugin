@@ -50,7 +50,7 @@ export const useRoutes = (
         includeBridges,
         excludeBridges,
         singleTxOnly,
-        defaultSwapSlippage: swapSlippage
+        defaultSwapSlippage: swapSlippage,
       }
     );
     return quotes;

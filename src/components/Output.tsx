@@ -153,10 +153,14 @@ export const Output = ({
 
   // when the default dest n/w is changed
   useEffect(() => {
-    if(!firstNetworkRender && defaultDestNetwork){
-      updateNetwork(supportedNetworks?.find((x:Network) => x.chainId === defaultDestNetwork))
+    if (!firstNetworkRender && defaultDestNetwork) {
+      updateNetwork(
+        supportedNetworks?.find(
+          (x: Network) => x.chainId === defaultDestNetwork
+        )
+      );
     }
-  }, [supportedNetworks, defaultDestNetwork])
+  }, [supportedNetworks, defaultDestNetwork]);
 
   // For Input & tokens
   const [outputAmount, updateOutputAmount] = useState<string>("");

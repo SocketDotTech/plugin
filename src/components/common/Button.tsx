@@ -35,12 +35,11 @@ export const Button = (props: ButtonProps) => {
       disabled:font-normal 
       disabled:border-opacity-50 
       border 
-      ${
-        classNames || ""
-      }`}
+      ${classNames || ""}`}
       style={{ borderRadius: `calc(0.625rem * ${borderRadius})` }}
     >
-      {isLoading && <Spinner size={4} />} <span className="ml-2">{children}</span>
+      {isLoading && <Spinner size={4} />}{" "}
+      <span className="ml-2">{children}</span>
     </button>
   );
 };

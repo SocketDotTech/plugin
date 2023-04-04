@@ -23,7 +23,7 @@ export const TokenInput = (props: TokenInputProps) => {
     activeToken,
     tokens,
     noTokens = false,
-    tokenToDisable
+    tokenToDisable,
   } = props;
   return (
     <div className="skt-w flex items-center justify-between mt-2.5 overflow-hidden pb-[1.125rem]">

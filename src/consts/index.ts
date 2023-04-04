@@ -42,29 +42,29 @@ export const BRIDGE_DISPLAY_NAMES = {
   [constants.bridges.OptimismBridge]: "Optimism",
 };
 
-// Status of the prepare API. 
+// Status of the prepare API.
 export enum PrepareTxStatus {
-  COMPLETED = 'completed',
-  PENDING = 'pending',
-  READY = 'ready',
+  COMPLETED = "completed",
+  PENDING = "pending",
+  READY = "ready",
 }
 
 export enum QuoteStatus {
-  FETCHING_QUOTE = 'Fetching best quote...',
-  NO_ROUTES_AVAILABLE = 'No routes available',
-  ENTER_AMOUNT = 'Enter amount',
+  FETCHING_QUOTE = "Fetching best quote...",
+  NO_ROUTES_AVAILABLE = "No routes available",
+  ENTER_AMOUNT = "Enter amount",
 }
 
 export enum ButtonTexts {
   NOT_ENOUGH_NATIVE_BALANCE = "Native token not enough",
-  NOT_ENOUGH_BALANCE = 'Not enough balance',
-  REVIEW_QUOTE = 'Review Quote',
-  CHECKING_APPROVAL = 'Checking approval',
-  APPROVING = 'Approving',
-  APPROVE = 'Approve',
-  APPROVAL_DONE = 'Approved',
-  BRIDGE_IN_PROGRESS = 'Bridging in progress',
-  INITIATING = 'Initiating...',
-  IN_PROGRESS = 'In progress',
-  REFETCHING = 'Refetching...'
+  NOT_ENOUGH_BALANCE = "Not enough balance",
+  REVIEW_QUOTE = "Review Quote",
+  CHECKING_APPROVAL = "Checking approval",
+  APPROVING = "Approving",
+  APPROVE = "Approve",
+  APPROVAL_DONE = "Approved",
+  BRIDGE_IN_PROGRESS = "Bridging in progress",
+  INITIATING = "Initiating...",
+  IN_PROGRESS = "In progress",
+  REFETCHING = "Refetching...",
 }

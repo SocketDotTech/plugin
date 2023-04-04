@@ -5,8 +5,8 @@ import tokensReducer from "./tokensSlice";
 import amountReducer from "./amountSlice";
 import quotesReducer from "./quotesSlice";
 import selectedRouteReducer from "./selectedRouteSlice";
-import txDetailsReducer from "./txDetails"
-import modalsReducer from "./modals"
+import txDetailsReducer from "./txDetails";
+import modalsReducer from "./modals";
 
 const store = configureStore({
   reducer: {
@@ -17,7 +17,7 @@ const store = configureStore({
     routes: selectedRouteReducer,
     txDetails: txDetailsReducer,
     modals: modalsReducer,
-    customSettings: customSettingsReducer
+    customSettings: customSettingsReducer,
   },
 });
 

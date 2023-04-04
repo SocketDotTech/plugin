@@ -29,7 +29,9 @@ import { SortOptions } from "@socket.tech/socket-v2-sdk";
 export const RouteDetails = () => {
   const dispatch = useDispatch();
 
-  const sourceChainId = useSelector((state: any) => state.networks.sourceChainId)
+  const sourceChainId = useSelector(
+    (state: any) => state.networks.sourceChainId
+  );
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
   const destToken = useSelector((state: any) => state.tokens.destToken);
   const sortPref = useSelector((state: any) => state.quotes.sortPref);
@@ -98,7 +100,8 @@ export const RouteDetails = () => {
   useEffect(() => {
     if (data) {
       // Reversing the order in case of sort-by-time because the API returns the list in descendind order of service time
-      const bestRoute = sortPref === SortOptions.Time ? data.reverse()[0] : data[0];
+      const bestRoute =
+        sortPref === SortOptions.Time ? data.reverse()[0] : data[0];
       dispatch(setBestRoute(bestRoute));
 
       // Check if there is sufficient native token for refuel
