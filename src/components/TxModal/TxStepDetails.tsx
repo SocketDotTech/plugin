@@ -32,7 +32,7 @@ export const TxStepDetails = ({
   const mappedChainData = useMappedChainData();
 
   return (
-    <div className="skt-w flex flex-col text-sm -my-2">
+    <div className="skt-w skt-w-flex skt-w-flex-col skt-w-text-sm skt-w--my-2">
       {activeRoute?.userTxs?.map((tx, txIndex) => {
         const txComplete =
           tx?.userTxStatus === "completed" ||
@@ -107,7 +107,7 @@ export const TxStepDetails = ({
 
           return (
             <div
-              className="skt-w flex flex-col text-sm"
+              className="skt-w skt-w-flex skt-w-flex-col skt-w-text-sm"
               key={`${activeRoute?.activeRouteId}-fund-movr-swap`}
             >
               {isSwap ? (
@@ -121,14 +121,14 @@ export const TxStepDetails = ({
                   bridgeTx
                   txHash={_txHash}
                 >
-                  <div className="skt-w flex flex-col">
-                    <span className="my-1">
+                  <div className="skt-w skt-w-flex skt-w-flex-col">
+                    <span className="skt-w-my-1">
                       {Number(swapSrc?.amount).toFixed(3)} {swapSrc?.symbol} for{" "}
                       {Number(swapDest?.amount).toFixed(3)} {swapDest?.symbol}{" "}
                       via {swapDest?.protocolName} on{" "}
                       {mappedChainData?.[swapSrc.chainId]?.name}
                     </span>
-                    <span className="my-1">
+                    <span className="skt-w-my-1">
                       {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol}{" "}
                       on {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
                       {Number(bridgeDest?.amount).toFixed(3)}{" "}
@@ -140,16 +140,16 @@ export const TxStepDetails = ({
                           href={destinationTxUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="skt-w skt-w-anchor underline inline-flex items-center text-widget-primary"
+                          className="skt-w skt-w-anchor skt-w-underline skt-w-inline-flex skt-w-items-center skt-w-text-widget-primary"
                         >
                           Dest tx{" "}
-                          <ExternalLink className="skt-w w-3 h-3 ml-1" />
+                          <ExternalLink className="skt-w skt-w-w-3 skt-w-h-3 skt-w-ml-1" />
                         </a>
                       )}
                     </span>
                     {refuel && (
-                      <span className="mt-1">
-                        <span className="skt-w text-widget-accent">
+                      <span className="skt-w-mt-1">
+                        <span className="skt-w skt-w-text-widget-accent">
                           For Refuel :{" "}
                         </span>
                         {Number(refuelSrc?.amount).toFixed(3)}{" "}
@@ -164,10 +164,10 @@ export const TxStepDetails = ({
                             href={refuelDestinationTxUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="skt-w skt-w-anchor underline inline-flex items-center text-widget-primary"
+                            className="skt-w skt-w-anchor skt-w-underline skt-w-inline-flex skt-w-items-center skt-w-text-widget-primary"
                           >
                             Dest tx{" "}
-                            <ExternalLink className="skt-w w-3 h-3 ml-1" />
+                            <ExternalLink className="skt-w skt-w-w-3 skt-w-h-3 skt-w-ml-1" />
                           </a>
                         )}
                       </span>
@@ -185,8 +185,8 @@ export const TxStepDetails = ({
                   bridgeTx
                   txHash={_txHash}
                 >
-                  <div className="skt-w flex flex-col -my-1">
-                    <span className="my-1">
+                  <div className="skt-w skt-w-flex skt-w-flex-col skt-w--my-1">
+                    <span className="skt-w-my-1">
                       {Number(bridgeSrc?.amount).toFixed(3)} {bridgeSrc?.symbol}{" "}
                       on {mappedChainData?.[bridgeSrc?.chainId]?.name} to{" "}
                       {Number(bridgeDest?.amount).toFixed(3)}{" "}
@@ -198,17 +198,17 @@ export const TxStepDetails = ({
                           href={destinationTxUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="skt-w skt-w-anchor underline inline-flex items-center text-widget-primary"
+                          className="skt-w skt-w-anchor skt-w-underline skt-w-inline-flex skt-w-items-center skt-w-text-widget-primary"
                         >
                           Dest tx{" "}
-                          <ExternalLink className="skt-w w-3 h-3 ml-1" />
+                          <ExternalLink className="skt-w skt-w-w-3 skt-w-h-3 skt-w-ml-1" />
                         </a>
                       )}
                     </span>
                     {/* Refuel statement */}
                     {refuel && (
-                      <span className="my-1">
-                        <span className="skt-w text-widget-accent">
+                      <span className="skt-w-my-1">
+                        <span className="skt-w skt-w-text-widget-accent">
                           For Refuel :{" "}
                         </span>
                         {Number(refuelSrc?.amount).toFixed(3)}{" "}
@@ -223,10 +223,10 @@ export const TxStepDetails = ({
                             href={refuelDestinationTxUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="skt-w skt-w-anchor underline inline-flex items-center text-widget-primary"
+                            className="skt-w skt-w-anchor skt-w-underline skt-w-inline-flex skt-w-items-center skt-w-text-widget-primary"
                           >
                             Dest tx{" "}
-                            <ExternalLink className="skt-w w-3 h-3 ml-1" />
+                            <ExternalLink className="skt-w skt-w-w-3 skt-w-h-3 skt-w-ml-1" />
                           </a>
                         )}
                       </span>
@@ -287,7 +287,7 @@ const TxStep = ({
   inProgress = false,
   forReview = false,
   bridgeTx = false,
-  txHash
+  txHash,
 }: {
   label: string;
   children: ReactNode;
@@ -304,53 +304,55 @@ const TxStep = ({
   const { borderRadius } = customSettings.customization;
   return (
     <div
-      className={`skt-w flex border my-2 ${
+      className={`skt-w skt-w-flex skt-w-border skt-w-my-2 ${
         currentTx
-          ? "bg-widget-secondary bg-opacity-20 border-widget-accent"
-          : "border-widget-secondary"
-      } ${forReview ? "" : "p-3"}`}
+          ? "skt-w-bg-widget-secondary skt-w-bg-opacity-20 skt-w-border-widget-accent"
+          : "skt-w-border-widget-secondary"
+      } ${forReview ? "" : "skt-w-p-3"}`}
       style={{ borderRadius: `calc(0.5rem * ${borderRadius}` }}
     >
       <div
-        className={`skt-w h-6 w-6 flex items-center justify-center shrink-0 mt-[3px] mr-3.5 ${
-          complete ? "bg-widget-secondary" : "bg-transparent"
+        className={`skt-w skt-w-h-6 skt-w-w-6 skt-w-flex skt-w-items-center skt-w-justify-center skt-w-shrink-0 skt-w-mt-[3px] skt-w-mr-3.5 ${
+          complete ? "skt-w-bg-widget-secondary" : "skt-w-bg-transparent"
         }`}
         style={{ borderRadius: `calc(0.25rem * ${borderRadius})` }}
       >
         {inProgress && currentTx ? (
           <Spinner size={4} />
         ) : complete ? (
-          <CheckCircle className="skt-w w-[18px] h-[18px] text-widget-accent" />
+          <CheckCircle className="skt-w skt-w-w-[18px] skt-w-h-[18px] skt-w-text-widget-accent" />
         ) : (
           <ArrowRight
-            className={`skt-w w-[18px] h-[18px] ${
+            className={`skt-w skt-w-w-[18px] skt-w-h-[18px] ${
               currentTx || forReview
-                ? "text-widget-accent"
-                : "text-widget-secondary opacity-60"
+                ? "skt-w-text-widget-accent"
+                : "skt-w-text-widget-secondary opacity-60"
             }`}
           />
         )}
       </div>
       <div
-        className={`skt-w flex flex-col text-xs text-left text-widget-secondary ${
-          !active && !forReview ? "opacity-60" : ""
+        className={`skt-w skt-w-flex skt-w-flex-col skt-w-text-xs skt-w-text-left skt-w-text-widget-secondary ${
+          !active && !forReview ? "skt-w-opacity-60" : ""
         }`}
       >
         <span
-          className={`skt-w mb-0.5 ${
-            active || forReview ? "font-medium text-widget-primary" : ""
+          className={`skt-w skt-w-mb-0.5 ${
+            active || forReview
+              ? "skt-w-font-medium skt-w-text-widget-primary"
+              : ""
           }`}
         >
           {url ? (
-            <div className="flex items-center">
+            <div className="skt-w-flex skt-w-items-center">
               <a
                 href={url}
-                className="skt-w skt-w-anchor underline flex items-center"
+                className="skt-w skt-w-anchor skt-w-underline skt-w-flex skt-w-items-center"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {label}{" "}
-                <ExternalLink className="skt-w w-3 h-3 opacity-50 ml-1" />
+                <ExternalLink className="skt-w skt-w-w-3 skt-w-h-3 skt-w-opacity-50 skt-w-ml-1" />
               </a>
               {bridgeTx && <SocketScanUrl txHash={txHash} />}
             </div>
@@ -368,11 +370,12 @@ const SocketScanUrl = ({ txHash }) => {
   return (
     <a
       href={`https://socketscan.io/tx/${txHash}`}
-      className="skt-w skt-w-anchor underline flex items-center ml-2"
+      className="skt-w skt-w-anchor skt-w-underline skt-w-flex skt-w-items-center skt-w-ml-2"
       target="_blank"
       rel="noopener noreferrer"
     >
-      SocketScan <ExternalLink className="skt-w w-3 h-3 opacity-50 ml-1" />
+      SocketScan{" "}
+      <ExternalLink className="skt-w skt-w-w-3 skt-w-h-3 skt-w-opacity-50 skt-w-ml-1" />
     </a>
   );
 };

@@ -287,7 +287,7 @@ export const Input = ({
                 href="https://www.bungee.exchange/refuel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="skt-w skt-w-anchor text-widget-accent text-medium"
+                className="skt-w skt-w-anchor skt-w-text-widget-accent skt-w-text-medium"
               >
                 Refuel
               </a>{" "}
@@ -305,10 +305,10 @@ export const Input = ({
   }, []);
 
   return (
-    <div className="skt-w mt-3.5">
-      <div className="skt-w flex items-center justify-between">
-        <div className="skt-w flex items-center">
-          <span className="skt-w text-widget-secondary text-sm mr-1.5">
+    <div className="skt-w skt-w-mt-3.5">
+      <div className="skt-w skt-w-flex skt-w-items-center skt-w-justify-between">
+        <div className="skt-w skt-w-flex skt-w-items-center">
+          <span className="skt-w skt-w-text-widget-secondary skt-w-text-sm skt-w-mr-1.5">
             From
           </span>
           <ChainSelect

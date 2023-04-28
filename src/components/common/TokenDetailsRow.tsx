@@ -34,20 +34,20 @@ export const TokenDetailsRow = (props: Props) => {
     <button
       onClick={onClick ?? null}
       disabled={!onClick}
-      className={`skt-w skt-w-button skt-w-input px-3 py-4 border-widget-secondary flex flex-col items-start w-full ${
-        !!onClick ? "hover:bg-widget-secondary" : ""
+      className={`skt-w skt-w-button skt-w-input skt-w-px-3 skt-w-py-4 skt-w-border-widget-secondary skt-w-flex skt-w-flex-col skt-w-items-start skt-w-w-full ${
+        !!onClick ? "hover:skt-w-bg-widget-secondary" : ""
       }`}
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
     >
-      <div className="skt-w flex justify-between items-center w-full">
+      <div className="skt-w skt-w-flex skt-w-justify-between skt-w-items-center skt-w-w-full">
         <TokenDetail
           token={srcDetails?.token}
           amount={srcDetails?.amount}
           refuel={srcRefuel}
         />
         <ArrowDown
-          className={`skt-w w-4 h-4 text-widget-secondary ${
-            false ? "" : "-rotate-90"
+          className={`skt-w skt-w-w-4 skt-w-h-4 skt-w-text-widget-secondary ${
+            false ? "" : "skt-w--rotate-90"
           }`}
         />
         <TokenDetail

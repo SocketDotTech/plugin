@@ -110,16 +110,16 @@ export const TokenSelect = (props: Props) => {
       {activeToken && (
         <button
           onClick={() => setOpenTokenList(!openTokenList)}
-          className={`skt-w skt-w-input skt-w-button flex items-center flex-1 bg-widget-interactive flex-shrink-0 flex-nowrap w-auto overflow-hidden p-1 text-widget-on-interactive`}
+          className={`skt-w skt-w-input skt-w-button skt-w-flex skt-w-items-center skt-w-flex-1 skt-w-bg-widget-interactive skt-w-flex-shrink-0 skt-w-flex-nowrap skt-w-w-auto skt-w-overflow-hidden skt-w-p-1 skt-w-text-widget-on-interactive`}
           style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
         >
           <img
             src={activeToken?.logoURI}
-            className="skt-w h-6 w-6 rounded-full mr-1.5 border"
+            className="skt-w skt-w-h-6 skt-w-w-6 skt-w-rounded-full skt-w-mr-1.5 skt-w-border"
           />
-          <div className="skt-w flex items-center">
-            <span className="mr-0.5">{activeToken?.symbol}</span>
-            <ChevronDown className="skt-w w-4 h-4" />
+          <div className="skt-w skt-w-flex skt-w-items-center">
+            <span className="skt-w-mr-0.5">{activeToken?.symbol}</span>
+            <ChevronDown className="skt-w skt-w-w-4 skt-w-h-4" />
           </div>
         </button>
       )}
@@ -135,36 +135,38 @@ export const TokenSelect = (props: Props) => {
               }}
               style={style}
             >
-              <div className="skt-w px-1.5 pt-2 mb-2">
+              <div className="skt-w skt-w-px-1.5 skt-w-pt-2 skt-w-mb-2">
                 <SearchBar
                   searchInput={searchInput}
                   setSearchInput={setSearchInput}
                   handleInput={(e) => handleSearchInput(e)}
                 />
               </div>
-              <div className="skt-w h-full overflow-y-auto p-1.5">
+              <div className="skt-w skt-w-h-full skt-w-overflow-y-auto skt-w-p-1.5">
                 {displayTokens?.map((token: Currency) => {
                   return (
                     <button
-                      className="skt-w skt-w-input skt-w-button flex hover:bg-widget-secondary items-center p-2 w-full justify-between disabled:opacity-60 disabled:pointer-events-none"
+                      className="skt-w skt-w-input skt-w-button skt-w-flex hover:skt-w-bg-widget-secondary skt-w-items-center skt-w-p-2 skt-w-w-full skt-w-justify-between disabled:skt-w-opacity-60 disabled:skt-w-pointer-events-none"
                       onClick={() => selectToken(token)}
                       key={token?.address}
                       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
                       disabled={tokenToDisable?.address === token?.address}
                     >
-                      <div className="skt-w flex items-center">
+                      <div className="skt-w skt-w-flex skt-w-items-center">
                         <img
                           src={token?.logoURI}
-                          className="skt-w w-6 h-6 rounded-full"
+                          className="skt-w skt-w-w-6 skt-w-h-6 skt-w-rounded-full"
                         />
-                        <div className="skt-w flex flex-col items-start ml-2 text-widget-secondary">
-                          <span className="skt-w text-sm">{token?.symbol}</span>
-                          <span className="skt-w text-xs -mt-0.5">
+                        <div className="skt-w skt-w-flex skt-w-flex-col skt-w-items-start skt-w-ml-2 skt-w-text-widget-secondary">
+                          <span className="skt-w skt-w-text-sm">
+                            {token?.symbol}
+                          </span>
+                          <span className="skt-w skt-w-text-xs skt-w--mt-0.5">
                             {token?.name}
                           </span>
                         </div>
                       </div>
-                      <span className="skt-w text-widget-secondary text-xs text-right font-medium">
+                      <span className="skt-w skt-w-text-widget-secondary skt-w-text-xs skt-w-text-right skt-w-font-medium">
                         {showBalance(token)}
                       </span>
                     </button>

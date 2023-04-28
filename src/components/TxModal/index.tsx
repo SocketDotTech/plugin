@@ -422,9 +422,9 @@ export const TxModal = ({
       currentRoute?.destTokenDetails?.token?.chainId;
 
     const _modalTitle = (
-      <span className="flex items-center">
+      <span className="skt-w-flex skt-w-items-center">
         {isSameChainSwap ? "Swap" : "Bridging"} transaction{" "}
-        <span className="text-xs text-widget-primary text-opacity-70 font-normal ml-1">
+        <span className="skt-w-text-xs skt-w-text-widget-primary skt-w-text-opacity-70 skt-w-font-normal skt-w-ml-1">
           {currentRoute?.route?.activeRouteId
             ? ` - #${currentRoute?.route?.activeRouteId}`
             : userTx?.activeRouteId
@@ -492,8 +492,8 @@ export const TxModal = ({
       disableClose={isApproving || txInProgress}
       style={style}
     >
-      <div className="skt-w flex flex-col flex-1 overflow-hidden justify-between relative">
-        <div className="skt-w flex-1 overflow-y-auto">
+      <div className="skt-w skt-w-flex skt-w-flex-col skt-w-flex-1 skt-w-overflow-hidden skt-w-justify-between skt-w-relative">
+        <div className="skt-w skt-w-flex-1 skt-w-overflow-y-auto">
           <TokenDetailsRow
             srcDetails={{
               token: currentRoute?.sourceTokenDetails?.token,
@@ -506,17 +506,17 @@ export const TxModal = ({
             srcRefuel={refuelSourceToken}
             destRefuel={refuelDestToken}
           />
-          <div className="skt-w border-b border-widget-secondary" />
+          <div className="skt-w skt-w-border-b skt-w-border-widget-secondary" />
 
-          <div className="skt-w px-3 py-3">
+          <div className="skt-w skt-w-px-3 skt-w-py-3">
             {!!swapTx && (
-              <p className="skt-w text-widget-primary mb-3 text-xs flex items-center justify-end pr-0.5">
+              <p className="skt-w skt-w-text-widget-primary skt-w-mb-3 skt-w-text-xs skt-w-flex skt-w-items-center skt-w-justify-end skt-w-pr-0.5">
                 Swap slippage: {swapTx?.swapSlippage}%{" "}
                 <button
                   onClick={() => dispatch(setIsSettingsModalOpen(true))}
-                  className="skt-w skt-w-button skt-w-input flex"
+                  className="skt-w skt-w-button skt-w-input skt-w-flex"
                 >
-                  <Edit className="ml-2 w-3 h-3 text-widget-accent" />
+                  <Edit className="skt-w-ml-2 skt-w-w-3 skt-w-h-3 skt-w-text-widget-accent" />
                 </button>
               </p>
             )}
@@ -534,7 +534,7 @@ export const TxModal = ({
           </div>
         </div>
 
-        <div className="skt-w p-3 shrink-0">
+        <div className="skt-w skt-w-p-3 skt-w-shrink-0">
           {!txCompleted && (
             <>
               {retryEnabled ? (

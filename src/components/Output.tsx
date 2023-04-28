@@ -153,10 +153,14 @@ export const Output = ({
 
   // when the default dest n/w is changed
   useEffect(() => {
-    if(!firstNetworkRender && defaultDestNetwork){
-      updateNetwork(supportedNetworks?.find((x:Network) => x.chainId === defaultDestNetwork))
+    if (!firstNetworkRender && defaultDestNetwork) {
+      updateNetwork(
+        supportedNetworks?.find(
+          (x: Network) => x.chainId === defaultDestNetwork
+        )
+      );
     }
-  }, [supportedNetworks, defaultDestNetwork])
+  }, [supportedNetworks, defaultDestNetwork]);
 
   // For Input & tokens
   const [outputAmount, updateOutputAmount] = useState<string>("");
@@ -252,10 +256,12 @@ export const Output = ({
   );
 
   return (
-    <div className="skt-w mt-6">
-      <div className="skt-w flex items-center justify-between">
-        <div className="skt-w flex items-center">
-          <span className="skt-w text-widget-secondary text-sm mr-1.5">To</span>
+    <div className="skt-w skt-w-mt-6">
+      <div className="skt-w skt-w-flex skt-w-items-center skt-w-justify-between">
+        <div className="skt-w skt-w-flex skt-w-items-center">
+          <span className="skt-w skt-w-text-widget-secondary skt-w-text-sm skt-w-mr-1.5">
+            To
+          </span>
           <ChainSelect
             networks={supportedNetworksSubset}
             activeNetworkId={destChainId}

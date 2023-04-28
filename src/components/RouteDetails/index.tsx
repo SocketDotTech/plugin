@@ -29,7 +29,9 @@ import { SortOptions } from "@socket.tech/socket-v2-sdk";
 export const RouteDetails = () => {
   const dispatch = useDispatch();
 
-  const sourceChainId = useSelector((state: any) => state.networks.sourceChainId)
+  const sourceChainId = useSelector(
+    (state: any) => state.networks.sourceChainId
+  );
   const sourceToken = useSelector((state: any) => state.tokens.sourceToken);
   const destToken = useSelector((state: any) => state.tokens.destToken);
   const sortPref = useSelector((state: any) => state.quotes.sortPref);
@@ -98,7 +100,8 @@ export const RouteDetails = () => {
   useEffect(() => {
     if (data) {
       // Reversing the order in case of sort-by-time because the API returns the list in descendind order of service time
-      const bestRoute = sortPref === SortOptions.Time ? data.reverse()[0] : data[0];
+      const bestRoute =
+        sortPref === SortOptions.Time ? data.reverse()[0] : data[0];
       dispatch(setBestRoute(bestRoute));
 
       // Check if there is sufficient native token for refuel
@@ -206,13 +209,13 @@ export const RouteDetails = () => {
 
   return (
     <InnerCard>
-      <div className="skt-w text-widget-secondary mb-3 text-sm flex items-center">
+      <div className="skt-w skt-w-text-widget-secondary skt-w-mb-3 skt-w-text-sm skt-w-flex skt-w-items-center">
         {sourceAmount && sourceAmount !== "0" && isQuotesLoading ? (
-          <span className="mr-1">
+          <span className="skt-w-mr-1">
             <Spinner size={4} />
           </span>
         ) : !!bestRoute?.refuel && !isNativeTokenEnough ? (
-          <Info className="w-4 h-4 mr-1" />
+          <Info className="skt-w-w-4 skt-w-h-4 skt-w-mr-1" />
         ) : (
           ""
         )}
@@ -229,7 +232,7 @@ export const RouteDetails = () => {
       >
         {getButtonStatus()}
       </Button>
-      <div className="skt-w flex items-center justify-between text-widget-secondary mt-2.5 text-xs">
+      <div className="skt-w skt-w-flex skt-w-items-center skt-w-justify-between skt-w-text-widget-secondary skt-w-mt-2.5 skt-w-text-xs">
         <a
           href="http://socket.tech/"
           target="_blank"

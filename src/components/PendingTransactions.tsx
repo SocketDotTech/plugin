@@ -51,7 +51,7 @@ export const PendingTransactions = () => {
     return (
       <>
         <button
-          className="skt-w skt-w-button skt-w-input uppercase text-sm px-2 py-0.5 bg-widget-accent shadow-inner bg-opacity-90 text-widget-onAccent"
+          className="skt-w skt-w-button skt-w-input skt-w-uppercase skt-w-text-sm skt-w-px-2 skt-w-py-0.5 skt-w-bg-widget-accent skt-w-shadow-inner skt-w-bg-opacity-90 skt-w-text-widget-onAccent"
           onClick={() => setIsModalOpen(true)}
           style={{ borderRadius: `calc(0.75rem * ${borderRadius})` }}
         >
@@ -66,8 +66,8 @@ export const PendingTransactions = () => {
                 closeModal={() => setIsModalOpen(false)}
                 style={style}
               >
-                <div className="skt-w flex flex-col justify-start p-1 flex-1 overflow-y-auto">
-                  <p className="skt-w text-widget-secondary text-xs px-3 py-2 text-left">
+                <div className="skt-w skt-w-flex skt-w-flex-col skt-w-justify-start skt-w-p-1 skt-w-flex-1 skt-w-overflow-y-auto">
+                  <p className="skt-w skt-w-text-widget-secondary skt-w-text-xs skt-w-px-3 skt-w-py-2 skt-w-text-left">
                     Transaction status is updated every 30 seconds
                   </p>
 
@@ -99,7 +99,7 @@ export const PendingTransactions = () => {
                     );
                   })}
 
-                  <p className="skt-w text-widget-secondary text-xs px-3 py-2 text-left">
+                  <p className="skt-w skt-w-text-widget-secondary skt-w-text-xs skt-w-px-3 skt-w-py-2 skt-w-text-left">
                     Showing {activeRoutes?.length}/{totalRoutes} active routes
                   </p>
                 </div>
