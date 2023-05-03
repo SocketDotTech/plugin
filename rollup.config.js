@@ -25,6 +25,9 @@ export default [
       postcss({
         plugins: [],
         minimize: true,
+        inject: {
+          insertAt: 'top',
+        },
       }),
       babel({
         exclude: "node_modules/**",

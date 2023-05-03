@@ -13,7 +13,7 @@ export const RefuelAmount = ({ src = false }: { src?: boolean }) => {
   if (!refuel) return null;
 
   return (
-    <span className="skt-w text-widget-accent text-xs absolute left-0 -bottom-5">
+    <span className="skt-w skt-w-text-widget-accent skt-w-text-xs skt-w-absolute skt-w-left-0 skt-w--bottom-5">
       + {amount} {src ? refuel?.fromAsset?.symbol : refuel?.toAsset?.symbol}
     </span>
   );

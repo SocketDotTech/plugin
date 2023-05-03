@@ -105,7 +105,7 @@ export const BridgingLoader = ({
   };
 
   return (
-    <div className="skt-w absolute bg-widget-primary h-full w-full top-0 left-0 flex flex-col">
+    <div className="skt-w skt-w-absolute skt-w-bg-widget-primary skt-w-h-full skt-w-w-full skt-w-top-0 skt-w-left-0 skt-w-flex skt-w-flex-col">
       <TokenDetailsRow
         srcDetails={{
           token: currentRoute?.sourceTokenDetails?.token,
@@ -118,15 +118,15 @@ export const BridgingLoader = ({
         srcRefuel={refuelSourceToken}
         destRefuel={refuelDestToken}
       />
-      <div className="skt-w border-b border-widget-secondary" />
+      <div className="skt-w skt-w-border-b skt-w-border-widget-secondary" />
 
-      <div className="skt-w flex flex-col items-center my-auto pb-3">
+      <div className="skt-w skt-w-flex skt-w-flex-col skt-w-items-center skt-w-my-auto skt-w-pb-3">
         <Spinner size={10} />
         <div className="mt-4">
-          <p className="skt-w text-sm text-widget-primary mb-2 font-medium text-center">
+          <p className="skt-w skt-w-text-sm skt-w-text-widget-primary skt-w-mb-2 skt-w-font-medium skt-w-text-center">
             Bridging in progress
           </p>
-          <p className="skt-w text-xs font-normal text-widget-secondary mb-3 text-center px-3">
+          <p className="skt-w skt-w-text-xs skt-w-font-normal skt-w-text-widget-secondary skt-w-mb-3 skt-w-text-center skt-w-px-3">
             {showSupportLink ? (
               <span>
                 Get in touch for support on{" "}
@@ -134,7 +134,7 @@ export const BridgingLoader = ({
                   href="https://discord.gg/23Gk2Fa9JZ"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="skt-w skt-w-anchor underline"
+                  className="skt-w skt-w-anchor skt-w-underline"
                 >
                   Discord
                 </a>
@@ -150,14 +150,14 @@ export const BridgingLoader = ({
           </p>
         </div>
 
-        <div className="skt-w flex flex-col items-center mt-4">
+        <div className="skt-w skt-w-flex skt-w-flex-col skt-w-items-center skt-w-mt-4">
           <TxRow
             title={`Bridging via ${bridgeDetails?.protocol?.displayName}`}
             srcUrl={srcTxHash}
             destUrl={destTxHash}
           />
           {!!refuelEnabled && (
-            <div className="mt-3.5">
+            <div className="skt-w-mt-3.5">
               <TxRow title="Refuel" destUrl={destRefuelTxHash} />
             </div>
           )}
@@ -165,7 +165,7 @@ export const BridgingLoader = ({
       </div>
 
       {explorerParams?.srcTxHash && (
-        <div className="mb-10">
+        <div className="skt-w-mb-10">
           <SocketScanLink txHash={explorerParams?.srcTxHash} />
         </div>
       )}
@@ -178,7 +178,7 @@ const TxUrlChip = ({ url, label }: { url?: string; label: string }) => {
   const { borderRadius } = customSettings.customization;
   return (
     <span
-      className="skt-w text-xs bg-widget-primary text-widget-secondary flex items-center flex-nowrap px-2 py-1.5"
+      className="skt-w skt-w-text-xs skt-w-bg-widget-primary skt-w-text-widget-secondary skt-w-flex skt-w-items-center skt-w-flex-nowrap skt-w-px-2 skt-w-py-1.5"
       style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
     >
       {url && !url.match("undefined") ? (
@@ -186,14 +186,14 @@ const TxUrlChip = ({ url, label }: { url?: string; label: string }) => {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="skt-w skt-w-anchor flex items-center hover:underline"
+          className="skt-w skt-w-anchor skt-w-flex skt-w-items-center hover:skt-w-underline"
         >
           {label}{" "}
-          <ExternalLink className="skt-w text-widget-secondary w-3 h-auto ml-1.5" />
+          <ExternalLink className="skt-w skt-w-text-widget-secondary skt-w-w-3 skt-w-h-auto skt-w-ml-1.5" />
         </a>
       ) : (
-        <span className="skt-w flex items-center h-auto">
-          <span className="mr-1.5">{label}</span> <Spinner size={3} />
+        <span className="skt-w skt-w-flex skt-w-items-center skt-w-h-auto">
+          <span className="skt-w-mr-1.5">{label}</span> <Spinner size={3} />
         </span>
       )}
     </span>
@@ -210,11 +210,13 @@ const TxRow = ({
   destUrl?: string;
 }) => {
   return (
-    <div className="skw-w flex items-center pl-2.5 p-0.5 rounded-full bg-widget-secondary border border-widget-secondary">
-      <span className="skt-w text-widget-primary text-xs pr-2">{title}</span>
-      <div className="skt-w flex items-center">
+    <div className="skw-w skt-w-flex skt-w-items-center skt-w-pl-2.5 skt-w-p-0.5 skt-w-rounded-full skt-w-bg-widget-secondary skt-w-border skt-w-border-widget-secondary">
+      <span className="skt-w skt-w-text-widget-primary skt-w-text-xs skt-w-pr-2">
+        {title}
+      </span>
+      <div className="skt-w skt-w-flex skt-w-items-center">
         {!!srcUrl && (
-          <span className="mr-0.5">
+          <span className="skt-w-mr-0.5">
             <TxUrlChip label="Src tx" url={srcUrl} />
           </span>
         )}

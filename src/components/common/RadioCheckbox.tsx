@@ -14,13 +14,13 @@ export const RadioCheckbox = (props: RadioProps) => {
   const { borderRadius } = customSettings.customization;
 
   return (
-    <div className="skt-w relative mx-1">
+    <div className="skt-w skt-w-relative skt-w-mx-1">
       <label
         htmlFor={id}
-        className={`skt-w flex items-center justify-center w-12 relative z-10 p-2 cursor-pointer border border-opacity-40 text-sm font-semibold ${
+        className={`skt-w skt-w-flex skt-w-items-center skt-w-justify-center skt-w-w-12 skt-w-relative skt-w-z-10 skt-w-p-2 skt-w-cursor-pointer skt-w-border skt-w-border-opacity-40 skt-w-text-sm skt-w-font-semibold ${
           checked
-            ? "bg-widget-accent text-widget-onAccent border-widget-accent"
-            : "text-widget-secondary border-widget-secondary-text"
+            ? "skt-w-bg-widget-accent skt-w-text-widget-onAccent skt-w-border-widget-accent"
+            : "skt-w-text-widget-secondary skt-w-border-widget-secondary-text"
         }`}
         style={{ borderRadius: `calc(0.375rem * ${borderRadius})` }}
       >
@@ -30,7 +30,7 @@ export const RadioCheckbox = (props: RadioProps) => {
         type="radio"
         id={id}
         name={name}
-        className="skt-w w-0 h-0 opacity-0 z-0 absolute"
+        className="skt-w skt-w-w-0 skt-w-h-0 skt-w-opacity-0 skt-w-z-0 skt-w-absolute"
         onChange={onChange}
         checked={checked}
       />

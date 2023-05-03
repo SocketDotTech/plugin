@@ -29,18 +29,18 @@ export const SingleTx = () => {
 
   if (singleTxOnlyFromDev) return null;
   return (
-    <div className="skt-w flex items-center relative mt-6 justify-between">
-      <div className="skt-w flex items-center mb-1.5">
+    <div className="skt-w skt-w-flex skt-w-items-center skt-w-relative skt-w-mt-6 skt-w-justify-between">
+      <div className="skt-w skt-w-flex skt-w-items-center skt-w-mb-1.5">
         <SubTitle>Single Transaction Mode</SubTitle>
         <Popover
           content="Only select routes with one user transaction i.e. direct bridge or source chain swap + bridge."
-          classNames="bottom-8"
+          classNames="skt-w-bottom-8"
           cursor="cursor-help"
         >
-          <Info className="ml-1.5 w-4 h-4 text-widget-secondary" />
+          <Info className="skt-w-ml-1.5 skt-w-w-4 skt-w-h-4 skt-w-text-widget-secondary" />
         </Popover>
       </div>
-      <span className="px-1"></span>
+      <span className="skt-w-px-1"></span>
       <CheckBox
         small
         id="singleTx"

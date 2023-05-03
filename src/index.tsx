@@ -41,7 +41,7 @@ export const Bridge = (props: WidgetProps) => {
 
 const IntegrationError = ({ children }) => {
   return (
-    <div className="skt-w rounded-2xl bg-gray-100 w-[360px] p-3 h-[360px] text-center text-gray-500">
+    <div className="skt-w skt-w-rounded-2xl skt-w-bg-gray-100 skt-w-w-[360px] skt-w-p-3 skt-w-h-[360px] skt-w-text-center skt-w-text-gray-500">
       {children}
     </div>
   );

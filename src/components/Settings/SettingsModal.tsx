@@ -36,9 +36,9 @@ export const SettingsModal = () => {
               title="Settings"
               closeModal={() => toggleSettingsModal(false)}
               style={style}
-              classNames="z-50"
+              classNames="skt-w-z-50"
             >
-              <div className="skt-w px-3 pt-3">
+              <div className="skt-w skt-w-px-3 skt-w-pt-3">
                 {/* Sort options */}
                 <SortPreference />
 

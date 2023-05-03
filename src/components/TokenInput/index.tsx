@@ -23,14 +23,14 @@ export const TokenInput = (props: TokenInputProps) => {
     activeToken,
     tokens,
     noTokens = false,
-    tokenToDisable
+    tokenToDisable,
   } = props;
   return (
-    <div className="skt-w flex items-center justify-between mt-2.5 overflow-hidden pb-[1.125rem]">
-      <div className="skt-w flex flex-1">
-        <div className="stk-w flex flex-col relative">
+    <div className="skt-w skt-w-flex skt-w-items-center skt-w-justify-between skt-w-mt-2.5 skt-w-overflow-hidden skt-w-pb-[1.125rem]">
+      <div className="skt-w skt-w-flex skt-w-flex-1">
+        <div className="stk-w skt-w-flex skt-w-flex-col skt-w-relative">
           <input
-            className={`skt-w skt-w-input text-widget-primary text-3xl focus:outline-none w-full h-full overflow-ellipsis bg-transparent`}
+            className={`skt-w skt-w-input skt-w-text-widget-primary skt-w-text-3xl focus:skt-w-outline-none skt-w-w-full skt-w-h-full skt-w-overflow-ellipsis skt-w-bg-transparent`}
             value={amount}
             onChange={(e) => onChangeInput(e.target.value)}
             placeholder="0.0"

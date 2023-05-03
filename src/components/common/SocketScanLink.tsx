@@ -5,12 +5,12 @@ export const SocketScanLink = ({ txHash }: { txHash: string }) => {
 
   return (
     <a
-      className="skt-w skt-w-button text-sm text-widget-secondary hover:text-widget-primary text-center mb-2 flex items-center no-underline justify-center"
+      className="skt-w skt-w-button skt-w-text-sm skt-w-text-widget-secondary hover:skt-w-text-widget-primary skt-w-text-center skt-w-mb-2 skt-w-flex skt-w-items-center skt-w-no-underline skt-w-justify-center"
       href={`https://socketscan.io/tx/${txHash}`}
       target="_blank"
     >
       Track this transaction on SocketScan{" "}
-      <ExternalLink className="w-[18px] h-[18px] ml-1" />
+      <ExternalLink className="skt-w-w-[18px] skt-w-h-[18px] skt-w-ml-1" />
     </a>
   );
 };

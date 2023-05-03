@@ -9,6 +9,7 @@ function withOpacity(variableName) {
 }
 
 module.exports = {
+  prefix: "skt-w-",
   enabled: process.env.NODE_ENV === "publish",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
@@ -18,10 +19,10 @@ module.exports = {
           accent: withOpacity("--socket-widget-accent-color"),
           onAccent: withOpacity("--socket-widget-on-accent-color"),
           primary: withOpacity("--socket-widget-primary-text-color"),
-          'primary-main': withOpacity("--socket-widget-primary-color"),
+          "primary-main": withOpacity("--socket-widget-primary-color"),
           secondary: withOpacity("--socket-widget-secondary-text-color"),
           outline: withOpacity("--socket-widget-outline-color"),
-          'on-interactive': withOpacity("--socket-widget-on-interactive")
+          "on-interactive": withOpacity("--socket-widget-on-interactive"),
         },
       },
       backgroundColor: {
@@ -31,8 +32,8 @@ module.exports = {
           primary: withOpacity("--socket-widget-primary-color"),
           secondary: withOpacity("--socket-widget-secondary-color"),
           outline: withOpacity("--socket-widget-outline-color"),
-          interactive: withOpacity('--socket-widget-interactive'),
-          'secondary-text': withOpacity('--socket-widget-secondary-text-color')
+          interactive: withOpacity("--socket-widget-interactive"),
+          "secondary-text": withOpacity("--socket-widget-secondary-text-color"),
         },
       },
       borderColor: {
@@ -46,12 +47,12 @@ module.exports = {
       },
       width: {
         5.5: "1.375rem",
-        6.5: "1.625rem"
+        6.5: "1.625rem",
       },
     },
   },
   plugins: [],
   corePlugins: {
     preflight: false,
-  }
+  },
 };

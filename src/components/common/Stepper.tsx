@@ -7,7 +7,7 @@ interface StepperProps {
 export const Stepper = (props: StepperProps) => {
   const { currentTx, userTxs } = props;
   return (
-    <div className="skt-w flex">
+    <div className="skt-w skt-w-flex">
       {userTxs?.map((x, index) => {
         return (
           <Step
@@ -30,25 +30,31 @@ const Step = (props: {
   const { active, completed, lastItem } = props;
   return (
     <div
-      className={`skt-w flex flex-row items-center ${!lastItem ? "flex-grow" : ""}`}
+      className={`skt-w skt-w-flex skt-w-flex-row skt-w-items-center ${
+        !lastItem ? "skt-w-flex-grow" : ""
+      }`}
     >
       {/* circle */}
       <span
-        className={`skt-w relative w-4 h-4 rounded-full flex justify-center items-center ${
-          completed ? "bg-widget-accent border-0" : ""
+        className={`skt-w skt-w-relative skt-w-w-4 skt-w-h-4 skt-w-rounded-full skt-w-flex skt-w-justify-center skt-w-items-center ${
+          completed ? "skt-w-bg-widget-accent skt-w-border-0" : ""
         } ${
           active
-            ? "border-2 border-widget-accent"
-            : "border border-widget-secondary-text border-opacity-40"
+            ? "skt-w-border-2 skt-w-border-widget-accent"
+            : "skt-w-border skt-w-border-widget-secondary-text skt-w-border-opacity-40"
         } `}
       >
-        {completed && <Check className="skt-w text-widget-onAccent w-3 h-3" />}
+        {completed && (
+          <Check className="skt-w skt-w-text-widget-onAccent skt-w-w-3 skt-w-h-3" />
+        )}
       </span>
       {/* line */}
       {!lastItem && (
         <span
-          className={`skt-w h-px flex-grow ${
-            completed ? "bg-widget-accent" : "bg-widget-secondary-text bg-opacity-40"
+          className={`skt-w skt-w-h-px skt-w-flex-grow ${
+            completed
+              ? "skt-w-bg-widget-accent"
+              : "skt-w-bg-widget-secondary-text skt-w-bg-opacity-40"
           }`}
         ></span>
       )}
