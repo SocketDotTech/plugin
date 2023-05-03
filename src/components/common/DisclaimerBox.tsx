@@ -14,7 +14,7 @@ export const DisclaimerBox = ({
 
   return (
     <div
-      className="skt-w py-3 px-3.5 text-sm text-opacity-90 mt-4 flex items-start"
+      className="skt-w skt-w-py-3 skt-w-px-3.5 skt-w-text-sm skt-w-text-opacity-90 skt-w-mt-4 skt-w-flex skt-w-items-start"
       style={{
         background: "#FAF3E6",
         borderRadius: `calc(0.75rem * ${borderRadius})`,
@@ -22,11 +22,13 @@ export const DisclaimerBox = ({
       role="alert"
     >
       {showIcon && (
-        <div className="flex items-center mb-2">
-          <AlertTriangle className="skt-w mr-3 mt-0.5 text-orange-500" />{" "}
+        <div className="skt-w-flex skt-w-items-center skt-w-mb-2">
+          <AlertTriangle className="skt-w skt-w-mr-3 skt-w-mt-0.5 skt-w-text-orange-500" />{" "}
         </div>
       )}
-      <p className="skt-w text-gray-800 text-left leading-5">{children}</p>
+      <p className="skt-w skt-w-text-gray-800 skt-w-text-left skt-w-leading-5">
+        {children}
+      </p>
     </div>
   );
 };

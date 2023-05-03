@@ -31,7 +31,7 @@ input[type="number"] {
   /* Resetting browser default styles. I have disabled the preflight as it was affecting the integrators' layouts */
 
   .skt-w {
-    @apply box-border p-0 m-0 border-0 border-solid border-[#e5e7eb];
+    @apply skt-w-box-border skt-w-p-0 skt-w-m-0 skt-w-border-0 skt-w-border-solid skt-w-border-[#e5e7eb];
     line-height: 1.15;
     --tw-border-spacing-x: 0;
     --tw-border-spacing-y: 0;
@@ -83,7 +83,7 @@ input[type="number"] {
     cursor: default;
   }
 
-  .skt-w-container {
+  .skt-w-root-container {
     font-family: var(--socket-widget-font-family);
   }
 
@@ -99,7 +99,7 @@ input[type="number"] {
 
   /* for all input elements */
   .skt-w-input {
-    @apply m-0 p-0 border-0 outline-0;
+    @apply skt-w-m-0 skt-w-p-0 skt-w-border-0 skt-w-outline-0;
 
     color: inherit;
     font-family: inherit;
@@ -110,13 +110,13 @@ input[type="number"] {
 
   /* For buttons */
   .skt-w-button {
-    @apply cursor-pointer bg-transparent bg-none;
+    @apply skt-w-cursor-pointer skt-w-bg-transparent skt-w-bg-none;
     text-transform: none;
   }
 
   /* For anchor tags */
   .skt-w-anchor {
-    @apply text-inherit;
+    @apply skt-w-text-inherit;
     text-decoration: none;
   }
 }

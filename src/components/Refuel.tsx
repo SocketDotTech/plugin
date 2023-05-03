@@ -38,27 +38,27 @@ export const Refuel = ({ selectivelyShowRefuel }) => {
 
   return (
     <div
-      className="skt-w flex bg-widget-secondary py-3 pl-4 pr-3 justify-between mt-6 items-center relative"
+      className="skt-w skt-w-flex skt-w-bg-widget-secondary skt-w-py-3 skt-w-pl-4 skt-w-pr-3 skt-w-justify-between skt-w-mt-6 skt-w-items-center skt-w-relative"
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
     >
-      <div className="mr-1">
-        <div className="skt-w text-sm text-widget-primary font-medium flex items-center">
+      <div className="skt-w-mr-1">
+        <div className="skt-w skt-w-text-sm skt-w-text-widget-primary skt-w-font-medium skt-w-flex skt-w-items-center">
           Enable Refuel
           <Popover
             content="With Refuel, you can swap native tokens on the source chain for native tokens to transact on the destination chain"
-            classNames="-top-14"
+            classNames="skt-w--top-14"
             cursor="cursor-help"
           >
-            <HelpCircle className="skt-w ml-1.5 w-4 h-4 opacity-70" />
+            <HelpCircle className="skt-w skt-w-ml-1.5 skt-w-w-4 skt-w-h-4 skt-w-opacity-70" />
           </Popover>
         </div>
-        <p className="skt-w text-xs text-widget-secondary mt-0.5">
+        <p className="skt-w skt-w-text-xs skt-w-text-widget-secondary skt-w-mt-0.5">
           {destChainId === 1 ? (
-            <span className="skt-w text-red-500">
+            <span className="skt-w skt-w-text-red-500">
               Refuel isn't supported on Ethereum
             </span>
           ) : destChainId === sourceChainId ? (
-            <span className="skt-w text-red-500">
+            <span className="skt-w skt-w-text-red-500">
               Refuel isn't supported for same chain swaps
             </span>
           ) : (

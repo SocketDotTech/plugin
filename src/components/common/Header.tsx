@@ -6,10 +6,10 @@ interface headerProp {
 }
 export function Header({ title, children }: headerProp) {
   return (
-    <div className="flex items-center justify-between skt-w text-widget-primary">
+    <div className="skt-w-flex skt-w-items-center skt-w-justify-between skt-w skt-w-text-widget-primary">
       <>
         {typeof title === "string" ? (
-          <span className="font-medium skt-w">{title}</span>
+          <span className="skt-w-font-medium skt-w">{title}</span>
         ) : (
           title
         )}

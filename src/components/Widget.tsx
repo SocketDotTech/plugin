@@ -116,14 +116,14 @@ export const Widget = (props: WidgetProps) => {
         borderRadius: `calc(1rem * ${borderRadius})`,
         minWidth: "360px",
       }}
-      className="relative p-1 overflow-hidden skt-w skt-w-container bg-widget-primary"
+      className="skt-w-relative skt-w-p-1 skt-w-overflow-hidden skt-w skt-w-root-container skt-w-bg-widget-primary"
     >
-      <div className="skt-w p-3 pt-2.5 pb-3.5">
+      <div className="skt-w skt-w-p-3 skt-w-pt-2.5 skt-w-pb-3.5">
         <Header title={title}>
-          <div className="flex items-center skt-w">
+          <div className="skt-w-flex skt-w-items-center skt-w">
             {!props?.provider ? (
-              <span className="flex items-center text-sm skt-w text-widget-secondary">
-                <CreditCard className="w-5 h-5 mr-2 skt-w text-widget-primary" />{" "}
+              <span className="skt-w-flex skt-w-items-center skt-w-text-sm skt-w skt-w-text-widget-secondary">
+                <CreditCard className="skt-w-w-5 skt-w-h-5 skt-w-mr-2 skt-w skt-w-text-widget-primary" />{" "}
                 Please connect your wallet
               </span>
             ) : (
@@ -152,7 +152,14 @@ export const Widget = (props: WidgetProps) => {
       <RouteDetails />
       {transitions(
         (style, item) =>
-          item && <TxModal style={style} onBridge={props?.onBridgeSuccess} onError={props?.onError} onSubmit={props?.onSubmit}/>
+          item && (
+            <TxModal
+              style={style}
+              onBridge={props?.onBridgeSuccess}
+              onError={props?.onError}
+              onSubmit={props?.onSubmit}
+            />
+          )
       )}
       <SettingsModal />
       <ErrorModal />
@@ -176,16 +183,16 @@ const SingleTxMessage = () => {
   }
 
   if (!singleTxOnly || sourceChainId === destChainId)
-    return <p className="skt-w h-5"></p>; // to prevent the layout shift
+    return <p className="skt-w skt-w-h-5"></p>; // to prevent the layout shift
   return (
-    <p className="skt-w text-sm text-widget-secondary pr-3 pl-3.5 flex items-center h-5">
+    <p className="skt-w skt-w-text-sm skt-w-text-widget-secondary skt-w-pr-3 skt-w-pl-3.5 skt-w-flex skt-w-items-center skt-w-h-5">
       Showing single transaction routes only{" "}
       {!singleTxOnlyFromDev && (
         <button
           onClick={openSettingsModal}
-          className="skt-w skt-w-button skt-w-input ml-1.5 flex"
+          className="skt-w skt-w-button skt-w-input skt-w-ml-1.5 skt-w-flex"
         >
-          <Edit className="skt-w w-3.5 h-3.5 text-widget-accent" />
+          <Edit className="skt-w skt-w-w-3.5 skt-w-h-3.5 skt-w-text-widget-accent" />
         </button>
       )}
     </p>

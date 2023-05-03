@@ -101,25 +101,25 @@ export const SwapSlippage = () => {
   );
 
   return (
-    <div className="mt-6">
-      <div className="flex justify-between relative">
-        <div className="skt-w flex items-center mb-1.5">
+    <div className="skt-w-mt-6">
+      <div className="skt-w-flex skt-w-justify-between skt-w-relative">
+        <div className="skt-w skt-w-flex skt-w-items-center skt-w-mb-1.5">
           <SubTitle>Swap Slippage</SubTitle>
           <Popover
             content="Your swap transaction will revert if the price changes unfavourably by more than this percentage."
-            classNames="bottom-8"
+            classNames="skt-w-bottom-8"
             cursor="cursor-help"
           >
-            <Info className="ml-1.5 w-4 h-4 text-widget-secondary" />
+            <Info className="skt-w-ml-1.5 skt-w-w-4 skt-w-h-4 skt-w-text-widget-secondary" />
           </Popover>
         </div>
         {buttonInput || customInput ? (
-          <span className="text-xs text-widget-secondary ml-3">
+          <span className="skt-w-text-xs skt-w-text-widget-secondary skt-w-ml-3">
             Slippage: {buttonInput ?? customInput}%
           </span>
         ) : null}
       </div>
-      <div className="flex -mx-1">
+      <div className="skt-w-flex skt-w--mx-1">
         <RadioCheckbox
           id="swap-slippage-1"
           name="swap-slippage"

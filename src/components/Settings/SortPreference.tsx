@@ -43,24 +43,24 @@ export const SortPreference = () => {
   }, []);
 
   return (
-    <div className="skt-w flex items-center relative z-30 justify-between">
+    <div className="skt-w skt-w-flex skt-w-items-center skt-w-relative skt-w-z-30 skt-w-justify-between">
       <SubTitle>Preferred Route</SubTitle>
       <div
-        className="skt-w relative border border-widget-secondary-text border-opacity-40 flex w-auto ml-2"
+        className="skt-w skt-w-relative skt-w-border skt-w-border-widget-secondary-text skt-w-border-opacity-40 skt-w-flex skt-w-w-auto skt-w-ml-2"
         style={{ borderRadius: `calc(0.375rem * ${borderRadius})` }}
         ref={dropdownRef}
       >
         <Option onClick={() => openDropdown(!dropdown)} active>
           {label}{" "}
           <ChevronDown
-            className={`skt-w w-4 h-4 text-widget-secondary transition-all ${
+            className={`skt-w skt-w-w-4 skt-w-h-4 skt-w-text-widget-secondary skt-w-transition-all ${
               dropdown ? "rotate-180" : ""
             }`}
           />
         </Option>
         {dropdown && (
           <div
-            className="skt-w absolute top-10 left-0 w-full border border-widget-secondary-text border-opacity-40 overflow-hidden bg-widget-primary"
+            className="skt-w skt-w-absolute skt-w-top-10 skt-w-left-0 skt-w-w-full skt-w-border skt-w-border-widget-secondary-text skt-w-border-opacity-40 skt-w-overflow-hidden skt-w-bg-widget-primary"
             style={{
               borderRadius: `calc(0.375rem * ${borderRadius})`,
             }}
@@ -90,8 +90,8 @@ const Option = ({
 }) => {
   return (
     <button
-      className={`skt-w skt-w-input skt-w-button w-32 px-2 py-2 text-widget-secondary text-sm flex items-center justify-between ${
-        active ? "" : "hover:bg-widget-secondary"
+      className={`skt-w skt-w-input skt-w-button skt-w-w-32 skt-w-px-2 skt-w-py-2 skt-w-text-widget-secondary skt-w-text-sm skt-w-flex skt-w-items-center skt-w-justify-between ${
+        active ? "" : "hover:skt-w-bg-widget-secondary"
       }`}
       onClick={onClick}
     >

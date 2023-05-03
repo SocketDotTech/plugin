@@ -171,9 +171,9 @@ export const ReviewModal = ({
       }
       style={style}
     >
-      <div className="skt-w flex flex-col justify-between flex-1 relative">
+      <div className="skt-w skt-w-flex skt-w-flex-col skt-w-justify-between skt-w-flex-1 skt-w-relative">
         <div
-          className="skt-w w-full overflow-y-auto"
+          className="skt-w skt-w-w-full skt-w-overflow-y-auto"
           style={{ height: "calc(100% - 7rem)" }}
         >
           <TokenDetailsRow
@@ -189,7 +189,7 @@ export const ReviewModal = ({
             destRefuel={refuelDestToken}
           />
 
-          <div className="skt-w px-3 py-1.5 flex flex-col mt-1">
+          <div className="skt-w skt-w-px-3 skt-w-py-1.5 skt-w-flex skt-w-flex-col skt-w-mt-1">
             {!isSameChainSwap ? (
               <>
                 <RouteDetailRow
@@ -245,10 +245,10 @@ export const ReviewModal = ({
                 <div className="flex items-center">
                   {swapData?.swapSlippage ?? swapStepInFundMovr?.swapSlippage}%{" "}
                   <button
-                    className="skt-w skt-w-input skt-w-button flex"
+                    className="skt-w skt-w-input skt-w-button skt-w-flex"
                     onClick={openSettingsModal}
                   >
-                    <Edit className="ml-2 w-4 h-4 text-widget-accent" />
+                    <Edit className="skt-w-ml-2 skt-w-w-4 skt-w-h-4 skt-w-text-widget-accent" />
                   </button>
                 </div>
               </RouteDetailRow>
@@ -266,25 +266,27 @@ export const ReviewModal = ({
         </div>
 
         <InnerCard
-          classNames={`absolute w-full flex bottom-0 flex-col justify-between transition-all ${
-            showTxDetails ? `h-full max-h-full` : "h-auto max-h-min"
+          classNames={`skt-w-absolute skt-w-w-full skt-w-flex skt-w-bottom-0 skt-w-flex-col skt-w-justify-between skt-w-transition-all ${
+            showTxDetails
+              ? `skt-w-h-full skt-w-max-h-full`
+              : "skt-w-h-auto skt-w-max-h-min"
           }`}
         >
-          <div className="skt-w flex-1 flex flex-col overflow-auto">
+          <div className="skt-w skt-w-flex-1 skt-w-flex skt-w-flex-col skt-w-overflow-auto">
             <button
-              className="skt-w skt-w-button skt-w-input flex items-center text-sm text-widget-secondary mb-3"
+              className="skt-w skt-w-button skt-w-input skt-w-flex skt-w-items-center skt-w-text-sm skt-w-text-widget-secondary skt-w-mb-3"
               onClick={() => setShowTxDetails(!showTxDetails)}
             >
               <ChevronUp
-                className={`skt-w w-4 h-4 text-widget-secondary transition-all mr-1.5 ${
-                  showTxDetails ? "rotate-180" : "rotate-0"
+                className={`skt-w skt-w-w-4 skt-w-h-4 skt-w-text-widget-secondary skt-w-transition-all skt-w-mr-1.5 ${
+                  showTxDetails ? "skt-w-rotate-180" : "skt-w-rotate-0"
                 }`}
               />{" "}
               See route details
             </button>
 
             {showTxDetails && (
-              <div className="skt-w mb-3 flex-1 overflow-y-auto">
+              <div className="skt-w skt-w-mb-3 skt-w-flex-1 skt-w-overflow-y-auto">
                 <TxStepDetails
                   activeRoute={selectedRoute?.route}
                   forReview
@@ -295,22 +297,22 @@ export const ReviewModal = ({
           </div>
 
           <div
-            className={`skt-w h-14 transition-all duration-300 flex justify-between items-center border ${
+            className={`skt-w skt-w-h-14 skt-w-transition-all skt-w-duration-300 skt-w-flex skt-w-justify-between skt-w-items-center skt-w-border ${
               quoteUpdated
-                ? "border-widget-outline p-1 pl-2"
-                : "border-transparent"
+                ? "skt-w-border-widget-outline skt-w-p-1 skt-w-pl-2"
+                : "skt-w-border-transparent"
             }`}
             style={{ borderRadius: `calc(0.875rem * ${borderRadius})` }}
           >
             {quoteUpdated && (
-              <span className="skt-w whitespace-nowrap w-full text-widget-secondary text-sm text-left">
+              <span className="skt-w skt-w-whitespace-nowrap skt-w-w-full skt-w-text-widget-secondary skt-w-text-sm skt-w-text-left">
                 {!bestRoute ? "Quote updating..." : "Quote updated"}
               </span>
             )}
 
             <Button
               onClick={quoteUpdated ? updateSelectedRoute : openTxModal}
-              classNames={`${quoteUpdated ? "h-12" : ""}`}
+              classNames={`${quoteUpdated ? "skt-w-h-12" : ""}`}
               disabled={!bestRoute}
             >
               {quoteUpdated
@@ -334,7 +336,7 @@ const RouteDetailRow = ({
   children?: ReactNode;
 }) => {
   return (
-    <div className="skt-w w-full flex justify-between text-sm text-widget-secondary my-1.5">
+    <div className="skt-w skt-w-w-full skt-w-flex skt-w-justify-between skt-w-text-sm skt-w-text-widget-secondary skt-w-my-1.5">
       <span>{label}</span>
       <span>{value}</span>
       {children}
@@ -356,13 +358,13 @@ const FeeDisplay = (props: FeeDisplayProps) => {
         {!!feeInToken && feeInToken !== "0" ? (
           <span>
             {truncateDecimalValue(feeInToken, 5)}{" "}
-            <span className="font-medium">{tokenSymbol}</span>{" "}
+            <span className="skt-w-font-medium">{tokenSymbol}</span>{" "}
           </span>
         ) : (
           0
         )}
         {feeInUsd !== 0 && (
-          <span className="opacity-80 font-normal">
+          <span className="skt-w-opacity-80 skt-w-font-normal">
             (${feeInUsd?.toFixed(4)})
           </span>
         )}
