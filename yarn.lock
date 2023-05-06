@@ -2213,22 +2213,28 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
+"@socket.tech/ll-core-v2@^0.0.32":
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/@socket.tech/ll-core-v2/-/ll-core-v2-0.0.32.tgz#a6188800a2aec798dc33d2fb17656361001da56b"
+  integrity sha512-E2i07xDale6CMwIoyvafRRWwIkfTnkuN7s3BGY+vOaSmBP7xvFAukRWRtgFs4M8OnYTbI2jxuAruw7uJPRs1ww==
+
 "@socket.tech/ll-core@^0.1.10":
   version "0.1.14"
   resolved "https://registry.npmjs.org/@socket.tech/ll-core/-/ll-core-0.1.14.tgz"
   integrity sha512-6gkUVN/RAoN1ZnjPcq5O9tmyagLXnWFjLDa5G8jz4Y+zFatwr9x345yFPJFHcRB59WfRMYpm2SxrPdpYAJiX8A==
 
-"@socket.tech/ll-core@^0.1.14":
-  version "0.1.19"
-  resolved "https://registry.npmjs.org/@socket.tech/ll-core/-/ll-core-0.1.19.tgz"
-  integrity sha512-DZXxUpanf1ZBYwERy2H3ntJaZ+6o5Vi+ssZx4bjdCrX7Pf/vKS+RoDVBo6hpiopLxXbD9XQ2Q9NLdwFSBhxY1w==
+"@socket.tech/ll-core@^0.1.36":
+  version "0.1.36"
+  resolved "https://registry.yarnpkg.com/@socket.tech/ll-core/-/ll-core-0.1.36.tgz#634ba49cf239b085da5d63697f3393da5fccd078"
+  integrity sha512-DD7rq6xWBSJoDjNRcZXbw0exG30VG6bpjiB9MgngLvx8siIjTli2i8NfRev0WWTx3EfvEtU9IUiZHSSDG/JJQA==
 
-"@socket.tech/socket-v2-sdk@^1.21.3":
-  version "1.21.6"
-  resolved "https://registry.npmjs.org/@socket.tech/socket-v2-sdk/-/socket-v2-sdk-1.21.6.tgz"
-  integrity sha512-tzx6Be1Nt26j+JPndj618LjUcJItfnaA004k1fVpSHMg8QalJs6PxbAUflDQuqccQT4VuMXwwuOVJWSsb16pVw==
+"@socket.tech/socket-v2-sdk@^1.21.11":
+  version "1.21.11"
+  resolved "https://registry.yarnpkg.com/@socket.tech/socket-v2-sdk/-/socket-v2-sdk-1.21.11.tgz#7f8adfe157ec90b79b7baed12c5897f8196b4b21"
+  integrity sha512-yNzptkuwRhwCnw2nzweShvwpNAfgkvE2PZ8qxUl6osKxvZRHn8IQ0cb841JHGTYaElLXJp1Muizsc/JiRNOYvw==
   dependencies:
-    "@socket.tech/ll-core" "^0.1.14"
+    "@socket.tech/ll-core" "^0.1.36"
+    "@socket.tech/ll-core-v2" "^0.0.32"
     axios "^0.27.2"
     ethers "^5.6.5"
     form-data "^4.0.0"
