@@ -69,11 +69,11 @@ export const Widget = (props: WidgetProps) => {
       try {
         const signer = await props.provider.getSigner();
         const address = await signer.getAddress();
-        const chainId = await signer.getChainId();
+        const network = await props.provider.getNetwork();
 
         web3Context.setweb3Provider({
           userAddress: address,
-          networkId: chainId,
+          networkId: Number(network?.chainId),
           signer,
           provider: props.provider,
         });
