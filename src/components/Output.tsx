@@ -154,11 +154,15 @@ export const Output = ({
   // when the default dest n/w is changed
   useEffect(() => {
     if (!firstNetworkRender && defaultDestNetwork) {
-      updateNetwork(
-        supportedNetworks?.find(
-          (x: Network) => x.chainId === defaultDestNetwork
-        )
-      );
+      if (supportedNetworks?.length === 1) {
+        updateNetwork(supportedNetworks[0]);
+      } else {
+        updateNetwork(
+          supportedNetworks?.find(
+            (x: Network) => x.chainId === defaultDestNetwork
+          )
+        );
+      }
     }
   }, [supportedNetworks, defaultDestNetwork]);
 
