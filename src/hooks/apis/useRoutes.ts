@@ -38,7 +38,7 @@ export const useRoutes = (
     singleTxOnly,
     swapSlippage
   ) {
-    const quotes = await socket.getAllQuotes(
+    const { routes: quotes } = await socket.getAllQuotes(
       {
         path: { fromToken: sourceToken, toToken: destToken },
         amount,
@@ -50,7 +50,7 @@ export const useRoutes = (
         includeBridges,
         excludeBridges,
         singleTxOnly,
-        defaultSwapSlippage: swapSlippage
+        defaultSwapSlippage: swapSlippage,
       }
     );
     return quotes;
