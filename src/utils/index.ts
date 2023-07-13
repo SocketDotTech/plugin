@@ -68,7 +68,7 @@ export const handleNetworkChange = async (provider, chain) => {
     ethers.BigNumber.from(chain?.chainId).toHexString()
   );
   try {
-    await window.ethereum.request({
+    await provider.provider.request({
       method: "wallet_switchEthereumChain",
       params: [{ chainId: formattedChainId }],
     });
