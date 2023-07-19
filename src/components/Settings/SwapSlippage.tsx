@@ -119,7 +119,7 @@ export const SwapSlippage = () => {
           </span>
         ) : null}
       </div>
-      <div className="skt-w-flex skt-w--mx-1">
+      <div className="skt-w-flex skt-w-w-full">
         <RadioCheckbox
           id="swap-slippage-1"
           name="swap-slippage"

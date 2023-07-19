@@ -14,7 +14,7 @@ export const RadioCheckbox = (props: RadioProps) => {
   const { borderRadius } = customSettings.customization;
 
   return (
-    <div className="skt-w skt-w-relative skt-w-mx-1">
+    <div className="skt-w skt-w-relative skt-w-mr-2">
       <label
         htmlFor={id}
         className={`skt-w skt-w-flex skt-w-items-center skt-w-justify-center skt-w-w-12 skt-w-relative skt-w-z-10 skt-w-p-2 skt-w-cursor-pointer skt-w-border skt-w-border-opacity-40 skt-w-text-sm skt-w-font-semibold ${
