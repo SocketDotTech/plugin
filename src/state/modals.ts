@@ -6,6 +6,7 @@ const initialState = {
   activeRoute: null, // @salil-naik, ideally this should be together with selectedRoute state
   execute: null,
   error: null,
+  isOpRewardModalOpen: false,
 };
 
 const modalsSlice = createSlice({
@@ -24,6 +25,9 @@ const modalsSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
+    setIsOpRewardModalOpen: (state, action) => {
+      state.isOpRewardModalOpen = action.payload;
+    },
   },
 });
 
@@ -33,4 +37,5 @@ export const {
   setIsSettingsModalOpen,
   setActiveRoute,
   setError,
+  setIsOpRewardModalOpen
 } = modalsSlice.actions;

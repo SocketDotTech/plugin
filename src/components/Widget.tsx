@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { WidgetProps } from "../types";
 import { useDispatch, useSelector } from "react-redux";
+import "tippy.js/dist/tippy.css";
 
 // context
 import { useContext } from "react";
@@ -18,6 +19,7 @@ import { PendingTransactions } from "./PendingTransactions";
 import { ErrorModal } from "./common/ErrorModal";
 import { Refuel } from "./Refuel";
 import { SettingsModal } from "./Settings/SettingsModal";
+import { OpRewards, OpRewardsModal } from "./OpRewards";
 
 // hooks
 import { useChains } from "../hooks/apis";
@@ -129,6 +131,7 @@ export const Widget = (props: WidgetProps) => {
             ) : (
               <>
                 <PendingTransactions />
+                <OpRewards />
                 <Settings />
               </>
             )}
@@ -162,6 +165,7 @@ export const Widget = (props: WidgetProps) => {
           )
       )}
       <SettingsModal />
+      <OpRewardsModal />
       <ErrorModal />
     </div>
   );
