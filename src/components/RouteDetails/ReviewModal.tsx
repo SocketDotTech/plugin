@@ -130,7 +130,7 @@ export const ReviewModal = ({
   const OpRebateLabel = (
     <span className="skt-w skt-w-flex skt-w-items-center">
       OP Rewards
-      <Tippy content="Estimated rewards for bridging to Optimism. Actual amount may vary.">
+      <Tippy content="Estimated rewards for bridging to Optimism.">
         <Info className="skt-w skt-w-ml-1.5 skt-w-w-4 skt-w-h-4" />
       </Tippy>
     </span>
@@ -277,7 +277,7 @@ export const ReviewModal = ({
                   }`}
                 />
               )}
-            {opRebateAmountFormatted && (
+            {opRebateData && opRebateData?.amount != "0" && (
               <RouteDetailRow label={OpRebateLabel}>
                 <div className="skt-w skt-w-flex skt-w-items-center">
                   <img

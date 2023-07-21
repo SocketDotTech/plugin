@@ -1,6 +1,5 @@
 import { Bridge } from "../index";
 import { useEffect, useState } from "react";
-import { SOCKET_API_KEY } from "../consts";
 import { ethers } from "ethers";
 import { WidgetProps } from "../types";
 
@@ -130,7 +129,7 @@ const displayName = <span style={{ color: "red" }}>Salil</span>;
 
 export const Default = Template.bind({});
 Default.args = {
-  API_KEY: SOCKET_API_KEY,
+  API_KEY: "72a5b4b0-e727-48be-8aa1-5da9d62fe635",
   customize: Customize,
   enableSameChainSwaps: true,
   // title: [displayName],
@@ -159,4 +158,6 @@ Default.args = {
   // defaultDestToken: "0xbe662058e00849C3Eef2AC9664f37fEfdF2cdbFE",
   // defaultDestToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
   // defaultDestToken: "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9",
+  defaultDestNetwork: 10,
+  defaultSourceNetwork: 1
 };

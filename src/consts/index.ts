@@ -1,9 +1,6 @@
 import { constants } from "@socket.tech/ll-core";
 export * from "./time";
 
-// API-KEY needed for calling socket apis.
-export const SOCKET_API_KEY = process.env.REACT_APP_SOCKET_API_KEY;
-
 // SOCKET API URL
 export const SOCKET_API = process.env.REACT_APP_SOCKET_API;
 
