@@ -1,14 +1,7 @@
 import { ethers } from "ethers";
 import { hexStripZeros } from "ethers/lib/utils";
 import { Currency } from "../types";
-import { SOCKET_API_KEY, UserTxType } from "../consts";
-
-export const fetcher = async (url: string) =>
-  fetch(url, {
-    headers: {
-      "API-KEY": SOCKET_API_KEY,
-    },
-  }).then((res) => res.json());
+import { UserTxType } from "../consts";
 
 export const formatCurrencyAmount = (
   value: number | string,

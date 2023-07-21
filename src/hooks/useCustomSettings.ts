@@ -12,6 +12,7 @@ import {
   setIncludeBridges,
   setExludeBridges,
   setSingleTxOnly,
+  setApiKey,
 } from "../state/customSettingsSlice";
 import { setSingleTxOnly as setSingleTxOnlyFromUser } from "../state/quotesSlice";
 import { formatRGB } from "../utils";
@@ -30,6 +31,7 @@ export const useCustomSettings = (props: WidgetProps) => {
     includeBridges,
     excludeBridges,
     singleTxOnly,
+    API_KEY,
   } = props;
   const dispatch = useDispatch();
 
@@ -47,12 +49,16 @@ export const useCustomSettings = (props: WidgetProps) => {
       excludeBridges?.length > 0 &&
       dispatch(setExludeBridges(excludeBridges));
     dispatch(setSingleTxOnly(singleTxOnly));
-    
+
     // if singleTxOnly is set to true in the plugin config,
     // additionally set the in-plugin singleTxOnly value to true
     if (singleTxOnly) {
       dispatch(setSingleTxOnlyFromUser(singleTxOnly));
       localStorage.setItem("singleTxOnly", singleTxOnly ? "true" : "false");
+    }
+
+    if (API_KEY) {
+      dispatch(setApiKey(API_KEY));
     }
   }, [props]);
 

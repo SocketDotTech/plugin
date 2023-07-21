@@ -106,15 +106,20 @@ export const Output = ({
     useState<Network[]>();
 
   useEffect(() => {
+    // Filtering out networks that have receiving enabled
+    const receivingEnabledNetworks = allNetworks?.filter(
+      (network: Network) => network.receivingEnabled
+    );
+
     // Supported networks = all networks || custom networks
-    if (allNetworks?.length) {
+    if (receivingEnabledNetworks?.length) {
       let _supportedNetworks: Network[];
       if (customDestNetworks?.length) {
-        _supportedNetworks = allNetworks.filter((x: Network) =>
+        _supportedNetworks = receivingEnabledNetworks.filter((x: Network) =>
           customDestNetworks?.includes(x?.chainId)
         );
       } else {
-        _supportedNetworks = allNetworks;
+        _supportedNetworks = receivingEnabledNetworks;
       }
       setSupportedNetworks(_supportedNetworks);
     }

@@ -2,18 +2,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { BRIDGE_DISPLAY_NAMES, UserTxType } from "../../consts/";
+import Tippy from "@tippyjs/react";
+import { ChevronUp, Edit, Info } from "react-feather";
 
 // components
 import { Button } from "../common/Button";
 import { Modal } from "../common/Modal";
-import { ChevronUp, Edit } from "react-feather";
 import { InnerCard } from "../common/InnerCard";
+import { TxStepDetails } from "../TxModal/TxStepDetails";
+import { TokenDetailsRow } from "../common/TokenDetailsRow";
 
 // actions
 import { setIsSettingsModalOpen, setIsTxModalOpen } from "../../state/modals";
 import { setSelectedRoute } from "../../state/selectedRouteSlice";
-import { TxStepDetails } from "../TxModal/TxStepDetails";
-import { TokenDetailsRow } from "../common/TokenDetailsRow";
 
 import {
   formatCurrencyAmount,
@@ -120,6 +121,20 @@ export const ReviewModal = ({
     5
   );
   const bridgeFeeTokenSymbol = bridgeData?.protocolFees.asset.symbol;
+
+  // OP Rebates data
+  const opRebateData = bridgeData?.extraData?.opRebateData;
+  const opToken = opRebateData?.asset;
+  const opRebateAmountFormatted =
+    opRebateData && formatCurrencyAmount(opRebateData.amount, opToken.decimals);
+  const OpRebateLabel = (
+    <span className="skt-w skt-w-flex skt-w-items-center">
+      OP Rewards
+      <Tippy content="Estimated rewards for bridging to Optimism.">
+        <Info className="skt-w skt-w-ml-1.5 skt-w-w-4 skt-w-h-4" />
+      </Tippy>
+    </span>
+  );
 
   useEffect(() => {
     setIsSameChainSwap(
@@ -242,7 +257,7 @@ export const ReviewModal = ({
             )}
             {(!!swapStepInFundMovr || !!swapData) && (
               <RouteDetailRow label="Swap Slippage">
-                <div className="flex items-center">
+                <div className="skt-w-flex skt-w-items-center">
                   {swapData?.swapSlippage ?? swapStepInFundMovr?.swapSlippage}%{" "}
                   <button
                     className="skt-w skt-w-input skt-w-button skt-w-flex"
@@ -262,6 +277,21 @@ export const ReviewModal = ({
                   }`}
                 />
               )}
+            {opRebateData && opRebateData?.amount != "0" && (
+              <RouteDetailRow label={OpRebateLabel}>
+                <div className="skt-w skt-w-flex skt-w-items-center">
+                  <img
+                    src={opToken.logoURI}
+                    className="skt-w skt-w-w-5 skt-w-h-5 skt-w-mr-1"
+                  />
+                  <FeeDisplay
+                    feeInToken={opRebateAmountFormatted}
+                    feeInUsd={opRebateData?.amountInUsd}
+                    tokenSymbol={opToken.symbol}
+                  />
+                </div>
+              </RouteDetailRow>
+            )}
           </div>
         </div>
 
@@ -331,7 +361,7 @@ const RouteDetailRow = ({
   value,
   children,
 }: {
-  label: string;
+  label: ReactNode;
   value?: string;
   children?: ReactNode;
 }) => {
