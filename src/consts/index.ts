@@ -1,9 +1,6 @@
 import { constants } from "@socket.tech/ll-core";
 export * from "./time";
 
-// SOCKET API URL
-export const SOCKET_API = process.env.REACT_APP_SOCKET_API;
-
 // Socket uses this address for native tokens. For example -> ETH on Ethereum, MATIC on Polygon, etc.
 export const NATIVE_TOKEN_ADDRESS =
   "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";

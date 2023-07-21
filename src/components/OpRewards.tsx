@@ -1,17 +1,21 @@
 import { useContext } from "react";
-import { setIsOpRewardModalOpen } from "../state/modals";
 import { Gift, Info } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal } from "./common/Modal";
 import { useTransition } from "@react-spring/web";
 import Tippy from "@tippyjs/react";
-import { useOpRebatesData } from "../hooks/apis/useOpRebatesData";
+
+import { setIsOpRewardModalOpen } from "../state/modals";
 import { Web3Context } from "../providers/Web3Provider";
 import { formatCurrencyAmount, truncateDecimalValue } from "../utils";
+import { useOpRebatesData } from "../hooks/apis/useOpRebatesData";
+
+// components
+import { Modal } from "./common/Modal";
 import { Button } from "./common/Button";
 
 export const OpRewards = () => {
   const dispatch = useDispatch();
+  const apiKey = useSelector((state: any) => state.customSettings.apiKey);
 
   const toggleDropdown = (value) => {
     dispatch(setIsOpRewardModalOpen(value));
@@ -20,8 +24,8 @@ export const OpRewards = () => {
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
 
-  const { data } = useOpRebatesData({ address: userAddress });
-  if(!data?.pendingAmount) return null;
+  const { data } = useOpRebatesData({ address: userAddress, API_KEY: apiKey });
+  if (!data?.pendingAmount) return null;
 
   return (
     <button
@@ -38,6 +42,7 @@ export const OpRewardsModal = () => {
   const isOpRewardModalOpen = useSelector(
     (state: any) => state.modals.isOpRewardModalOpen
   );
+  const apiKey = useSelector((state: any) => state.customSettings.apiKey);
 
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
@@ -54,7 +59,7 @@ export const OpRewardsModal = () => {
     dispatch(setIsOpRewardModalOpen(value));
   };
 
-  const { data } = useOpRebatesData({ address: userAddress });
+  const { data } = useOpRebatesData({ address: userAddress, API_KEY: apiKey });
   const pendingRewardsInToken =
     data?.pendingAmount &&
     formatCurrencyAmount(data?.pendingAmount, data?.asset?.decimals);
@@ -78,7 +83,8 @@ export const OpRewardsModal = () => {
                   </Tippy>
                 </p>
                 <p className="skt-w skt-w-text-widget-secondary stk-w-font-medium skt-w-mb-4 skt-w-mt-2 skt-w-flex skt-w-items-center">
-                  {truncateDecimalValue(pendingRewardsInToken, 4)} {data?.asset?.symbol}{" "}
+                  {truncateDecimalValue(pendingRewardsInToken, 4)}{" "}
+                  {data?.asset?.symbol}{" "}
                   <img
                     src={data?.asset?.logoURI}
                     className="skt-w-w-4 skt-w skt-w-h-4 skt-w-rounded-full skt-w-ml-1.5"

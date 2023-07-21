@@ -1,19 +1,28 @@
 import useSWR from "swr";
-const URL = process.env.REACT_APP_LOKI_BASE_URL;
 
-const fetcher = async (url: string) =>
+const fetcher = async (url: string, API_KEY: string) =>
   await fetch(url, {
     headers: {
-      "API-KEY": process.env.NEXT_PUBLIC_SOCKET_API_KEY,
+      "API-KEY": API_KEY,
     },
   }).then((res) => res.json());
 
-export const useOpRebatesData = ({ address }: { address: string }) => {
-  let query = `${URL}/get-claim-data?address=${address}`;
+export const useOpRebatesData = ({
+  address,
+  API_KEY,
+}: {
+  address: string;
+  API_KEY: string;
+}) => {
+  let query = `https://loki.socket.tech/get-claim-data?address=${address}`;
 
-  const { data, error } = useSWR(!!address ? query : null, fetcher, {
-    revalidateOnFocus: false,
-  });
+  const { data, error } = useSWR(
+    !!address && !!API_KEY ? [query, API_KEY, "get-claim"] : null,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
   return {
     data: data?.result,
