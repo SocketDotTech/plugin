@@ -25,7 +25,7 @@ export const OpRewards = () => {
   const { userAddress } = web3Context.web3Provider;
 
   const { data } = useOpRebatesData({ address: userAddress, API_KEY: apiKey });
-  if (!data?.pendingAmount) return null;
+  if (data?.pendingAmount == "0") return null;
 
   return (
     <button
@@ -94,7 +94,6 @@ export const OpRewardsModal = () => {
                   onClick={() =>
                     window.open("https://socketscan.io/rewards", "_blank")
                   }
-                  disabled={!(data?.claimableAmount > 0)}
                 >
                   View Rewards on Socketscan
                 </Button>

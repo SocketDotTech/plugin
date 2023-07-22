@@ -22,7 +22,7 @@ export const RefuelAmount = ({ src = false }: { src?: boolean }) => {
 
   return (
     <>
-      <span className="skt-w skt-w-text-widget-accent skt-w-text-xs skt-w-absolute skt-w-left-0 skt-w--bottom-5 skt-w-w-full">
+      <span className="skt-w skt-w-text-widget-accent skt-w-text-xs skt-w-absolute skt-w-left-0 skt-w--bottom-5 skt-w-w-full skt-w-text-left">
         {/* Refuel amount */}
         {refuel && (
           <span className="skt-w-mr-2">
