@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { WidgetProps } from "../types";
 import { useDispatch, useSelector } from "react-redux";
-import "tippy.js/dist/tippy.css";
 
 // context
 import { useContext } from "react";
