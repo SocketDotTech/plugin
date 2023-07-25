@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Gift, Info } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useTransition } from "@react-spring/web";
@@ -15,6 +15,7 @@ import { Button } from "./common/Button";
 
 export const OpRewards = () => {
   const dispatch = useDispatch();
+  const [showRewardsSection, setShowRewardsSection] = useState<boolean>(false);
   const apiKey = useSelector((state: any) => state.customSettings.apiKey);
 
   const toggleDropdown = (value) => {
@@ -25,8 +26,14 @@ export const OpRewards = () => {
   const { userAddress } = web3Context.web3Provider;
 
   const { data } = useOpRebatesData({ address: userAddress, API_KEY: apiKey });
-  if (data?.pendingAmount == "0") return null;
 
+  useEffect(() => {
+    if (data) {
+      setShowRewardsSection(data?.pendingAmount != "0");
+    }
+  }, [data]);
+
+  if (!showRewardsSection) return null;
   return (
     <button
       onClick={() => toggleDropdown(true)}

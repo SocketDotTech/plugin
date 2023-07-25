@@ -16,6 +16,8 @@ input[type="number"] {
 .tippy-content{
   background: rgba(0, 0, 0, 0.9);
   border: 1px solid white;
+  padding: 5px;
+  color: white;
   font-size: 12px;
   border-radius: 0.4rem;
   overflow: hidden;
