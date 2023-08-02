@@ -3,6 +3,7 @@ import { Gift, Info } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useTransition } from "@react-spring/web";
 import Tippy from "@tippyjs/react";
+import { ethers } from "ethers";
 
 import { setIsOpRewardModalOpen } from "../state/modals";
 import { Web3Context } from "../providers/Web3Provider";
@@ -28,8 +29,14 @@ export const OpRewards = () => {
   const { data } = useOpRebatesData({ address: userAddress, API_KEY: apiKey });
 
   useEffect(() => {
-    if (data) {
-      setShowRewardsSection(data?.pendingAmount != "0");
+    if (!!data) {
+      const pendingAmountBN = ethers.BigNumber.from(data?.pendingAmount);
+      const claimableAmountBN = ethers.BigNumber.from(data?.claimableAmount);
+      const zeroBN = ethers.BigNumber.from(0);
+
+      const _hideOpRewards = pendingAmountBN.add(claimableAmountBN).eq(zeroBN);
+
+      setShowRewardsSection(!_hideOpRewards);
     }
   }, [data]);
 
@@ -67,9 +74,17 @@ export const OpRewardsModal = () => {
   };
 
   const { data } = useOpRebatesData({ address: userAddress, API_KEY: apiKey });
-  const pendingRewardsInToken =
-    data?.pendingAmount &&
-    formatCurrencyAmount(data?.pendingAmount, data?.asset?.decimals);
+
+  // rewards earned = pending + claimable amount
+  const rewardsEarned =
+    data &&
+    ethers.BigNumber.from(data?.pendingAmount).add(
+      ethers.BigNumber.from(data?.claimableAmount)
+    );
+
+  const rewardsEarnedInToken =
+    data &&
+    formatCurrencyAmount(rewardsEarned?.toString(), data?.asset?.decimals);
 
   return (
     <>
@@ -90,7 +105,11 @@ export const OpRewardsModal = () => {
                   </Tippy>
                 </p>
                 <p className="skt-w skt-w-text-widget-secondary stk-w-font-medium skt-w-mb-4 skt-w-mt-2 skt-w-flex skt-w-items-center">
-                  {truncateDecimalValue(pendingRewardsInToken, 4)}{" "}
+                  <Tippy content={rewardsEarnedInToken}>
+                    <span className="skt-w skt-w-pr-1">
+                      {truncateDecimalValue(rewardsEarnedInToken, 4)}{" "}
+                    </span>
+                  </Tippy>
                   {data?.asset?.symbol}{" "}
                   <img
                     src={data?.asset?.logoURI}
