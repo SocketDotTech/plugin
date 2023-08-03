@@ -5,7 +5,7 @@ import { enableRefuel } from "../state/quotesSlice";
 import { CustomizeContext } from "../providers/CustomizeProvider";
 import useMappedChainData from "../hooks/useMappedChainData";
 import { HelpCircle } from "react-feather";
-import { Popover } from "./common/Popover";
+import { Tooltip } from "./common/Tooltip";
 
 export const Refuel = ({ selectivelyShowRefuel }) => {
   const [isChecked, setIsChecked] = useState(false);
@@ -44,13 +44,9 @@ export const Refuel = ({ selectivelyShowRefuel }) => {
       <div className="skt-w-mr-1">
         <div className="skt-w skt-w-text-sm skt-w-text-widget-primary skt-w-font-medium skt-w-flex skt-w-items-center">
           Enable Refuel
-          <Popover
-            content="With Refuel, you can swap native tokens on the source chain for native tokens to transact on the destination chain"
-            classNames="skt-w--top-14"
-            cursor="cursor-help"
-          >
+          <Tooltip tooltipContent="With Refuel, you can swap native tokens on the source chain for native tokens to transact on the destination chain">
             <HelpCircle className="skt-w skt-w-ml-1.5 skt-w-w-4 skt-w-h-4 skt-w-opacity-70" />
-          </Popover>
+          </Tooltip>
         </div>
         <p className="skt-w skt-w-text-xs skt-w-text-widget-secondary skt-w-mt-0.5">
           {destChainId === 1 ? (

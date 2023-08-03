@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { Gift, Info } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useTransition } from "@react-spring/web";
-import Tippy from "@tippyjs/react";
 import { ethers } from "ethers";
 
 import { setIsOpRewardModalOpen } from "../state/modals";
@@ -13,6 +12,7 @@ import { useOpRebatesData } from "../hooks/apis/useOpRebatesData";
 // components
 import { Modal } from "./common/Modal";
 import { Button } from "./common/Button";
+import { Tooltip } from "./common/Tooltip";
 
 export const OpRewards = () => {
   const dispatch = useDispatch();
@@ -100,16 +100,19 @@ export const OpRewardsModal = () => {
               <div className="skt-w skt-w-px-3 skt-w-pt-3">
                 <p className="skt-w skt-w-text-sm skt-w-text-widget-primary skt-w-font-medium skt-w-flex skt-w-items-center">
                   Rewards Earned{" "}
-                  <Tippy content="OP rewards for bridging to Optimism can be claimed on Socketscan">
+                  <Tooltip
+                    tooltipContent="OP rewards for bridging to Optimism can be claimed on
+                      Socketscan"
+                  >
                     <Info className="skt-w skt-w-w-4 skt-w-h-4 skt-w-ml-1" />
-                  </Tippy>
+                  </Tooltip>
                 </p>
                 <p className="skt-w skt-w-text-widget-secondary stk-w-font-medium skt-w-mb-4 skt-w-mt-2 skt-w-flex skt-w-items-center">
-                  <Tippy content={rewardsEarnedInToken}>
+                  <Tooltip tooltipContent={rewardsEarnedInToken}>
                     <span className="skt-w skt-w-pr-1">
-                      {truncateDecimalValue(rewardsEarnedInToken, 4)}{" "}
+                      {truncateDecimalValue(rewardsEarnedInToken, 4)}
                     </span>
-                  </Tippy>
+                  </Tooltip>
                   {data?.asset?.symbol}{" "}
                   <img
                     src={data?.asset?.logoURI}

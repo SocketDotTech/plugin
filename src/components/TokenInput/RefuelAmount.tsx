@@ -1,7 +1,7 @@
 import { Info } from "react-feather";
 import { formatCurrencyAmount, truncateDecimalValue } from "../../utils/";
 import { useSelector } from "react-redux";
-import Tippy from "@tippyjs/react";
+import { Tooltip } from "../common/Tooltip";
 
 export const RefuelAmount = ({ src = false }: { src?: boolean }) => {
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
@@ -32,15 +32,15 @@ export const RefuelAmount = ({ src = false }: { src?: boolean }) => {
         )}
 
         {/* OP Rebate Amount */}
-        {!src && opRebateData && opRebateData?.amount != '0' && (
+        {!src && opRebateData && opRebateData?.amount != "0" && (
           <span className="skt-w-text-widget-secondary skt-w-inline-flex skt-w-items-center">
             {" "}
             + {truncateDecimalValue(opRebateAmountFormatted, 3)} OP{" "}
-            <Tippy content="Estimated rewards for bridging to Optimism.">
+            <Tooltip tooltipContent="Estimated rewards for bridging to Optimism.">
               <span className="skt-w-w-3 skt-w-h-3">
                 <Info className="skt-w-w-3 skt-w-h-3 skt-w-rounded-full skt-w-ml-1" />{" "}
               </span>
-            </Tippy>
+            </Tooltip>
           </span>
         )}
       </span>

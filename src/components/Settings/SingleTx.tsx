@@ -7,6 +7,7 @@ import { setSingleTxOnly } from "../../state/quotesSlice";
 import { CheckBox } from "../common/CheckBox";
 import { Popover } from "../common/Popover";
 import { SubTitle } from "./SubTitle";
+import { Tooltip } from "../common/Tooltip";
 
 export const SingleTx = () => {
   const dispatch = useDispatch();
@@ -32,13 +33,9 @@ export const SingleTx = () => {
     <div className="skt-w skt-w-flex skt-w-items-center skt-w-relative skt-w-mt-6 skt-w-justify-between">
       <div className="skt-w skt-w-flex skt-w-items-center skt-w-mb-1.5">
         <SubTitle>Single Transaction Mode</SubTitle>
-        <Popover
-          content="Only select routes with one user transaction i.e. direct bridge or source chain swap + bridge."
-          classNames="skt-w-bottom-8"
-          cursor="cursor-help"
-        >
+        <Tooltip tooltipContent="Only select routes with one user transaction i.e. direct bridge or source chain swap + bridge.">
           <Info className="skt-w-ml-1.5 skt-w-w-4 skt-w-h-4 skt-w-text-widget-secondary" />
-        </Popover>
+        </Tooltip>
       </div>
       <span className="skt-w-px-1"></span>
       <CheckBox
