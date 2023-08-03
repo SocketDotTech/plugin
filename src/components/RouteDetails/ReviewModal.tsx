@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { BRIDGE_DISPLAY_NAMES, UserTxType } from "../../consts/";
-import Tippy from "@tippyjs/react";
 import { ChevronUp, Edit, Info } from "react-feather";
 
 // components
@@ -11,6 +10,7 @@ import { Modal } from "../common/Modal";
 import { InnerCard } from "../common/InnerCard";
 import { TxStepDetails } from "../TxModal/TxStepDetails";
 import { TokenDetailsRow } from "../common/TokenDetailsRow";
+import { Tooltip } from "../common/Tooltip";
 
 // actions
 import { setIsSettingsModalOpen, setIsTxModalOpen } from "../../state/modals";
@@ -130,9 +130,9 @@ export const ReviewModal = ({
   const OpRebateLabel = (
     <span className="skt-w skt-w-flex skt-w-items-center">
       OP Rewards
-      <Tippy content="Estimated rewards for bridging to Optimism.">
+      <Tooltip tooltipContent="Estimated rewards for bridging to Optimism.">
         <Info className="skt-w skt-w-ml-1.5 skt-w-w-4 skt-w-h-4" />
-      </Tippy>
+      </Tooltip>
     </span>
   );
 

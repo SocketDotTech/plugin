@@ -26,7 +26,7 @@ export const TokenInput = (props: TokenInputProps) => {
     tokenToDisable,
   } = props;
   return (
-    <div className="skt-w skt-w-flex skt-w-items-center skt-w-justify-between skt-w-mt-2.5 skt-w-overflow-hidden skt-w-pb-[1.125rem]">
+    <div className="skt-w skt-w-flex skt-w-items-center skt-w-justify-between skt-w-mt-2.5 skt-w-pb-[1.125rem]">
       <div className="skt-w skt-w-flex skt-w-flex-1">
         <div className="stk-w skt-w-flex skt-w-flex-col skt-w-relative">
           <input
