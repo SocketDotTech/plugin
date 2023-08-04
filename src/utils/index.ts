@@ -34,23 +34,20 @@ export const truncateDecimalValue = (
   return value?.toString().match(re)?.[0];
 };
 
-export async function addNetwork(chain): Promise<null | void> {
+export async function addNetwork(chain, provider): Promise<null | void> {
   const formattedChainId = hexStripZeros(
     ethers.BigNumber.from(chain?.chainId).toHexString()
   );
   try {
-    await window.ethereum.request({
-      method: "wallet_addEthereumChain",
-      params: [
-        {
-          chainId: formattedChainId,
-          chainName: chain.name,
-          rpcUrls: chain.rpcs,
-          nativeCurrency: chain.currency,
-          blockExplorerUrls: chain.explorers,
-        },
-      ],
-    });
+    await provider.send("wallet_addEthereumChain", [
+      {
+        chainId: formattedChainId,
+        chainName: chain.name,
+        rpcUrls: chain.rpcs,
+        nativeCurrency: chain.currency,
+        blockExplorerUrls: chain.explorers,
+      },
+    ]); // EIP-3085
   } catch (error) {
     console.error("error adding eth network: ", chain?.chainId, chain, error);
   }
@@ -61,14 +58,13 @@ export const handleNetworkChange = async (provider, chain) => {
     ethers.BigNumber.from(chain?.chainId).toHexString()
   );
   try {
-    await window.ethereum.request({
-      method: "wallet_switchEthereumChain",
-      params: [{ chainId: formattedChainId }],
-    });
+    await provider.send("wallet_switchEthereumChain", [
+      { chainId: formattedChainId },
+    ]);
   } catch (error) {
     // network not available
     if (error.code === 4902) {
-      addNetwork(chain);
+      addNetwork(chain, provider);
     }
   }
 };
