@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import {
-  Balances,
   ChainId,
   Server,
   Socket,
@@ -17,7 +16,6 @@ import { setNetworks } from "../state/networksSlice";
 import { Web3Context } from "../providers/Web3Provider";
 
 export let socket;
-
 // Function that lets you set the api key and preferences.
 export const initSocket = (apiKey: string, _singleTxOnly: boolean) => {
   socket = new Socket({
@@ -71,7 +69,8 @@ export const useBalance = (
     chainId: ChainId,
     userAddress: string
   ) {
-    const tokenWithBalance = await Balances.getBalance({
+
+    const tokenWithBalance = await socket.getBalance({
       tokenAddress,
       chainId,
       userAddress,
@@ -97,7 +96,7 @@ export const useAllTokenBalances = () => {
   const { userAddress } = web3Context.web3Provider;
 
   async function fetchAllTokenBalances(_userAddress: string) {
-    const balances = await Balances.getBalances({
+    const balances = await socket.getBalances({
       userAddress: _userAddress,
     });
     return balances;
