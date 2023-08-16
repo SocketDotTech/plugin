@@ -1,6 +1,6 @@
 {
   "name": "@socket.tech/plugin",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -28,7 +28,7 @@
     "@react-spring/web": "^9.5.0",
     "@reduxjs/toolkit": "^1.8.2",
     "@socket.tech/ll-core": "^0.1.10",
-    "@socket.tech/socket-v2-sdk": "^1.23.1",
+    "@socket.tech/socket-v2-sdk": "^1.23.2",
     "ethers": "^5.6.9",
     "react-feather": "^2.0.10",
     "react-redux": "^8.0.2",
