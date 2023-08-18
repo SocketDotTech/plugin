@@ -2274,10 +2274,10 @@
   resolved "https://registry.npmjs.org/@socket.tech/ll-core/-/ll-core-0.1.46.tgz"
   integrity sha512-yKsITqdgwXp6d5VeItkO/FG12sW/7J44q/Ln9Obi6mVBKQcTabCOYtguGz02rEpY+8iGJpiZrDWo9wcu+QPJYg==
 
-"@socket.tech/socket-v2-sdk@^1.23.2":
-  version "1.23.2"
-  resolved "https://registry.yarnpkg.com/@socket.tech/socket-v2-sdk/-/socket-v2-sdk-1.23.2.tgz#469f7bfb2b5c5f47d05ca106b23abc6634be0993"
-  integrity sha512-3t8Je8qogcoOVcZUoQMdOLJ96mzrBSnph13iuDrkJ72q9epUMaYoc3Nz64rNPZtaO4tBij+8Abmo5rx7RHBbJQ==
+"@socket.tech/socket-v2-sdk@^1.23.3":
+  version "1.23.3"
+  resolved "https://registry.yarnpkg.com/@socket.tech/socket-v2-sdk/-/socket-v2-sdk-1.23.3.tgz#23780b39a1695df302465376064d084adae9a9d8"
+  integrity sha512-JK4CgPq0NQPb86b8XCBHhUVTm5ShooP1qJW23lTLUyEwFGQoBiL4oOZI+h7sF4DIOHjrs2jeVVdPqDh1d6XBlA==
   dependencies:
     "@socket.tech/ll-core" "0.1.46"
     "@socket.tech/ll-core-v2" "^0.0.55"
