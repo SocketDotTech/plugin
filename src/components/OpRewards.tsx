@@ -98,7 +98,7 @@ export const OpRewardsModal = () => {
               classNames="skt-w-z-50"
             >
               <div className="skt-w skt-w-px-3 skt-w-pt-3">
-                <p className="skt-w skt-w-text-sm skt-w-text-widget-primary skt-w-font-medium skt-w-flex skt-w-items-center">
+                <div className="skt-w skt-w-text-sm skt-w-text-widget-primary skt-w-font-medium skt-w-flex skt-w-items-center">
                   Rewards Earned{" "}
                   <Tooltip
                     tooltipContent="OP rewards for bridging to Optimism can be claimed on
@@ -106,8 +106,8 @@ export const OpRewardsModal = () => {
                   >
                     <Info className="skt-w skt-w-w-4 skt-w-h-4 skt-w-ml-1" />
                   </Tooltip>
-                </p>
-                <p className="skt-w skt-w-text-widget-secondary stk-w-font-medium skt-w-mb-4 skt-w-mt-2 skt-w-flex skt-w-items-center">
+                </div>
+                <div className="skt-w skt-w-text-widget-secondary stk-w-font-medium skt-w-mb-4 skt-w-mt-2 skt-w-flex skt-w-items-center">
                   <Tooltip tooltipContent={rewardsEarnedInToken}>
                     <span className="skt-w skt-w-pr-1">
                       {truncateDecimalValue(rewardsEarnedInToken, 4)}
@@ -118,7 +118,7 @@ export const OpRewardsModal = () => {
                     src={data?.asset?.logoURI}
                     className="skt-w-w-4 skt-w skt-w-h-4 skt-w-rounded-full skt-w-ml-1.5"
                   />
-                </p>
+                </div>
                 <Button
                   onClick={() =>
                     window.open("https://socketscan.io/rewards", "_blank")
