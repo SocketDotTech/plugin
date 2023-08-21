@@ -1,0 +1,35 @@
+{
+  "name": "with-react",
+  "version": "1.0.0",
+  "description": "A sample react app using Socket Plugin",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  },
+  "author": "Salil Naik (salil-naik)",
+  "license": "ISC",
+  "dependencies": {
+    "@socket.tech/plugin": "^1.2.3",
+    "ethers": "^6.7.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react-dom": "^18.2.7",
+    "react-scripts": "^5.0.1",
+    "tailwindcss": "^3.3.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

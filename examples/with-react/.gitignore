@@ -1,0 +1,6 @@
+# dependency management
+/node_modules
+
+# builds
+/cache
+/dist
