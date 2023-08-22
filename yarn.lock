@@ -10246,7 +10246,7 @@ react-element-to-jsx-string@^14.3.4:
 
 react-feather@^2.0.10:
   version "2.0.10"
-  resolved "https://registry.npmjs.org/react-feather/-/react-feather-2.0.10.tgz"
+  resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-2.0.10.tgz#0e9abf05a66754f7b7bb71757ac4da7fb6be3b68"
   integrity sha512-BLhukwJ+Z92Nmdcs+EMw6dy1Z/VLiJTzEQACDUEnWMClhYnFykJCGWQx+NmwP/qQHGX/5CzQ+TGi8ofg2+HzVQ==
   dependencies:
     prop-types "^15.7.2"
