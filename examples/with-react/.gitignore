@@ -1,5 +1,6 @@
 # dependency management
 /node_modules
+/build
 
 # builds
 /cache
