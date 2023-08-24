@@ -90,6 +90,12 @@ export const Output = ({
   useEffect(() => {
     setFirstRender(true);
     setFirstRenderNetwork(true);
+
+    // resetting the dest chain on unmount
+    // on toggle, the dest chain state would retain causing issues in setting token on the first render
+    return () => {
+      dispatch(setDestChain(null));
+    }
   }, []);
 
   function updateNetwork(network: Network) {
@@ -193,6 +199,7 @@ export const Output = ({
     )?.[0];
 
     // If same chains are selected, and if the source token is same as usdc, set the dest token to the first token from the list
+    // todo - if usdc is not found, should show native token. 
     if (
       sourceChainId === destChainId &&
       usdc?.address === sourceToken?.address

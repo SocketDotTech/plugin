@@ -307,6 +307,12 @@ export const Input = ({
   // Reset source amount on mount
   useEffect(() => {
     inputAmountFromReduxState && dispatch(setSourceAmount(null));
+
+    // resetting the source chain on unmount
+    // on toggle, the source chain state would retain causing issues in setting token on the first render
+    return () => {
+      dispatch(setSourceChain(null));
+    }
   }, []);
 
   return (

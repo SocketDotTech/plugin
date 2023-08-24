@@ -18,6 +18,7 @@ const Template = (args: WidgetProps) => {
   const [provider, setProvider] = useState<any>();
   const [userAddress, setUserAddress] = useState<string>();
   const [chain, setChain] = useState<number>();
+  const [showBridge, setToggleBridge] = useState<boolean>(true);
 
   const fetchWalletData = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
@@ -83,6 +84,9 @@ const Template = (args: WidgetProps) => {
         <br />
         ChainId: {chain}
       </p>
+      <button onClick={() => setToggleBridge(!showBridge)}>
+        Toggle Bridge
+      </button>
       <div style={{ marginBottom: "30px" }}>
         {!userAddress && (
           <button
@@ -97,12 +101,14 @@ const Template = (args: WidgetProps) => {
           </button>
         )}
       </div>
-      <Bridge
-        {...args}
-        provider={provider}
-        // defaultDestNetwork={_defaultDestNetwork}
-        // destNetworks={_destNetworks}
-      />
+      {showBridge && (
+        <Bridge
+          {...args}
+          provider={provider}
+          // defaultDestNetwork={_defaultDestNetwork}
+          // destNetworks={_destNetworks}
+        />
+      )}
     </div>
   );
 };
@@ -155,9 +161,9 @@ Default.args = {
   // defaultDestToken: "0xdac17f958d2ee523a2206206994597c13d831EC7",
   // defaultDestToken: "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9",
   // defaultSourceToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-  // defaultDestToken: "0xbe662058e00849C3Eef2AC9664f37fEfdF2cdbFE",
+  // defaultDestToken: "0x374ad0f47f4ca39c78e5cc54f1c9e426ff8f231a",
   // defaultDestToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
   // defaultDestToken: "0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9",
-  defaultDestNetwork: 10,
-  defaultSourceNetwork: 1
+  // defaultDestNetwork: 10,
+  // defaultSourceNetwork: 10,
 };
