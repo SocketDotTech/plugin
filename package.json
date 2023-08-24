@@ -1,6 +1,6 @@
 {
   "name": "@socket.tech/plugin",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -20,6 +20,7 @@
   "scripts": {
     "storybook": "start-storybook -p 6006",
     "build:storybook": "build-storybook",
+    "build:examples": "cd examples/with-next && yarn build && cd ../with-react && yarn build",
     "build:lib": "NODE_ENV=publish rollup -c && npm pack",
     "chromatic": "npx chromatic --project-token=12c9df8b6cf2"
   },
