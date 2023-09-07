@@ -15,7 +15,9 @@ export const useRoutes = (
   includeBridges,
   excludeBridges,
   singleTxOnly,
-  swapSlippage
+  swapSlippage,
+  feeTakerAddress,
+  feePercent
 ) => {
   const isTxModalOpen = useSelector((state: any) => state.modals.isTxModalOpen);
   const shouldFetch =
@@ -36,9 +38,11 @@ export const useRoutes = (
     includeBridges,
     excludeBridges,
     singleTxOnly,
-    swapSlippage
+    swapSlippage,
+    _feeTakerAddress,
+    _feePercent,
   ) {
-    const quotes = await socket.getAllQuotes(
+    const { routes: quotes } = await socket.getAllQuotes(
       {
         path: { fromToken: sourceToken, toToken: destToken },
         amount,
@@ -50,7 +54,9 @@ export const useRoutes = (
         includeBridges,
         excludeBridges,
         singleTxOnly,
-        defaultSwapSlippage: swapSlippage
+        defaultSwapSlippage: swapSlippage,
+        feeTakerAddress: _feeTakerAddress,
+        feePercent: _feePercent
       }
     );
     return quotes;
@@ -69,6 +75,8 @@ export const useRoutes = (
           excludeBridges,
           singleTxOnly,
           swapSlippage,
+          feeTakerAddress,
+          feePercent,
           "quotes",
         ]
       : null,

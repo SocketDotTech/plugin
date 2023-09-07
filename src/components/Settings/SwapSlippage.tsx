@@ -10,7 +10,7 @@ import { RadioCheckbox } from "../common/RadioCheckbox";
 import { useDispatch, useSelector } from "react-redux";
 import { DisclaimerBox } from "../common/DisclaimerBox";
 import { SubTitle } from "./SubTitle";
-import { Popover } from "../common/Popover";
+import { Tooltip } from "../common/Tooltip";
 
 export const SwapSlippage = () => {
   const [buttonInput, setButtonInput] = useState<number | null>(null);
@@ -105,13 +105,9 @@ export const SwapSlippage = () => {
       <div className="skt-w-flex skt-w-justify-between skt-w-relative">
         <div className="skt-w skt-w-flex skt-w-items-center skt-w-mb-1.5">
           <SubTitle>Swap Slippage</SubTitle>
-          <Popover
-            content="Your swap transaction will revert if the price changes unfavourably by more than this percentage."
-            classNames="skt-w-bottom-8"
-            cursor="cursor-help"
-          >
+          <Tooltip tooltipContent="Your swap transaction will revert if the price changes unfavourably by more than this percentage.">
             <Info className="skt-w-ml-1.5 skt-w-w-4 skt-w-h-4 skt-w-text-widget-secondary" />
-          </Popover>
+          </Tooltip>
         </div>
         {buttonInput || customInput ? (
           <span className="skt-w-text-xs skt-w-text-widget-secondary skt-w-ml-3">
@@ -119,7 +115,7 @@ export const SwapSlippage = () => {
           </span>
         ) : null}
       </div>
-      <div className="skt-w-flex skt-w--mx-1">
+      <div className="skt-w-flex skt-w-w-full">
         <RadioCheckbox
           id="swap-slippage-1"
           name="swap-slippage"

@@ -1,6 +1,6 @@
 {
   "name": "@socket.tech/plugin",
-  "version": "1.0.14",
+  "version": "1.2.5",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -20,14 +20,16 @@
   "scripts": {
     "storybook": "start-storybook -p 6006",
     "build:storybook": "build-storybook",
+    "build:examples": "cd examples/with-next && yarn build && cd ../with-react && yarn build",
     "build:lib": "NODE_ENV=publish rollup -c && npm pack",
     "chromatic": "npx chromatic --project-token=12c9df8b6cf2"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.25.0",
     "@react-spring/web": "^9.5.0",
     "@reduxjs/toolkit": "^1.8.2",
     "@socket.tech/ll-core": "^0.1.10",
-    "@socket.tech/socket-v2-sdk": "^1.21.11",
+    "@socket.tech/socket-v2-sdk": "^1.23.3",
     "ethers": "^5.6.9",
     "react-feather": "^2.0.10",
     "react-redux": "^8.0.2",

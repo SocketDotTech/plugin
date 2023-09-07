@@ -90,6 +90,12 @@ export const Output = ({
   useEffect(() => {
     setFirstRender(true);
     setFirstRenderNetwork(true);
+
+    // resetting the dest chain on unmount
+    // on toggle, the dest chain state would retain causing issues in setting token on the first render
+    return () => {
+      dispatch(setDestChain(null));
+    }
   }, []);
 
   function updateNetwork(network: Network) {
@@ -106,15 +112,20 @@ export const Output = ({
     useState<Network[]>();
 
   useEffect(() => {
+    // Filtering out networks that have receiving enabled
+    const receivingEnabledNetworks = allNetworks?.filter(
+      (network: Network) => network.receivingEnabled
+    );
+
     // Supported networks = all networks || custom networks
-    if (allNetworks?.length) {
+    if (receivingEnabledNetworks?.length) {
       let _supportedNetworks: Network[];
       if (customDestNetworks?.length) {
-        _supportedNetworks = allNetworks.filter((x: Network) =>
+        _supportedNetworks = receivingEnabledNetworks.filter((x: Network) =>
           customDestNetworks?.includes(x?.chainId)
         );
       } else {
-        _supportedNetworks = allNetworks;
+        _supportedNetworks = receivingEnabledNetworks;
       }
       setSupportedNetworks(_supportedNetworks);
     }
@@ -154,11 +165,15 @@ export const Output = ({
   // when the default dest n/w is changed
   useEffect(() => {
     if (!firstNetworkRender && defaultDestNetwork) {
-      updateNetwork(
-        supportedNetworks?.find(
-          (x: Network) => x.chainId === defaultDestNetwork
-        )
-      );
+      if (supportedNetworks?.length === 1) {
+        updateNetwork(supportedNetworks[0]);
+      } else {
+        updateNetwork(
+          supportedNetworks?.find(
+            (x: Network) => x.chainId === defaultDestNetwork
+          )
+        );
+      }
     }
   }, [supportedNetworks, defaultDestNetwork]);
 
@@ -184,6 +199,7 @@ export const Output = ({
     )?.[0];
 
     // If same chains are selected, and if the source token is same as usdc, set the dest token to the first token from the list
+    // todo - if usdc is not found, should show native token. 
     if (
       sourceChainId === destChainId &&
       usdc?.address === sourceToken?.address

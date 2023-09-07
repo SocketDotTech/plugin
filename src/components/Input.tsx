@@ -108,16 +108,21 @@ export const Input = ({
   const [supportedNetworks, setSupportedNetworks] = useState<Network[]>();
 
   useEffect(() => {
+    // filtering out networks with sending enabled
+    const sendingEnabledNetworks = allNetworks?.filter(
+      (network: Network) => network.sendingEnabled
+    );
+
     // Supported networks = all networks || custom networks
-    if (allNetworks?.length) {
+    if (sendingEnabledNetworks?.length) {
       let _supportedNetworks: Network[];
 
       if (customSourceNetworks?.length) {
-        _supportedNetworks = allNetworks.filter((x: Network) =>
+        _supportedNetworks = sendingEnabledNetworks.filter((x: Network) =>
           customSourceNetworks?.includes(x?.chainId)
         );
       } else {
-        _supportedNetworks = allNetworks;
+        _supportedNetworks = sendingEnabledNetworks;
       }
 
       // If there is only 1 chain on the destination, and if it exists in the source, remove it from the networks
@@ -302,6 +307,12 @@ export const Input = ({
   // Reset source amount on mount
   useEffect(() => {
     inputAmountFromReduxState && dispatch(setSourceAmount(null));
+
+    // resetting the source chain on unmount
+    // on toggle, the source chain state would retain causing issues in setting token on the first render
+    return () => {
+      dispatch(setSourceChain(null));
+    }
   }, []);
 
   return (

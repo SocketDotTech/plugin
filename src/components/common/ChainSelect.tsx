@@ -26,6 +26,7 @@ function Option({
   borderRadius?: number;
   onlyOneNetwork?: boolean;
 }) {
+  const networkDisplayName = network?.chainId === 1101 ? 'zkEVM' : network?.chainId === 324 ? 'zkSync' : network?.name;
   return (
     <div
       className={`skt-w skt-w-flex skt-w-w-28 skt-w-items-center skt-w-cursor-pointer skt-w-flex-shrink-0 ${
@@ -42,7 +43,7 @@ function Option({
           style={{ borderRadius: `calc(0.3rem * ${borderRadius})` }}
         />
         <span className="skt-w skt-w-text-sm skt-w-text-widget-primary skt-w-mx-1">
-          {network?.name}
+          {networkDisplayName}
         </span>
       </div>
       {selected && !onlyOneNetwork && (

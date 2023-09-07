@@ -18,6 +18,7 @@ import { PendingTransactions } from "./PendingTransactions";
 import { ErrorModal } from "./common/ErrorModal";
 import { Refuel } from "./Refuel";
 import { SettingsModal } from "./Settings/SettingsModal";
+import { OpRewards, OpRewardsModal } from "./OpRewards";
 
 // hooks
 import { useChains } from "../hooks/apis";
@@ -129,6 +130,7 @@ export const Widget = (props: WidgetProps) => {
             ) : (
               <>
                 <PendingTransactions />
+                <OpRewards />
                 <Settings />
               </>
             )}
@@ -162,6 +164,7 @@ export const Widget = (props: WidgetProps) => {
           )
       )}
       <SettingsModal />
+      <OpRewardsModal />
       <ErrorModal />
     </div>
   );

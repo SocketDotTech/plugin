@@ -9,7 +9,7 @@ export const CustomInputBox = (props: {
   const customSettings = useContext(CustomizeContext);
   const { borderRadius } = customSettings.customization;
   return (
-    <div className="skt-w skt-w-mx-1 skt-w-relative">
+    <div className="skt-w skt-w-relative skt-w-w-full">
       <input
         type="number"
         className={`skt-w skt-w-bg-transparent skt-w-text-widget-secondary skt-w-input skt-w-border-[1.5px] skt-w-border-opacity-40 skt-w-pb-0.5 skt-w-h-full skt-w-w-full skt-w-px-3 focus:skt-w-border-widget-accent skt-w-text-ellipsis ${
