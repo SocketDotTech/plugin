@@ -14,6 +14,7 @@ const initialState = {
   excludeBridges: null,
   singleTxOnly: false,
   apiKey: null,
+  feeParams: null,
 };
 
 const customSettingsSlice = createSlice({
@@ -58,6 +59,9 @@ const customSettingsSlice = createSlice({
     },
     setApiKey: (state, action) => {
       state.apiKey = action.payload
+    },
+    setFeeParams: (state, action) => {
+      state.feeParams = action.payload
     }
   },
 });
@@ -76,7 +80,8 @@ export const {
   setIncludeBridges,
   setExludeBridges,
   setSingleTxOnly,
-  setApiKey
+  setApiKey,
+  setFeeParams
 } = customSettingsSlice.actions;
 
 // Note - Custom token list is not set here. Check out hooks/useTokenLists.ts
