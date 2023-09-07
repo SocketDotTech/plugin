@@ -44,6 +44,7 @@ export const RouteDetails = () => {
   const excludeBridges = useSelector(
     (state: any) => state.customSettings.excludeBridges
   );
+  const feeParams = useSelector((state: any) => state.customSettings.feeParams);
   const isEnoughBalance = useSelector(
     (state: any) => state.amount.isEnoughBalance
   );
@@ -63,7 +64,9 @@ export const RouteDetails = () => {
     includeBridges,
     excludeBridges,
     singleTxOnly,
-    swapSlippage
+    swapSlippage,
+    feeParams?.feeTakerAddress,
+    feeParams?.feePercent
   );
 
   // Boolean variable to fill all condition before the api call is made to fetch quotes.

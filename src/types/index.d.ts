@@ -30,6 +30,20 @@ export interface transactionDetails {
 export type onNetworkChange = (network: Network) => void;
 export type onTokenChange = (token: Currency) => void;
 
+/**
+ * Fee Params to collect fees
+ *
+ * feePercent 
+ * The % of fee to be cut from the source input token amount.
+ * NOTE : Fee Percent can be up to three decimal places and cannot be more than 5% 
+ * 
+ * feeTakerAddress: the address where the fee will be sent to in the transaction
+ */
+export interface FeeParams {
+  feePercent: number;
+  feeTakerAddress: string;
+}
+
 export interface WidgetProps {
   API_KEY: string;
   provider?: any;
@@ -96,6 +110,11 @@ export interface WidgetProps {
   // Will be called when the cross-chain swap or same chain swap transaction is submitted. 
   // This excludes the source and/or destination swap transactions in case of cross-chain swaps and only the bridging transaction will be considered
   onSubmit?: (data: transactionDetails) => void;
+
+  /**
+   * Fee Params - for fee deduction
+   */
+  feeParams?: FeeParams;
 
   locale?: string;
   title?: ReactNode | string;
