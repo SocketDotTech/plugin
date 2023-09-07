@@ -21,7 +21,7 @@ export interface transactionDetails {
   destinationAmount: string;
   sourceToken: Currency; // 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee denotes native token
   destinationToken: Currency;
-  txData: txData[] // tx hashes will be passed here
+  txData: txData[]; // tx hashes will be passed here
   bridgeName?: string; // will be passed only in case of cross chain swaps
   estimatedServiceTime?: string; // (in ms) will be passed only in case of cross chain swaps
   dexName?: string; // will be passed only in case of same chain swaps
@@ -30,15 +30,6 @@ export interface transactionDetails {
 export type onNetworkChange = (network: Network) => void;
 export type onTokenChange = (token: Currency) => void;
 
-/**
- * Fee Params to collect fees
- *
- * feePercent 
- * The % of fee to be cut from the source input token amount.
- * NOTE : Fee Percent can be up to three decimal places and cannot be more than 5% 
- * 
- * feeTakerAddress: the address where the fee will be sent to in the transaction
- */
 export interface FeeParams {
   feePercent: number;
   feeTakerAddress: string;
@@ -107,12 +98,18 @@ export interface WidgetProps {
   // These messages are usually more human readable. Hence on our frontend we check for e.data.message || e.message
   onError?: (error: any) => void;
 
-  // Will be called when the cross-chain swap or same chain swap transaction is submitted. 
+  // Will be called when the cross-chain swap or same chain swap transaction is submitted.
   // This excludes the source and/or destination swap transactions in case of cross-chain swaps and only the bridging transaction will be considered
   onSubmit?: (data: transactionDetails) => void;
 
   /**
-   * Fee Params - for fee deduction
+   * Fee Params to collect fees
+   *
+   * feePercent
+   * The % of fee to be cut from the source input token amount.
+   * NOTE : Fee Percent can be up to three decimal places and cannot be more than 5%
+   *
+   * feeTakerAddress: the address where the fee will be sent to in the transaction
    */
   feeParams?: FeeParams;
 

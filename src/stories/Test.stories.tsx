@@ -107,6 +107,7 @@ const Template = (args: WidgetProps) => {
           provider={provider}
           // defaultDestNetwork={_defaultDestNetwork}
           // destNetworks={_destNetworks}
+          // feeParams={{feePercent: 2.5, feeTakerAddress: ''}}
         />
       )}
     </div>
