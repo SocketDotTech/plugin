@@ -14,6 +14,7 @@ import {
   setSingleTxOnly,
   setApiKey,
   setFeeParams,
+  setHideIntegratorFee
 } from "../state/customSettingsSlice";
 import { setSingleTxOnly as setSingleTxOnlyFromUser } from "../state/quotesSlice";
 import { formatRGB } from "../utils";
@@ -34,6 +35,7 @@ export const useCustomSettings = (props: WidgetProps) => {
     singleTxOnly,
     feeParams,
     API_KEY,
+    hideIntegratorFee
   } = props;
   const dispatch = useDispatch();
 
@@ -54,6 +56,7 @@ export const useCustomSettings = (props: WidgetProps) => {
 
     if (feeParams?.feePercent && feeParams?.feeTakerAddress) {
       dispatch(setFeeParams(feeParams));
+      hideIntegratorFee && dispatch(setHideIntegratorFee(hideIntegratorFee))
     }
 
     // if singleTxOnly is set to true in the plugin config,

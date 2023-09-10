@@ -34,6 +34,7 @@ export const ReviewModal = ({
   const dispatch = useDispatch();
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
   const selectedRoute = useSelector((state: any) => state.routes.selectedRoute);
+  const hideIntegratorFee = useSelector((state: any) => state.customSettings.hideIntegratorFee);
   const [showTxDetails, setShowTxDetails] = useState<boolean>(false);
   const [quoteUpdated, setQuoteUpdated] = useState<boolean>(false);
   const [isSameChainSwap, setIsSameChainSwap] = useState<boolean>(false);
@@ -121,6 +122,13 @@ export const ReviewModal = ({
     5
   );
   const bridgeFeeTokenSymbol = bridgeData?.protocolFees.asset.symbol;
+
+  // Integrator Fee
+  const integratorFee = selectedRoute?.route?.integratorFee;
+  const integratorFeeToken = integratorFee?.asset;
+  const integratorFeeInToken =
+    integratorFee?.amount &&
+    formatCurrencyAmount(integratorFee?.amount, integratorFeeToken?.decimals);
 
   // OP Rebates data
   const opRebateData = bridgeData?.extraData?.opRebateData;
@@ -254,6 +262,12 @@ export const ReviewModal = ({
                   value={selectedRoute?.route?.totalUserTx}
                 />
               </>
+            )}
+            {!hideIntegratorFee && integratorFee?.amount !== '0' && (
+              <RouteDetailRow
+                label="Add-on Fee"
+                value={`${integratorFeeInToken} ${integratorFeeToken?.symbol}`}
+              />
             )}
             {(!!swapStepInFundMovr || !!swapData) && (
               <RouteDetailRow label="Swap Slippage">
