@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^1.0.9",
-    "@socket.tech/plugin": "^1.2.4",
+    "@socket.tech/plugin": "workspace:*",
     "ethers": "5.7.2",
     "next": "^13.4.19",
     "react": "^18.2.0",

@@ -61,8 +61,8 @@
     "chromatic": "^6.7.0",
     "dotenv": "^16.0.1",
     "postcss": "^8.4.14",
-    "react": ">=17.0.1",
-    "react-dom": ">=17.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "rollup": "^2.75.6",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-dts": "^4.2.2",
@@ -78,5 +78,9 @@
   "readme": "ERROR: No README data found!",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "workspaces": [
+    "examples/*",
+    "@socket.tech/plugin"
+  ]
 }
