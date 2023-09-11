@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A sample react app using Socket Plugin",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build"
@@ -10,12 +11,13 @@
   "author": "Salil Naik (salil-naik)",
   "license": "ISC",
   "dependencies": {
-    "@socket.tech/plugin": "^1.2.4",
+    "@socket.tech/plugin": "workspace:*",
     "ethers": "^6.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "react-scripts": "^5.0.1",
     "tailwindcss": "^3.3.3",

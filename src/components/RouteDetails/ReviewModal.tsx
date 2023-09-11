@@ -128,7 +128,7 @@ export const ReviewModal = ({
   const integratorFeeToken = integratorFee?.asset;
   const integratorFeeInToken =
     integratorFee?.amount &&
-    formatCurrencyAmount(integratorFee?.amount, integratorFeeToken?.decimals);
+    formatCurrencyAmount(integratorFee?.amount, integratorFeeToken?.decimals, 4);
 
   // OP Rebates data
   const opRebateData = bridgeData?.extraData?.opRebateData;
