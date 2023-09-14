@@ -1,5 +1,5 @@
 import { WidgetProps } from "../types";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import {
   setCustomDestNetworks,
@@ -14,9 +14,12 @@ import {
   setSingleTxOnly,
   setApiKey,
   setFeeParams,
-  setHideIntegratorFee
+  setHideIntegratorFee,
 } from "../state/customSettingsSlice";
-import { setSingleTxOnly as setSingleTxOnlyFromUser } from "../state/quotesSlice";
+import {
+  setSingleTxOnly as setSingleTxOnlyFromUser,
+  setSortPref,
+} from "../state/quotesSlice";
 import { formatRGB } from "../utils";
 
 // To set custom chains, tokens, default values passed as props
@@ -32,12 +35,14 @@ export const useCustomSettings = (props: WidgetProps) => {
     enableSameChainSwaps,
     includeBridges,
     excludeBridges,
+    defaultSortPreference,
     singleTxOnly,
     feeParams,
     API_KEY,
     hideIntegratorFee
   } = props;
   const dispatch = useDispatch();
+  const firstRender = useRef(true);
 
   useEffect(() => {
     sourceNetworks && dispatch(setCustomSourceNetworks(sourceNetworks));
@@ -54,9 +59,16 @@ export const useCustomSettings = (props: WidgetProps) => {
       dispatch(setExludeBridges(excludeBridges));
     dispatch(setSingleTxOnly(singleTxOnly));
 
+    // this code will run only on initial render
+    // this is done so that the default sort pref is not reset when network or account is updated
+    if (defaultSortPreference && firstRender.current) {
+      dispatch(setSortPref(defaultSortPreference));
+      firstRender.current = false;
+    }
+
     if (feeParams?.feePercent && feeParams?.feeTakerAddress) {
       dispatch(setFeeParams(feeParams));
-      hideIntegratorFee && dispatch(setHideIntegratorFee(hideIntegratorFee))
+      hideIntegratorFee && dispatch(setHideIntegratorFee(hideIntegratorFee));
     }
 
     // if singleTxOnly is set to true in the plugin config,

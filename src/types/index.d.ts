@@ -104,6 +104,9 @@ export interface WidgetProps {
   /** To exclude bridges - bridges passed will be excluded from the original supported list */
   excludeBridges?: supportedBridges[];
 
+  /** To set the default sort preference. Set to output by default */
+  defaultSortPreference?: 'time' | 'output';
+
   // Widget Handlers
   
   /** An integration function called when the route is completed successfully.
