@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { Currency, Network, onNetworkChange, onTokenChange } from "../types";
 import { NATIVE_TOKEN_ADDRESS } from "../consts";
 
@@ -96,6 +96,7 @@ export const Input = ({
   const sameChainSwapsEnabled = useSelector(
     (state: any) => state.customSettings.sameChainSwapsEnabled
   );
+  const initialAmount = useSelector((state:any)=> state.customSettings.initialAmount);
 
   function updateNetwork(network: Network) {
     dispatch(setSourceChain(network?.chainId));
@@ -304,15 +305,28 @@ export const Input = ({
     } else formateAndParseAmount(balance);
   }
 
-  // Reset source amount on mount
+  // to set the initialAmount if any. To be executed only on first render
+  const firstRender = useRef(true);
   useEffect(() => {
-    inputAmountFromReduxState && dispatch(setSourceAmount(null));
+    if (initialAmount && sourceToken && firstRender.current) {
+      const truncatedValue = truncateDecimalValue(
+        initialAmount,
+        sourceToken?.decimals
+      );
+      onChangeInput(truncatedValue);
+      firstRender.current = false;
+    } else if (!firstRender.current) {
+      // Reset source amount on mount
+      inputAmountFromReduxState && dispatch(setSourceAmount(null));
+    }
+  }, [initialAmount, sourceToken]);
 
+  useEffect(() => {
     // resetting the source chain on unmount
     // on toggle, the source chain state would retain causing issues in setting token on the first render
     return () => {
       dispatch(setSourceChain(null));
-    }
+    };
   }, []);
 
   return (
