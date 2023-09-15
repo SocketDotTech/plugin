@@ -96,6 +96,7 @@ export const Input = ({
   const sameChainSwapsEnabled = useSelector(
     (state: any) => state.customSettings.sameChainSwapsEnabled
   );
+  const initialAmount = useSelector((state:any)=> state.customSettings.initialAmount);
 
   function updateNetwork(network: Network) {
     dispatch(setSourceChain(network?.chainId));
@@ -307,23 +308,25 @@ export const Input = ({
   // to set the initialAmount if any. To be executed only on first render
   const firstRender = useRef(true);
   useEffect(() => {
-    if(inputAmountFromReduxState && sourceToken && firstRender.current) {
-      const truncatedValue = truncateDecimalValue(inputAmountFromReduxState, sourceToken?.decimals);
+    if (initialAmount && sourceToken && firstRender.current) {
+      const truncatedValue = truncateDecimalValue(
+        initialAmount,
+        sourceToken?.decimals
+      );
       onChangeInput(truncatedValue);
-
       firstRender.current = false;
+    } else if (!firstRender.current) {
+      // Reset source amount on mount
+      inputAmountFromReduxState && dispatch(setSourceAmount(null));
     }
-  }, [inputAmountFromReduxState, sourceToken])
+  }, [initialAmount, sourceToken]);
 
-  // Reset source amount on mount
   useEffect(() => {
-    inputAmountFromReduxState && dispatch(setSourceAmount(null));
-
     // resetting the source chain on unmount
     // on toggle, the source chain state would retain causing issues in setting token on the first render
     return () => {
       dispatch(setSourceChain(null));
-    }
+    };
   }, []);
 
   return (

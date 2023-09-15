@@ -15,13 +15,13 @@ import {
   setApiKey,
   setFeeParams,
   setHideIntegratorFee,
+  setInitialAmount,
 } from "../state/customSettingsSlice";
 import {
   setSingleTxOnly as setSingleTxOnlyFromUser,
   setSortPref,
 } from "../state/quotesSlice";
 import { formatRGB } from "../utils";
-import { setSourceAmount } from "../state/amountSlice";
 
 // To set custom chains, tokens, default values passed as props
 export const useCustomSettings = (props: WidgetProps) => {
@@ -66,7 +66,7 @@ export const useCustomSettings = (props: WidgetProps) => {
     // due to network or account updates
     if(firstRender.current){
       defaultSortPreference && dispatch(setSortPref(defaultSortPreference));
-      initialAmount && dispatch(setSourceAmount(initialAmount))
+      initialAmount && dispatch(setInitialAmount(initialAmount))
 
       firstRender.current = false
     }
