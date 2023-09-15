@@ -1,16 +1,24 @@
 import { ReactNode } from "react";
 import { ChainId, UserTxType } from "@socket.tech/socket-v2-sdk";
 type supportedBridges =
-  | "polygon-bridge"
   | "hop"
+  | "anyswap"
   | "anyswap-router-v4"
-  | "hyphen"
+  | "anyswap-router-v6"
+  | "polygon-bridge"
   | "arbitrum-bridge"
-  | "connext"
-  | "celer"
+  | "hyphen"
   | "across"
   | "optimism-bridge"
-  | "refuel-bridge";
+  | "celer"
+  | "refuel-bridge"
+  | "stargate"
+  | "connext"
+  | "cctp"
+  | "synapse"
+  | "base-bridge"
+  | "zora-bridge"
+  | "zksync-native";
 
 interface txData {
   hash: string;
@@ -48,24 +56,24 @@ export interface WidgetProps {
   /** Custom Destination Networks */
   destNetworks?: number[];
 
-  /** 
+  /**
    * To override Default Source Network
-   * 
+   *
    * Default source network is Polygon
    */
   defaultSourceNetwork?: number;
 
   /**
    * To override Default Destination Network
-   * 
+   *
    * Default destination network is Ethereum
    */
   defaultDestNetwork?: number;
 
   /**
    * Token List.
-   * 
-   * You can pass the url to the token list or pass the list as JSON, as long as it matches the schema. 
+   *
+   * You can pass the url to the token list or pass the list as JSON, as long as it matches the schema.
    * Token list schema - https://uniswap.org/tokenlist.schema.json
    */
   tokenList?: string | Currency[];
@@ -73,20 +81,20 @@ export interface WidgetProps {
   /**
    * To override default source token.
    * Default token is USDC with Native token as a fallback.
-   * 
+   *
    * Pass the string "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" for native token
    */
   defaultSourceToken?: string;
 
-   /**
+  /**
    * To override default destination token.
    * Default token is USDC with Native token as a fallback.
-   * 
+   *
    * Pass the string "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" for native token
    */
   defaultDestToken?: string;
 
-  /** To enable only single tx quotes */ 
+  /** To enable only single tx quotes */
   singleTxOnly?: boolean;
 
   /** Refuel feature allows the users to transfer gas tokens across the chains */
@@ -105,13 +113,13 @@ export interface WidgetProps {
   excludeBridges?: supportedBridges[];
 
   /** To set the default sort preference. Set to output by default */
-  defaultSortPreference?: 'time' | 'output';
+  defaultSortPreference?: "time" | "output";
 
   /** To set the default amount. To set it on initial render */
   initialAmount?: string;
 
   // Widget Handlers
-  
+
   /** An integration function called when the route is completed successfully.
    * @param {transactionDetails} data
    */
@@ -146,7 +154,7 @@ export interface WidgetProps {
 
   /**
    * An intergration function called when the transaction (including same chain swap) is submitted.
-   * 
+   *
    * This excludes the source and/or destination swap transactions in case of cross-chain swaps and only the bridging transaction will be considered
    * @param {transactionDetails} data
    */
