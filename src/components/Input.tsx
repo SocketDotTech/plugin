@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { Currency, Network, onNetworkChange, onTokenChange } from "../types";
 import { NATIVE_TOKEN_ADDRESS } from "../consts";
 
@@ -303,6 +303,17 @@ export const Input = ({
       }
     } else formateAndParseAmount(balance);
   }
+
+  // to set the initialAmount if any. To be executed only on first render
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if(inputAmountFromReduxState && sourceToken && firstRender.current) {
+      const truncatedValue = truncateDecimalValue(inputAmountFromReduxState, sourceToken?.decimals);
+      onChangeInput(truncatedValue);
+
+      firstRender.current = false;
+    }
+  }, [inputAmountFromReduxState, sourceToken])
 
   // Reset source amount on mount
   useEffect(() => {

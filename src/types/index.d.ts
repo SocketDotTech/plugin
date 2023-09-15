@@ -107,6 +107,9 @@ export interface WidgetProps {
   /** To set the default sort preference. Set to output by default */
   defaultSortPreference?: 'time' | 'output';
 
+  /** To set the default amount. To set it on initial render */
+  initialAmount?: string;
+
   // Widget Handlers
   
   /** An integration function called when the route is completed successfully.
