@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import {
   Balances,
   ChainId,
@@ -31,17 +31,15 @@ export const initSocket = (apiKey: string, _singleTxOnly: boolean) => {
 // Function to get the chains supported by socket apis.
 export const useChains = () => {
   const dispatch = useDispatch();
-  const [allChains, setAllChains] = useState(null);
-  useEffect(() => {
-    async function fetchSupportedNetworks() {
-      const supportedNetworks = await Supported.getAllSupportedChains();
-      setAllChains(supportedNetworks);
-      dispatch(setNetworks(supportedNetworks?.result));
-    }
-    fetchSupportedNetworks();
-  }, []);
 
-  return allChains;
+  async function fetchSupportedNetworks() {
+    const supportedNetworks = await Supported.getAllSupportedChains();
+    dispatch(setNetworks(supportedNetworks?.result));
+    return supportedNetworks;
+  }
+
+  const { data } = useSWR("fetching chains", fetchSupportedNetworks);
+  return data;
 };
 
 import { useRoutes } from "./apis/useRoutes";
@@ -81,13 +79,13 @@ export const useBalance = (
 
   const { data, error, isValidating, mutate } = useSWR(
     shouldFetch ? [tokenAddress, chainId, userAddress, "token-balance"] : null,
-    fetchBalance,
+    fetchBalance
   );
 
   return {
     data: data?.result,
     isBalanceLoading: userAddress && !error && !data,
-    mutate
+    mutate,
   };
 };
 

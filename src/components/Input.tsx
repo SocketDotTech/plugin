@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Currency, Network, onNetworkChange, onTokenChange } from "../types";
 import { NATIVE_TOKEN_ADDRESS } from "../consts";
 
@@ -96,7 +96,9 @@ export const Input = ({
   const sameChainSwapsEnabled = useSelector(
     (state: any) => state.customSettings.sameChainSwapsEnabled
   );
-  const initialAmount = useSelector((state:any)=> state.customSettings.initialAmount);
+  const initialAmount = useSelector(
+    (state: any) => state.customSettings.initialAmount
+  );
 
   function updateNetwork(network: Network) {
     dispatch(setSourceChain(network?.chainId));
@@ -142,7 +144,7 @@ export const Input = ({
         ) ?? _supportedNetworks?.[0]
       );
     }
-  }, [allNetworks]);
+  }, [allNetworks, defaultSourceNetwork]);
 
   // For Input & tokens
   const inputAmountFromReduxState = useSelector(
@@ -233,6 +235,18 @@ export const Input = ({
     }
   }, [allSourceTokens]);
 
+  // to set default source token when changed
+  useEffect(() => {
+    if (defaultSourceTokenAddress && allSourceTokens) {
+      const _token =
+        allSourceTokens?.filter(
+          (x: Currency) =>
+            x.address.toLowerCase() === defaultSourceTokenAddress.toLowerCase()
+        )?.[0] ?? fallbackToUSDC();
+      _setSourceToken(_token);
+    }
+  }, [defaultSourceTokenAddress, allSourceTokens]);
+
   const [_sourceToken, _setSourceToken] = useState<Currency>();
   useDebounce(
     () => {
@@ -305,21 +319,10 @@ export const Input = ({
     } else formateAndParseAmount(balance);
   }
 
-  // to set the initialAmount if any. To be executed only on first render
-  const firstRender = useRef(true);
+  // to set the initialAmount if any
   useEffect(() => {
-    if (initialAmount && sourceToken && firstRender.current) {
-      const truncatedValue = truncateDecimalValue(
-        initialAmount,
-        sourceToken?.decimals
-      );
-      onChangeInput(truncatedValue);
-      firstRender.current = false;
-    } else if (!firstRender.current) {
-      // Reset source amount on mount
-      inputAmountFromReduxState && dispatch(setSourceAmount(null));
-    }
-  }, [initialAmount, sourceToken]);
+    if (initialAmount) onChangeInput(initialAmount);
+  }, [initialAmount]);
 
   useEffect(() => {
     // resetting the source chain on unmount
