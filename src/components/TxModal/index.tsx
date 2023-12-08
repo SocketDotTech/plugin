@@ -366,10 +366,6 @@ export const TxModal = ({
   const [currentRoute, setCurrentRoute] = useState(null);
 
   useEffect(() => {
-    // start route only at the absolute beginning
-    if (!activeRoute && !userTx?.activeRouteId) startRoute();
-    else continueRoute(null, userTx?.activeRouteId);
-
     // Always check for active route before checking for selected route
     const _sourceTokenDetails = {
       token: activeRoute?.fromAsset || selectedRoute?.path?.fromToken,
@@ -390,6 +386,10 @@ export const TxModal = ({
     };
 
     setCurrentRoute(_currentRoute);
+
+    // start route only at the absolute beginning
+    if (!activeRoute && !userTx?.activeRouteId) startRoute();
+    else continueRoute(null, userTx?.activeRouteId);
   }, [activeRoute, selectedRoute]); // the activeRoute is set before the txModal is opened.
 
   useEffect(() => {
