@@ -1,16 +1,24 @@
 import { ReactNode } from "react";
 import { ChainId, UserTxType } from "@socket.tech/socket-v2-sdk";
 type supportedBridges =
-  | "polygon-bridge"
   | "hop"
+  | "anyswap"
   | "anyswap-router-v4"
-  | "hyphen"
+  | "anyswap-router-v6"
+  | "polygon-bridge"
   | "arbitrum-bridge"
-  | "connext"
-  | "celer"
+  | "hyphen"
   | "across"
   | "optimism-bridge"
-  | "refuel-bridge";
+  | "celer"
+  | "refuel-bridge"
+  | "stargate"
+  | "connext"
+  | "cctp"
+  | "synapse"
+  | "base-bridge"
+  | "zora-bridge"
+  | "zksync-native";
 
 interface txData {
   hash: string;
@@ -36,70 +44,120 @@ export interface FeeParams {
 }
 
 export interface WidgetProps {
+  /** Socket API Key  */
   API_KEY: string;
+
+  /** Web3 provider */
   provider?: any;
 
-  // Chain Ids array
+  /** Custom Source Networks */
   sourceNetworks?: number[];
+
+  /** Custom Destination Networks */
   destNetworks?: number[];
 
-  // Chain Id
+  /**
+   * To override Default Source Network
+   *
+   * Default source network is Polygon
+   */
   defaultSourceNetwork?: number;
+
+  /**
+   * To override Default Destination Network
+   *
+   * Default destination network is Ethereum
+   */
   defaultDestNetwork?: number;
 
-  // Token list
-  // You can pass the url to the token list or pass the list as JSON, as long as it matches the schema
-  // Token list schema - https://uniswap.org/tokenlist.schema.json
+  /**
+   * Token List.
+   *
+   * You can pass the url to the token list or pass the list as JSON, as long as it matches the schema.
+   * Token list schema - https://uniswap.org/tokenlist.schema.json
+   */
   tokenList?: string | Currency[];
 
-  // Token address
-  // Pass the string "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" for native token
+  /**
+   * To override default source token.
+   * Default token is USDC with Native token as a fallback.
+   *
+   * Pass the string "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" for native token
+   */
   defaultSourceToken?: string;
+
+  /**
+   * To override default destination token.
+   * Default token is USDC with Native token as a fallback.
+   *
+   * Pass the string "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" for native token
+   */
   defaultDestToken?: string;
 
-  // To enable only single tx quotes
+  /** To enable only single tx quotes */
   singleTxOnly?: boolean;
 
-  // To enable refuel
-  // Refuel feature allows the users to transfer gas tokens across the chains
+  /** Refuel feature allows the users to transfer gas tokens across the chains */
   enableRefuel?: boolean;
 
-  // To enable same chain swaps
+  /** To enable same chain swaps */
   enableSameChainSwaps?: boolean;
 
-  // To show refuel option only when it is valid
+  /** To show refuel option only when it's supported for the user selected path */
   selectivelyShowRefuel?: boolean;
 
-  // To include bridges - only the bridges passed will be included
+  /** To include bridges - only the bridges passed will be included */
   includeBridges?: supportedBridges[];
 
-  // To exclude bridges - bridges passed will be excluded from the original supported list
+  /** To exclude bridges - bridges passed will be excluded from the original supported list */
   excludeBridges?: supportedBridges[];
 
-  // CALLBACK FUNCTIONS
-  // Will be called when the route is completed successfully
-  // @returns onBridgeSuccessReturn
+  /** To set the default sort preference. Set to output by default */
+  defaultSortPreference?: "time" | "output";
+
+  /** To set the default amount. To set it on initial render */
+  initialAmount?: string;
+
+  // Widget Handlers
+
+  /** An integration function called when the route is completed successfully.
+   * @param {transactionDetails} data
+   */
   onBridgeSuccess?: (data: transactionDetails) => void;
 
-  // Will be called when source network is changed, @returns Network (new source network)
+  /** An integration function called when the source network is changed
+   * @param {Network} network (active source network)
+   */
   onSourceNetworkChange?: onNetworkChange;
 
-  // Will be called when destination network is changed, @returns Network (new destination network)
+  /** An integration function called when the destination network is changed.
+   * @param {Network} network (active destination network)
+   */
   onDestinationNetworkChange?: onNetworkChange;
 
-  // Will be called when source token is changed, @returns Currency (new source token)
+  /** An integration function called when the source token is changed.
+   * @param {Currency} token (active source token)
+   */
   onSourceTokenChange?: onTokenChange;
 
-  // Will be called when destination network is changed, @returns Currency (new destination token)
+  /** An integration function called when the destination token is changed.
+   * @param {Currency} token (active destination token)
+   */
   onDestinationTokenChange?: onTokenChange;
 
-  // Will be called when there is an error, @returns the error
-  // Note - some error objects contain and additional data object and message resides within it
+  /** An integration function called when there is an error.
+   * @param error
+   */
+  // Note - some error objects contain and additional data object and message resides within it.
   // These messages are usually more human readable. Hence on our frontend we check for e.data.message || e.message
   onError?: (error: any) => void;
 
-  // Will be called when the cross-chain swap or same chain swap transaction is submitted.
-  // This excludes the source and/or destination swap transactions in case of cross-chain swaps and only the bridging transaction will be considered
+  /**
+   * An intergration function called when the transaction (including same chain swap) is submitted.
+   *
+   * This excludes the source and/or destination swap transactions in case of cross-chain swaps and only the bridging transaction will be considered
+   * @param {transactionDetails} data
+   */
   onSubmit?: (data: transactionDetails) => void;
 
   /**
@@ -112,6 +170,9 @@ export interface WidgetProps {
    * feeTakerAddress: the address where the fee will be sent to in the transaction
    */
   feeParams?: FeeParams;
+
+  /** To hide integrator fee in the review section. Is set to false by default */
+  hideIntegratorFee?: boolean;
 
   locale?: string;
   title?: ReactNode | string;

@@ -96,6 +96,9 @@ export const Input = ({
   const sameChainSwapsEnabled = useSelector(
     (state: any) => state.customSettings.sameChainSwapsEnabled
   );
+  const initialAmount = useSelector(
+    (state: any) => state.customSettings.initialAmount
+  );
 
   function updateNetwork(network: Network) {
     dispatch(setSourceChain(network?.chainId));
@@ -141,7 +144,7 @@ export const Input = ({
         ) ?? _supportedNetworks?.[0]
       );
     }
-  }, [allNetworks]);
+  }, [allNetworks, defaultSourceNetwork]);
 
   // For Input & tokens
   const inputAmountFromReduxState = useSelector(
@@ -232,6 +235,18 @@ export const Input = ({
     }
   }, [allSourceTokens]);
 
+  // to set default source token when changed
+  useEffect(() => {
+    if (defaultSourceTokenAddress && allSourceTokens) {
+      const _token =
+        allSourceTokens?.filter(
+          (x: Currency) =>
+            x.address.toLowerCase() === defaultSourceTokenAddress.toLowerCase()
+        )?.[0] ?? fallbackToUSDC();
+      _setSourceToken(_token);
+    }
+  }, [defaultSourceTokenAddress, allSourceTokens]);
+
   const [_sourceToken, _setSourceToken] = useState<Currency>();
   useDebounce(
     () => {
@@ -304,15 +319,17 @@ export const Input = ({
     } else formateAndParseAmount(balance);
   }
 
-  // Reset source amount on mount
+  // to set the initialAmount if any
   useEffect(() => {
-    inputAmountFromReduxState && dispatch(setSourceAmount(null));
+    if (initialAmount) onChangeInput(initialAmount);
+  }, [initialAmount]);
 
+  useEffect(() => {
     // resetting the source chain on unmount
     // on toggle, the source chain state would retain causing issues in setting token on the first render
     return () => {
       dispatch(setSourceChain(null));
-    }
+    };
   }, []);
 
   return (

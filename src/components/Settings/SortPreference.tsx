@@ -9,10 +9,8 @@ import { SubTitle } from "./SubTitle";
 
 export const SortPreference = () => {
   const dispatch = useDispatch();
-  const sortPrefFromStore = useSelector((state: any) => state.quotes.sortPref);
-  const [_sortPref, _setSortPref] = useState<string>(sortPrefFromStore);
+  const sortPref = useSelector((state: any) => state.quotes.sortPref);
   const [dropdown, openDropdown] = useState<boolean>(false);
-  const [label, setLabel] = useState<string>("");
 
   const dropdownRef = useClickOutside(() => openDropdown(false));
 
@@ -32,15 +30,13 @@ export const SortPreference = () => {
   ];
 
   const handleChange = (item) => {
-    _setSortPref(item.id);
     dispatch(setSortPref(item.id));
-    setLabel(item.label);
     openDropdown(false);
   };
 
-  useEffect(() => {
-    setLabel(sortOptions.filter((x) => x.id === _sortPref)?.[0].label);
-  }, []);
+  function getSortOption(id) {
+    return sortOptions.filter((x) => x.id === id)?.[0];
+  }
 
   return (
     <div className="skt-w skt-w-flex skt-w-items-center skt-w-relative skt-w-z-30 skt-w-justify-between">
@@ -51,7 +47,7 @@ export const SortPreference = () => {
         ref={dropdownRef}
       >
         <Option onClick={() => openDropdown(!dropdown)} active>
-          {label}{" "}
+          {getSortOption(sortPref)?.label}{" "}
           <ChevronDown
             className={`skt-w skt-w-w-4 skt-w-h-4 skt-w-text-widget-secondary skt-w-transition-all ${
               dropdown ? "rotate-180" : ""
