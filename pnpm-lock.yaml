@@ -141,7 +141,7 @@ importers:
         specifier: ^1.0.9
         version: 1.0.9(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)(viem@1.6.7)(wagmi@1.3.10)
       '@socket.tech/plugin':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../..
       ethers:
         specifier: 5.7.2
