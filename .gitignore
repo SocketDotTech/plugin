@@ -6,7 +6,6 @@ package-lock.json
 
 # builds
 /cache
-/dist
 
 # IDE metadata
 .vscode/
