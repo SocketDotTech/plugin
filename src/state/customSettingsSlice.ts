@@ -17,6 +17,7 @@ const initialState = {
   feeParams: null,
   hideIntegratorFee: false,
   initialAmount: null,
+  zpHide: false,
 };
 
 const customSettingsSlice = createSlice({
@@ -70,6 +71,9 @@ const customSettingsSlice = createSlice({
     },
     setInitialAmount: (state, action) => {
       state.initialAmount = action.payload
+    },
+    setZpHide: (state, action) => {
+      state.zpHide = action.payload
     }
   },
 });
@@ -91,7 +95,8 @@ export const {
   setApiKey,
   setFeeParams,
   setHideIntegratorFee,
-  setInitialAmount
+  setInitialAmount,
+  setZpHide
 } = customSettingsSlice.actions;
 
 // Note - Custom token list is not set here. Check out hooks/useTokenLists.ts

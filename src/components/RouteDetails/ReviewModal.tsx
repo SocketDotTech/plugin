@@ -356,7 +356,7 @@ export const ReviewModal = ({
 
             <Button
               onClick={quoteUpdated ? updateSelectedRoute : openTxModal}
-              classNames={`${quoteUpdated ? "skt-w-h-12" : ""}`}
+              classNames={`${quoteUpdated ? "skt-w-h-full" : ""}`}
               disabled={!bestRoute}
             >
               {quoteUpdated
@@ -409,7 +409,7 @@ const FeeDisplay = (props: FeeDisplayProps) => {
         )}
         {feeInUsd !== 0 && (
           <span className="skt-w-opacity-80 skt-w-font-normal">
-            (${feeInUsd?.toFixed(4)})
+            (${feeInUsd?.toFixed(2)})
           </span>
         )}
       </span>

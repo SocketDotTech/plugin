@@ -16,6 +16,7 @@ import {
   setFeeParams,
   setHideIntegratorFee,
   setInitialAmount,
+  setZpHide
 } from "../state/customSettingsSlice";
 import {
   setSingleTxOnly as setSingleTxOnlyFromUser,
@@ -41,7 +42,8 @@ export const useCustomSettings = (props: WidgetProps) => {
     feeParams,
     API_KEY,
     hideIntegratorFee,
-    initialAmount
+    initialAmount,
+    zpHide
   } = props;
   const dispatch = useDispatch();
   const firstRender = useRef(true);
@@ -86,6 +88,8 @@ export const useCustomSettings = (props: WidgetProps) => {
     if (API_KEY) {
       dispatch(setApiKey(API_KEY));
     }
+
+    dispatch(setZpHide(zpHide));
   }, [props]);
 
   // Theme

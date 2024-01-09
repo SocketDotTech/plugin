@@ -2,7 +2,7 @@ import { useAllTokenBalances } from "../../hooks/apis";
 import { Currency } from "../../types";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
-import { ChevronDown } from "react-feather";
+import { Check, ChevronDown } from "react-feather";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
 import { Modal } from "../common/Modal";
 import { useTransition } from "@react-spring/web";
@@ -107,7 +107,7 @@ export const TokenSelect = (props: Props) => {
 
   return (
     <div>
-      {activeToken && (
+      {activeToken ? (
         <button
           onClick={() => setOpenTokenList(!openTokenList)}
           className={`skt-w skt-w-input skt-w-button skt-w-flex skt-w-items-center skt-w-flex-1 skt-w-bg-widget-interactive skt-w-flex-shrink-0 skt-w-flex-nowrap skt-w-w-auto skt-w-overflow-hidden skt-w-p-1 skt-w-text-widget-on-interactive`}
@@ -122,6 +122,11 @@ export const TokenSelect = (props: Props) => {
             <ChevronDown className="skt-w skt-w-w-4 skt-w-h-4" />
           </div>
         </button>
+      ) : (
+        <div
+          className="skt-w-block skt-w skt-w-text-sm skt-w-text-widget-primary skt-w-bg-widget-secondary skt-w-py-1.5 skt-w-px-2 skt-w-animate-pulse skt-w-w-[100px] skt-w-h-6"
+          style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
+        />
       )}
 
       {transitions(
@@ -144,13 +149,19 @@ export const TokenSelect = (props: Props) => {
               </div>
               <div className="skt-w skt-w-h-full skt-w-overflow-y-auto skt-w-p-1.5">
                 {displayTokens?.map((token: Currency) => {
+                  const isActiveToken =
+                    token?.address?.toLowerCase() ===
+                    activeToken?.address?.toLowerCase();
                   return (
                     <button
-                      className="skt-w skt-w-input skt-w-button skt-w-flex hover:skt-w-bg-widget-secondary skt-w-items-center skt-w-p-2 skt-w-w-full skt-w-justify-between disabled:skt-w-opacity-60 disabled:skt-w-pointer-events-none"
+                      className="skt-w skt-w-input skt-w-button skt-w-flex hover:skt-w-bg-widget-secondary skt-w-items-center skt-w-p-2 skt-w-w-full skt-w-justify-between"
                       onClick={() => selectToken(token)}
                       key={token?.address}
                       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
-                      disabled={tokenToDisable?.address === token?.address}
+                      disabled={
+                        isActiveToken ||
+                        tokenToDisable?.address === token?.address
+                      }
                     >
                       <div className="skt-w skt-w-flex skt-w-items-center">
                         <img
@@ -158,8 +169,13 @@ export const TokenSelect = (props: Props) => {
                           className="skt-w skt-w-w-6 skt-w-h-6 skt-w-rounded-full"
                         />
                         <div className="skt-w skt-w-flex skt-w-flex-col skt-w-items-start skt-w-ml-2 skt-w-text-widget-secondary">
-                          <span className="skt-w skt-w-text-sm">
+                          <span className="skt-w skt-w-text-sm skt-w-flex skt-w-items-center skt-w-justify-center">
                             {token?.symbol}
+                            {isActiveToken && (
+                              <span className="skt-w skt-w-ml-2 skt-w-w-3.5 skt-w-h-3.5 skt-w-rounded-full skt-w-bg-widget-accent skt-w-text-widget-onAccent stk-w-flex stk-w-items-center skt-w-justify-center">
+                                <Check className="skt-w-w-3 stk-w-h-3 skt-w-h-fit mt-0.5" />
+                              </span>
+                            )}
                           </span>
                           <span className="skt-w skt-w-text-xs skt-w--mt-0.5">
                             {token?.name}

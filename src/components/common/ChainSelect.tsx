@@ -29,7 +29,7 @@ function Option({
   const networkDisplayName = network?.chainId === 1101 ? 'zkEVM' : network?.chainId === 324 ? 'zkSync' : network?.name;
   return (
     <div
-      className={`skt-w skt-w-flex skt-w-w-28 skt-w-items-center skt-w-cursor-pointer skt-w-flex-shrink-0 ${
+      className={`skt-w skt-w-flex skt-w-w-[140px] skt-w-items-center skt-w-cursor-pointer skt-w-flex-shrink-0 ${
         selected
           ? ""
           : "skt-w-p-1.5 hover:skt-w-bg-widget-secondary hover:skt-w-bg-opacity-80"
@@ -96,11 +96,9 @@ export function ChainSelect({
         />
       ) : (
         <span
-          className="skt-w skt-w-text-sm skt-w-text-widget-primary skt-w-bg-widget-secondary skt-w-py-1.5 skt-w-px-2"
-          style={{ borderRadius: `calc(0.3rem * ${borderRadius})` }}
-        >
-          Loading chains
-        </span>
+          className="skt-w-block skt-w skt-w-text-sm skt-w-text-widget-primary skt-w-bg-widget-secondary skt-w-py-1.5 skt-w-px-2 skt-w-animate-pulse skt-w-w-[120px] skt-w-h-6"
+          style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
+        />
       )}
 
       {openDropdown && (
