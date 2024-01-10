@@ -14,7 +14,7 @@ export const useOpRebatesData = ({
   address: string;
   API_KEY: string;
 }) => {
-  let query = `https://loki.socket.tech/get-claim-data?address=${address}`;
+  let query = `https://microservices.socket.tech/loki/get-claim-data?address=${address}`;
 
   const { data, error } = useSWR(
     !!address && !!API_KEY ? [query, API_KEY, "get-claim"] : null,

@@ -174,9 +174,12 @@ export interface WidgetProps {
   /** To hide integrator fee in the review section. Is set to false by default */
   hideIntegratorFee?: boolean;
 
+  /** not supported */
   locale?: string;
+
   title?: ReactNode | string;
   customize?: Customize;
+  zpHide?: boolean;
 }
 
 export interface Customize {
