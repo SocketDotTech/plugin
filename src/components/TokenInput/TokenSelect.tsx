@@ -154,7 +154,7 @@ export const TokenSelect = (props: Props) => {
                     activeToken?.address?.toLowerCase();
                   return (
                     <button
-                      className="skt-w skt-w-input skt-w-button skt-w-flex hover:skt-w-bg-widget-secondary skt-w-items-center skt-w-p-2 skt-w-w-full skt-w-justify-between"
+                      className="skt-w skt-w-input skt-w-button skt-w-flex hover:skt-w-bg-widget-secondary skt-w-items-center skt-w-p-2 skt-w-w-full skt-w-justify-between disabled:skt-w-bg-transparent"
                       onClick={() => selectToken(token)}
                       key={token?.address}
                       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
@@ -172,8 +172,8 @@ export const TokenSelect = (props: Props) => {
                           <span className="skt-w skt-w-text-sm skt-w-flex skt-w-items-center skt-w-justify-center">
                             {token?.symbol}
                             {isActiveToken && (
-                              <span className="skt-w skt-w-ml-2 skt-w-w-3.5 skt-w-h-3.5 skt-w-rounded-full skt-w-bg-widget-accent skt-w-text-widget-onAccent stk-w-flex stk-w-items-center skt-w-justify-center">
-                                <Check className="skt-w-w-3 stk-w-h-3 skt-w-h-fit mt-0.5" />
+                              <span className="skt-w skt-w-ml-2 skt-w-w-3.5 skt-w-h-3.5 skt-w-rounded-full skt-w-bg-widget-accent skt-w-text-widget-onAccent skt-w-flex skt-w-items-center skt-w-justify-center">
+                                <Check className="skt-w-w-3 skt-w-h-3 mt-0.5" />
                               </span>
                             )}
                           </span>

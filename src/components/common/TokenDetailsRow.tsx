@@ -34,7 +34,7 @@ export const TokenDetailsRow = (props: Props) => {
     <button
       onClick={onClick ?? null}
       disabled={!onClick}
-      className={`skt-w skt-w-button skt-w-input skt-w-px-3 skt-w-py-4 skt-w-border-widget-secondary skt-w-flex skt-w-flex-col skt-w-items-start skt-w-w-full ${
+      className={`skt-w skt-w-button skt-w-input skt-w-px-3 skt-w-py-4 skt-w-border-widget-secondary skt-w-flex skt-w-flex-col skt-w-items-start skt-w-w-full skt-w-bg-widget-secondary/30 skt-w-mb-2 ${
         !!onClick ? "hover:skt-w-bg-widget-secondary" : ""
       }`}
       style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
