@@ -167,19 +167,11 @@ export interface WidgetProps {
    */
   onSubmit?: (data: transactionDetails) => void;
 
-  onApprove?: (data: approveDetails) => void;
   /**
- * txHash,
- * context: {
- *  type:
- *  symbol:
- *  icon:
- * },
- * transactionConfig: {
- *  fromChain,
- *  toChain
- * }
- */
+   * This function is called twice, once when the approval is iniated and after it is completed
+   * @param {approveDetails} data 
+   */
+  onApprove?: (data: approveDetails) => void;
 
   /**
    * Fee Params to collect fees
