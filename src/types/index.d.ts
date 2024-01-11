@@ -35,6 +35,13 @@ export interface transactionDetails {
   dexName?: string; // will be passed only in case of same chain swaps
 }
 
+export interface approveDetails {
+  txHash: string;
+  sourceToken: Currency,
+  address: string;
+  status: 'pending' | 'completed';
+}
+
 export type onNetworkChange = (network: Network) => void;
 export type onTokenChange = (token: Currency) => void;
 
@@ -159,6 +166,20 @@ export interface WidgetProps {
    * @param {transactionDetails} data
    */
   onSubmit?: (data: transactionDetails) => void;
+
+  onApprove?: (data: approveDetails) => void;
+  /**
+ * txHash,
+ * context: {
+ *  type:
+ *  symbol:
+ *  icon:
+ * },
+ * transactionConfig: {
+ *  fromChain,
+ *  toChain
+ * }
+ */
 
   /**
    * Fee Params to collect fees

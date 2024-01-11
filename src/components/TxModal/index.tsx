@@ -32,7 +32,7 @@ import {
 import { Web3Context } from "../../providers/Web3Provider";
 import { SuccessToast } from "./SuccessToast";
 import { TokenDetailsRow } from "../common/TokenDetailsRow";
-import { transactionDetails } from "../../types";
+import { approveDetails, transactionDetails } from "../../types";
 
 // The main modal that contains all the information related after clicking on review quote.
 // Responsible for the progression of the route.
@@ -42,11 +42,13 @@ export const TxModal = ({
   onBridge,
   onError,
   onSubmit,
+  onApprove,
 }: {
   style: any;
   onBridge?: (data: transactionDetails) => void;
   onError?: (data: any) => void;
   onSubmit?: (data: transactionDetails) => void;
+  onApprove?: (data: approveDetails) => void;
 }) => {
   const dispatch = useDispatch();
   function closeTxModal() {
@@ -139,7 +141,24 @@ export const TxModal = ({
     setIsApproving(true);
     try {
       const approvalTx = await signer.sendTransaction(approvalTxData);
+      const _data = {
+        txHash: approvalTx?.hash,
+        sourceToken: activeRoute?.fromAsset || selectedRoute?.path?.fromToken,
+        address: userAddress,
+      };
+      if (!!onApprove) {
+        onApprove({
+          ..._data,
+          status: "pending",
+        });
+      }
       await approvalTx.wait();
+      if (!!onApprove) {
+        onApprove({
+          ..._data,
+          status: "completed",
+        });
+      }
       setIsApproving(false);
       setIsApprovalRequired(false); // Set to false when approval is done.
     } catch (e) {

@@ -160,6 +160,7 @@ export const Widget = (props: WidgetProps) => {
               onBridge={props?.onBridgeSuccess}
               onError={props?.onError}
               onSubmit={props?.onSubmit}
+              onApprove={props?.onApprove}
             />
           )
       )}
