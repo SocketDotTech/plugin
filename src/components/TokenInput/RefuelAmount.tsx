@@ -13,7 +13,7 @@ export const RefuelAmount = ({ src = false }: { src?: boolean }) => {
   );
 
   // OP Rebates data
-  const opRebateData = bestRoute?.route?.extraData?.opRebateData;
+  const opRebateData = bestRoute?.route?.extraData?.rewards?.[0];
   const opToken = opRebateData?.asset;
   const opRebateAmountFormatted =
     opRebateData && formatCurrencyAmount(opRebateData.amount, opToken.decimals);
@@ -35,8 +35,8 @@ export const RefuelAmount = ({ src = false }: { src?: boolean }) => {
         {!src && opRebateData && opRebateData?.amount != "0" && (
           <span className="skt-w-text-widget-secondary skt-w-inline-flex skt-w-items-center">
             {" "}
-            + {truncateDecimalValue(opRebateAmountFormatted, 3)} OP{" "}
-            <Tooltip tooltipContent="Estimated rewards for bridging to Optimism.">
+            + {truncateDecimalValue(opRebateAmountFormatted, 3)} ARB{" "}
+            <Tooltip tooltipContent="Estimated rewards for bridging to Arbitrum.">
               <span className="skt-w-w-3 skt-w-h-3">
                 <Info className="skt-w-w-3 skt-w-h-3 skt-w-rounded-full skt-w-ml-1" />{" "}
               </span>

@@ -17,8 +17,8 @@ importers:
         specifier: ^0.1.10
         version: 0.1.10
       '@socket.tech/socket-v2-sdk':
-        specifier: ^1.24.1
-        version: 1.24.1
+        specifier: ^1.24.2
+        version: 1.24.2
       ethers:
         specifier: ^5.6.9
         version: 5.7.2
@@ -3694,8 +3694,8 @@ packages:
     resolution: {integrity: sha512-iBGtYVdDoeieM6ZXiEr18MdllIeKWyfLeFW/Oamo4GHKeOM9LPrgKuReLJ+kZiIANECOxGe66OTc8RCQzLOz9A==}
     dev: false
 
-  /@socket.tech/socket-v2-sdk@1.24.1:
-    resolution: {integrity: sha512-xDSY5gyKAzRjY2LE90ac8KdyehdprKRnNBjs447K9uaYmiIb4JDDUpfUmxhY9djei2VFsKf7iz9XdFkjhrv2fA==}
+  /@socket.tech/socket-v2-sdk@1.24.2:
+    resolution: {integrity: sha512-tc1cwAGupQy2NF8MLYJ+D92/sw/4b7PZCELo+6HGS3/jlefTC5b7667Lq1FOL9vFN9S/A1uiEIusvna6ToGffw==}
     dependencies:
       '@socket.tech/ll-core': 0.1.51
       '@socket.tech/ll-core-v2': 0.0.66

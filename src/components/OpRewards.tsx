@@ -14,6 +14,13 @@ import { Modal } from "./common/Modal";
 import { Button } from "./common/Button";
 import { Tooltip } from "./common/Tooltip";
 
+const onGoingCampaigns = {
+  ["arbitrum-campaign"]: {
+    toChainId: 42161,
+    rewardTokenAddress: "0x912ce59144191c1204e64559fe8253a0e49e6548",
+  },
+};
+
 export const OpRewards = () => {
   const dispatch = useDispatch();
   const [showRewardsSection, setShowRewardsSection] = useState<boolean>(false);
@@ -26,7 +33,12 @@ export const OpRewards = () => {
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
 
-  const { data } = useOpRebatesData({ address: userAddress, API_KEY: apiKey });
+  const { data } = useOpRebatesData({
+    address: userAddress,
+    API_KEY: apiKey,
+    toChainId: onGoingCampaigns["arbitrum-campaign"]?.toChainId,
+    tokenAddress: onGoingCampaigns["arbitrum-campaign"]?.rewardTokenAddress,
+  });
 
   useEffect(() => {
     if (!!data) {
@@ -73,7 +85,12 @@ export const OpRewardsModal = () => {
     dispatch(setIsOpRewardModalOpen(value));
   };
 
-  const { data } = useOpRebatesData({ address: userAddress, API_KEY: apiKey });
+  const { data } = useOpRebatesData({
+    address: userAddress,
+    API_KEY: apiKey,
+    toChainId: onGoingCampaigns["arbitrum-campaign"]?.toChainId,
+    tokenAddress: onGoingCampaigns["arbitrum-campaign"]?.rewardTokenAddress,
+  });
 
   // rewards earned = pending + claimable amount
   const rewardsEarned =
@@ -92,7 +109,7 @@ export const OpRewardsModal = () => {
         (style, item) =>
           item && (
             <Modal
-              title="OP Rewards"
+              title="Rewards"
               closeModal={() => toggleSettingsModal(false)}
               style={style}
               classNames="skt-w-z-50"
@@ -100,10 +117,7 @@ export const OpRewardsModal = () => {
               <div className="skt-w skt-w-px-3 skt-w-pt-3">
                 <div className="skt-w skt-w-text-sm skt-w-text-widget-primary skt-w-font-medium skt-w-flex skt-w-items-center">
                   Rewards Earned{" "}
-                  <Tooltip
-                    tooltipContent="OP rewards for bridging to Optimism can be claimed on
-                      Socketscan"
-                  >
+                  <Tooltip tooltipContent="Rewards can be claimed on Socketscan">
                     <Info className="skt-w skt-w-w-4 skt-w-h-4 skt-w-ml-1" />
                   </Tooltip>
                 </div>

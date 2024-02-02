@@ -9,12 +9,16 @@ const fetcher = async (url: string, API_KEY: string) =>
 
 export const useOpRebatesData = ({
   address,
+  tokenAddress,
+  toChainId,
   API_KEY,
 }: {
   address: string;
+  tokenAddress: string;
+  toChainId: number
   API_KEY: string;
 }) => {
-  let query = `https://microservices.socket.tech/loki/get-claim-data?address=${address}`;
+  let query = `https://microservices.socket.tech/loki/get-claim-data?address=${address}&chainId=${toChainId}&token=${tokenAddress}`;
 
   const { data, error } = useSWR(
     !!address && !!API_KEY ? [query, API_KEY, "get-claim"] : null,

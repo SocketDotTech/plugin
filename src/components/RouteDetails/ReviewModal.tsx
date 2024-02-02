@@ -34,7 +34,9 @@ export const ReviewModal = ({
   const dispatch = useDispatch();
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
   const selectedRoute = useSelector((state: any) => state.routes.selectedRoute);
-  const hideIntegratorFee = useSelector((state: any) => state.customSettings.hideIntegratorFee);
+  const hideIntegratorFee = useSelector(
+    (state: any) => state.customSettings.hideIntegratorFee
+  );
   const [showTxDetails, setShowTxDetails] = useState<boolean>(false);
   const [quoteUpdated, setQuoteUpdated] = useState<boolean>(false);
   const [isSameChainSwap, setIsSameChainSwap] = useState<boolean>(false);
@@ -128,17 +130,21 @@ export const ReviewModal = ({
   const integratorFeeToken = integratorFee?.asset;
   const integratorFeeInToken =
     integratorFee?.amount &&
-    formatCurrencyAmount(integratorFee?.amount, integratorFeeToken?.decimals, 4);
+    formatCurrencyAmount(
+      integratorFee?.amount,
+      integratorFeeToken?.decimals,
+      4
+    );
 
   // OP Rebates data
-  const opRebateData = bridgeData?.extraData?.opRebateData;
+  const opRebateData = bridgeData?.extraData?.rewards?.[0];
   const opToken = opRebateData?.asset;
   const opRebateAmountFormatted =
     opRebateData && formatCurrencyAmount(opRebateData.amount, opToken.decimals);
   const OpRebateLabel = (
     <span className="skt-w skt-w-flex skt-w-items-center">
-      OP Rewards
-      <Tooltip tooltipContent="Estimated rewards for bridging to Optimism.">
+      ARB Rewards
+      <Tooltip tooltipContent="Estimated rewards for bridging to Arbitrum.">
         <Info className="skt-w skt-w-ml-1.5 skt-w-w-4 skt-w-h-4" />
       </Tooltip>
     </span>
@@ -263,7 +269,7 @@ export const ReviewModal = ({
                 />
               </>
             )}
-            {!hideIntegratorFee && integratorFee?.amount !== '0' && (
+            {!hideIntegratorFee && integratorFee?.amount !== "0" && (
               <RouteDetailRow
                 label="Add-on Fee"
                 value={`${integratorFeeInToken} ${integratorFeeToken?.symbol}`}
@@ -296,7 +302,7 @@ export const ReviewModal = ({
                 <div className="skt-w skt-w-flex skt-w-items-center">
                   <img
                     src={opToken.logoURI}
-                    className="skt-w skt-w-w-5 skt-w-h-5 skt-w-mr-1"
+                    className="skt-w skt-w-w-5 skt-w-h-5 skt-w-mr-1 skt-w-rounded-full"
                   />
                   <FeeDisplay
                     feeInToken={opRebateAmountFormatted}
