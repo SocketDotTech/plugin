@@ -57,10 +57,10 @@ const Chip = ({
 }) => {
   return (
     <div
-      className={`skt-w skt-w-text-widget-onAccent skt-w-text-xs skt-w-w-fit skt-w-text-left skt-w-py-0.5 skt-w-px-1.5 skt-w-rounded-full skt-w-font-medium skt-w-mr-2 skt-w-flex skt-w-items-center ${
+      className={`skt-w skt-w-text-xs skt-w-w-fit skt-w-text-left skt-w-py-0.5 skt-w-px-1.5 skt-w-rounded-full skt-w-font-medium skt-w-mr-2 skt-w-flex skt-w-items-center ${
         variant === "primary"
-          ? "skt-w-bg-widget-accent/80"
-          : "skt-w-bg-widget-secondary"
+          ? "skt-w-bg-widget-accent/90 skt-w-text-widget-onAccent"
+          : "skt-w-bg-widget-secondary skt-w-text-widget-primary"
       }`}
     >
       {children}

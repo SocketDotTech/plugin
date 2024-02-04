@@ -386,7 +386,7 @@ const RouteDetailRow = ({
   children?: ReactNode;
 }) => {
   return (
-    <div className="skt-w skt-w-w-full skt-w-flex skt-w-justify-between skt-w-text-sm skt-w-text-widget-secondary skt-w-my-1.5">
+    <div className="skt-w skt-w-w-full skt-w-h-6 skt-w-flex skt-w-items-center skt-w-justify-between skt-w-text-sm skt-w-text-widget-secondary skt-w-mb-3">
       <span>{label}</span>
       <span>{value}</span>
       {children}
