@@ -16,14 +16,14 @@ import { InnerCard } from "../common/InnerCard";
 
 import { Web3Context } from "../../providers/Web3Provider";
 import {
-  BRIDGE_DISPLAY_NAMES,
   QuoteStatus,
   ButtonTexts,
   NATIVE_TOKEN_ADDRESS,
+  UserTxType,
 } from "../../consts";
 import { useTransition } from "@react-spring/web";
 import { Info } from "react-feather";
-import { formatCurrencyAmount } from "../../utils/";
+import { formatCurrencyAmount, timeInMinutes } from "../../utils/";
 import { SortOptions } from "@socket.tech/socket-v2-sdk";
 
 export const RouteDetails = () => {
@@ -74,6 +74,14 @@ export const RouteDetails = () => {
   const shouldFetch = sourceAmount && sourceToken && destToken && sortPref;
 
   const bestRoute = useSelector((state: any) => state.quotes.bestRoute);
+
+  const fundMovrData = bestRoute?.route?.userTxs.filter(
+    (item) => item.userTxType === UserTxType.FUND_MOVR
+  )[0];
+  const bridgeData =
+    fundMovrData?.steps &&
+    fundMovrData?.steps.filter((step) => step.type === "bridge")[0];
+
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
 
   // Hook to get Balance for the native token.
@@ -142,9 +150,6 @@ export const RouteDetails = () => {
 
   // Function that returns status once the fetching has started to get quotes.
   function quotesStatus() {
-    const bridgeKey = bestRoute?.route?.usedBridgeNames?.[0];
-    const bridgeName = BRIDGE_DISPLAY_NAMES[bridgeKey] || bridgeKey;
-
     // Checking for min native token requirement
     if (!!bestRoute?.refuel && !isNativeTokenEnough) {
       let minReq: string;
@@ -189,7 +194,7 @@ export const RouteDetails = () => {
       ? isQuotesLoading
         ? QuoteStatus.FETCHING_QUOTE
         : bestRoute
-        ? bridgeName ?? conversionMessage
+        ? <BridgeDetails /> ?? conversionMessage
         : QuoteStatus.NO_ROUTES_AVAILABLE
       : QuoteStatus.ENTER_AMOUNT;
   }
@@ -210,6 +215,18 @@ export const RouteDetails = () => {
     config: { duration: 200 },
     onReset: () => setIsReviewOpen(false),
   });
+
+  const BridgeDetails = () => {
+    return (
+      <div className="skt-w-flex skt-w skt-w-items-center skt-w-text-widget-primary skt-w-font-medium">
+        <img
+          src={bridgeData?.protocol?.icon}
+          className="skt-w-w-6 skt-w-h-6 skt-w-mr-1 skt-w-rounded-full"
+        />
+        <span>{bridgeData?.protocol?.displayName} ~ {timeInMinutes(bridgeData?.serviceTime)}</span>
+      </div>
+    );
+  };
 
   return (
     <InnerCard>

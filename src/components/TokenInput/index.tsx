@@ -1,7 +1,6 @@
 import { Currency } from "../../types";
 import { TokenSelect } from "./TokenSelect";
 import { TokenChipPlaceholder } from "../common/TokenChipPlaceholder";
-import { RefuelAmount } from "./RefuelAmount";
 
 interface TokenInputProps {
   amount: string;
@@ -26,21 +25,18 @@ export const TokenInput = (props: TokenInputProps) => {
     tokenToDisable,
   } = props;
   return (
-    <div className="skt-w skt-w-flex skt-w-items-center skt-w-justify-between skt-w-mt-2.5 skt-w-pb-[1.125rem]">
+    <div className="skt-w skt-w-flex skt-w-items-center skt-w-justify-between skt-w-my-2">
       <div className="skt-w skt-w-flex skt-w-flex-1">
-        <div className="stk-w skt-w-flex skt-w-flex-col skt-w-relative">
-          <input
-            className={`skt-w skt-w-input skt-w-text-widget-primary skt-w-text-3xl focus:skt-w-outline-none skt-w-w-full skt-w-h-full skt-w-overflow-ellipsis skt-w-bg-transparent`}
-            value={amount}
-            onChange={(e) => onChangeInput(e.target.value)}
-            placeholder="0.0"
-            type={source ? "number" : "string"}
-            onWheel={(e) => (document.activeElement as HTMLElement).blur()}
-            inputMode="decimal"
-            readOnly={!source}
-          />
-          <RefuelAmount src={source} />
-        </div>
+        <input
+          className={`skt-w skt-w-input skt-w-text-widget-primary skt-w-text-3xl focus:skt-w-outline-none skt-w-w-full skt-w-h-full skt-w-overflow-ellipsis skt-w-bg-transparent skt-w-font-semibold`}
+          value={amount}
+          onChange={(e) => onChangeInput(e.target.value)}
+          placeholder="0.0"
+          type={source ? "number" : "string"}
+          onWheel={(e) => (document.activeElement as HTMLElement).blur()}
+          inputMode="decimal"
+          readOnly={!source}
+        />
       </div>
       {noTokens ? (
         <TokenChipPlaceholder>No Tokens</TokenChipPlaceholder>

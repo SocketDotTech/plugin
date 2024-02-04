@@ -39,8 +39,7 @@ function Option({
       <div className="skt-w skt-w-flex skt-w-items-center">
         <img
           src={network?.icon}
-          className="skt-w skt-w-h-6 skt-w-w-6"
-          style={{ borderRadius: `calc(0.3rem * ${borderRadius})` }}
+          className="skt-w skt-w-h-6 skt-w-w-6 skt-w-rounded-full"
         />
         <span className="skt-w skt-w-text-sm skt-w-text-widget-primary skt-w-mx-1">
           {networkDisplayName}

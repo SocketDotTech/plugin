@@ -15,14 +15,14 @@ export const SearchBar = (props: SearchBarProps) => {
 
   return (
     <div
-      className="skt-w skt-w-flex skt-w-items-center skt-w-px-2 skt-w-w-full skt-w-bg-widget-primary skt-w-border skt-w-border-widget-secondary-text/30 skt-w-text-widget-primary skt-w-text-sm skt-w-overflow-hidden focus-within:skt-w-border-widget-secondary-text skt-w-relative"
-      style={{ borderRadius: `calc(0.5rem * ${borderRadius})` }}
+      className="skt-w skt-w-flex skt-w-items-center skt-w-p-4 skt-w-w-full skt-w-bg-widget-primary skt-w-border-2 skt-w-border-widget-secondary-text/30 skt-w-text-widget-primary skt-w-text-base skt-w-overflow-hidden focus-within:skt-w-border-widget-secondary-text skt-w-relative skt-w-h-[56px]"
+      style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
     >
-      <Search className="skt-w skt-w-w-5 skt-w-h-5 skt-w-text-widget-secondary skt-w-mr-2" />
+      <Search className="skt-w skt-w-w-8 skt-w-h-8 skt-w-text-widget-secondary skt-w-mr-2" />
       <input
         onChange={(e) => handleInput(e.target.value)}
-        placeholder="Search Name or Address"
-        className="stk-w skt-w-input skt-w-w-full skt-w-border-none skt-w-py-2 skt-w-pr-7 skt-w-bg-transparent skt-w-overflow-x-hidden skt-w-overflow-ellipsis"
+        placeholder="Search by symbol or address"
+        className="stk-w skt-w-input skt-w-w-full skt-w-border-none skt-w-bg-transparent skt-w-overflow-x-hidden skt-w-overflow-ellipsis"
         role="search"
         value={searchInput}
         spellCheck={false}

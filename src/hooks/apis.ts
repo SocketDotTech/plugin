@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import {
   Balances,
-  ChainId,
   Server,
   Socket,
   Supported,
@@ -28,14 +27,47 @@ export const initSocket = (apiKey: string, _singleTxOnly: boolean) => {
   });
 };
 
+/** order in which networks need to be sorted on bungee */
+const networkOrder = [
+  1, //ethereum
+  10, //optimism
+  42161, //arbitrum
+  137, //polygon
+  8453, //base
+  324, //zksync era
+  1101, //polygon zkevm
+  59144, // linea
+  56, //bnb chain
+  43114, //avalance
+  100, //gnosis
+  7777777, //zora
+  250, //fantom
+  1313161554, //aurora
+  957, // lyra
+];
+
 // Function to get the chains supported by socket apis.
 export const useChains = () => {
   const dispatch = useDispatch();
 
   async function fetchSupportedNetworks() {
     const supportedNetworks = await Supported.getAllSupportedChains();
-    dispatch(setNetworks(supportedNetworks?.result));
-    return supportedNetworks;
+    // sorting as per order
+    const sortedNetworks = networkOrder
+      .map((network: number) =>
+        supportedNetworks?.result?.find((chain) => chain.chainId === network)
+      )
+      .filter((network) => network?.chainId);
+
+    // chains missing from the sorting list
+    const networkOrderSet = new Set(networkOrder);
+    const restChains = supportedNetworks?.result?.filter(
+      (chain) => !networkOrderSet.has(chain.chainId)
+    );
+
+    const allChains = [...sortedNetworks, ...restChains];
+    dispatch(setNetworks(allChains));
+    return { result: allChains };
   }
 
   const { data } = useSWR("fetching chains", fetchSupportedNetworks);
@@ -47,6 +79,7 @@ import { useActiveRoute } from "./apis/useActiveRoute";
 import { useNextTx } from "./apis/useNextTx";
 import { usePendingRoutes } from "./apis/usePendingRoutes";
 import { updateAndRefetch } from "./updateAndRefetch";
+import { Network } from "types";
 export {
   useRoutes,
   useActiveRoute,
@@ -66,7 +99,7 @@ export const useBalance = (
 
   async function fetchBalance(
     tokenAddress: string,
-    chainId: ChainId,
+    chainId: number,
     userAddress: string
   ) {
     const tokenWithBalance = await Balances.getBalance({

@@ -28,12 +28,8 @@ export const Button = (props: ButtonProps) => {
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`skt-w skt-w-input skt-w-button skt-w-h-14 skt-w-px-3 skt-w-flex skt-w-items-center skt-w-justify-center skt-w-transition-all skt-w-duration-100 skt-w-ease-linear skt-w-w-full skt-w-bg-widget-accent skt-w-text-widget-onAccent hover:skt-w-bg-opacity-90 skt-w-border-widget-primary 
-      disabled:skt-w-bg-widget-secondary 
-      disabled:skt-w-text-widget-secondary 
-      disabled:skt-w-opacity-50 
-      disabled:skt-w-font-normal 
-      disabled:skt-w-border-opacity-50 
+      className={`skt-w skt-w-input skt-w-button skt-w-h-14 skt-w-px-3 skt-w-flex skt-w-items-center skt-w-justify-center skt-w-transition-all skt-w-duration-100 skt-w-ease-linear skt-w-w-full skt-w-bg-widget-accent skt-w-text-widget-onAccent hover:skt-w-bg-opacity-90 disabled:skt-w-border-widget-primary/50 skt-w-border-transparent skt-w-font-medium
+      disabled:skt-w-opacity-70
       skt-w-border 
       ${classNames || ""}`}
       style={{ borderRadius: `calc(0.625rem * ${borderRadius})` }}

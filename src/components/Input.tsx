@@ -8,6 +8,8 @@ import { NATIVE_TOKEN_ADDRESS } from "../consts";
 import { TokenInput } from "./TokenInput";
 import { ChainSelect } from "./common/ChainSelect";
 import { Balance } from "./common/Balance";
+import { UsdValue } from "./common/UsdValue";
+import { RefuelAmount } from "./TokenInput/RefuelAmount";
 
 // actions
 import { setSourceToken } from "../state/tokensSlice";
@@ -362,6 +364,10 @@ export const Input = ({
         tokens={allSourceTokens}
         noTokens={noTokens}
       />
+      <div className="skt-w-items-center skt-w skt-w-flex">
+        <UsdValue isSource />
+        <RefuelAmount src />
+      </div>
     </div>
   );
 };

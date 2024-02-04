@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { CustomizeContext } from "../../providers/CustomizeProvider";
-import { BRIDGE_DISPLAY_NAMES, UserTxType } from "../../consts/";
+import { UserTxType } from "../../consts/";
 import { ChevronUp, Edit, Info } from "react-feather";
 
 // components
@@ -221,18 +221,18 @@ export const ReviewModal = ({
           <div className="skt-w skt-w-px-3 skt-w-py-1.5 skt-w-flex skt-w-flex-col skt-w-mt-1">
             {!isSameChainSwap ? (
               <>
-                <RouteDetailRow
-                  label="Bridge Name"
-                  value={
-                    BRIDGE_DISPLAY_NAMES[
-                      selectedRoute?.route?.usedBridgeNames?.[0]
-                    ] || selectedRoute?.route?.usedBridgeNames?.[0]
-                  }
-                />
-                <RouteDetailRow
-                  label="Estimated Bridging Time"
-                  value={timeInMinutes(selectedRoute?.route?.serviceTime)}
-                />
+                <RouteDetailRow label="Bridge">
+                  <div className="skt-w skt-w-flex skt-w-items-center">
+                    <img
+                      src={bridgeData?.protocol?.icon}
+                      className="skt-w-w-6 skt-w-h-6 skt-w-mr-1 skt-w-rounded-full"
+                    />
+                    <span>
+                      {bridgeData?.protocol?.displayName} ~{" "}
+                      {timeInMinutes(bridgeData?.serviceTime)}
+                    </span>
+                  </div>
+                </RouteDetailRow>
                 <RouteDetailRow label="Bridge Fee">
                   <FeeDisplay
                     feeInToken={bridgeFeeInToken}

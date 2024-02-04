@@ -110,15 +110,15 @@ export const TokenSelect = (props: Props) => {
       {activeToken ? (
         <button
           onClick={() => setOpenTokenList(!openTokenList)}
-          className={`skt-w skt-w-input skt-w-button skt-w-flex skt-w-items-center skt-w-flex-1 skt-w-bg-widget-interactive skt-w-flex-shrink-0 skt-w-flex-nowrap skt-w-w-auto skt-w-overflow-hidden skt-w-p-1 skt-w-text-widget-on-interactive`}
-          style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
+          className={`skt-w skt-w-input skt-w-button skt-w-flex skt-w-items-center skt-w-flex-1 skt-w-bg-widget-interactive skt-w-flex-shrink-0 skt-w-flex-nowrap skt-w-w-auto skt-w-overflow-hidden skt-w-p-2 skt-w-text-widget-on-interactive`}
+          style={{ borderRadius: `calc(1.2rem * ${borderRadius})` }}
         >
           <img
             src={activeToken?.logoURI}
-            className="skt-w skt-w-h-6 skt-w-w-6 skt-w-rounded-full skt-w-mr-1.5 skt-w-border"
+            className="skt-w skt-w-h-6 skt-w-w-6 skt-w-rounded-full skt-w-mr-1"
           />
-          <div className="skt-w skt-w-flex skt-w-items-center">
-            <span className="skt-w-mr-0.5">{activeToken?.symbol}</span>
+          <div className="skt-w skt-w-flex skt-w-items-center skt-w-font-semibold">
+            <span className="skt-w-mr-1">{activeToken?.symbol}</span>
             <ChevronDown className="skt-w skt-w-w-4 skt-w-h-4" />
           </div>
         </button>
@@ -166,10 +166,10 @@ export const TokenSelect = (props: Props) => {
                       <div className="skt-w skt-w-flex skt-w-items-center">
                         <img
                           src={token?.logoURI}
-                          className="skt-w skt-w-w-6 skt-w-h-6 skt-w-rounded-full"
+                          className="skt-w skt-w-w-[30px] skt-w-h-[30px] skt-w-rounded-full"
                         />
-                        <div className="skt-w skt-w-flex skt-w-flex-col skt-w-items-start skt-w-ml-2 skt-w-text-widget-secondary">
-                          <span className="skt-w skt-w-text-sm skt-w-flex skt-w-items-center skt-w-justify-center">
+                        <div className="skt-w skt-w-flex skt-w-flex-col skt-w-items-start skt-w-ml-2">
+                          <span className="skt-w skt-w-text-base skt-w-flex skt-w-items-center skt-w-justify-center skt-w-text-widget-primary">
                             {token?.symbol}
                             {isActiveToken && (
                               <span className="skt-w skt-w-ml-2 skt-w-w-3.5 skt-w-h-3.5 skt-w-rounded-full skt-w-bg-widget-accent skt-w-text-widget-onAccent skt-w-flex skt-w-items-center skt-w-justify-center">
@@ -177,7 +177,7 @@ export const TokenSelect = (props: Props) => {
                               </span>
                             )}
                           </span>
-                          <span className="skt-w skt-w-text-xs skt-w--mt-0.5">
+                          <span className="skt-w skt-w--mt-0.5 skt-w-text-sm skt-w-text-widget-secondary">
                             {token?.name}
                           </span>
                         </div>

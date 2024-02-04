@@ -3690,14 +3690,14 @@ packages:
     resolution: {integrity: sha512-TBKpYHBPS4sw7cDBrYrsXfaQENDnXgkOB0xxyAdh80f9JqE8+lyHR4gxuW/DLuDIkkcIKiTcUBNcIYzvuCd7wA==}
     dev: false
 
-  /@socket.tech/ll-core@0.1.51:
-    resolution: {integrity: sha512-iBGtYVdDoeieM6ZXiEr18MdllIeKWyfLeFW/Oamo4GHKeOM9LPrgKuReLJ+kZiIANECOxGe66OTc8RCQzLOz9A==}
+  /@socket.tech/ll-core@0.1.52:
+    resolution: {integrity: sha512-BsopstbuQ3zkk8L7uK0JtKc3eRmwWhPY5+K/rP5SgNVCya8qQBPT05nDxUVAfV0ttv8dIoGCaSWFDVlVTs7cbw==}
     dev: false
 
   /@socket.tech/socket-v2-sdk@1.24.2:
     resolution: {integrity: sha512-tc1cwAGupQy2NF8MLYJ+D92/sw/4b7PZCELo+6HGS3/jlefTC5b7667Lq1FOL9vFN9S/A1uiEIusvna6ToGffw==}
     dependencies:
-      '@socket.tech/ll-core': 0.1.51
+      '@socket.tech/ll-core': 0.1.52
       '@socket.tech/ll-core-v2': 0.0.66
       axios: 0.27.2
       ethers: 5.7.2

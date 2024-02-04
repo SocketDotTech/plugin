@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Currency, Network, onNetworkChange, onTokenChange } from "../types";
 
 // component
 import { TokenInput } from "./TokenInput";
 import { ChainSelect } from "./common/ChainSelect";
 import { Balance } from "./common/Balance";
+import { UsdValue } from "./common/UsdValue";
+import { RefuelAmount } from "./TokenInput/RefuelAmount";
 
 // actions
 import { setDestToken } from "../state/tokensSlice";
@@ -302,13 +304,17 @@ export const Output = ({
       </div>
 
       <TokenInput
-        amount={`${outputAmount ? `~${outputAmount}` : ""}`}
+        amount={`${outputAmount ? `${outputAmount}` : ""}`}
         updateToken={_setDestToken}
         activeToken={destToken}
         tokens={allDestTokens}
         noTokens={noTokens}
         tokenToDisable={sourceChainId === destChainId && sourceToken}
       />
+      <div className="skt-w-flex skt-w-items-center">
+        <UsdValue />
+        <RefuelAmount />
+      </div>
     </div>
   );
 };

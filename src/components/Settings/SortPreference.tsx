@@ -86,7 +86,7 @@ const Option = ({
 }) => {
   return (
     <button
-      className={`skt-w skt-w-input skt-w-button skt-w-w-32 skt-w-px-2 skt-w-py-2 skt-w-text-widget-secondary skt-w-text-sm skt-w-flex skt-w-items-center skt-w-justify-between ${
+      className={`skt-w skt-w-input skt-w-button skt-w-font-medium skt-w-w-32 skt-w-px-2 skt-w-py-2 skt-w-text-widget-secondary skt-w-text-sm skt-w-flex skt-w-items-center skt-w-justify-between ${
         active ? "" : "hover:skt-w-bg-widget-secondary"
       }`}
       onClick={onClick}
