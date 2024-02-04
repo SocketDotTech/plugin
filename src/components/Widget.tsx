@@ -186,19 +186,18 @@ const SingleTxMessage = () => {
     dispatch(setIsSettingsModalOpen(true));
   }
 
+  if (singleTxOnlyFromDev) return null;
   if (!singleTxOnly || sourceChainId === destChainId)
     return <p className="skt-w skt-w-h-5"></p>; // to prevent the layout shift
   return (
     <p className="skt-w skt-w-text-sm skt-w-text-widget-secondary skt-w-pr-3 skt-w-pl-3.5 skt-w-flex skt-w-items-center skt-w-h-5">
-      Showing single transaction routes only{" "}
-      {!singleTxOnlyFromDev && (
-        <button
-          onClick={openSettingsModal}
-          className="skt-w skt-w-button skt-w-input skt-w-ml-1.5 skt-w-flex"
-        >
-          <Edit className="skt-w skt-w-w-3.5 skt-w-h-3.5 skt-w-text-widget-accent" />
-        </button>
-      )}
+      <span>Showing single transaction routes only</span>
+      <button
+        onClick={openSettingsModal}
+        className="skt-w skt-w-button skt-w-input skt-w-ml-1.5 skt-w-flex"
+      >
+        <Edit className="skt-w skt-w-w-3.5 skt-w-h-3.5 skt-w-text-widget-accent" />
+      </button>
     </p>
   );
 };

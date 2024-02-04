@@ -123,8 +123,21 @@ const Customize = {
   onInteractive: "rgb(240,240,240)",
   text: "rgb(255,255,255)",
   secondaryText: "rgb(200,200,200)",
+  borderRadius: 1
   // fontFamily: '"Comic Sans MS", cursive'
   // width: 400
+};
+const darkTheme = {
+  secondary: 'rgb(37,42,46)',
+  primary: 'rgb(24,28,31)',
+  accent: 'rgb(120,79,254)',
+  onAccent: 'rgb(255, 255, 255)',
+  interactive: 'rgb(37,42,46)',
+  onInteractive: 'rgb(255,255,255)',
+  text: 'rgb(255,255,255)',
+  secondaryText: 'rgb(199,210,218)',
+  fontFamily: "'Inter', sans-serif",
+  borderRadius: 1,
 };
 
 function showAlert(value) {
@@ -141,7 +154,7 @@ Default.args = {
   enableSameChainSwaps: true,
   // title: [displayName],
   // includeBridges: ['hyphen'],
-  // singleTxOnly: true,
+  singleTxOnly: true,
   // excludeBridges: ['hop', 'polygon-bridge'],
   enableRefuel: true,
   // onBridgeSuccess: showAlert,

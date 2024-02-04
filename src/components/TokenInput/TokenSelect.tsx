@@ -111,7 +111,7 @@ export const TokenSelect = (props: Props) => {
         <button
           onClick={() => setOpenTokenList(!openTokenList)}
           className={`skt-w skt-w-input skt-w-button skt-w-flex skt-w-items-center skt-w-flex-1 skt-w-bg-widget-interactive skt-w-flex-shrink-0 skt-w-flex-nowrap skt-w-w-auto skt-w-overflow-hidden skt-w-p-2 skt-w-text-widget-on-interactive`}
-          style={{ borderRadius: `calc(1.2rem * ${borderRadius})` }}
+          style={{ borderRadius: `calc(1rem * ${borderRadius})` }}
         >
           <img
             src={activeToken?.logoURI}
