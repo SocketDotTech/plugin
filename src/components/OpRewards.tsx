@@ -33,12 +33,14 @@ export const OpRewards = () => {
   const web3Context = useContext(Web3Context);
   const { userAddress } = web3Context.web3Provider;
 
-  const { data } = useOpRebatesData({
+  const { data: allRebatesData } = useOpRebatesData({
     address: userAddress,
     API_KEY: apiKey,
     toChainId: onGoingCampaigns["arbitrum-campaign"]?.toChainId,
     tokenAddress: onGoingCampaigns["arbitrum-campaign"]?.rewardTokenAddress,
   });
+
+  const data = allRebatesData?.[0];
 
   useEffect(() => {
     if (!!data) {
@@ -85,12 +87,14 @@ export const OpRewardsModal = () => {
     dispatch(setIsOpRewardModalOpen(value));
   };
 
-  const { data } = useOpRebatesData({
+  const { data: allRebatesData } = useOpRebatesData({
     address: userAddress,
     API_KEY: apiKey,
     toChainId: onGoingCampaigns["arbitrum-campaign"]?.toChainId,
     tokenAddress: onGoingCampaigns["arbitrum-campaign"]?.rewardTokenAddress,
   });
+
+  const data = allRebatesData?.[0];
 
   // rewards earned = pending + claimable amount
   const rewardsEarned =

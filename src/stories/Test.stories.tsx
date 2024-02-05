@@ -147,9 +147,12 @@ function showAlert(value) {
 const UNISWAP_DEFAULT_LIST = "https://gateway.ipfs.io/ipns/tokens.uniswap.org";
 const displayName = <span style={{ color: "red" }}>Salil</span>;
 
+const devApiKey = '763569fb-e53b-4edb-8067-13240d1614b6';
+const prodApiKey = '72a5b4b0-e727-48be-8aa1-5da9d62fe635';
+
 export const Default = Template.bind({});
 Default.args = {
-  API_KEY: "72a5b4b0-e727-48be-8aa1-5da9d62fe635",
+  API_KEY: prodApiKey,
   customize: Customize,
   enableSameChainSwaps: true,
   // title: [displayName],

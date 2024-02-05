@@ -15,10 +15,10 @@ export const useOpRebatesData = ({
 }: {
   address: string;
   tokenAddress: string;
-  toChainId: number
+  toChainId: number;
   API_KEY: string;
 }) => {
-  let query = `https://microservices.socket.tech/loki/get-claim-data?address=${address}&chainId=${toChainId}&token=${tokenAddress}`;
+  let query = `https://microservices.socket.tech/loki/rewards/get-claim-data?address=${address}&chainId=${toChainId}&token=${tokenAddress}`;
 
   const { data, error } = useSWR(
     !!address && !!API_KEY ? [query, API_KEY, "get-claim"] : null,
