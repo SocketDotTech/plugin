@@ -252,12 +252,12 @@ export interface Network {
 export interface Currency {
   address: string;
   decimals: number;
-  icon?: string;
-  minNativeCurrencyForGas?: string;
   name: string;
   symbol: string;
-  chainId?: number;
+  chainId: number;
   logoURI: string;
+  minNativeCurrencyForGas?: string;
+  icon?: string;
   chainAgnosticId?: string | null;
 }
 
