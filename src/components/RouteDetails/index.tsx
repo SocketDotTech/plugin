@@ -117,9 +117,11 @@ export const RouteDetails = () => {
 
   useEffect(() => {
     if (data) {
+      const isSameChainSwap = data?.[0]?.path?.fromToken?.chainId === data?.[0]?.path?.toToken?.chainId;
+
       // Reversing the order in case of sort-by-time because the API returns the list in descendind order of service time
       const bestRoute =
-        sortPref === SortOptions.Time ? data.reverse()[0] : data[0];
+        (!isSameChainSwap && sortPref === SortOptions.Time) ? data.reverse()[0] : data[0];
       dispatch(setBestRoute(bestRoute));
 
       // Check if there is sufficient native token for refuel
