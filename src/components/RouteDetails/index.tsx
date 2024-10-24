@@ -78,9 +78,15 @@ export const RouteDetails = () => {
   const fundMovrData = bestRoute?.route?.userTxs.filter(
     (item) => item.userTxType === UserTxType.FUND_MOVR
   )[0];
+
+  const swapData = bestRoute?.route?.userTxs.filter(
+    (item) => item.userTxType === UserTxType.DEX_SWAP
+  )?.[0];
   const bridgeData =
     fundMovrData?.steps &&
     fundMovrData?.steps.filter((step) => step.type === "bridge")[0];
+
+  const protocol = bridgeData?.protocol ?? swapData?.protocol;
 
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
 
@@ -177,26 +183,17 @@ export const RouteDetails = () => {
       return `Not enough ${nativeTokenWithBalance?.symbol} for Refuel (${minReq} required)`;
     }
 
-    const sourceAmount = formatCurrencyAmount(
-      bestRoute?.route?.fromAmount,
-      bestRoute?.path?.fromToken?.decimals
+    return shouldFetch ? (
+      isQuotesLoading ? (
+        QuoteStatus.FETCHING_QUOTE
+      ) : bestRoute ? (
+        <BridgeDetails />
+      ) : (
+        QuoteStatus.NO_ROUTES_AVAILABLE
+      )
+    ) : (
+      QuoteStatus.ENTER_AMOUNT
     );
-    const destAmount = formatCurrencyAmount(
-      bestRoute?.route?.toAmount,
-      bestRoute?.path?.toToken?.decimals
-    );
-    const conversion = Number(destAmount) / Number(sourceAmount);
-    const conversionMessage = `1 ${
-      bestRoute?.path?.fromToken?.symbol
-    } = ${conversion?.toFixed(4)} ${bestRoute?.path?.toToken?.symbol}`;
-
-    return shouldFetch
-      ? isQuotesLoading
-        ? QuoteStatus.FETCHING_QUOTE
-        : bestRoute
-        ? <BridgeDetails /> ?? conversionMessage
-        : QuoteStatus.NO_ROUTES_AVAILABLE
-      : QuoteStatus.ENTER_AMOUNT;
   }
 
   // Returns the text shown on the button depending on the status.
@@ -217,13 +214,33 @@ export const RouteDetails = () => {
   });
 
   const BridgeDetails = () => {
+    const sourceAmount = formatCurrencyAmount(
+      bestRoute?.route?.fromAmount,
+      bestRoute?.path?.fromToken?.decimals
+    );
+    const destAmount = formatCurrencyAmount(
+      bestRoute?.route?.toAmount,
+      bestRoute?.path?.toToken?.decimals
+    );
+    const conversion = Number(destAmount) / Number(sourceAmount);
+    const conversionMessage = `1 ${
+      bestRoute?.path?.fromToken?.symbol
+    } = ${conversion?.toFixed(4)} ${bestRoute?.path?.toToken?.symbol}`;
+
     return (
       <div className="skt-w-flex skt-w skt-w-items-center skt-w-text-widget-primary skt-w-font-medium">
         <img
-          src={bridgeData?.protocol?.icon}
+          src={protocol?.icon}
           className="skt-w-w-6 skt-w-h-6 skt-w-mr-1 skt-w-rounded-full"
         />
-        <span>{bridgeData?.protocol?.displayName} ~ {timeInMinutes(bridgeData?.serviceTime)}</span>
+        <p className="skt-w-m-0">
+          {protocol?.displayName}{" "}
+          {swapData ? (
+            <span className="skt-w-text-widget-secondary skt-w-font-normal"> ~ {conversionMessage}</span>
+          ) : (
+            <span> ~ {timeInMinutes(bridgeData?.serviceTime)}</span>
+          )}
+        </p>
       </div>
     );
   };
